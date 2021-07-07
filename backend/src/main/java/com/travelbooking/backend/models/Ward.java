@@ -1,5 +1,6 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -22,10 +23,12 @@ public class Ward {
 
     @ManyToOne
     @JoinColumn(name = "province_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("districts")
     private Province province;
 
     @ManyToOne
     @JoinColumn(name = "district_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"wards", "province"})
     private District district;
 
     public Ward(Long id, String name, String prefix, Province province, District district) {

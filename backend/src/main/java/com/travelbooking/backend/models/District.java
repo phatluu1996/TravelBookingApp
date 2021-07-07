@@ -1,8 +1,10 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "district")
@@ -22,16 +24,23 @@ public class District {
 
     @ManyToOne
     @JoinColumn(name = "province_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("districts")
     private Province province;
+
+    @OneToMany
+    @JoinColumn(name = "district_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"province", "district"})
+    private List<Ward> wards;
 
     public District() {
     }
 
-    public District(Long id, String name, String prefix, Province province) {
+    public District(Long id, String name, String prefix, Province province, List<Ward> wards) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
         this.province = province;
+        this.wards = wards;
     }
 
     public Long getId() {
@@ -64,5 +73,13 @@ public class District {
 
     public void setProvince(Province province) {
         this.province = province;
+    }
+
+    public List<Ward> getWards() {
+        return wards;
+    }
+
+    public void setWards(List<Ward> wards) {
+        this.wards = wards;
     }
 }
