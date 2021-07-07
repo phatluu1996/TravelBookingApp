@@ -62,6 +62,16 @@ public class LocationController {
         return locationRepository.findAll(spec);
     }
 
+    //http://localhost:8080/api/ward/1
+    @GetMapping("/location/{id}")
+    public ResponseEntity<Location> getLocation(@PathVariable Long id) {
+        Location location = locationRepository.findById(id).get();
+        if(location.isRetired()){
+            return ResponseEntity.ok().body(null);
+        }
+        return ResponseEntity.ok().body(location);
+    }
+
     //http://localhost:8080/api/location
     @PostMapping("/location")
     public ResponseEntity<Location> addLocation(@RequestBody Location location) {
