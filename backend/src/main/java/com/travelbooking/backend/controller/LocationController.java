@@ -1,21 +1,27 @@
 package com.travelbooking.backend.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.travelbooking.backend.models.District;
+import com.travelbooking.backend.models.Location;
 import com.travelbooking.backend.models.Province;
+import com.travelbooking.backend.models.Ward;
 import com.travelbooking.backend.repository.DistrictRepository;
+import com.travelbooking.backend.repository.LocationRepository;
 import com.travelbooking.backend.repository.ProvinceRepository;
 import com.travelbooking.backend.repository.WardRepository;
+import com.travelbooking.backend.specification.DBSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.annotation.MultipartConfig;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -28,22 +34,55 @@ public class LocationController {
     private DistrictRepository districtRepository;
     @Autowired
     private WardRepository wardRepository;
+    @Autowired
+    private LocationRepository locationRepository;
 
-    //http://localhost:8080/api/provinces
-    @GetMapping("/provinces")
-    public ResponseEntity<?> getProvinces() {
-        return ResponseEntity.ok().body(provinceRepository.findAll());
+    //http://localhost:8080/api/province
+    @GetMapping("/province")
+    public Collection<Province> getProvinces() {
+        return provinceRepository.findAll();
     }
 
-    //http://localhost:8080/api/districts
-    @GetMapping("/districts")
-    public ResponseEntity<?> getDistricts() {
-        return ResponseEntity.ok().body(districtRepository.findAll());
+    //http://localhost:8080/api/district
+    @GetMapping("/district")
+    public Collection<District> getDistricts() {
+        return districtRepository.findAll();
     }
 
-    //http://localhost:8080/api/wards
-    @GetMapping("/wards")
-    public ResponseEntity<?> getWards() {
-        return ResponseEntity.ok().body(wardRepository.findAll());
+    //http://localhost:8080/api/ward
+    @GetMapping("/ward")
+    public Collection<Ward> getWards() {
+        return wardRepository.findAll();
+    }
+
+    //http://localhost:8080/api/ward
+    @GetMapping("/location")
+    public Collection<Location> getLocations() {
+        Specification<?> spec = DBSpecification.createSpecification(Optional.of(Boolean.FALSE));
+        return locationRepository.findAll(spec);
+    }
+
+    //http://localhost:8080/api/location
+    @PostMapping("/location")
+    public ResponseEntity<Location> addLocation(@RequestBody Location location) {
+        Location result = locationRepository.save(location);
+        return ResponseEntity.ok().body(result);
+    }
+
+    //http://localhost:8080/api/location/1
+    @PutMapping("/location/{id}")
+    public ResponseEntity<Location> updateLocation(@RequestBody Location location, @PathVariable Long id) {
+        location.setId(id);
+        Location result = locationRepository.save(location);
+        return ResponseEntity.ok().body(result);
+    }
+
+    //http://localhost:8080/api/location/1
+    @PostMapping("/location/{id}")
+    public ResponseEntity<Location> removeLocation(@PathVariable Long id) {
+        Location location = locationRepository.findById(id).get();
+        location.setRetired(true);
+        Location result = locationRepository.save(location);
+        return ResponseEntity.ok().body(result);
     }
 }

@@ -31,12 +31,24 @@ public class Ward {
     @JsonIgnoreProperties({"wards", "province"})
     private District district;
 
-    public Ward(Long id, String name, String prefix, Province province, District district) {
+    @Column(name = "retired")
+    private boolean retired;
+
+    public Ward(Long id, String name, String prefix, Province province, District district, boolean retired) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
         this.province = province;
         this.district = district;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 
     public Ward() {

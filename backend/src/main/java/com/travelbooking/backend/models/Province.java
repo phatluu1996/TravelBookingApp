@@ -26,6 +26,25 @@ public class Province {
     @JsonIgnoreProperties("province")
     private List<District> districts;
 
+    @Column(name = "retired")
+    private boolean retired;
+
+    public Province(Long id, String name, String code, List<District> districts, boolean retired) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.districts = districts;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
+    }
+
     public List<District> getDistricts() {
         return districts;
     }
@@ -35,13 +54,6 @@ public class Province {
     }
 
     public Province() {
-    }
-
-    public Province(Long id, String name, String code, List<District> districts) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
-        this.districts = districts;
     }
 
     public Long getId() {

@@ -32,15 +32,27 @@ public class District {
     @JsonIgnoreProperties({"province", "district"})
     private List<Ward> wards;
 
-    public District() {
-    }
+    @Column(name = "retired")
+    private boolean retired;
 
-    public District(Long id, String name, String prefix, Province province, List<Ward> wards) {
+    public District(Long id, String name, String prefix, Province province, List<Ward> wards, boolean retired) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
         this.province = province;
         this.wards = wards;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
+    }
+
+    public District() {
     }
 
     public Long getId() {

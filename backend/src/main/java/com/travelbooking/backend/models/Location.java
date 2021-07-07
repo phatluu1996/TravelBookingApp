@@ -1,7 +1,9 @@
 package com.travelbooking.backend.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 
@@ -10,7 +12,7 @@ import javax.persistence.*;
 public class Location {
     @Id
     @Column(name = "id")
-//    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "street", length = 500)
@@ -22,23 +24,32 @@ public class Location {
 
     @ManyToOne
     @JoinColumn(name = "province_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("districts")
     private Province province;
+
 
     @ManyToOne
     @JoinColumn(name = "district_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"wards","province"})
     private District district;
+
 
     @ManyToOne
     @JoinColumn(name = "ward_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"district","province"})
     private Ward ward;
 
-    public Location(Long id, String street, String postalCode, Province province, District district, Ward ward) {
+    @Column(name = "retired")
+    private boolean retired;
+
+    public Location(Long id, String street, String postalCode, Province province, District district, Ward ward, boolean retired) {
         this.id = id;
         this.street = street;
         this.postalCode = postalCode;
         this.province = province;
         this.district = district;
         this.ward = ward;
+        this.retired = retired;
     }
 
     public Location() {
@@ -90,5 +101,13 @@ public class Location {
 
     public void setWard(Ward ward) {
         this.ward = ward;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 }
