@@ -19,7 +19,7 @@ public class FlightBooking {
     private String reservationCode;
 
     @Column(name = "total_price")
-    private int totalPrice;
+    private Float totalPrice;
 
     @Column(name = "total_package_allowance")
     private int totalPackageAllowance;
@@ -37,9 +37,6 @@ public class FlightBooking {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-    @OneToMany(mappedBy = "flight_booking", cascade = CascadeType.ALL)
-    private List<FlightBookingDetail> details;
 
     @Column(name = "payment_method")
     private String paymentMethod;
