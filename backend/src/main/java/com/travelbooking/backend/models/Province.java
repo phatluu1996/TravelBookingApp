@@ -27,9 +27,9 @@ public class Province {
     private List<District> districts;
 
     @Column(name = "retired")
-    private boolean retired;
+    private Boolean retired;
 
-    public Province(Long id, String name, String code, List<District> districts, boolean retired) {
+    public Province(Long id, String name, String code, List<District> districts, Boolean retired) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -37,11 +37,11 @@ public class Province {
         this.retired = retired;
     }
 
-    public boolean isRetired() {
+    public Boolean isRetired() {
         return retired;
     }
 
-    public void setRetired(boolean retired) {
+    public void setRetired(Boolean retired) {
         this.retired = retired;
     }
 

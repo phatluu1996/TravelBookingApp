@@ -2,7 +2,9 @@ package com.travelbooking.backend.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
@@ -39,10 +41,10 @@ public class Location {
     @JsonIgnoreProperties({"district","province"})
     private Ward ward;
 
-    @Column(name = "retired")
-    private boolean retired;
+    @Column(name = "retired", nullable = true)
+    private Boolean retired;
 
-    public Location(Long id, String street, String postalCode, Province province, District district, Ward ward, boolean retired) {
+    public Location(Long id, String street, String postalCode, Province province, District district, Ward ward, Boolean retired) {
         this.id = id;
         this.street = street;
         this.postalCode = postalCode;
@@ -103,11 +105,11 @@ public class Location {
         this.ward = ward;
     }
 
-    public boolean isRetired() {
+    public Boolean isRetired() {
         return retired;
     }
 
-    public void setRetired(boolean retired) {
+    public void setRetired(Boolean retired) {
         this.retired = retired;
     }
 }

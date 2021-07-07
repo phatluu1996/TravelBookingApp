@@ -58,7 +58,7 @@ public class LocationController {
     //http://localhost:8080/api/ward
     @GetMapping("/location")
     public Collection<Location> getLocations() {
-        Specification<?> spec = DBSpecification.createSpecification(Optional.of(Boolean.FALSE));
+        Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return locationRepository.findAll(spec);
     }
 

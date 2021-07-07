@@ -32,9 +32,9 @@ public class Ward {
     private District district;
 
     @Column(name = "retired")
-    private boolean retired;
+    private Boolean retired;
 
-    public Ward(Long id, String name, String prefix, Province province, District district, boolean retired) {
+    public Ward(Long id, String name, String prefix, Province province, District district, Boolean retired) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
@@ -43,11 +43,11 @@ public class Ward {
         this.retired = retired;
     }
 
-    public boolean isRetired() {
+    public Boolean isRetired() {
         return retired;
     }
 
-    public void setRetired(boolean retired) {
+    public void setRetired(Boolean retired) {
         this.retired = retired;
     }
 

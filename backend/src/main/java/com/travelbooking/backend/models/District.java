@@ -33,9 +33,9 @@ public class District {
     private List<Ward> wards;
 
     @Column(name = "retired")
-    private boolean retired;
+    private Boolean retired;
 
-    public District(Long id, String name, String prefix, Province province, List<Ward> wards, boolean retired) {
+    public District(Long id, String name, String prefix, Province province, List<Ward> wards, Boolean retired) {
         this.id = id;
         this.name = name;
         this.prefix = prefix;
@@ -44,11 +44,11 @@ public class District {
         this.retired = retired;
     }
 
-    public boolean isRetired() {
+    public Boolean isRetired() {
         return retired;
     }
 
-    public void setRetired(boolean retired) {
+    public void setRetired(Boolean retired) {
         this.retired = retired;
     }
 
