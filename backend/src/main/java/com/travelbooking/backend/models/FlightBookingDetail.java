@@ -10,13 +10,15 @@ public class FlightBookingDetail {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "flight", referencedColumnName = "id")
     private Flight flight;
 
     @ManyToOne
-    @JoinColumn(name = "flight_booking")
+    @JoinColumn(name = "booking", referencedColumnName = "id")
     private FlightBooking flightBooking;
 
     @OneToOne
+    @JoinColumn(name = "passenger", referencedColumnName = "id")
     private Passenger passenger;
 
     @Column(name = "ticket_number")
