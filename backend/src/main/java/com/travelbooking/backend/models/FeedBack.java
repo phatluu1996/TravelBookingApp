@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feedback_id")
+    @Column(name = "id")
     private int id;
     @Column(name = "fb_name")
     private String name;

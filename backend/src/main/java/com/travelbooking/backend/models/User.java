@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "user")
+@Table(name = "[user]")
 public class User {
     @Id
     @Column(name = "id")
@@ -25,15 +25,13 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private Location address;
-    @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    private Location location;
+
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location address, Account account) {
+    public User(Long id, String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location location ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,19 +39,17 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.retired = retired;
-        this.address = address;
-        this.account = account;
+        this.location = location;
     }
 
-    public User(String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location address, Account account) {
+    public User(String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location address ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.retired = retired;
-        this.address = address;
-        this.account = account;
+        this.location = location;
     }
 
     public Long getId() {
@@ -112,19 +108,11 @@ public class User {
         this.retired = retired;
     }
 
-    public Location getAddress() {
-        return address;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setAddress(Location address) {
-        this.address = address;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

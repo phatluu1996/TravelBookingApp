@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "account")
 public class Account {
     @Id
-    @Column(name = "account_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "user_name", length = 255)
@@ -18,22 +18,20 @@ public class Account {
     @Column(name = "retired")
     private boolean retired;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     public Account() {
     }
 
-    public Account(Long id, String userName, String password, int role, boolean retired) {
+    public Account(Long id, String userName, String password, int role, boolean retired, User user) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.retired = retired;
-    }
-
-    public Account(String userName, String password, int role, boolean retired) {
-        this.userName = userName;
-        this.password = password;
-        this.role = role;
-        this.retired = retired;
+        this.user = user;
     }
 
     public Long getId() {
@@ -74,5 +72,13 @@ public class Account {
 
     public void setRetired(boolean retired) {
         this.retired = retired;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
