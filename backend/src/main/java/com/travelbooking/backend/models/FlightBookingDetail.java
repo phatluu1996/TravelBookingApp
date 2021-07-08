@@ -2,6 +2,7 @@ package com.travelbooking.backend.models;
 
 import javax.persistence.*;
 
+@Entity
 @Table(name = "flight_booking_detail")
 public class FlightBookingDetail {
     @Id
@@ -10,15 +11,15 @@ public class FlightBookingDetail {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "flight", referencedColumnName = "id")
+    @JoinColumn(name = "flight_id", referencedColumnName = "id")
     private Flight flight;
 
     @ManyToOne
-    @JoinColumn(name = "booking", referencedColumnName = "id")
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
     private FlightBooking flightBooking;
 
     @OneToOne
-    @JoinColumn(name = "passenger", referencedColumnName = "id")
+    @JoinColumn(name = "passenger_id", referencedColumnName = "id")
     private Passenger passenger;
 
     @Column(name = "ticket_number")
@@ -27,19 +28,22 @@ public class FlightBookingDetail {
     @Column(name = "seat_number")
     private String seatNumber;
 
-    @Column
+    @Column(name = "price")
     private Float price;
 
     @Column(name = "package_allowance")
     private int packageAllowance;
 
-    @Column(name = "special_request")
+    @Column(name = "special_request", nullable = true)
     private String specialRequest;
+
+    @Column(name = "retired", nullable = true)
+    private boolean retired;
 
     public FlightBookingDetail() {
     }
 
-    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest) {
+    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired) {
         this.id = id;
         this.flight = flight;
         this.flightBooking = flightBooking;
@@ -49,6 +53,15 @@ public class FlightBookingDetail {
         this.price = price;
         this.packageAllowance = packageAllowance;
         this.specialRequest = specialRequest;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 
     public Long getId() {

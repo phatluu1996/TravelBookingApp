@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "account")
 public class Account {
     @Id
-    @Column(name = "account_id")
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "user_name", length = 255)
@@ -15,7 +15,7 @@ public class Account {
     private String password;
     @Column(name = "role")
     private int role;
-    @Column(name = "retired")
+    @Column(name = "retired",nullable = true)
     private boolean retired;
 
     public Account() {
