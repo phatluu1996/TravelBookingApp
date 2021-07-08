@@ -3,6 +3,7 @@ package com.travelbooking.backend.models;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 @Table(name = "passenger")
 public class Passenger {
     @Id
@@ -31,10 +32,13 @@ public class Passenger {
     @Column(name = "card_expired")
     private Date cardExpired;
 
+    @Column(name = "retired", nullable = true)
+    private boolean retired;
+
     public Passenger() {
     }
 
-    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, String cardType, Date cardExpired) {
+    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, String cardType, Date cardExpired, boolean retired) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -43,6 +47,15 @@ public class Passenger {
         this.cardIdNumber = cardIdNumber;
         this.cardType = cardType;
         this.cardExpired = cardExpired;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 
     public Long getId() {

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
-
+@Entity
 @Table(name = "airline")
 public class Airline {
     @Id
@@ -23,40 +23,46 @@ public class Airline {
     @Column(name = "contact_title")
     private String contactTitle;
 
-    @Column
+    @Column(name = "phone")
     private String phone;
 
-    @Column
+    @Column(name = "mobile")
     private String mobile;
 
-    @Column
+    @Column(name = "fax", nullable = true)
     private String fax;
 
-    @Column
+    @Column(name = "homepage")
     private String homepage;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
     @Column(name = "created_at")
     @CreatedDate
     private Instant createdAt;
 
-    @Column
+    @Column(name = "status", nullable = true)
     private boolean status;
 
-    @OneToMany
-    @JoinColumn(name = "address", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location address;
 
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
+    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL)
+    private List<Flight> flights;
+
+    @Column(name = "retired", nullable = true)
+    private boolean retired;
+
     public Airline() {
     }
 
-    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location address, Account account) {
+    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location address, Account account, List<Flight> flights, boolean retired) {
         this.id = id;
         this.airlineName = airlineName;
         this.contactName = contactName;
@@ -70,6 +76,24 @@ public class Airline {
         this.status = status;
         this.address = address;
         this.account = account;
+        this.flights = flights;
+        this.retired = retired;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
     }
 
     public Long getId() {

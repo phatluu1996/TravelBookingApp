@@ -15,7 +15,7 @@ public class Account {
     private String password;
     @Column(name = "role")
     private int role;
-    @Column(name = "retired")
+    @Column(name = "retired",nullable = true)
     private boolean retired;
 
     @OneToOne
