@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "user")
 public class User {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name", length = 50)
@@ -23,11 +23,11 @@ public class User {
     @Column(name = "retired")
     private boolean retired;
 
-    @OneToOne
-    @JoinColumn(name = "id")
+    @ManyToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location address;
-    @OneToOne
-    @JoinColumn(name = "account_id")
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
     public User() {
