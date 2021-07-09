@@ -42,12 +42,14 @@ import BlogDetail from "./pages/blogs/BlogDetail";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Error from "./pages/Error";
+import { createStore } from 'redux';
 
 
 const App = () => {
 
   const childRef = useRef();
   let location = useLocation();
+  const store = createStore(reducer);
 
   useEffect(() => {
     document.body.classList.add('is-loaded')
