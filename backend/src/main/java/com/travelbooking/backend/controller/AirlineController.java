@@ -21,8 +21,8 @@ public class AirlineController {
     @Autowired
     private AirlineRepository airlineRepository;
 
-    //http://localhost:8080/api/airlines
-    @GetMapping("/airlines")
+    //http://localhost:8080/api/airline
+    @GetMapping("/airline")
     public Collection<Airline> getAirlines() {
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return airlineRepository.findAll(spec);
