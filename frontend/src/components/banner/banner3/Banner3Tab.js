@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { GiPositionMarker } from 'react-icons/gi'
 import { IoMdMusicalNotes } from 'react-icons/io'
-import { AiOutlineHome } from 'react-icons/ai'
+import { AiFillApi, AiOutlineHome } from 'react-icons/ai'
 import { FaSearchPlus } from 'react-icons/fa'
 import BannerOneSearchInput from "../banner1/BannerOneSearchInput";
 import BannerThreeSearchInput2 from "./BannerThreeSearchInput2";
@@ -17,6 +17,13 @@ function Banner3Tab() {
                         <Tab>
                             <div className="nav-link theme-btn radius-rounded">
                                 <span>
+                                    <AiFillApi/>
+                                </span> Flights
+                            </div>
+                        </Tab>
+                        <Tab>
+                            <div className="nav-link theme-btn radius-rounded">
+                                <span>
                                     <GiPositionMarker />
                                 </span> places
                             </div>
@@ -27,24 +34,27 @@ function Banner3Tab() {
                                     <IoMdMusicalNotes />
                                 </span> Events
                             </div>
-                         </Tab>
+                        </Tab>
                         <Tab>
                             <div className="nav-link theme-btn radius-rounded">
                                 <span>
                                     <FaSearchPlus />
                                 </span> Jobs
                             </div>
-                         </Tab>
+                        </Tab>
                         <Tab>
                             <div className="nav-link theme-btn radius-rounded">
                                 <span>
                                     <AiOutlineHome />
                                 </span> Real Estate
                             </div>
-                         </Tab>
+                        </Tab>
                     </TabList>
                 </div>
-
+                <TabPanel>
+                    aaaaa
+                    <BannerThreeSearchInput3 />
+                </TabPanel>
                 <TabPanel>
                     <BannerOneSearchInput />
                 </TabPanel>

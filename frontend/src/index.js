@@ -10,12 +10,21 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/style.css';
 import './App.css';
+import { createStore } from 'redux';
+import reducers from './reducers';
+import { Provider } from 'react-redux';
+
+
+
+const store = createStore(reducers);
 
 const history = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={history}>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
   document.getElementById('root')
 );
