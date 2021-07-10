@@ -1,7 +1,9 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "flight_booking")
 public class FlightBooking {
     @Id
@@ -22,8 +25,8 @@ public class FlightBooking {
     @Column(name = "total_price")
     private Float totalPrice;
 
-    @Column(name = "total_package_allowance", nullable = true)
-    private int totalPackageAllowance;
+    @Column(name = "total_passengers", nullable = true)
+    private int totalPassengers;
 
     @Column(name = "status", nullable = true)
     private int status;
@@ -31,7 +34,7 @@ public class FlightBooking {
     @Column(name = "note", nullable = true)
     private String note;
 
-    @Column(name="created_at")
+    @Column(name="created_at", nullable = false)
     @CreatedDate
     private Instant createdAt;
 
@@ -40,6 +43,7 @@ public class FlightBooking {
     private Instant updatedAt;
 
     @OneToMany
+    @JsonIgnoreProperties({ "flightbooking", })
     private List<FlightBookingDetail> flightBookingDetails;
 
     @Column(name = "payment_method")
@@ -49,17 +53,17 @@ public class FlightBooking {
     private boolean retired;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public FlightBooking() {
     }
 
-    public FlightBooking(Long id, String reservationCode, Float totalPrice, int totalPackageAllowance, int status, String note, Instant createdAt, Instant updatedAt, List<FlightBookingDetail> flightBookingDetails, String paymentMethod, boolean retired, User user) {
+    public FlightBooking(Long id, String reservationCode, Float totalPrice, int totalPassengers, int status, String note, Instant createdAt, Instant updatedAt, List<FlightBookingDetail> flightBookingDetails, String paymentMethod, boolean retired, User user) {
         this.id = id;
         this.reservationCode = reservationCode;
         this.totalPrice = totalPrice;
-        this.totalPackageAllowance = totalPackageAllowance;
+        this.totalPassengers = totalPassengers;
         this.status = status;
         this.note = note;
         this.createdAt = createdAt;
@@ -110,12 +114,12 @@ public class FlightBooking {
         this.totalPrice = totalPrice;
     }
 
-    public int getTotalPackageAllowance() {
-        return totalPackageAllowance;
+    public int getTotalPassengers() {
+        return totalPassengers;
     }
 
-    public void setTotalPackageAllowance(int totalPackageAllowance) {
-        this.totalPackageAllowance = totalPackageAllowance;
+    public void setTotalPassengers(int totalPassengers) {
+        this.totalPassengers = totalPassengers;
     }
 
     public int getStatus() {

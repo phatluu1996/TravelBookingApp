@@ -1,12 +1,15 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "airline")
 public class Airline {
     @Id
@@ -38,7 +41,7 @@ public class Airline {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @CreatedDate
     private Instant createdAt;
 
@@ -54,15 +57,19 @@ public class Airline {
     private Account account;
 
     @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({ "airline", })
     private List<Flight> flights;
 
     @Column(name = "retired", nullable = true)
     private boolean retired;
 
+    @Column(name = "image", nullable = true)
+    private String image;
+
     public Airline() {
     }
 
-    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location address, Account account, List<Flight> flights, boolean retired) {
+    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location address, Account account, List<Flight> flights, boolean retired, String image) {
         this.id = id;
         this.airlineName = airlineName;
         this.contactName = contactName;
@@ -78,6 +85,15 @@ public class Airline {
         this.account = account;
         this.flights = flights;
         this.retired = retired;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public boolean isRetired() {

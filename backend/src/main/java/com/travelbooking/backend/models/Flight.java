@@ -1,5 +1,7 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -25,10 +27,12 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "departure_time")
-    private String departureTime;
+    @JsonFormat(pattern = "HH:mm")
+    private Date departureTime;
 
     @Column(name = "arrival_time")
-    private String arrivalTime;
+    @JsonFormat(pattern = "HH:mm")
+    private Date arrivalTime;
 
     @Column(name = "description")
     private String description;
@@ -38,6 +42,12 @@ public class Flight {
 
     @Column(name = "economy_price")
     private Float economyPrice;
+
+    @Column(name = "infant_price")
+    private Float infant_price;
+
+    @Column(name = "child_price")
+    private Float child_price;
 
     @Column(name = "business_capacity")
     private int businessCapacity;
@@ -49,6 +59,7 @@ public class Flight {
     private String status;
 
     @Column(name = "date_of_departure", nullable = true)
+    @Temporal(TemporalType.DATE)
     private Date dateOfDeparture;
 
     @Column(name = "retired",nullable = true)
@@ -57,7 +68,7 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, String departureTime, String arrivalTime, String description, int economyCapacity, Float economyPrice, int businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired) {
+    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, Date departureTime, Date arrivalTime, String description, int economyCapacity, Float economyPrice, Float infant_price, Float child_price, int businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired) {
         this.id = id;
         this.flightCode = flightCode;
         this.airline = airline;
@@ -68,11 +79,29 @@ public class Flight {
         this.description = description;
         this.economyCapacity = economyCapacity;
         this.economyPrice = economyPrice;
+        this.infant_price = infant_price;
+        this.child_price = child_price;
         this.businessCapacity = businessCapacity;
         this.businessPrice = businessPrice;
         this.status = status;
         this.dateOfDeparture = dateOfDeparture;
         this.retired = retired;
+    }
+
+    public Float getInfant_price() {
+        return infant_price;
+    }
+
+    public void setInfant_price(Float infant_price) {
+        this.infant_price = infant_price;
+    }
+
+    public Float getChild_price() {
+        return child_price;
+    }
+
+    public void setChild_price(Float child_price) {
+        this.child_price = child_price;
     }
 
     public Date getDateOfDeparture() {
@@ -131,19 +160,19 @@ public class Flight {
         this.arrivalCity = arrivalCity;
     }
 
-    public String getDepartureTime() {
+    public Date getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
     }
 
-    public String getArrivalTime() {
+    public Date getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
+    public void setArrivalTime(Date arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

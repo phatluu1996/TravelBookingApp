@@ -4,6 +4,7 @@ import com.travelbooking.backend.models.Flight;
 import com.travelbooking.backend.repository.FlightRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 
+import com.travelbooking.backend.specification.FlightSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -26,10 +26,12 @@ public class FlightController {
     private FlightRepository flightRepository;
     ;
 
-    //http://localhost:8080/api/flights
-    @GetMapping("/flights")
-    public Collection<Flight> getFlights() {
-        Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
+    //http://localhost:8080/api/flight
+    @GetMapping("/flight")
+    public Collection<Flight> getFlights(@RequestParam(required = false) Optional<String> from,
+                                         @RequestParam(required = false) Optional<String> to,
+                                         @RequestParam(required = false) Optional<Date> departureDay) {
+        Specification<Flight> spec = FlightSpecification.createSpecification(from,to,departureDay,Boolean.FALSE);
         return flightRepository.findAll(spec);
     }
 
@@ -67,11 +69,19 @@ public class FlightController {
         return ResponseEntity.ok().body(result);
     }
 
-    @RequestMapping("/findFlights")
-    public List<Flight> findFlights(@RequestParam String origin,
-                                    @RequestParam String destination,
-                                    @RequestParam @DateTimeFormat(pattern = "MM-dd-yyyy") Date departureDay) {
-        List<Flight> flights = flightRepository.findFlights(origin, destination, departureDay);
-        return flights;
+    @GetMapping("/findFlights")
+    public Collection<Flight> findFlights(@RequestParam Optional<String> from,
+                                          @RequestParam Optional<String> to,
+                                          @RequestParam Optional<String> departureDay) {
+        Date date = null;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            date = formatter.parse(departureDay.get());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.of(date),Boolean.FALSE);
+        return flightRepository.findAll(spec);
     }
 }
