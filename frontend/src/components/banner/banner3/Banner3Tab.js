@@ -7,6 +7,7 @@ import { FaSearchPlus } from 'react-icons/fa'
 import BannerOneSearchInput from "../banner1/BannerOneSearchInput";
 import BannerThreeSearchInput2 from "./BannerThreeSearchInput2";
 import BannerThreeSearchInput3 from "./BannerThreeSearchInput3";
+import FlightBannerSearchInput from './FlightBannerSearchInput';
 
 function Banner3Tab() {
     return (
@@ -52,8 +53,7 @@ function Banner3Tab() {
                     </TabList>
                 </div>
                 <TabPanel>
-                    aaaaa
-                    <BannerThreeSearchInput3 />
+                    <FlightBannerSearchInput />
                 </TabPanel>
                 <TabPanel>
                     <BannerOneSearchInput />

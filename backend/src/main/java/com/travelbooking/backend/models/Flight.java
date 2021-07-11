@@ -1,6 +1,7 @@
 package com.travelbooking.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class Flight {
 
     @ManyToOne
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("flights")
     private Airline airline;
 
     @Column(name = "departure_city")

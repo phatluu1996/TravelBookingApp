@@ -42,6 +42,7 @@ import BlogDetail from "./pages/blogs/BlogDetail";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Error from "./pages/Error";
+import FlightList from './pages/listings/FlightList';
 
 
 const App = () => {
@@ -95,6 +96,8 @@ const App = () => {
               <AppRoute path="/blog-single" component={BlogDetail} />
               <AppRoute path="/login" component={Login} />
               <AppRoute path="/sign-up" component={SignUp} />
+
+              <AppRoute path="/flight-list" component={FlightList} />
               <AppRoute component={Error} />
           </Switch>
         )} />

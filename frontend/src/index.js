@@ -10,13 +10,12 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/style.css';
 import './App.css';
-import { createStore } from 'redux';
 import reducers from './reducers';
 import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 
-
-
-const store = createStore(reducers);
+const store = createStore(reducers, applyMiddleware(thunk));
 
 const history = createBrowserHistory();
 

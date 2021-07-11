@@ -1,5 +1,6 @@
 package com.travelbooking.backend.controller;
 
+import com.sun.istack.Nullable;
 import com.travelbooking.backend.models.Flight;
 import com.travelbooking.backend.repository.FlightRepository;
 import com.travelbooking.backend.specification.DBSpecification;
@@ -13,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,9 +30,9 @@ public class FlightController {
 
     //http://localhost:8080/api/flight
     @GetMapping("/flight")
-    public Collection<Flight> getFlights(@RequestParam(required = false) Optional<String> from,
-                                         @RequestParam(required = false) Optional<String> to,
-                                         @RequestParam(required = false) Optional<Date> departureDay) {
+    public Collection<Flight> getFlights(@RequestParam (required = false, name = "from") Optional<String> from,
+                                         @RequestParam (required = false, name = "to") Optional<String> to,
+                                         @RequestParam (required = false, name = "departureDay") Optional<Date> departureDay) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from,to,departureDay,Boolean.FALSE);
         return flightRepository.findAll(spec);
     }
@@ -73,15 +75,24 @@ public class FlightController {
     public Collection<Flight> findFlights(@RequestParam Optional<String> from,
                                           @RequestParam Optional<String> to,
                                           @RequestParam Optional<String> departureDay) {
-        Date date = null;
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            date = formatter.parse(departureDay.get());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.of(date),Boolean.FALSE);
+        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(convertToDate(departureDay)),Boolean.FALSE);
         return flightRepository.findAll(spec);
+    }
+
+    private Date convertToDate(Optional<String> day){
+        Date date = null;
+        try{
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            if(day.isPresent()){
+                if(day.get().isEmpty()){
+                    return null;
+                }
+                return formatter.parse(day.get());
+            }
+        }catch (ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+        return null;
     }
 }

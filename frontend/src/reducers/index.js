@@ -2,7 +2,9 @@
 import {combineReducers} from 'redux'
 import reducerFlight from './reducerFlight'
 
- 
-export default combineReducers({
-    flight : reducerFlight
-})
+
+const reducers = combineReducers({
+	flight : reducerFlight,
+});
+
+export default (state, action) => reducers(state, action);
