@@ -2,7 +2,7 @@ package com.travelbooking.backend.models;
 import javax.persistence.*;
 import java.util.List;
 
-
+@Table(name = "hotel_booking_detail") 
 public class HotelBookingDetail {
     @Id
     @Column
@@ -15,8 +15,7 @@ public class HotelBookingDetail {
     @OneToOne
     @JoinColumn(name = "bkg_hotel",referencedColumnName = "id")
     private HotelBooking bkgHotel;
-    @OneToMany
-    @JoinColumn(name = "rooms",referencedColumnName = "room_id")
+    @OneToMany(mappedBy = "hotel_booking_detail", cascade = CascadeType.ALL)
     List<Room> rooms;
     public HotelBookingDetail() {
     }

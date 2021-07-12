@@ -1,8 +1,10 @@
 package com.travelbooking.backend.models;
 import javax.persistence.*;
+
+import java.sql.Date;
 import java.util.List;
 
-
+@Table(name = "room")
 public class Room {
     @Id
     @Column(name = "room_id")
@@ -16,6 +18,14 @@ public class Room {
     private String specialConditions;
     @Column(name = "room_type")
     private int roomType;
+    @Column(name = "max_adult")
+    private int maxAdult;
+    @Column(name = "max_children")
+    private int maxChildren;
+    @Column(name = "day_of_departure")
+    private Date dayOfDeparture;
+    @Column(name = "day_of_arrival")
+    private Date dayOfArrival;
     @Column(name = "room_status",nullable = false)
     private Boolean roomStatus;
     @Column(name = "retired", nullable = true)
@@ -23,28 +33,35 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "hotel",referencedColumnName = "hotel_id")
     private Hotel hotel;
-    @OneToMany
-    @JoinColumn(name = "rating_id",referencedColumnName = "id")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     List<RoomRating> ratingList;
     @ManyToOne
     @JoinColumn(name = "bkg_detail",referencedColumnName = "id")
     private HotelBookingDetail bkgDetail;
+    
     public Room() {
     }
-    public Room(long roomId, boolean extraBed, double currency, String specialConditions, int roomType,
-            Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratingList,
-            HotelBookingDetail bkgDetail) {
+
+    public Room(long roomId, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult,
+            int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel,
+            List<RoomRating> ratingList, HotelBookingDetail bkgDetail) {
         this.roomId = roomId;
         this.extraBed = extraBed;
         this.currency = currency;
         this.specialConditions = specialConditions;
         this.roomType = roomType;
+        this.maxAdult = maxAdult;
+        this.maxChildren = maxChildren;
+        this.dayOfDeparture = dayOfDeparture;
+        this.dayOfArrival = dayOfArrival;
         this.roomStatus = roomStatus;
         this.retired = retired;
         this.hotel = hotel;
         this.ratingList = ratingList;
         this.bkgDetail = bkgDetail;
     }
+
+
     public long getRoomId() {
         return roomId;
     }
@@ -74,6 +91,30 @@ public class Room {
     }
     public void setRoomType(int roomType) {
         this.roomType = roomType;
+    }
+    public int getMaxAdult() {
+        return maxAdult;
+    }
+    public void setMaxAdult(int maxAdult) {
+        this.maxAdult = maxAdult;
+    }
+    public int getMaxChildren() {
+        return maxChildren;
+    }
+    public void setMaxChildren(int maxChildren) {
+        this.maxChildren = maxChildren;
+    }
+    public Date getDayOfDeparture() {
+        return dayOfDeparture;
+    }
+    public void setDayOfDeparture(Date dayOfDeparture) {
+        this.dayOfDeparture = dayOfDeparture;
+    }
+    public Date getDayOfArrival() {
+        return dayOfArrival;
+    }
+    public void setDayOfArrival(Date dayOfArrival) {
+        this.dayOfArrival = dayOfArrival;
     }
     public Boolean getRoomStatus() {
         return roomStatus;

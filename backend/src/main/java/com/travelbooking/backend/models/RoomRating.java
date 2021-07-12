@@ -1,7 +1,7 @@
 package com.travelbooking.backend.models;
 import javax.persistence.*;
 
-
+@Table(name = "room_rating")
 public class RoomRating {
     @Id
     @Column
