@@ -9,13 +9,13 @@ public class Account {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_name", length = 255)
+    @Column(name = "user_name", length = 50)
     private String userName;
-    @Column(name = "password", length = 30)
+    @Column(name = "password", length = 255)
     private String password;
-    @Column(name = "role")
-    private int role;
-    @Column(name = "retired",nullable = true)
+    @Column(name = "role", length = 20)
+    private String role;
+    @Column(name = "retired", nullable = true)
     private boolean retired;
 
     @OneToOne
@@ -25,12 +25,18 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long id, String userName, String password, int role, boolean retired, User user) {
+    public Account(Long id, String userName, String password, String role, boolean retired, User user) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.retired = retired;
+        this.user = user;
+    }
+
+    public Account(String userName, String password, User user) {
+        this.userName = userName;
+        this.password = password;
         this.user = user;
     }
 
@@ -58,11 +64,11 @@ public class Account {
         this.password = password;
     }
 
-    public int getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

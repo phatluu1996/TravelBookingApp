@@ -42,14 +42,8 @@ public class User {
         this.location = location;
     }
 
-    public User(String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location address ) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
+    public User(String email) {
         this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.retired = retired;
-        this.location = location;
     }
 
     public Long getId() {
