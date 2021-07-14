@@ -10,9 +10,9 @@ public class User {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name", length = 50)
+    @Column(name = "first_name", length = 100, columnDefinition = "nvarchar(100)")
     private String firstName;
-    @Column(name = "last_name", length = 50)
+    @Column(name = "last_name", length = 100, columnDefinition = "nvarchar(100)")
     private String lastName;
     @Column(name = "birth_day", length = 20)
     private Date dateOfBirth;
@@ -26,7 +26,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
-
 
     public User() {
     }

@@ -1,41 +1,4 @@
 ﻿go
-use JAVA_WEB_DB
-
---go
---drop table [location]
---go 
---drop table ward
---go 
---drop table district
---go 
---drop table province
-
---go
---CREATE TABLE province (
---  [id] int primary key ,
---  [name] varchar(50) DEFAULT NULL,
---  [code] varchar(20) DEFAULT NULL
---);
-
---go
---CREATE TABLE district (
---  [id] int primary key,
---  [name] varchar(100) DEFAULT NULL,
---  [prefix] varchar(20) DEFAULT NULL,
---  [province_id] int DEFAULT NULL foreign key references province(id)
---);
-
---go
---CREATE TABLE ward (
---  [id] int primary key,
---  [name] varchar(50) NOT NULL,
---  [prefix] varchar(20) DEFAULT NULL,
---  [province_id] int DEFAULT NULL foreign key references province(id),
---  [district_id] int DEFAULT NULL foreign key references district(id)
---);
-
-
-go
 INSERT INTO province ([id], [name], [code]) VALUES
 (1, 'Hồ Chí Minh', 'SG'),
 (2, 'Hà Nội', 'HN'),
@@ -113,18 +76,18 @@ INSERT INTO district ([id], [name], [prefix], [province_id]) VALUES
 (7, 'Hóc Môn', 'Huyện', 1),
 (8, 'Nhà Bè', 'Huyện', 1),
 (9, 'Phú Nhuận', 'Quận', 1),
-(10, 'Quận 1', '', 1),
-(11, 'Quận 10', '', 1),
-(12, 'Quận 11', '', 1),
-(13, 'Quận 12', '', 1),
-(14, 'Quận 2', '', 1),
-(15, 'Quận 3', '', 1),
-(16, 'Quận 4', '', 1),
-(17, 'Quận 5', '', 1),
-(18, 'Quận 6', '', 1),
-(19, 'Quận 7', '', 1),
-(20, 'Quận 8', '', 1),
-(21, 'Quận 9', '', 1),
+(10, 'Quận 1', 'Quận', 1),
+(11, 'Quận 10', 'Quận', 1),
+(12, 'Quận 11', 'Quận', 1),
+(13, 'Quận 12', 'Quận', 1),
+(14, 'Quận 2', 'Quận', 1),
+(15, 'Quận 3', 'Quận', 1),
+(16, 'Quận 4', 'Quận', 1),
+(17, 'Quận 5', 'Quận', 1),
+(18, 'Quận 6', 'Quận', 1),
+(19, 'Quận 7', 'Quận', 1),
+(20, 'Quận 8', 'Quận', 1),
+(21, 'Quận 9', 'Quận', 1),
 (22, 'Tân Bình', 'Quận', 1),
 (23, 'Tân Phú', 'Quận', 1),
 (24, 'Thủ Đức', 'Quận', 1),

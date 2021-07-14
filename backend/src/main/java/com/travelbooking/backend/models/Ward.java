@@ -13,12 +13,10 @@ public class Ward {
 //    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 50)
-    @Type(type="org.hibernate.type.StringNVarcharType")
+    @Column(name = "name", length = 50, columnDefinition = "nvarchar(50)")
     private String name;
 
-    @Column(name = "prefix", length = 20)
-    @Type(type="org.hibernate.type.StringNVarcharType")
+    @Column(name = "prefix", length = 20, columnDefinition = "nvarchar(20)")
     private String prefix;
 
     @ManyToOne

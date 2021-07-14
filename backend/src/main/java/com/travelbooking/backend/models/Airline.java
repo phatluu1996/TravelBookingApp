@@ -50,14 +50,15 @@ public class Airline {
 
     @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private Location address;
+    private Location location;
 
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
-    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({ "airline", })
+    @OneToMany
+    @JoinColumn(name = "airline_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("airline")
     private List<Flight> flights;
 
     @Column(name = "retired", nullable = true)
@@ -69,7 +70,7 @@ public class Airline {
     public Airline() {
     }
 
-    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location address, Account account, List<Flight> flights, boolean retired, String image) {
+    public Airline(Long id, String airlineName, String contactName, String contactTitle, String phone, String mobile, String fax, String homepage, String email, Instant createdAt, boolean status, Location location, Account account, List<Flight> flights, boolean retired, String image) {
         this.id = id;
         this.airlineName = airlineName;
         this.contactName = contactName;
@@ -81,7 +82,7 @@ public class Airline {
         this.email = email;
         this.createdAt = createdAt;
         this.status = status;
-        this.address = address;
+        this.location = location;
         this.account = account;
         this.flights = flights;
         this.retired = retired;
@@ -200,12 +201,12 @@ public class Airline {
         this.status = status;
     }
 
-    public Location getAddress() {
-        return address;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setAddress(Location address) {
-        this.address = address;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Account getAccount() {

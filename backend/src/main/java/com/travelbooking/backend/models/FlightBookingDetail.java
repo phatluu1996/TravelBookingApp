@@ -43,7 +43,7 @@ public class FlightBookingDetail {
     public FlightBookingDetail() {
     }
 
-    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired) {
+    public FlightBookingDetail(Long id,Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired) {
         this.id = id;
         this.flight = flight;
         this.flightBooking = flightBooking;

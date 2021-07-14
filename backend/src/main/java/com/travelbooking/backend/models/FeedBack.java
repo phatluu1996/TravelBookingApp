@@ -9,13 +9,13 @@ public class FeedBack {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "fb_name")
+    @Column(name = "fb_name", columnDefinition = "nvarchar(150)")
     private String name;
     @Column(name = "fb_email")
     private String email;
-    @Column(name = "sub_title")
+    @Column(name = "sub_title", columnDefinition = "nvarchar(150)")
     private String subTitle;
-    @Column(name = "fb_message")
+    @Column(name = "fb_message", columnDefinition = "nvarchar(max)")
     private String message;
 
     public FeedBack() {

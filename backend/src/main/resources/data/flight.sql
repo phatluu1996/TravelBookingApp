@@ -1,5 +1,4 @@
 ﻿
--- ROLE (0: admin, 1:airline, 2:hotel, 3:user)
 go
 INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('vj12345',0,1,'vietjet'),
