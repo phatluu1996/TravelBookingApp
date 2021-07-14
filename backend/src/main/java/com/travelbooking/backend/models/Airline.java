@@ -17,13 +17,13 @@ public class Airline {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "airline_name")
+    @Column(name = "airline_name", columnDefinition = "nvarchar(100)")
     private String airlineName;
 
-    @Column(name = "contact_name")
+    @Column(name = "contact_name", columnDefinition = "nvarchar(100)")
     private String contactName;
 
-    @Column(name = "contact_title")
+    @Column(name = "contact_title", columnDefinition = "nvarchar(100)")
     private String contactTitle;
 
     @Column(name = "phone")
