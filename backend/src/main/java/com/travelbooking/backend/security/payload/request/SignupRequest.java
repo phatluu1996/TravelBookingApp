@@ -16,6 +16,11 @@ public class SignupRequest {
 
     private String role;
 
+    private String userFirstName;
+    private String userLastName;
+    private String hotelName;
+    private String airlineName;
+
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
@@ -50,5 +55,37 @@ public class SignupRequest {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserFirstName() {
+        return userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
     }
 }

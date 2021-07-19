@@ -1,8 +1,10 @@
 package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.Account;
+import com.travelbooking.backend.models.Airline;
 import com.travelbooking.backend.models.User;
 import com.travelbooking.backend.repository.AccountRepository;
+import com.travelbooking.backend.repository.AirlineRepository;
 import com.travelbooking.backend.repository.UserRepository;
 import com.travelbooking.backend.security.jwt.JwtUtils;
 import com.travelbooking.backend.security.payload.request.LoginRequest;
@@ -20,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,6 +39,12 @@ public class AuthController {
     UserRepository userRepository;
 
     @Autowired
+    AirlineRepository airlineRepository;
+
+//    @Autowired
+//    HotelRepository hotelRepository;
+
+    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
@@ -46,6 +52,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        String headerName;
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -58,10 +65,21 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        if(roles.get(0).equals("ROLE_ADMIN")){
+            headerName = "Admin";
+        }else if (roles.get(0).equals("ROLE_AIRLINE")){
+            headerName = airlineRepository.getById(userDetails.getId()).getAirlineName();
+//        }else if(roles.get(0).equals("ROLE_HOTEL")){
+//            headerName = hotelRepository.getById(userDetails.getId()).getHotelName();
+        }else {
+            User tpUser = userRepository.getById(userDetails.getId());
+            headerName = tpUser.getFirstName() + " " + tpUser.getLastName();
+        }
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
+                headerName,
                 roles));
     }
 
@@ -72,19 +90,20 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (signUpRequest.getEmail() == null) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new MessageResponse("Error: Missing Email!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getEmail());
+        User user;
+        Airline airline;
+//        Hotel hotel;
 
         Account account = new Account(signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()),
-                user);
+                encoder.encode(signUpRequest.getPassword())
+                );
 
         String strRoles = signUpRequest.getRole();
         if (strRoles == null) {
@@ -95,20 +114,67 @@ public class AuthController {
             switch (strRoles.toLowerCase()) {
                 case "admin":
                     account.setRole("ADMIN");
+                    accountRepository.save(account);
                     break;
-                case "flight":
-                    account.setRole("FLIGHT");
+                case "airline":
+                    account.setRole("AIRLINE");
+
+
+                    airline = new Airline();
+                    airline.setAirlineName(signUpRequest.getAirlineName());
+
+                    if (airlineRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Email is already in use!"));
+                    }else {
+                        airline.setEmail(signUpRequest.getEmail());
+                        airline.setAccount(account);
+                        accountRepository.save(account);
+                        airlineRepository.save(airline);
+                    }
                     break;
                 case "hotel":
                     account.setRole("HOTEL");
+
+//                    hotel = new Hotel();
+//                    hotel.setHotelName(signUpRequest.getHotelName);
+
+//                    if (hotelRepository.existsByEmail(signUpRequest.getEmail())) {
+//                        return ResponseEntity
+//                                .badRequest()
+//                                .body(new MessageResponse("Error: Email is already in use!"));
+//                    }else {
+//                        hotel.setEmail(signUpRequest.getEmail());
+//                        hotel.setAccount(account);
+                        accountRepository.save(account);
+//                        hotelRepository.save(hotel);
+//                    }
+                    break;
+                case "user":
+                    account.setRole("USER");
+
+                    user = new User();
+                    user.setFirstName(signUpRequest.getUserFirstName());
+                    user.setLastName(signUpRequest.getUserLastName());
+
+                    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Email is already in use!"));
+                    }else {
+                        user.setEmail(signUpRequest.getEmail());
+                        user.setAccount(account);
+                        accountRepository.save(account);
+                        userRepository.save(user);
+                    }
                     break;
                 default:
-                    account.setRole("USER");
+                    return ResponseEntity
+                            .badRequest()
+                            .body(new MessageResponse("Error: Role is not found."));
             }
         }
-
-        userRepository.save(user);
-        accountRepository.save(account);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

@@ -14,6 +14,8 @@ public class User {
     private String firstName;
     @Column(name = "last_name", length = 100, columnDefinition = "nvarchar(100)")
     private String lastName;
+    @Column(name = "gender", length = 20)
+    private String gender;
     @Column(name = "birth_day", length = 20)
     private Date dateOfBirth;
     @Column(name = "email", length = 255)
@@ -23,6 +25,10 @@ public class User {
     @Column(name = "retired")
     private boolean retired;
 
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
@@ -30,14 +36,16 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, Date dateOfBirth, String email, String phoneNumber, boolean retired, Location location ) {
+    public User(Long id, String firstName, String lastName, String gender,Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account,Location location ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.retired = retired;
+        this.account = account;
         this.location = location;
     }
 
@@ -107,5 +115,21 @@ public class User {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
