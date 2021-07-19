@@ -2,11 +2,11 @@
 -- ROLE (0: admin, 1:airline, 2:hotel, 3:user)
 go
 INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
-('vj12345',0,1,'vietjet'),
-('vn12345',0,1,'vietnamairline'),
-('bb12345',0,1,'bamboo'),
-('js12345',0,1,'jetstar'),
-('viettravel',0,1,'viettravel')
+('vj12345',0,"FLIGHT",'vietjet'),
+('vn12345',0,"FLIGHT",'vietnamairline'),
+('bb12345',0,"FLIGHT",'bamboo'),
+('js12345',0,"FLIGHT",'jetstar'),
+('viettravel',0,"FLIGHT",'viettravel')
 
 go
 INSERT INTO dbo.location ([postal_code],[province_id],[district_id],[ward_id],[street],[retired]) VALUES
