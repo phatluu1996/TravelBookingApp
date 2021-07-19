@@ -17,18 +17,15 @@ public class UserDetailsImpl implements UserDetails{
 
     private String username;
 
-    private String email;
-
     @JsonIgnore
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String password, String email,
+    public UserDetailsImpl(Long id, String username, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
@@ -42,8 +39,8 @@ public class UserDetailsImpl implements UserDetails{
             case "ADMIN":
                 role = new SimpleGrantedAuthority("ROLE_ADMIN");
                 break;
-            case "FLIGHT":
-                role = new SimpleGrantedAuthority("ROLE_FLIGHT");
+            case "AIRLINE":
+                role = new SimpleGrantedAuthority("ROLE_AIRLINE");
                 break;
             case "HOTEL":
                 role = new SimpleGrantedAuthority("ROLE_HOTEL");
@@ -59,7 +56,6 @@ public class UserDetailsImpl implements UserDetails{
                 account.getId(),
                 account.getUserName(),
                 account.getPassword(),
-                account.getUser().getEmail(),
                 authorities);
     }
 
@@ -70,10 +66,6 @@ public class UserDetailsImpl implements UserDetails{
 
     public Long getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     @Override
