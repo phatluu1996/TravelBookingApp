@@ -12076,12 +12076,12 @@ INSERT INTO ward ([id], [name], [prefix], [province_id], [district_id]) VALUES
 (11283, N'Trung Phúc', N'Xã', 63, 709);
 
 --Data table USER:
-INSERT INTO dbo.user ([first_name],[last_name],[gender],[birth_day],[email],[phone_number],[retired]) VALUES
-(N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
-(N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
-(N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
-(N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
-(N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0)
+-- INSERT INTO dbo.user ([first_name],[last_name],[gender],[birth_day],[email],[phone_number],[retired]) VALUES
+-- (N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
+-- (N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
+-- (N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
+-- (N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0),
+-- (N'Hương',N'Nguyễn Thị','Female','','huong@vietjet.test.com','0998126771',0)
 
 
 -- ROLE (0: admin, 1:airline, 2:hotel, 3:user)
@@ -12092,9 +12092,7 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2a$10$prc3uy01jmrIF.z858.gcOd6BIuPVGmwFYbdACLMX7wvNTJLC5dbG',0,'AIRLINE','bamboo'), --password: bb12345
 ('$2a$10$RGCrC6kC1ha8TEyeib.29e6qPC4ckE1uCWHKqSKCuxcYXfkxRQ0aK',0,'AIRLINE','jetstar'), --password: js12345
 ('$2a$10$u8pijj6uJmyaP2Dr6m60YOsYt.fiTLvDZaHUe/UWuKlMRL/ZMDi3O',0,'AIRLINE','viettravel'), --password: viettravel
-('$2a$10$aufvMwf0KjfPmvQVObRxVeqtJrYHsDUGAX.rM.MkOGrk92H1joQq.',0,'ADMIN','admin'), --password: admin12345
-
-
+('$2a$10$aufvMwf0KjfPmvQVObRxVeqtJrYHsDUGAX.rM.MkOGrk92H1joQq.',0,'ADMIN','admin') --password: admin12345
 
 
 INSERT INTO dbo.location ([postal_code],[province_id],[district_id],[ward_id],[street],[retired]) VALUES
