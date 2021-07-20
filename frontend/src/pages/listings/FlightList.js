@@ -27,10 +27,15 @@ function FlightList(props) {
     const history = useHistory(); 
     // const [flights, setFlights] = useState([]);   
     let query = useQuery();
+    let param = useParams();
 
     useEffect(() => {
         var mount = false;
-        props.getFlight(query.get("from"), query.get("to"), query.get("departureDay"));        
+        if(!query.get("from") && !query.get("to") && !query.get("departureDay")){
+            history.push("/index3");
+        }else{
+            props.getFlight(query.get("from"), query.get("to"), query.get("departureDay"));    
+        }            
         return () => {
             mount = true;
         }

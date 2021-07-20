@@ -6,6 +6,8 @@ import { fetchFlight } from '../../../actions/actionFlight';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlaneArrival, faPlaneDeparture, faCalendar, faRetweet } from '@fortawesome/free-solid-svg-icons'
 
 
 const province = {
@@ -90,80 +92,87 @@ function FlightBannerSearchInput(props) {
         // dispatch(fetchFlight(form.from.value, form.to.value, form.departureDay.value));
         props.getFlight(form.from.value, form.to.value, form.departureDay.value);
         history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&departureDay=${form.departureDay.value}`);
-    }    
+    }
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className="main-search-input">
-                {/* <div className="main-search-input-item">
-                    <div className="contact-form-action">
-                        <form action="#">
-                            <div className="form-group mb-0">
-                                <span className="form-icon">
-                                    <FiSearch />
-                                </span>
-                                <input className="form-control" type="text" placeholder="What are you looking for?" />
-                            </div>
-                        </form>
+        <form className="banner-search-form">
+            <div className="form-row">
+                <div className="form-group col-md-3">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faPlaneDeparture} /></span>
+                        </div>
+                        <select className="form-control" name="from">
+                            {province.properties.map(province => <option key={province.value} value={province.value}>{province.label}</option>)}
+                        </select>
                     </div>
-                </div> */}
-                <div className="main-search-input-item location">
+
+                </div>
+                <div className="form-group col-sm-1">
+                    <button  className="form-control radius-rounded"><FontAwesomeIcon icon={faRetweet} color="#ff6b6b" /></button>
+                </div>
+                <div className="form-group col-md-3">
+                    <div className="input-group">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faPlaneArrival} /></span>
+                        </div>
+                        <select className="form-control" name="to">
+                            {province.properties.map(province => <option key={province.value} value={province.value}>{province.label}</option>)}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group col-md-3">
+                    <div className='input-group date' id='datetimepicker1'>
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faCalendar} /></span>
+                        </div>
+                        <input type='text' className="form-control" name="departureDay" />
+                    </div>
+                </div>
+            </div>
+            {/* <form onSubmit={handleSubmit} className="main-search-input">
+                <div className="main-search-input-item">
+                    <FontAwesomeIcon icon={faPlaneDeparture} className="mr-2"/>  
+                    <label>Departure City</label>
                     <Select name="from"
                         placeholder="Departure City"
                         options={province.properties}
                     />
                 </div>
-                <div className="main-search-input-item location">
+                <div className="main-search-input-item">
+                    <FontAwesomeIcon icon={faPlaneArrival} className="mr-2"/>  
+                    <label>Arrival City</label>
                     <Select name="to"
                         placeholder="Arrival City"
                         options={province.properties}
                     />
                 </div>
-                <div className="main-search-input-item">
-                    <div className="contact-form-action">
+                <div className="main-search-input-item">                    
+                    <div className="contact-form-action">                        
                         <div className="form-group mb-0">
-                            <span className="form-icon">
-                                <FiSearch />
-                            </span>
+                            <FontAwesomeIcon icon={faCalendar} className="mr-2"/>  
                             <input className="date-range form-control" type="date" placeholder="" name="departureDay" />
                         </div>
                     </div>
                 </div>
-                {/* <div className="main-search-input-item">
-                    <div className="contact-form-action">
-                        <form action="#">
-                            <div className="form-group mb-0">
-                                <span className="form-icon">
-                                    <FaDollarSign />
-                                </span>
-                                <input type="number" className="form-control" placeholder="Filter by price" />
-                            </div>
-                        </form>
-                    </div>
-                </div> */}
+            </form> */}
 
-                <div className="main-search-input-btn">
-                    <button className="button theme-btn" type="submit">Search</button>
-                </div>
-            </form>
-        </>
+        </form>
     );
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        flights : state.flight,
+        flights: state.flight,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getFlight : (from, to, ddate) => {
-            dispatch(fetchFlight(from, to, ddate))    
+        getFlight: (from, to, ddate) => {
+            dispatch(fetchFlight(from, to, ddate))
         }
     };
 };
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlightBannerSearchInput);

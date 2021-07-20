@@ -43,13 +43,14 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Error from "./pages/Error";
 import FlightList from './pages/listings/FlightList';
+import HomePage from './pages/homes/HomePage';
 
 
 const App = () => {
 
   const childRef = useRef();
   let location = useLocation();
-  
+
 
   useEffect(() => {
     document.body.classList.add('is-loaded')
@@ -62,43 +63,45 @@ const App = () => {
         ref={childRef}
         children={() => (
           <Switch>
-            <AppRoute exact path="/" component={Home} layout={LayoutDefault} />
-              <AppRoute path="/index2" component={Home2} />
-              <AppRoute path="/index3" component={Home3} />
-              <AppRoute path="/index4" component={Home4} />
-              <AppRoute path="/index5" component={Home5} />
-              <AppRoute path="/all-categories" component={AllCategories} />
-              <AppRoute path="/all-locations" component={AllLocations} />
-              <AppRoute path="/top-place" component={TopPlaces} />
-              <AppRoute path="/listing-grid" component={ListingGrid} />
-              <AppRoute path="/listing-list" component={ListingList} />
-              <AppRoute path="/list-map-view" component={ListMapView} />
-              <AppRoute path="/list-map-view2" component={ListMapView2} />
-              <AppRoute path="/list-left-sidebar" component={ListLeftSidebar} />
-              <AppRoute path="/list-right-sidebar" component={ListRightSidebar} />
-              <AppRoute path="/listing-details" component={ListingDetails} />
-              <AppRoute path="/add-listing/new" component={AddListing} />
-              <AppRoute path="/user-profile" component={UserProfile} />
-              <AppRoute path="/top-author" component={TopAuthors} />
-              <AppRoute path="/dashboard" component={Dashboard} />
-              <AppRoute path="/booking" component={Booking} />
-              <AppRoute path="/booking-confirmation" component={BookingConfirmation} />
-              <AppRoute path="/invoice" component={Invoice} />
-              <AppRoute path="/pricing" component={PricingPlan} />
-              <AppRoute path="/about" component={About} />
-              <AppRoute path="/faq" component={Faq} />
-              <AppRoute path="/contact" component={Contact} />
-              <AppRoute path="/recover" component={RecoverPassword} />
-              <AppRoute path="/blog-full-width" component={BlogFullWidth} />
-              <AppRoute path="/blog-grid" component={BlogGrid} />
-              <AppRoute path="/blog-left-sidebar" component={BlogLeftSidebar} />
-              <AppRoute path="/blog-right-sidebar" component={BlogRightSidebar} />
-              <AppRoute path="/blog-single" component={BlogDetail} />
-              <AppRoute path="/login" component={Login} />
-              <AppRoute path="/sign-up" component={SignUp} />
+            {/* <AppRoute exact path="/" component={Home} layout={LayoutDefault} /> */}
+            <AppRoute path="/index2" component={Home2} />
+            <AppRoute path="/index3" component={Home3} />
+            <AppRoute path="/index4" component={Home4} />
+            <AppRoute path="/index5" component={Home5} />
+            <AppRoute path="/all-categories" component={AllCategories} />
+            <AppRoute path="/all-locations" component={AllLocations} />
+            <AppRoute path="/top-place" component={TopPlaces} />
+            <AppRoute path="/listing-grid" component={ListingGrid} />
+            <AppRoute path="/listing-list" component={ListingList} />
+            <AppRoute path="/list-map-view" component={ListMapView} />
+            <AppRoute path="/list-map-view2" component={ListMapView2} />
+            <AppRoute path="/list-left-sidebar" component={ListLeftSidebar} />
+            <AppRoute path="/list-right-sidebar" component={ListRightSidebar} />
+            <AppRoute path="/listing-details" component={ListingDetails} />
+            <AppRoute path="/add-listing/new" component={AddListing} />
+            <AppRoute path="/user-profile" component={UserProfile} />
+            <AppRoute path="/top-author" component={TopAuthors} />
+            <AppRoute path="/dashboard" component={Dashboard} />
+            <AppRoute path="/booking" component={Booking} />
+            <AppRoute path="/booking-confirmation" component={BookingConfirmation} />
+            <AppRoute path="/invoice" component={Invoice} />
+            <AppRoute path="/pricing" component={PricingPlan} />
+            <AppRoute path="/about" component={About} />
+            <AppRoute path="/faq" component={Faq} />
+            <AppRoute path="/contact" component={Contact} />
+            <AppRoute path="/recover" component={RecoverPassword} />
+            <AppRoute path="/blog-full-width" component={BlogFullWidth} />
+            <AppRoute path="/blog-grid" component={BlogGrid} />
+            <AppRoute path="/blog-left-sidebar" component={BlogLeftSidebar} />
+            <AppRoute path="/blog-right-sidebar" component={BlogRightSidebar} />
+            <AppRoute path="/blog-single" component={BlogDetail} />
+            <AppRoute path="/login" component={Login} />
+            <AppRoute path="/sign-up" component={SignUp} />
 
-              <AppRoute path="/flight-list" component={FlightList} />
-              <AppRoute component={Error} />
+            
+            <AppRoute exact path="/" component={HomePage}/>
+            <AppRoute path="/flight-list" component={FlightList} />
+            <AppRoute component={Error} />
           </Switch>
         )} />
     </>

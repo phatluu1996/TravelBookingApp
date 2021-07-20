@@ -11,7 +11,7 @@ export const fetchFlight = (from, to, ddate) => async dispatch => {
     try {
         dispatch({ type: FETCH_FLIGHT_REQUEST });
 
-        const url = `${ROOT_URL}/api/findFlights?from=${from}&to=${to}&departureDay=${ddate}`;
+        const url = `${ROOT_URL}/api/findFlights?from=${from ? from : ""}&to=${to ? to : ""}&departureDay=${ddate ? ddate : ""}`;
         const response = await axios.get(url)
         const responseBody = await response.data;
         dispatch({
