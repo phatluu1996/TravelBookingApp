@@ -35,8 +35,7 @@ public class Hotel {
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-    @OneToMany 
-    @JoinColumn(name = "room_list",referencedColumnName = "room_id")
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     List<Room> roomList;
 
     public Hotel() {

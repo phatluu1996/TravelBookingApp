@@ -2,6 +2,7 @@ package com.travelbooking.backend.models;
 import java.util.Date;
 import javax.persistence.*;
 
+@Table(name = "hotel_booking") 
 public class HotelBooking {
     @Id
     @Column
