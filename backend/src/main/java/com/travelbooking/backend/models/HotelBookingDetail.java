@@ -1,10 +1,7 @@
 package com.travelbooking.backend.models;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Table(name = "hotel_booking_detail") 
 public class HotelBookingDetail {
     @Id
@@ -16,13 +13,10 @@ public class HotelBookingDetail {
     @Column(name = "number_of_room")
     private int numberOfRoom;
     @OneToOne
-    @JoinColumn(name = "booking_hotel_id",referencedColumnName = "id")
+    @JoinColumn(name = "bkg_hotel",referencedColumnName = "id")
     private HotelBooking bkgHotel;
-    @OneToMany
-    @JoinColumn(name = "hotel_booking_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("bkgDetail")
+    @OneToMany(mappedBy = "hotel_booking_detail", cascade = CascadeType.ALL)
     List<Room> rooms;
-
     public HotelBookingDetail() {
     }
     public HotelBookingDetail(Long id, int roomType, int numberOfRoom, HotelBooking bkgHotel, List<Room> rooms) {

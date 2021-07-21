@@ -2,7 +2,6 @@ package com.travelbooking.backend.models;
 import java.util.Date;
 import javax.persistence.*;
 
-@Entity
 @Table(name = "hotel_booking") 
 public class HotelBooking {
     @Id
@@ -11,7 +10,7 @@ public class HotelBooking {
     private Long id;
     @Column(name = "hotel_type")
     private String hotelType;
-    @Column(name = "guest_name",columnDefinition = "nvarchar(255)")
+    @Column(name = "guest_name")
     private String guestName;
     @Column(name = "num_of_guest")
     private int numOfGuest;
@@ -23,11 +22,11 @@ public class HotelBooking {
     private Date checkOutDate;
 
     @OneToOne
-    @JoinColumn(name = "booking_hotel_detail_id",referencedColumnName = "id")
+    @JoinColumn(name = "bkg_details",referencedColumnName = "id")
     private HotelBookingDetail bkgDetail;
     @OneToOne
-    @JoinColumn(name = "account_id",referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user",referencedColumnName = "id")
+    private Account user;
     public HotelBooking() {
     }
     public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate,
@@ -40,7 +39,7 @@ public class HotelBooking {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.bkgDetail = bkgDetail;
-        this.account = user;
+        this.user = user;
     }
     public Long getId() {
         return id;
@@ -91,10 +90,10 @@ public class HotelBooking {
         this.bkgDetail = bkgDetail;
     }
     public Account getUser() {
-        return account;
+        return user;
     }
     public void setUser(Account user) {
-        this.account = user;
+        this.user = user;
     }
 
 }
