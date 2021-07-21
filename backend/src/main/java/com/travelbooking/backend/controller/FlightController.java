@@ -1,10 +1,10 @@
 package com.travelbooking.backend.controller;
 
 import com.sun.istack.Nullable;
-import com.travelbooking.backend.models.Flight;
+
 import com.travelbooking.backend.repository.FlightRepository;
 import com.travelbooking.backend.specification.DBSpecification;
-
+import com.travelbooking.backend.models.Flight;
 import com.travelbooking.backend.specification.FlightSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,20 +74,20 @@ public class FlightController {
     @GetMapping("/findFlights")
     public Collection<Flight> findFlights(@RequestParam Optional<String> from,
                                           @RequestParam Optional<String> to,
-                                          @RequestParam Optional<String> departureDay) {
+                                          @RequestParam String departureDay) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(convertToDate(departureDay)),Boolean.FALSE);
         return flightRepository.findAll(spec);
     }
 
-    private Date convertToDate(Optional<String> day){
+    private Date convertToDate(String day){
         Date date = null;
         try{
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            if(day.isPresent()){
-                if(day.get().isEmpty()){
+            if(day != "null"){
+                if(day.isEmpty()){
                     return null;
                 }
-                return formatter.parse(day.get());
+                return formatter.parse(day);
             }
         }catch (ParseException e){
             e.printStackTrace();

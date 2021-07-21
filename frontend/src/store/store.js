@@ -14,6 +14,8 @@ import {
 } from 'react-icons/bs';
 import {MdClose, MdFitnessCenter, MdStar, MdStarBorder, MdStarHalf} from 'react-icons/md';
 import bannerbg1 from '../assets/images/hero-bg.jpg';
+import flightBannerBg from '../assets/images/flight.jpg';
+import hotelBannerBg from '../assets/images/beach.jpg';
 import img1 from "../assets/images/img1.jpg"; // 263*175
 import img2 from "../assets/images/img7.jpg"; // 362*242
 import authorimg from "../assets/images/small-team1.jpg"; // 67*60
@@ -350,6 +352,16 @@ const sectiondata = {
             seccontent: 'Discover the best places to stay, eat, shop & visit the city nearest to you.',
             videobgsrc: slicevideo,
         },
+        banner5: {
+            sectitle: '',
+            seccontent: '',
+            bgimage: flightBannerBg
+        },
+        banner6: {
+            sectitle: '',
+            seccontent: '',
+            bgimage: hotelBannerBg
+        }
     },
     categories: {
         featuredcategories: {

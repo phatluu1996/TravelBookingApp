@@ -3517,6 +3517,13 @@ body {
     opacity: 0.9;
     background-color: #333f57; }
 
+.banner-search-form{
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 20px 25px;
+  border-radius: 8px; 
+}
+
 .main-search-input {
   margin-top: 50px;
   display: -webkit-flex;
@@ -3527,12 +3534,12 @@ body {
   padding: 20px 25px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px; }
+  border-radius: 8px; }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .main-search-input {
       margin-top: 35px;
       display: block;
-      background-color: transparent;
+      /* background-color: transparent; */
       padding: 0;
       -webkit-border-radius: 0 0 0 0;
       -moz-border-radius: 0 0 0 0;
@@ -3541,7 +3548,7 @@ body {
     .main-search-input {
       margin-top: 35px;
       display: block;
-      background-color: transparent;
+      /* background-color: transparent; */
       padding: 0;
       -webkit-border-radius: 0 0 0 0;
       -moz-border-radius: 0 0 0 0;
@@ -3550,7 +3557,7 @@ body {
     .main-search-input {
       margin-top: 35px;
       display: block;
-      background-color: transparent;
+      /* background-color: transparent; */
       padding: 0;
       -webkit-border-radius: 0 0 0 0;
       -moz-border-radius: 0 0 0 0;
@@ -3745,7 +3752,8 @@ body {
 .hero-wrapper3 {
   background-image: url("../images/hero-bg.jpg");
   padding-top: 330px;
-  padding-bottom: 255px; }
+  padding-bottom: 255px; 
+}
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .hero-wrapper3 {
       padding-top: 200px;
@@ -5521,6 +5529,11 @@ body {
 .home-3 .cta-area .section-heading h2,
 .home-1 .cta-area .section-heading h2 {
   max-width: 600px;
+}
+
+home-6 {
+  max-width: 600px;
+  height: 100%;
 }
 
 /*====================================================
@@ -8247,3 +8260,52 @@ input[type=range]::-webkit-slider-thumb {
       justify-content: center;
       }
       }
+
+      .homepage-bgimage-hotel {
+        background: url("https://images7.alphacoders.com/362/362619.jpg");
+        height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .homepage-bgimage-flight {
+        background: url("https://i.pinimg.com/originals/e2/48/25/e2482591bfe0462315f6b39ff32dd388.jpg");
+        height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      /* .date-input::-webkit-calendar-picker-indicator { position: absolute; left: -15px; }
+      .date-input {
+        appearance: unset;
+        width: fit-content;
+        background-color: transparent;
+        border: none;
+      }
+      .date-input:hover {
+        width: fit-content;
+        background-color: transparent;
+        border: none transparent;
+      }
+
+      .date-input::after {
+        width: fit-content;
+        background-color: transparent;
+        border: none transparent;
+      }
+
+      input::-webkit-datetime-edit { 
+        position: relative; 
+        left: 5; 
+        display: block;
+        color: transparent;
+      }
+
+      input::-webkit-datetime-edit-fields-wrapper { 
+        position: relative; 
+        left: 5px; 
+        display: block;
+        color: transparent;
+      } */

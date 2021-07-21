@@ -36,7 +36,7 @@ public class Flight {
     @JsonFormat(pattern = "HH:mm")
     private Date arrivalTime;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "nvarchar(max)")
     private String description;
 
     @Column(name = "economy_capacity")
@@ -57,7 +57,7 @@ public class Flight {
     @Column(name = "business_price")
     private Float businessPrice;
 
-    @Column(name = "status")
+    @Column(name = "status", columnDefinition = "nvarchar(100)")
     private String status;
 
     @Column(name = "date_of_departure", nullable = true)

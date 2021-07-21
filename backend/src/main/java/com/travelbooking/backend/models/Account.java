@@ -17,27 +17,23 @@ public class Account {
     private String role;
     @Column(name = "retired", nullable = true)
     private boolean retired;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "reset_password", length = 255)
+    private String resetPassword;
 
     public Account() {
     }
 
-    public Account(Long id, String userName, String password, String role, boolean retired, User user) {
+    public Account(Long id, String userName, String password, String role, boolean retired) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.role = role;
         this.retired = retired;
-        this.user = user;
     }
 
-    public Account(String userName, String password, User user) {
+    public Account(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.user = user;
     }
 
     public Long getId() {
@@ -80,11 +76,11 @@ public class Account {
         this.retired = retired;
     }
 
-    public User getUser() {
-        return user;
+    public String getResetPassword() {
+        return resetPassword;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setResetPassword(String resetPassword) {
+        this.resetPassword = resetPassword;
     }
 }

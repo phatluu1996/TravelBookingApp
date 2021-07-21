@@ -31,7 +31,7 @@ public class FlightBooking {
     @Column(name = "status", nullable = true)
     private int status;
 
-    @Column(name = "note", nullable = true)
+    @Column(name = "note", nullable = true, columnDefinition = "nvarchar(max)")
     private String note;
 
     @Column(name="created_at", nullable = false)
@@ -43,10 +43,11 @@ public class FlightBooking {
     private Instant updatedAt;
 
     @OneToMany
-    @JsonIgnoreProperties({ "flightbooking", })
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("flightBooking")
     private List<FlightBookingDetail> flightBookingDetails;
 
-    @Column(name = "payment_method")
+    @Column(name = "payment_method", columnDefinition = "nvarchar(100)")
     private String paymentMethod;
 
     @Column(name = "retired", nullable = true)

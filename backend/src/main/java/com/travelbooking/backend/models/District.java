@@ -14,12 +14,10 @@ public class District {
 //    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 100)
-    @Type(type="org.hibernate.type.StringNVarcharType")
+    @Column(name = "name", columnDefinition = "nvarchar(100)",length = 100)
     private String name;
 
-    @Column(name = "prefix", length = 20)
-    @Type(type="org.hibernate.type.StringNVarcharType")
+    @Column(name = "prefix", columnDefinition = "nvarchar(20)", length = 20)
     private String prefix;
 
     @ManyToOne
