@@ -2,6 +2,7 @@ package com.travelbooking.backend.models;
 import java.util.Date;
 import javax.persistence.*;
 
+@Entity
 @Table(name = "hotel_booking") 
 public class HotelBooking {
     @Id
@@ -22,15 +23,16 @@ public class HotelBooking {
     private Date checkOutDate;
 
     @OneToOne
-    @JoinColumn(name = "bkg_details",referencedColumnName = "id")
-    private HotelBookingDetail bkgDetail;
+    @JoinColumn(name = "booking_detail_id",referencedColumnName = "id")
+    private HotelBookingDetail hotelBookingDetail;
+
     @OneToOne
     @JoinColumn(name = "user",referencedColumnName = "id")
-    private Account user;
+    private User user;
     public HotelBooking() {
     }
-    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate,
-            Date checkOutDate, HotelBookingDetail bkgDetail, Account user) {
+
+    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, HotelBookingDetail hotelBookingDetail, User user) {
         this.id = id;
         this.hotelType = hotelType;
         this.guestName = guestName;
@@ -38,9 +40,14 @@ public class HotelBooking {
         this.status = status;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.bkgDetail = bkgDetail;
+        this.hotelBookingDetail = hotelBookingDetail;
         this.user = user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -83,17 +90,16 @@ public class HotelBooking {
     public void setCheckOutDate(Date checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
-    public HotelBookingDetail getBkgDetail() {
-        return bkgDetail;
-    }
-    public void setBkgDetail(HotelBookingDetail bkgDetail) {
-        this.bkgDetail = bkgDetail;
-    }
-    public Account getUser() {
-        return user;
-    }
-    public void setUser(Account user) {
-        this.user = user;
+
+    public HotelBookingDetail getHotelBookingDetail() {
+        return hotelBookingDetail;
     }
 
+    public void setHotelBookingDetail(HotelBookingDetail hotelBookingDetail) {
+        this.hotelBookingDetail = hotelBookingDetail;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -52,7 +52,7 @@ public class RoomController {
         //http://localhost:8080/api/room/{id}
         @PutMapping("/room/{id}")
         public ResponseEntity<Room> updateAirline(@RequestBody Room room, @PathVariable Long id) {
-            room.setRoomId(id);;
+            room.setId(id);;
             Room result = roomRepository.save(room);
             return ResponseEntity.ok().body(result);
         }

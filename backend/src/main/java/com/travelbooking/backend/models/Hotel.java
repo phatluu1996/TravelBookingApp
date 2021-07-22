@@ -1,16 +1,19 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.*;
 
+@Entity
 @Table(name = "hotel")
 public class Hotel {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
+    private Long id;
     @Column(name = "hotel_name")
     private String hotelName;
     @Column(name = "email")
@@ -29,22 +32,25 @@ public class Hotel {
     private Boolean retired;
     @Column(name = "standard")
     private String standard;
+
     @ManyToOne
-    @JoinColumn(name = "address", referencedColumnName = "id")
-    private Location address;
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private Location location;
+
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    List<Room> roomList;
+
+    @OneToMany
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("hotel")
+    private List<Room> rooms;
 
     public Hotel() {
     }
 
-    public Hotel(Long hotelId, String hotelName, String email, int phone, String contactName, String contactTitle,
-            int numberOfRooms, Date createDate, Boolean retired, String standard, Location address, Account account,
-            List<Room> roomList) {
-        this.hotelId = hotelId;
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, int numberOfRooms, Date createDate, Boolean retired, String standard, Location location, Account account, List<Room> rooms) {
+        this.id = id;
         this.hotelName = hotelName;
         this.email = email;
         this.phone = phone;
@@ -54,17 +60,17 @@ public class Hotel {
         this.createDate = createDate;
         this.retired = retired;
         this.standard = standard;
-        this.address = address;
+        this.location = location;
         this.account = account;
-        this.roomList = roomList;
+        this.rooms = rooms;
     }
 
-    public Long getHotelId() {
-        return hotelId;
+    public Long getId() {
+        return id;
     }
 
-    public void setHotelId(Long hotelId) {
-        this.hotelId = hotelId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getHotelName() {
@@ -139,14 +145,6 @@ public class Hotel {
         this.standard = standard;
     }
 
-    public Location getAddress() {
-        return address;
-    }
-
-    public void setAddress(Location address) {
-        this.address = address;
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -155,15 +153,19 @@ public class Hotel {
         this.account = account;
     }
 
-    public List<Room> getRoomList() {
-        return roomList;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    // @OneToMany
-    // @JoinColumn(name = "hotel_mess_id")
-    // private HotelMess hotelMessId;
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
 }

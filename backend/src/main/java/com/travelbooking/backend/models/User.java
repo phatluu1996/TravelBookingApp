@@ -33,10 +33,14 @@ public class User {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private RoomRating roomRatings;
+
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String gender,Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account,Location location ) {
+    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location, RoomRating roomRatings) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,6 +51,7 @@ public class User {
         this.retired = retired;
         this.account = account;
         this.location = location;
+        this.roomRatings = roomRatings;
     }
 
     public User(String email) {
@@ -131,5 +136,13 @@ public class User {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public RoomRating getRoomRatings() {
+        return roomRatings;
+    }
+
+    public void setRoomRatings(RoomRating roomRatings) {
+        this.roomRatings = roomRatings;
     }
 }

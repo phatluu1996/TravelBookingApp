@@ -1,6 +1,9 @@
 package com.travelbooking.backend.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
+@Entity
 @Table(name = "room_rating")
 public class RoomRating {
     @Id
@@ -11,21 +14,28 @@ public class RoomRating {
     private double rating;
     @Column(name = "feedback")
     private String feedback;
+
     @ManyToOne
-    @JoinColumn(name = "room",referencedColumnName = "room_id")
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("ratings")
     private Room room;
-    @OneToOne
-    @JoinColumn(name = "user",referencedColumnName = "id")
-    private Account user;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("roomRatings")
+    private User user;
+
     public RoomRating() {
     }
-    public RoomRating(Long id, double rating, String feedback, Room room, Account user) {
+
+    public RoomRating(Long id, double rating, String feedback, Room room, User user) {
         this.id = id;
         this.rating = rating;
         this.feedback = feedback;
         this.room = room;
         this.user = user;
     }
+
     public Long getId() {
         return id;
     }
@@ -50,11 +60,12 @@ public class RoomRating {
     public void setRoom(Room room) {
         this.room = room;
     }
-    public Account getUser() {
+
+    public User getUser() {
         return user;
     }
-    public void setUser(Account user) {
+
+    public void setUser(User user) {
         this.user = user;
     }
-    
 }

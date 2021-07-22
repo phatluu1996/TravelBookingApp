@@ -1,15 +1,20 @@
 package com.travelbooking.backend.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 import java.sql.Date;
 import java.util.List;
 
+@Entity
 @Table(name = "room")
 public class Room {
     @Id
-    @Column(name = "room_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long roomId;
+    private long id;
+    @Column(name = "room_number")
+    private int roomNumber;
     @Column(name = "extra_bed")
     private boolean extraBed;
     @Column(name = "currency")
@@ -30,22 +35,27 @@ public class Room {
     private Boolean roomStatus;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
+
     @ManyToOne
-    @JoinColumn(name = "hotel",referencedColumnName = "hotel_id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("rooms")
     private Hotel hotel;
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    List<RoomRating> ratingList;
-    @ManyToOne
-    @JoinColumn(name = "bkg_detail",referencedColumnName = "id")
-    private HotelBookingDetail bkgDetail;
+
+    @OneToMany
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("room")
+    private List<RoomRating> ratings;
+
+    @OneToMany
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("room")
+    private List<HotelBookingRoom> hotelBookingRooms;
     
     public Room() {
     }
 
-    public Room(long roomId, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult,
-            int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel,
-            List<RoomRating> ratingList, HotelBookingDetail bkgDetail) {
-        this.roomId = roomId;
+    public Room(long id, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult, int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratings) {
+        this.id = id;
         this.extraBed = extraBed;
         this.currency = currency;
         this.specialConditions = specialConditions;
@@ -57,17 +67,9 @@ public class Room {
         this.roomStatus = roomStatus;
         this.retired = retired;
         this.hotel = hotel;
-        this.ratingList = ratingList;
-        this.bkgDetail = bkgDetail;
+        this.ratings = ratings;
     }
 
-
-    public long getRoomId() {
-        return roomId;
-    }
-    public void setRoomId(long roomId) {
-        this.roomId = roomId;
-    }
     public boolean isExtraBed() {
         return extraBed;
     }
@@ -131,20 +133,21 @@ public class Room {
     public Hotel getHotel() {
         return hotel;
     }
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public void setHotel(Hotel hotel) { this.hotel = hotel; }
+
+    public long getId() {
+        return id;
     }
-    public List<RoomRating> getRatingList() {
-        return ratingList;
+
+    public void setId(long id) {
+        this.id = id;
     }
-    public void setRatingList(List<RoomRating> ratingList) {
-        this.ratingList = ratingList;
+
+    public List<RoomRating> getRatings() {
+        return ratings;
     }
-    public HotelBookingDetail getBkgDetail() {
-        return bkgDetail;
+
+    public void setRatings(List<RoomRating> ratings) {
+        this.ratings = ratings;
     }
-    public void setBkgDetail(HotelBookingDetail bkgDetail) {
-        this.bkgDetail = bkgDetail;
-    }
-    
 }
