@@ -7,11 +7,11 @@ export const FETCH_FLIGHT_REQUEST = "FETCH_FLIGHT_REQUEST";
 export const FETCH_FLIGHT_SUCCESS = "FETCH_FLIGHT_SUCCESS";
 export const FETCH_FLIGHT_ERROR = "FETCH_FLIGHT_ERROR";
 
-export const fetchFlight = (from, to, ddate) => async dispatch => {
+export const fetchFlight = (from, to, adult, child, infant, ddate, rdate, seatClass) => async dispatch => {
     try {
         dispatch({ type: FETCH_FLIGHT_REQUEST });
 
-        const url = `${ROOT_URL}/api/findFlights?from=${from ? from : ""}&to=${to ? to : ""}&departureDay=${ddate ? ddate : ""}`;
+        const url = `${ROOT_URL}/api/findFlights?from=${from}&to=${to}&adult=${adult}&child=${child}&infant=${infant}&departureDay=${ddate}&returnDay=${rdate}&seatClass=${seatClass}`;
         const response = await axios.get(url)
         const responseBody = await response.data;
         dispatch({
@@ -25,12 +25,5 @@ export const fetchFlight = (from, to, ddate) => async dispatch => {
             message: error
         });
     }
-
-    // const request = axios.get(`${ROOT_URL}/api/findFlights?from=${from}&to=${to}&departureDay=${ddate}`);
-
-    // return {
-    //     type: FETCH_FLIGHT,
-    //     payload: request
-    // }
 }
 

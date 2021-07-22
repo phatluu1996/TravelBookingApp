@@ -102,7 +102,7 @@ function FlightBannerSearchInput(props) {
         console.log(props);
         var form = e.target;
         props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDay.value, form.returnDay.value, form.seatClass.value);
-        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDay=${form.departureDay.value}returnDay=${form.returnDay.value}&seatClass=${form.seatClass.value}`);
+        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDay=${form.departureDay.value}&returnDay=${form.returnDay.value}&seatClass=${form.seatClass.value}`);
     }
 
     const swapCity = (e) => {
