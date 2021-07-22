@@ -13,6 +13,8 @@ public class Room {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "room_number")
+    private int roomNumber;
     @Column(name = "extra_bed")
     private boolean extraBed;
     @Column(name = "amount")
@@ -29,23 +31,26 @@ public class Room {
     private Boolean roomStatus;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
+
     @ManyToOne
-    @JoinColumn(name = "hotel_id",referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("rooms")
     private Hotel hotel;
+
     @OneToMany
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("room")
-    List<RoomRating> ratingList;
-    @ManyToOne
-    @JoinColumn(name = "booking_hotel_detail_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("rooms")
-    private HotelBookingDetail bkgDetail;
+    private List<RoomRating> ratings;
+
+    @OneToMany
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("room")
+    private List<HotelBookingRoom> hotelBookingRooms;
     
     public Room() {
     }
 
-    public Room(long id, boolean extraBed, double amount, String specialConditions, int roomType, int maxAdult, int maxChildren, Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratingList, HotelBookingDetail bkgDetail) {
+    public Room(long id, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult, int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratings) {
         this.id = id;
         this.extraBed = extraBed;
         this.amount = amount;
@@ -56,16 +61,7 @@ public class Room {
         this.roomStatus = roomStatus;
         this.retired = retired;
         this.hotel = hotel;
-        this.ratingList = ratingList;
-        this.bkgDetail = bkgDetail;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.ratings = ratings;
     }
 
     public boolean isExtraBed() {
@@ -135,24 +131,21 @@ public class Room {
     public Hotel getHotel() {
         return hotel;
     }
+    public void setHotel(Hotel hotel) { this.hotel = hotel; }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public long getId() {
+        return id;
     }
 
-    public List<RoomRating> getRatingList() {
-        return ratingList;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setRatingList(List<RoomRating> ratingList) {
-        this.ratingList = ratingList;
+    public List<RoomRating> getRatings() {
+        return ratings;
     }
 
-    public HotelBookingDetail getBkgDetail() {
-        return bkgDetail;
-    }
-
-    public void setBkgDetail(HotelBookingDetail bkgDetail) {
-        this.bkgDetail = bkgDetail;
+    public void setRatings(List<RoomRating> ratings) {
+        this.ratings = ratings;
     }
 }

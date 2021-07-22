@@ -15,22 +15,23 @@ public class HotelBookingDetail {
     private int roomType;
     @Column(name = "number_of_room")
     private int numberOfRoom;
+
     @OneToOne
-    @JoinColumn(name = "booking_hotel_id",referencedColumnName = "id")
-    private HotelBooking bkgHotel;
+    @JoinColumn(name = "hotel_booking_id",referencedColumnName = "id")
+    private HotelBooking hotelBooking;
+
     @OneToMany
-    @JoinColumn(name = "hotel_booking_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("bkgDetail")
-    List<Room> rooms;
+    @JoinColumn(name = "hotel_booking_detail_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("hotelBookingDetail")
+    private List<HotelBookingRoom> hotelBookingRooms;
 
     public HotelBookingDetail() {
     }
+
     public HotelBookingDetail(Long id, int roomType, int numberOfRoom, HotelBooking bkgHotel, List<Room> rooms) {
         this.id = id;
         this.roomType = roomType;
         this.numberOfRoom = numberOfRoom;
-        this.bkgHotel = bkgHotel;
-        this.rooms = rooms;
     }
     public Long getId() {
         return id;
@@ -50,17 +51,4 @@ public class HotelBookingDetail {
     public void setNumberOfRoom(int numberOfRoom) {
         this.numberOfRoom = numberOfRoom;
     }
-    public HotelBooking getBkgHotel() {
-        return bkgHotel;
-    }
-    public void setBkgHotel(HotelBooking bkgHotel) {
-        this.bkgHotel = bkgHotel;
-    }
-    public List<Room> getRooms() {
-        return rooms;
-    }
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
-    
 }

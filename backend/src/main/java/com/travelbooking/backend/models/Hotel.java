@@ -13,7 +13,7 @@ public class Hotel {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "hotel_name",columnDefinition = "nvarchar(255)")
+    @Column(name = "hotel_name")
     private String hotelName;
     @Column(name = "email")
     private String email;
@@ -31,23 +31,24 @@ public class Hotel {
     private Boolean retired;
     @Column(name = "standard",columnDefinition = "nvarchar(50)")
     private String standard;
+
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private Location address;
+    private Location location;
+
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
+
     @OneToMany
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
-    List<Room> rooms;
+    private List<Room> rooms;
 
     public Hotel() {
     }
-
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle,
-            int numberOfRooms, Date createDate, Boolean retired, String standard, Location address, Account account,
-            List<Room> roomList) {
+            
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, int numberOfRooms, Date createDate, Boolean retired, String standard, Location location, Account account, List<Room> rooms) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -58,16 +59,16 @@ public class Hotel {
         this.createDate = createDate;
         this.retired = retired;
         this.standard = standard;
-        this.address = address;
+        this.location = location;
         this.account = account;
-        this.rooms = roomList;
+        this.rooms = rooms;
     }
 
-    public Long getid() {
+    public Long getId() {
         return id;
     }
 
-    public void setid(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -143,14 +144,6 @@ public class Hotel {
         this.standard = standard;
     }
 
-    public Location getAddress() {
-        return address;
-    }
-
-    public void setAddress(Location address) {
-        this.address = address;
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -159,15 +152,19 @@ public class Hotel {
         this.account = account;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<Room> roomList) {
-        this.rooms = roomList;
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
-
-    // @OneToMany
-    // @JoinColumn(name = "hotel_mess_id")
-    // private HotelMess hotelMessId;
 }

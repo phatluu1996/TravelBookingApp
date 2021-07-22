@@ -53,9 +53,9 @@ public class HotelController {
             return ResponseEntity.ok().body(result);
         }
         //http://localhost:8080/api/hotel/{id}
-        @PutMapping("/hotel/{id}")
+        @PutMapping("/hotel/{id}")          
         public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
-            hotel.setid(id);;
+            hotel.setId(id);;
             Hotel result = hotelRepository.save(hotel);
             return ResponseEntity.ok().body(result);
         }

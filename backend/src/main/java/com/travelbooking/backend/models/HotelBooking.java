@@ -23,15 +23,16 @@ public class HotelBooking {
     private Date checkOutDate;
 
     @OneToOne
-    @JoinColumn(name = "booking_hotel_detail_id",referencedColumnName = "id")
-    private HotelBookingDetail bkgDetail;
+    @JoinColumn(name = "booking_detail_id",referencedColumnName = "id")
+    private HotelBookingDetail hotelBookingDetail;
+
     @OneToOne
-    @JoinColumn(name = "account_id",referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user",referencedColumnName = "id")
+    private User user;
     public HotelBooking() {
     }
-    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate,
-            Date checkOutDate, HotelBookingDetail bkgDetail, Account user) {
+
+    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, HotelBookingDetail hotelBookingDetail, User user) {
         this.id = id;
         this.hotelType = hotelType;
         this.guestName = guestName;
@@ -39,9 +40,14 @@ public class HotelBooking {
         this.status = status;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.bkgDetail = bkgDetail;
-        this.account = user;
+        this.hotelBookingDetail = hotelBookingDetail;
+        this.user = user;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -84,17 +90,16 @@ public class HotelBooking {
     public void setCheckOutDate(Date checkOutDate) {
         this.checkOutDate = checkOutDate;
     }
-    public HotelBookingDetail getBkgDetail() {
-        return bkgDetail;
-    }
-    public void setBkgDetail(HotelBookingDetail bkgDetail) {
-        this.bkgDetail = bkgDetail;
-    }
-    public Account getUser() {
-        return account;
-    }
-    public void setUser(Account user) {
-        this.account = user;
+
+    public HotelBookingDetail getHotelBookingDetail() {
+        return hotelBookingDetail;
     }
 
+    public void setHotelBookingDetail(HotelBookingDetail hotelBookingDetail) {
+        this.hotelBookingDetail = hotelBookingDetail;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -14,23 +14,28 @@ public class RoomRating {
     private double rating;
     @Column(name = "feedback")
     private String feedback;
+
     @ManyToOne
-    @JoinColumn(name = "room_id",referencedColumnName = "id")
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("ratings")
     private Room room;
 
-    @OneToOne
-    @JoinColumn(name = "account_id",referencedColumnName = "id")
-    private Account account;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("roomRatings")
+    private User user;
+
     public RoomRating() {
     }
-    public RoomRating(Long id, double rating, String feedback, Room room, Account user) {
+
+    public RoomRating(Long id, double rating, String feedback, Room room, User user) {
         this.id = id;
         this.rating = rating;
         this.feedback = feedback;
         this.room = room;
         this.account = user;
     }
+
     public Long getId() {
         return id;
     }
@@ -55,11 +60,12 @@ public class RoomRating {
     public void setRoom(Room room) {
         this.room = room;
     }
-    public Account getUser() {
-        return account;
+
+    public User getUser() {
+        return user;
     }
-    public void setUser(Account user) {
-        this.account = user;
+
+    public void setUser(User user) {
+        this.user = user;
     }
-    
 }
