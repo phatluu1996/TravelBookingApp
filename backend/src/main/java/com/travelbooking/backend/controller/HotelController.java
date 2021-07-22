@@ -29,7 +29,8 @@ public class HotelController {
     private final Logger log = LoggerFactory.getLogger(HotelController.class);
     @Autowired
     private HotelRepository hotelRepository;
-    
+
+    //http://localhost:8080/api/hotels
     @GetMapping("/hotels")
     public Collection<Hotel> getHotels() {
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
@@ -45,7 +46,7 @@ public class HotelController {
             }
             return  ResponseEntity.ok().body(hotel);
         }
-    
+
         //http://localhost:8080/api/hotel
         @PostMapping("/hotel")
         public ResponseEntity<Hotel> addHotel(@RequestBody Hotel airline) {
@@ -53,7 +54,7 @@ public class HotelController {
             return ResponseEntity.ok().body(result);
         }
         //http://localhost:8080/api/hotel/{id}
-        @PutMapping("/hotel/{id}")
+        @PutMapping("/hotel/{id}")          
         public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
             hotel.setId(id);;
             Hotel result = hotelRepository.save(hotel);

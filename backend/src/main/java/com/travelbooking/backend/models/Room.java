@@ -15,26 +15,14 @@ public class Room {
     private long id;
     @Column(name = "room_number")
     private int roomNumber;
-    @Column(name = "extra_bed")
-    private boolean extraBed;
-    @Column(name = "currency")
-    private double currency;
-    @Column(name = "special_conditions")
-    private String specialConditions;
-    @Column(name = "room_type")
-    private int roomType;
-    @Column(name = "max_adult")
-    private int maxAdult;
-    @Column(name = "max_children")
-    private int maxChildren;
-    @Column(name = "day_of_departure")
-    private Date dayOfDeparture;
-    @Column(name = "day_of_arrival")
-    private Date dayOfArrival;
     @Column(name = "room_status",nullable = false)
     private Boolean roomStatus;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
+
+    @OneToOne
+    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
+    private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
@@ -54,86 +42,16 @@ public class Room {
     public Room() {
     }
 
-    public Room(long id, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult, int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratings) {
+    public Room(long id, int roomNumber, Boolean roomStatus, Boolean retired, RoomType roomType, Hotel hotel, List<RoomRating> ratings, List<HotelBookingRoom> hotelBookingRooms) {
         this.id = id;
-        this.extraBed = extraBed;
-        this.currency = currency;
-        this.specialConditions = specialConditions;
-        this.roomType = roomType;
-        this.maxAdult = maxAdult;
-        this.maxChildren = maxChildren;
-        this.dayOfDeparture = dayOfDeparture;
-        this.dayOfArrival = dayOfArrival;
+        this.roomNumber = roomNumber;
         this.roomStatus = roomStatus;
         this.retired = retired;
+        this.roomType = roomType;
         this.hotel = hotel;
         this.ratings = ratings;
+        this.hotelBookingRooms = hotelBookingRooms;
     }
-
-    public boolean isExtraBed() {
-        return extraBed;
-    }
-    public void setExtraBed(boolean extraBed) {
-        this.extraBed = extraBed;
-    }
-    public double getCurrency() {
-        return currency;
-    }
-    public void setCurrency(double currency) {
-        this.currency = currency;
-    }
-    public String getSpecialConditions() {
-        return specialConditions;
-    }
-    public void setSpecialConditions(String specialConditions) {
-        this.specialConditions = specialConditions;
-    }
-    public int getRoomType() {
-        return roomType;
-    }
-    public void setRoomType(int roomType) {
-        this.roomType = roomType;
-    }
-    public int getMaxAdult() {
-        return maxAdult;
-    }
-    public void setMaxAdult(int maxAdult) {
-        this.maxAdult = maxAdult;
-    }
-    public int getMaxChildren() {
-        return maxChildren;
-    }
-    public void setMaxChildren(int maxChildren) {
-        this.maxChildren = maxChildren;
-    }
-    public Date getDayOfDeparture() {
-        return dayOfDeparture;
-    }
-    public void setDayOfDeparture(Date dayOfDeparture) {
-        this.dayOfDeparture = dayOfDeparture;
-    }
-    public Date getDayOfArrival() {
-        return dayOfArrival;
-    }
-    public void setDayOfArrival(Date dayOfArrival) {
-        this.dayOfArrival = dayOfArrival;
-    }
-    public Boolean getRoomStatus() {
-        return roomStatus;
-    }
-    public void setRoomStatus(Boolean roomStatus) {
-        this.roomStatus = roomStatus;
-    }
-    public Boolean getRetired() {
-        return retired;
-    }
-    public void setRetired(Boolean retired) {
-        this.retired = retired;
-    }
-    public Hotel getHotel() {
-        return hotel;
-    }
-    public void setHotel(Hotel hotel) { this.hotel = hotel; }
 
     public long getId() {
         return id;
@@ -143,11 +61,59 @@ public class Room {
         this.id = id;
     }
 
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public Boolean getRoomStatus() {
+        return roomStatus;
+    }
+
+    public void setRoomStatus(Boolean roomStatus) {
+        this.roomStatus = roomStatus;
+    }
+
+    public Boolean getRetired() {
+        return retired;
+    }
+
+    public void setRetired(Boolean retired) {
+        this.retired = retired;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
     public List<RoomRating> getRatings() {
         return ratings;
     }
 
     public void setRatings(List<RoomRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public List<HotelBookingRoom> getHotelBookingRooms() {
+        return hotelBookingRooms;
+    }
+
+    public void setHotelBookingRooms(List<HotelBookingRoom> hotelBookingRooms) {
+        this.hotelBookingRooms = hotelBookingRooms;
     }
 }

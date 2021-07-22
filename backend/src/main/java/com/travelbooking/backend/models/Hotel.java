@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Date;
 import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -20,9 +19,9 @@ public class Hotel {
     private String email;
     @Column(name = "phone")
     private int phone;
-    @Column(name = "contact_name")
+    @Column(name = "contact_name",columnDefinition = "nvarchar(150)")
     private String contactName;
-    @Column(name = "contact_title")
+    @Column(name = "contact_title",columnDefinition = "nvarchar(255)")
     private String contactTitle;
     @Column(name = "number_of_rooms")
     private int numberOfRooms;
@@ -30,7 +29,7 @@ public class Hotel {
     private Date createDate;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
-    @Column(name = "standard")
+    @Column(name = "standard",columnDefinition = "nvarchar(50)")
     private String standard;
 
     @ManyToOne
@@ -48,7 +47,7 @@ public class Hotel {
 
     public Hotel() {
     }
-
+            
     public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, int numberOfRooms, Date createDate, Boolean retired, String standard, Location location, Account account, List<Room> rooms) {
         this.id = id;
         this.hotelName = hotelName;

@@ -11,11 +11,11 @@ public class HotelBookingDetail {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "room_type")
-    private int roomType;
     @Column(name = "number_of_room")
     private int numberOfRoom;
-
+    @OneToOne
+    @JoinColumn(name = "passenger_id", referencedColumnName = "id")
+    private Passenger passenger;
     @OneToOne
     @JoinColumn(name = "hotel_booking_id",referencedColumnName = "id")
     private HotelBooking hotelBooking;
@@ -28,27 +28,51 @@ public class HotelBookingDetail {
     public HotelBookingDetail() {
     }
 
-    public HotelBookingDetail(Long id, int roomType, int numberOfRoom, HotelBooking bkgHotel, List<Room> rooms) {
+    public HotelBookingDetail(Long id, int numberOfRoom, Passenger passenger, HotelBooking hotelBooking, List<HotelBookingRoom> hotelBookingRooms) {
         this.id = id;
-        this.roomType = roomType;
         this.numberOfRoom = numberOfRoom;
+        this.passenger = passenger;
+        this.hotelBooking = hotelBooking;
+        this.hotelBookingRooms = hotelBookingRooms;
     }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public int getRoomType() {
-        return roomType;
-    }
-    public void setRoomType(int roomType) {
-        this.roomType = roomType;
-    }
+
     public int getNumberOfRoom() {
         return numberOfRoom;
     }
+
     public void setNumberOfRoom(int numberOfRoom) {
         this.numberOfRoom = numberOfRoom;
+    }
+
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
+    }
+
+    public HotelBooking getHotelBooking() {
+        return hotelBooking;
+    }
+
+    public void setHotelBooking(HotelBooking hotelBooking) {
+        this.hotelBooking = hotelBooking;
+    }
+
+    public List<HotelBookingRoom> getHotelBookingRooms() {
+        return hotelBookingRooms;
+    }
+
+    public void setHotelBookingRooms(List<HotelBookingRoom> hotelBookingRooms) {
+        this.hotelBookingRooms = hotelBookingRooms;
     }
 }

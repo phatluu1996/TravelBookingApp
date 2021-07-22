@@ -12388,6 +12388,15 @@ INSERT INTO dbo.flight([airline_id],[flight_code],[retired],[status],[descriptio
 (2, N'VN-1826',0, N'Available', N'Hạng thương gia 30kgs, Hạng Phổ thông: 23kg, Hành lý xách tay 12kg, Màn hình giải trí trên máy bay, Airbus A321, Hàng ghế 3-3',12,150,168,38,30,10, N'PQC', N'15:20', N'SGN', N'16:30', N''),
 (2, N'VN-1828',0, N'Available', N'Hạng thương gia 30kgs, Hạng Phổ thông: 23kg, Hành lý xách tay 12kg, Màn hình giải trí trên máy bay, Airbus A321, Hàng ghế 3-3',12,150,168,38,30,10, N'PQC', N'17:25', N'SGN', N'18:35', N'')
 
+--Hotel Account
+INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','bachpham'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','hoanguyen'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','ngocle'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
+--Hotel Location
+--Hotels
+--Rooms
 
 
 

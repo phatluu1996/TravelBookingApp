@@ -22,7 +22,6 @@ public class RoomRating {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("roomRatings")
     private User user;
 
     public RoomRating() {
