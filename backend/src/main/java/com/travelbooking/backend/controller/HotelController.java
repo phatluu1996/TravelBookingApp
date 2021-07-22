@@ -30,6 +30,7 @@ public class HotelController {
     @Autowired
     private HotelRepository hotelRepository;
 
+    //http://localhost:8080/api/hotels
     @GetMapping("/hotels")
     public Collection<Hotel> getHotels() {
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);

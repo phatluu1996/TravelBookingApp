@@ -1,7 +1,10 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "[user]")
@@ -33,14 +36,15 @@ public class User {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private RoomRating roomRatings;
+    @JsonIgnoreProperties("user")
+    private List<RoomRating> roomRatings;
 
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location, RoomRating roomRatings) {
+    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location, List<RoomRating> roomRatings) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,10 +56,6 @@ public class User {
         this.account = account;
         this.location = location;
         this.roomRatings = roomRatings;
-    }
-
-    public User(String email) {
-        this.email = email;
     }
 
     public Long getId() {
@@ -80,6 +80,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Date getDateOfBirth() {
@@ -114,22 +122,6 @@ public class User {
         this.retired = retired;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -138,11 +130,19 @@ public class User {
         this.account = account;
     }
 
-    public RoomRating getRoomRatings() {
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public List<RoomRating> getRoomRatings() {
         return roomRatings;
     }
 
-    public void setRoomRatings(RoomRating roomRatings) {
+    public void setRoomRatings(List<RoomRating> roomRatings) {
         this.roomRatings = roomRatings;
     }
 }

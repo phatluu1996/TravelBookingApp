@@ -22,7 +22,6 @@ public class RoomRating {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("roomRatings")
     private User user;
 
     public RoomRating() {
@@ -33,7 +32,7 @@ public class RoomRating {
         this.rating = rating;
         this.feedback = feedback;
         this.room = room;
-        this.account = user;
+        this.user = user;
     }
 
     public Long getId() {

@@ -21,4 +21,37 @@ public class HotelBookingRoom {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotelBookingRooms")
     private Room room;
+
+    public HotelBookingRoom() {
+    }
+
+    public HotelBookingRoom(Long id, HotelBookingDetail hotelBookingDetail, Room room) {
+        this.id = id;
+        this.hotelBookingDetail = hotelBookingDetail;
+        this.room = room;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public HotelBookingDetail getHotelBookingDetail() {
+        return hotelBookingDetail;
+    }
+
+    public void setHotelBookingDetail(HotelBookingDetail hotelBookingDetail) {
+        this.hotelBookingDetail = hotelBookingDetail;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 }

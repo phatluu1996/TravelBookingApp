@@ -15,22 +15,14 @@ public class Room {
     private long id;
     @Column(name = "room_number")
     private int roomNumber;
-    @Column(name = "extra_bed")
-    private boolean extraBed;
-    @Column(name = "amount")
-    private double amount;
-    @Column(name = "special_conditions")
-    private String specialConditions;
-    @Column(name = "room_type")
-    private int roomType;
-    @Column(name = "max_adult")
-    private int maxAdult;
-    @Column(name = "max_children")
-    private int maxChildren;
     @Column(name = "room_status",nullable = false)
     private Boolean roomStatus;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
+
+    @OneToOne
+    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
+    private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
@@ -50,66 +42,31 @@ public class Room {
     public Room() {
     }
 
-    public Room(long id, boolean extraBed, double currency, String specialConditions, int roomType, int maxAdult, int maxChildren, Date dayOfDeparture, Date dayOfArrival, Boolean roomStatus, Boolean retired, Hotel hotel, List<RoomRating> ratings) {
+    public Room(long id, int roomNumber, Boolean roomStatus, Boolean retired, RoomType roomType, Hotel hotel, List<RoomRating> ratings, List<HotelBookingRoom> hotelBookingRooms) {
         this.id = id;
-        this.extraBed = extraBed;
-        this.amount = amount;
-        this.specialConditions = specialConditions;
-        this.roomType = roomType;
-        this.maxAdult = maxAdult;
-        this.maxChildren = maxChildren;
+        this.roomNumber = roomNumber;
         this.roomStatus = roomStatus;
         this.retired = retired;
+        this.roomType = roomType;
         this.hotel = hotel;
         this.ratings = ratings;
+        this.hotelBookingRooms = hotelBookingRooms;
     }
 
-    public boolean isExtraBed() {
-        return extraBed;
+    public long getId() {
+        return id;
     }
 
-    public void setExtraBed(boolean extraBed) {
-        this.extraBed = extraBed;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public double getamount() {
-        return amount;
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setamount(double amount) {
-        this.amount = amount;
-    }
-
-    public String getSpecialConditions() {
-        return specialConditions;
-    }
-
-    public void setSpecialConditions(String specialConditions) {
-        this.specialConditions = specialConditions;
-    }
-
-    public int getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(int roomType) {
-        this.roomType = roomType;
-    }
-
-    public int getMaxAdult() {
-        return maxAdult;
-    }
-
-    public void setMaxAdult(int maxAdult) {
-        this.maxAdult = maxAdult;
-    }
-
-    public int getMaxChildren() {
-        return maxChildren;
-    }
-
-    public void setMaxChildren(int maxChildren) {
-        this.maxChildren = maxChildren;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public Boolean getRoomStatus() {
@@ -128,17 +85,20 @@ public class Room {
         this.retired = retired;
     }
 
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
     public Hotel getHotel() {
         return hotel;
     }
-    public void setHotel(Hotel hotel) { this.hotel = hotel; }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public List<RoomRating> getRatings() {
@@ -147,5 +107,13 @@ public class Room {
 
     public void setRatings(List<RoomRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public List<HotelBookingRoom> getHotelBookingRooms() {
+        return hotelBookingRooms;
+    }
+
+    public void setHotelBookingRooms(List<HotelBookingRoom> hotelBookingRooms) {
+        this.hotelBookingRooms = hotelBookingRooms;
     }
 }
