@@ -13,7 +13,7 @@ import { faPlaneArrival, faPlaneDeparture, faPlane, faHotel } from '@fortawesome
 
 
 function SearchCategoryBanner() {
-    const changeBg = (className) =>{
+    const changeBg = (className) => {
         document.querySelector("#home").className = className;
     }
     return (
@@ -23,12 +23,12 @@ function SearchCategoryBanner() {
                     <TabList className="nav nav-tabs" id="myTab">
                         <Tab>
                             <div className="nav-link theme-btn radius-rounded" onClick={(e) => changeBg("hero-wrapper3 homepage-bgimage-flight")}>
-                                <FontAwesomeIcon icon={faPlane}/> Flights                           
+                                <FontAwesomeIcon icon={faPlane} color="#30C5F7" /> Flights
                             </div>
                         </Tab>
                         <Tab>
-                            <div className="nav-link theme-btn radius-rounded" onClick={(e) => changeBg("hero-wrapper3 homepage-bgimage-hotel")}>
-                                <FontAwesomeIcon icon={faHotel}/> Hotels
+                            <div className="nav-link theme-btn radius-rounded" onClick={(e) => changeBg("hero-wrapper3 homepage-bgimage-flight change-to-hotel")}>
+                                <FontAwesomeIcon icon={faHotel} color="#235D9F" /> Hotels
                             </div>
                         </Tab>
                     </TabList>

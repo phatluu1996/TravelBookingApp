@@ -255,7 +255,7 @@ h1, h2, h3, h4, h5, h6, p {
 body {
   font-size: 16px;
   line-height: 24px;
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
   color: #808996;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -456,7 +456,7 @@ body {
   border-radius: 4px; }
   .theme-btn:hover {
     background-color: #ea5555;
-    color: #fff; }
+    color: #fff; }  
 
 .download-btn {
   line-height: 55px;
@@ -1086,7 +1086,7 @@ body {
   .section-heading .sec__title:before {
     position: absolute;
     content: "\f165";
-    font-family: "LineAwesome";
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
     top: 0;
     left: 0;
     color: #ff6b6b;
@@ -3519,9 +3519,11 @@ body {
 
 .banner-search-form{
   margin-top: 50px;
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 20px 25px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px 15px;
   border-radius: 8px; 
+  position: relative;
+  width: 100%;
 }
 
 .main-search-input {
@@ -5603,7 +5605,7 @@ home-6 {
     top: 45px;
     left: 0;
     color: rgba(128, 137, 150, 0.2);
-    font-family: "LineAwesome";
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
     font-size: 160px;
     -webkit-transform: rotate(-45deg);
     -moz-transform: rotate(-45deg);
@@ -6746,7 +6748,7 @@ home-6 {
       content: "\f2b5";
       top: 10px;
       left: 20px;
-      font-family: "LineAwesome";
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
       color: #808996;
       font-size: 18px; }
 
@@ -8203,7 +8205,7 @@ input[type=range]::-webkit-slider-thumb {
   .copy-right a {
     color: #ff6b6b; }
   .copy-right .copy__desc {
-    font-family: "Work Sans", sans-serif; }
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important; }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .copy-right .list-items {
       text-align: center;
@@ -8261,12 +8263,12 @@ input[type=range]::-webkit-slider-thumb {
       }
       }
 
-      .homepage-bgimage-hotel {
+      .homepage-bgimage-flight.change-to-hotel {
         background: url("https://images7.alphacoders.com/362/362619.jpg");
         height: 100vh;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: cover;        
       }
 
       .homepage-bgimage-flight {
@@ -8275,37 +8277,60 @@ input[type=range]::-webkit-slider-thumb {
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        -moz-transition: all 0.5s linear;
+        -webkit-transition: all 0.5s linear;
+        transition: all 0.5s linear;
       }
 
-      /* .date-input::-webkit-calendar-picker-indicator { position: absolute; left: -15px; }
-      .date-input {
-        appearance: unset;
-        width: fit-content;
-        background-color: transparent;
-        border: none;
-      }
-      .date-input:hover {
-        width: fit-content;
-        background-color: transparent;
-        border: none transparent;
+      .btn-circle {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
       }
 
-      .date-input::after {
-        width: fit-content;
-        background-color: transparent;
-        border: none transparent;
+      @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .btn-circle {
+          /* margin-left: 50%; */
+          } }
+      @media only screen and (min-width: 480px) and (max-width: 767px) {
+        .btn-circle {
+          margin-left: 50%;
+         } }
+      @media only screen and (min-width: 320px) and (max-width: 479px) {
+        .btn-circle {
+          margin-left: 50%;
+          } }
+
+
+      .rotate{
+          -moz-transition: all 0.15s linear;
+          -webkit-transition: all 0.15s linear;
+          transition: all 0.15s linear;
+      }
+      
+      .rotate.click{
+          -ms-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
       }
 
-      input::-webkit-datetime-edit { 
-        position: relative; 
-        left: 5; 
-        display: block;
-        color: transparent;
+      .mr-40{
+        margin-right: 40px;
       }
 
-      input::-webkit-datetime-edit-fields-wrapper { 
-        position: relative; 
-        left: 5px; 
-        display: block;
-        color: transparent;
-      } */
+      @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .mr-40 {
+          margin-right: 40px; } }
+      @media only screen and (min-width: 480px) and (max-width: 767px) {
+        .mr-40 {
+          margin-right: 0px; } }
+      @media only screen and (min-width: 320px) and (max-width: 479px) {
+        .mr-40 {
+          margin-right: 0px; } }
+
+      
