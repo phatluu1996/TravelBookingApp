@@ -1,25 +1,27 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Date;
 import java.util.List;
-
 import javax.persistence.*;
 
+@Entity
 @Table(name = "hotel")
 public class Hotel {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
-    @Column(name = "hotel_name")
+    private Long id;
+    @Column(name = "hotel_name",columnDefinition = "nvarchar(255)")
     private String hotelName;
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
     private int phone;
-    @Column(name = "contact_name")
+    @Column(name = "contact_name",columnDefinition = "nvarchar(150)")
     private String contactName;
-    @Column(name = "contact_title")
+    @Column(name = "contact_title",columnDefinition = "nvarchar(255)")
     private String contactTitle;
     @Column(name = "number_of_rooms")
     private int numberOfRooms;
@@ -27,24 +29,26 @@ public class Hotel {
     private Date createDate;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
-    @Column(name = "standard")
+    @Column(name = "standard",columnDefinition = "nvarchar(50)")
     private String standard;
     @ManyToOne
-    @JoinColumn(name = "address", referencedColumnName = "id")
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location address;
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    List<Room> roomList;
+    @OneToMany
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("hotel")
+    List<Room> rooms;
 
     public Hotel() {
     }
 
-    public Hotel(Long hotelId, String hotelName, String email, int phone, String contactName, String contactTitle,
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle,
             int numberOfRooms, Date createDate, Boolean retired, String standard, Location address, Account account,
             List<Room> roomList) {
-        this.hotelId = hotelId;
+        this.id = id;
         this.hotelName = hotelName;
         this.email = email;
         this.phone = phone;
@@ -56,15 +60,15 @@ public class Hotel {
         this.standard = standard;
         this.address = address;
         this.account = account;
-        this.roomList = roomList;
+        this.rooms = roomList;
     }
 
-    public Long getHotelId() {
-        return hotelId;
+    public Long getid() {
+        return id;
     }
 
-    public void setHotelId(Long hotelId) {
-        this.hotelId = hotelId;
+    public void setid(Long id) {
+        this.id = id;
     }
 
     public String getHotelName() {
@@ -155,12 +159,12 @@ public class Hotel {
         this.account = account;
     }
 
-    public List<Room> getRoomList() {
-        return roomList;
+    public List<Room> getRooms() {
+        return rooms;
     }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+    public void setRooms(List<Room> roomList) {
+        this.rooms = roomList;
     }
 
     // @OneToMany

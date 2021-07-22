@@ -26,7 +26,7 @@ public class RoomController {
     private final Logger log = LoggerFactory.getLogger(HotelController.class);
     @Autowired
     private RoomRepository roomRepository;
-    
+
     @GetMapping("/rooms")
     public Collection<Room> getRooms() {
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
@@ -42,7 +42,7 @@ public class RoomController {
             }
             return  ResponseEntity.ok().body(room);
         }
-    
+
         //http://localhost:8080/api/room
         @PostMapping("/room")
         public ResponseEntity<Room> addRoom(@RequestBody Room room) {
@@ -52,7 +52,7 @@ public class RoomController {
         //http://localhost:8080/api/room/{id}
         @PutMapping("/room/{id}")
         public ResponseEntity<Room> updateAirline(@RequestBody Room room, @PathVariable Long id) {
-            room.setRoomId(id);;
+            room.setId(id);
             Room result = roomRepository.save(room);
             return ResponseEntity.ok().body(result);
         }
