@@ -12093,7 +12093,26 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2a$10$RGCrC6kC1ha8TEyeib.29e6qPC4ckE1uCWHKqSKCuxcYXfkxRQ0aK',0,'AIRLINE','jetstar'), --password: js12345
 ('$2a$10$u8pijj6uJmyaP2Dr6m60YOsYt.fiTLvDZaHUe/UWuKlMRL/ZMDi3O',0,'AIRLINE','viettravel'), --password: viettravel
 ('$2a$10$aufvMwf0KjfPmvQVObRxVeqtJrYHsDUGAX.rM.MkOGrk92H1joQq.',0,'ADMIN','admin') --password: admin12345
-
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','thanhhuyen'), --password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','quangle'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','ninhphan'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','hainguyen'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','vukhanh'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','muoile'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','thanhtung'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','ductien'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','diemly'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','honganh'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','caoduc'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','vietvu'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','kiendang'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','quanhai'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','quocnam'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','khacvinh'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','ducduy'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','tatthang'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','huudat'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','sonnguyen')--password: 12345
 
 INSERT INTO dbo.location ([postal_code],[province_id],[district_id],[ward_id],[street],[retired]) VALUES
 ('70000', 2, 25, 334, N'302/3 Phố Kim Mã',0),
@@ -12101,6 +12120,50 @@ INSERT INTO dbo.location ([postal_code],[province_id],[district_id],[ward_id],[s
 ('70000', 2, 28, 385, N'Tầng 22, 265 Cầu Giấy',0),
 ('70000', 1, 22, 296, N'Tầng 3, Tòa nhà VietNam Airlines, Sân bay Tân Sơn Nhất',0),
 ('70000', 1, 15, 202, N'190 Pasteur',0)
+('10000',2,28,1876,N'6 Hoàng Quốc Việt',0),
+('10000',2,27,375,N'46 Đức Thắng',0),
+('10000',2,25,330,N'9/84 Ngọc Khánh',0),
+('10000',2,42,655,N'40 TT1, Khu đô thị Sông Đà',0),
+('10000',42,512,8273,N'Khu 6',0),
+('10000',2,28,386,N'38 Trần Thái Tông',0),
+('10000',2,48,777,N'444 Hoàng Hoa Thám',0),
+('10000',2,25,327,N'101 Đào Tấn',0),
+('10000',2,25,329,N'266 Đội Cấn',0),
+('10000',2,31,448,N'Lô N1, KCN Thăng Long',0),
+('70000',1,24,320,N'24/4 Đường 32',0),
+('70000',1,10,134,N'31 Nguyễn Đình Chiểu',0),
+('70000',1,9,127,N'200/38 Nguyễn Trọng Tuyển',0),
+('70000',1,9,114,N'262/39 Huỳnh Văn Bánh',0),
+('70000',1,15,193,N'186 Cách mạng Tháng Tám',0),
+('70000',1,15,199,N'543 Điện Biên Phủ',0),
+('70000',1,23,311,N'921 Âu Cơ',0),
+('70000',1,13,175,N'1 Khu Phố 2, Lê Đức Thọ',0),
+('70000',1,3,33,N'43 Điện Biên Phủ',0),
+('70000',1,10,130,N'115 Nguyễn Thị Minh Khai',0)
+
+
+--Data table USER:
+INSERT INTO dbo.[user] ([first_name],[last_name],[gender],[birth_day],[email],[phone_number],[retired],[location_id],[account_id]) VALUES
+(N'Thanh Huyền',N'Lê Thị','Female','11/9/1976','thanhhuyen@gmail.com','039270935',0,6,7),
+(N'Quang',N'Lê','Male','7/7/1977','quangle@gmail.com','0908419456',0,7,8),
+(N'Ninh',N'Phan Văn','Male','8/10/1977','ninhphan@gmail.com','0902410729',0,8,9),
+(N'Hải',N'Nguyễn Ngọc','Male','10/24/1977','hainguyen@gmail.com','0903000761',0,9,10),
+(N'Khánh',N'Vũ Duy','Male','9/2/1980','vukhanh@gmail.com','0903001435',0,10,11),
+(N'Mười',N'Lê Thị','Female','3/8/1983','muoile@gmail.com','0903010904',0,11,12),
+(N'Tùng',N'Trần Thanh','Male','8/9/1983','thanhtung@gmail.com','039270935',0,12,13),
+(N'Tiến',N'Trần Đức ','Male','8/23/1983','ductien@gmail.com','0908419456',0,13,14),
+(N'Diễm Ly',N'Vũ Thị ','Female','12/27/1984','diemly@gmail.com','0902410729',0,14,15),
+(N'Hồng Anh',N'Chu Thị','Female','7/10/1985','honganh@gmail.com','0903000761',0,15,16),
+(N'Đức',N'Phùng Cao ','Male','10/18/1985','caoduc@gmail.com','0903001435',0,16,17),
+(N'Vũ',N'Nguyễn Viết ','Male','12/29/1986','vietvu@gmail.com','0903010904',0,17,18),
+(N'Kiên',N'Đặng Văn ','Male','5/25/1987','kiendang@gmail.com','039270935',0,18,19),
+(N'Hải',N'Trương Quang ','Male','12/28/1987','quanhai@gmail.com','0908419456',0,19,20),
+(N'Nam',N'Võ Quốc ','Male','4/8/1988','quocnam@gmail.com','0902410729',0,20,21),
+(N'Vinh',N'Nguyễn Khắc ','Male','11/21/1988','khacvinh@gmail.com','0903000761',0,21,22),
+(N'Duy',N'Bùi Đức ','Male','10/23/1989','ducduy@gmail.com','0903001435',0,22,23),
+(N'Thắng',N'Nguyễn Tất ','Male','10/26/1989','tatthang@gmail.com','0903010904',0,23,24),
+(N'Đạt',N'Hoàng Hữu ','Male','2/21/1990','huudat@gmail.com','039270935',0,24,25),
+(N'Sơn',N'Nguyễn Văn ','Male','1/25/1991','sonnguyen@gmail.com','0908419456',0,25,26)
 
 
 INSERT INTO dbo.airline ([airline_name],[contact_name],[contact_title],
