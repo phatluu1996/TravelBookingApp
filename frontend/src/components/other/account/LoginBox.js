@@ -1,52 +1,52 @@
 import React from 'react';
 import SignInOptions from "./SignInOptions";
-import {AiOutlineUser} from 'react-icons/ai'
-import {FiLock} from 'react-icons/fi'
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { connect } from 'react-redux';
+import { signin } from '../../../actions/actionUser';
 
-function LoginBox({title, subtitle}) {
+function LoginBox(props) {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(props);
+        var form = e.target;
+        props.doSignin(form.username.value, form.password.value);
+    }
     return (
         <>
             <div className="billing-form-item mb-0">
                 <div className="billing-title-wrap border-bottom-0 pr-0 pl-0 pb-0 text-center">
                     <h3 className="widget-title font-size-28 pb-0">
-                        {title}
+                        {/* {title} */}
                     </h3>
                     <p className="font-size-16 font-weight-medium">
-                        {subtitle}
+                        {/* {subtitle} */}
                     </p>
                 </div>
                 <div className="billing-content">
-                    <div className="contact-form-action">
-                        <form method="post">
-                            <div className="row">
-
-                                <SignInOptions />
-
+                    <div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-row">
                                 <div className="col-lg-12">
-                                    <div className="account-assist mt-4 mb-4 text-center">
-                                        <p className="account__desc">or</p>
-                                    </div>
-                                </div>
-                                <div className="col-lg-12">
-                                    <div className="input-box">
-                                        <label className="label-text">Username, or email</label>
-                                        <div className="form-group">
-                                                <span className="form-icon">
-                                                    <AiOutlineUser />
-                                                </span>
-                                            <input className="form-control" type="email" name="text" placeholder="Username, or email" />
+                                    <div className="form-group">
+                                        <label className="label-text" style={{color: "#333f57"}}>Username, or email</label>         
+                                        <div className="input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faUser} /></span>
+                                            </div>
+                                            <input name='username' type="text" className="form-control"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
-                                    <div className="input-box">
-                                        <label className="label-text">Password</label>
-                                        <div className="form-group">
-                                                <span className="form-icon">
-                                                    <FiLock />
-                                                </span>
-                                            <input className="form-control" type="text" name="text" placeholder="Password" />
+                                    <div className="form-group">
+                                        <label className="label-text" style={{color: "#333f57"}}>Password</label>
+                                        <div className="input-group">
+                                            <div className="input-group-prepend">
+                                                <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faLock} /></span>
+                                            </div>
+                                            <input name='password' type="password" className="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -66,15 +66,22 @@ function LoginBox({title, subtitle}) {
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
-                                    <div className="btn-box margin-top-20px margin-bottom-20px">
-                                        <button className="theme-btn border-0" type="submit">
+                                    <p className="font-weight-medium">Not a member? <Link to="/sign-up" className="color-text"> Register</Link></p>
+                                </div>
+                                <div className="col-lg-12">
+                                    <div className="btn-box margin-top-20px">
+                                        <button className="theme-btn border-0 w-100" type="submit">
                                             Login now
                                         </button>
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
-                                    <p className="font-weight-medium">Not a member? <Link to="/sign-up" className="color-text"> Register</Link></p>
+                                    <div className="account-assist mt-4 mb-4 text-center">
+                                        <p className="account__desc">or</p>
+                                    </div>
                                 </div>
+                                <SignInOptions />
+
                             </div>
                         </form>
                     </div>
@@ -84,4 +91,19 @@ function LoginBox({title, subtitle}) {
     );
 }
 
-export default LoginBox;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        user : state.user,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        doSignin: (username, password) => {
+            dispatch(signin(username, password))
+        },        
+        
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginBox);

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ROOT_URL } from '../config/api';
 
-import { FETCH_FLIGHT } from "../const/index";
 
 export const FETCH_FLIGHT_REQUEST = "FETCH_FLIGHT_REQUEST";
 export const FETCH_FLIGHT_SUCCESS = "FETCH_FLIGHT_SUCCESS";

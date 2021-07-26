@@ -17,10 +17,10 @@ export default function GeneralHeader() {
             }
         }
         document.addEventListener("scroll", handleScroll)
-    })
+    }, [])
     return (
         <>
-            <header className="header-area">
+            <header className="header-area ">
                 <div className="header-menu-wrapper">
                     <div className="container">
                         <div className="row">

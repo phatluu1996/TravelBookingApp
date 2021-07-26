@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { FETCH_FLIGHT_SUCCESS, FETCH_FLIGHT_ERROR, FETCH_FLIGHT_REQUEST } from "../actions/actionFlight";
+import { LOGIN_USER_ERROR, LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS } from "../actions/actionUser";
 
 const initialState = {
   requesting: false,
@@ -8,15 +8,15 @@ const initialState = {
   data: null
 }
 
-const reducerFlight = (state = initialState, action) => {
+const reducerUser = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_FLIGHT_REQUEST:
+    case LOGIN_USER_REQUEST:
       return {
         ...state,
         requesting: true
       };
 
-    case FETCH_FLIGHT_SUCCESS:
+    case LOGIN_USER_SUCCESS:
       state = {
         ...state,
         requesting: false,
@@ -25,7 +25,7 @@ const reducerFlight = (state = initialState, action) => {
       };
       return state;
 
-    case FETCH_FLIGHT_ERROR:
+    case LOGIN_USER_ERROR:
       state = {
         ...state,
         requesting: false,
@@ -38,6 +38,4 @@ const reducerFlight = (state = initialState, action) => {
   }
 };
 
-export default reducerFlight
-
-
+export default reducerUser

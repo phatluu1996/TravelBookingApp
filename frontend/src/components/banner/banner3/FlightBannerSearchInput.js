@@ -12,6 +12,10 @@ import { faPlaneArrival, faPlaneDeparture, faCalendar, faRetweet, faSearch, faUs
 const province = {
     properties: [
         {
+            value: '',
+            label: 'None'
+        },
+        {
             value: 'SGN',
             label: 'TP.HCM'
         }, {
@@ -128,17 +132,16 @@ function FlightBannerSearchInput(props) {
                                 <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faPlaneDeparture} /></span>
                             </div>
                             <select className="form-control" name="from" id="departure-city">
-                                {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} ({province.value})</option>)}
+                                {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ?"(" + province.value + ")" : ""}</option>)}
                             </select>
                         </div>
 
                     </div>
-                    <div className="col-md-auto">
+                    <div className="col-md-auto swap-btn">
                         <label></label>
                         <div className="input-group">
                             <button onClick={swapCity} className="btn btn-primary btn-circle rotate mt-2"><FontAwesomeIcon icon={faRetweet} color="#FFFFFF" /></button>
                         </div>
-
                     </div>
                     <div className="form-group col-md-3">
                         <label htmlFor="arrival-city" className="font-weight-bold text-secondary">To</label>
@@ -147,7 +150,7 @@ function FlightBannerSearchInput(props) {
                                 <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faPlaneArrival} /></span>
                             </div>
                             <select className="form-control" name="to" id="arrival-city">
-                                {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} ({province.value})</option>)}
+                                {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ?"(" + province.value + ")" : ""}</option>)}
                             </select>
                         </div>
                     </div>
@@ -239,7 +242,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getFlight: (from, to, ddate) => {
             dispatch(fetchFlight(from, to, ddate))
-        }
+        },        
     };
 };
 
