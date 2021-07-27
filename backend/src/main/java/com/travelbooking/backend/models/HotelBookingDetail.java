@@ -11,11 +11,6 @@ public class HotelBookingDetail {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "number_of_room")
-    private int numberOfRoom;
-    @OneToOne
-    @JoinColumn(name = "passenger_id", referencedColumnName = "id")
-    private Passenger passenger;
     @OneToOne
     @JoinColumn(name = "hotel_booking_id",referencedColumnName = "id")
     private HotelBooking hotelBooking;
@@ -28,10 +23,8 @@ public class HotelBookingDetail {
     public HotelBookingDetail() {
     }
 
-    public HotelBookingDetail(Long id, int numberOfRoom, Passenger passenger, HotelBooking hotelBooking, List<HotelBookingRoom> hotelBookingRooms) {
+    public HotelBookingDetail(Long id, HotelBooking hotelBooking, List<HotelBookingRoom> hotelBookingRooms) {
         this.id = id;
-        this.numberOfRoom = numberOfRoom;
-        this.passenger = passenger;
         this.hotelBooking = hotelBooking;
         this.hotelBookingRooms = hotelBookingRooms;
     }
@@ -42,22 +35,6 @@ public class HotelBookingDetail {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getNumberOfRoom() {
-        return numberOfRoom;
-    }
-
-    public void setNumberOfRoom(int numberOfRoom) {
-        this.numberOfRoom = numberOfRoom;
-    }
-
-    public Passenger getPassenger() {
-        return passenger;
-    }
-
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
     }
 
     public HotelBooking getHotelBooking() {

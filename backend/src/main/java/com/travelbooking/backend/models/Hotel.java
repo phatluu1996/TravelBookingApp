@@ -1,8 +1,11 @@
 package com.travelbooking.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import javax.persistence.*;
 
@@ -13,7 +16,7 @@ public class Hotel {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "hotel_name")
+    @Column(name = "hotel_name",columnDefinition = "nvarchar(150)")
     private String hotelName;
     @Column(name = "email")
     private String email;
@@ -23,14 +26,15 @@ public class Hotel {
     private String contactName;
     @Column(name = "contact_title",columnDefinition = "nvarchar(255)")
     private String contactTitle;
-    @Column(name = "number_of_rooms")
-    private int numberOfRooms;
-    @Column(name = "create_date")
-    private Date createDate;
+    @Column(name = "address",columnDefinition = "nvarchar(255)")
+    private String address;
+
+
+    @Column(name = "created_at", nullable = false)
+    @CreatedDate
+    private Instant createdAt;
     @Column(name = "retired", nullable = true)
     private Boolean retired;
-    @Column(name = "standard",columnDefinition = "nvarchar(50)")
-    private String standard;
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
@@ -41,27 +45,40 @@ public class Hotel {
     private Account account;
 
     @OneToMany
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JoinColumn(name = "feed_back_id",referencedColumnName = "id")
+    @JsonIgnoreProperties("hotel")
+    private List<HotelFeedBack> hotelFeedBacks;
+
+    @OneToMany
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
     private List<Room> rooms;
 
     public Hotel() {
     }
-            
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, int numberOfRooms, Date createDate, Boolean retired, String standard, Location location, Account account, List<Room> rooms) {
+
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
         this.phone = phone;
         this.contactName = contactName;
         this.contactTitle = contactTitle;
-        this.numberOfRooms = numberOfRooms;
-        this.createDate = createDate;
+        this.address = address;
+        this.createdAt = createdAt;
         this.retired = retired;
-        this.standard = standard;
         this.location = location;
         this.account = account;
+        this.hotelFeedBacks = hotelFeedBacks;
         this.rooms = rooms;
+    }
+
+    public List<HotelFeedBack> getHotelFeedBacks() {
+        return hotelFeedBacks;
+    }
+
+    public void setHotelFeedBacks(List<HotelFeedBack> hotelFeedBacks) {
+        this.hotelFeedBacks = hotelFeedBacks;
     }
 
     public Long getId() {
@@ -112,20 +129,20 @@ public class Hotel {
         this.contactTitle = contactTitle;
     }
 
-    public int getNumberOfRooms() {
-        return numberOfRooms;
+    public String getAddress() {
+        return address;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Boolean getRetired() {
@@ -136,12 +153,12 @@ public class Hotel {
         this.retired = retired;
     }
 
-    public String getStandard() {
-        return standard;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setStandard(String standard) {
-        this.standard = standard;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Account getAccount() {
@@ -150,14 +167,6 @@ public class Hotel {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public List<Room> getRooms() {

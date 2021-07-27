@@ -25,11 +25,14 @@ public class HotelBooking {
     private Date checkOutDate;
     @Column(name = "total_price")
     private Float totalPrice;
+    @Column(name = "number_of_room")
+    private int numberOfRoom;
     @Column(name = "create_at")
     private Date createAt;
     @LastModifiedDate
     @Column(name = "update_at")
     private Date updateAt;
+
     @Column(name = "payment_method", columnDefinition = "nvarchar(100)")
     private String paymentMethod;
     @Column(name = "retired", nullable = true)
@@ -46,7 +49,7 @@ public class HotelBooking {
     public HotelBooking() {
     }
 
-    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, Date createAt, Date updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
+    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, int numberOfRoom, Date createAt, Date updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
         this.id = id;
         this.hotelType = hotelType;
         this.guestName = guestName;
@@ -55,6 +58,7 @@ public class HotelBooking {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.totalPrice = totalPrice;
+        this.numberOfRoom = numberOfRoom;
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.paymentMethod = paymentMethod;
@@ -125,6 +129,14 @@ public class HotelBooking {
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getNumberOfRoom() {
+        return numberOfRoom;
+    }
+
+    public void setNumberOfRoom(int numberOfRoom) {
+        this.numberOfRoom = numberOfRoom;
     }
 
     public Date getCreateAt() {

@@ -12459,7 +12459,12 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
 --Hotel Location
 --Hotels
---Rooms
+-- INSERT INTO [dbo].[hotel]([contact_name],[contact_title],[create_date],[email],[hotel_name],[number_of_rooms],[phone],[retired],[standard] ,[account_id],[location_id])VALUES
+--     (N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','2017-07-13','hoa@gmail.com','Paradise',4,90498493,0,'Chua Cap Nhap',8,1),
+--     (N'Phạm Xuân Bách',N'Giám Đốc','2017-07-13','bach@gmail.com','MoonLight',4,90498493,0,'Chua Cap Nhap',7,2),
+--     (N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','2017-07-13','ngoc@gmail.com','SunShine',4,90498493,0,'Chua Cap Nhap',9,3),
+--     (N'Lưu Trọng Phát',N'Giám Đốc','2017-07-13','phat@gmail.com','Lightning',4,90498493,0,'Chua Cap Nhap',10,4)
+-- --Rooms
 
 
 
