@@ -23,7 +23,7 @@ public class RoomType {
     @Column(name = "retired", nullable = true)
     private Boolean retired;
     @OneToMany
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("rooms")
+    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("roomType")
     private List<Room> rooms;
 }

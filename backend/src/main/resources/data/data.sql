@@ -12092,7 +12092,7 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2a$10$prc3uy01jmrIF.z858.gcOd6BIuPVGmwFYbdACLMX7wvNTJLC5dbG',0,'AIRLINE','bamboo'), --password: bb12345
 ('$2a$10$RGCrC6kC1ha8TEyeib.29e6qPC4ckE1uCWHKqSKCuxcYXfkxRQ0aK',0,'AIRLINE','jetstar'), --password: js12345
 ('$2a$10$u8pijj6uJmyaP2Dr6m60YOsYt.fiTLvDZaHUe/UWuKlMRL/ZMDi3O',0,'AIRLINE','viettravel'), --password: viettravel
-('$2a$10$aufvMwf0KjfPmvQVObRxVeqtJrYHsDUGAX.rM.MkOGrk92H1joQq.',0,'ADMIN','admin') --password: admin12345
+('$2a$10$aufvMwf0KjfPmvQVObRxVeqtJrYHsDUGAX.rM.MkOGrk92H1joQq.',0,'ADMIN','admin'), --password: admin12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','thanhhuyen'), --password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','quangle'),--password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'USER','ninhphan'),--password: 12345
@@ -12119,7 +12119,7 @@ INSERT INTO dbo.location ([postal_code],[province_id],[district_id],[ward_id],[s
 ('70000', 2, 39, 598, N'200 Nguyễn Sơn',0),
 ('70000', 2, 28, 385, N'Tầng 22, 265 Cầu Giấy',0),
 ('70000', 1, 22, 296, N'Tầng 3, Tòa nhà VietNam Airlines, Sân bay Tân Sơn Nhất',0),
-('70000', 1, 15, 202, N'190 Pasteur',0)
+('70000', 1, 15, 202, N'190 Pasteur',0),
 ('10000',2,28,1876,N'6 Hoàng Quốc Việt',0),
 ('10000',2,27,375,N'46 Đức Thắng',0),
 ('10000',2,25,330,N'9/84 Ngọc Khánh',0),
@@ -12457,14 +12457,7 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','hoanguyen'),
 ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','ngocle'),
 ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
---Hotel Location
---Hotels
--- INSERT INTO [dbo].[hotel]([contact_name],[contact_title],[create_date],[email],[hotel_name],[number_of_rooms],[phone],[retired],[standard] ,[account_id],[location_id])VALUES
---     (N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','2017-07-13','hoa@gmail.com','Paradise',4,90498493,0,'Chua Cap Nhap',8,1),
---     (N'Phạm Xuân Bách',N'Giám Đốc','2017-07-13','bach@gmail.com','MoonLight',4,90498493,0,'Chua Cap Nhap',7,2),
---     (N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','2017-07-13','ngoc@gmail.com','SunShine',4,90498493,0,'Chua Cap Nhap',9,3),
---     (N'Lưu Trọng Phát',N'Giám Đốc','2017-07-13','phat@gmail.com','Lightning',4,90498493,0,'Chua Cap Nhap',10,4)
--- --Rooms
+
 
 
 

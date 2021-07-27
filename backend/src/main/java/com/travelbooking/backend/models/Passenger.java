@@ -26,8 +26,8 @@ public class Passenger {
     @Column(name = "card_id_number")
     private String cardIdNumber;
 
-    @Column(name = "card_type")
-    private String cardType;
+    @Column(name = "card_type")//0: Cmnd, 1: Driver licenses, 2: Passport
+    private int cardType;
 
     @Column(name = "card_expired")
     private Date cardExpired;
@@ -38,7 +38,7 @@ public class Passenger {
     public Passenger() {
     }
 
-    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, String cardType, Date cardExpired, boolean retired) {
+    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, int cardType, Date cardExpired, boolean retired) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -106,11 +106,11 @@ public class Passenger {
         this.cardIdNumber = cardIdNumber;
     }
 
-    public String getCardType() {
+    public int getCardType() {
         return cardType;
     }
 
-    public void setCardType(String cardType) {
+    public void setCardType(int cardType) {
         this.cardType = cardType;
     }
 

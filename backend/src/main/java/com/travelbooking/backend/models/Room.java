@@ -27,30 +27,35 @@ public class Room {
     private Boolean retired;
 
     @ManyToOne
-    @JoinColumn(name = "room_type", referencedColumnName = "id")
+    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
     private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("rooms")
-    private Hotel hotelName;
+    private Hotel hotel;
 
     @OneToOne
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     @JsonIgnoreProperties("room")
     private HotelBooking hotelBooking;
 
+    @OneToMany
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("room")
+    private List<Image> images;
+
     public Room() {
     }
 
-    public Room(Long id, int roomNumber, Date availableTo, Date availableFrom, Boolean retired, RoomType roomType, Hotel hotelName, HotelBooking hotelBooking) {
+    public Room(Long id, int roomNumber, Date availableTo, Date availableFrom, Boolean retired, RoomType roomType, Hotel hotel, HotelBooking hotelBooking) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.availableTo = availableTo;
         this.availableFrom = availableFrom;
         this.retired = retired;
         this.roomType = roomType;
-        this.hotelName = hotelName;
+        this.hotel = hotel;
         this.hotelBooking = hotelBooking;
     }
 
@@ -102,12 +107,12 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public Hotel getHotelName() {
-        return hotelName;
+    public Hotel getHotel() {
+        return hotel;
     }
 
-    public void setHotelName(Hotel hotelName) {
-        this.hotelName = hotelName;
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public HotelBooking getHotelBooking() {

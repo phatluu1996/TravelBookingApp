@@ -67,10 +67,28 @@ public class Flight {
     @Column(name = "retired",nullable = true)
     private boolean retired;
 
+    @Column(name = "economy_baggage")
+    private float economyBaggage;
+
+    @Column(name = "business_baggage")
+    private float businessBaggage;
+
+    @Column(name = "economy_cabin_baggage") //Xách tay
+    private float economyCabinBaggage;
+
+    @Column(name = "business_cabin_baggage")
+    private float businessCabinBaggage;
+
+    @Column(name = "has_entertainment")
+    private boolean hasEntertainment;
+
+    @Column(name = "aircraft_type")
+    private String AircraftType;
+
     public Flight() {
     }
 
-    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, Date departureTime, Date arrivalTime, String description, int economyCapacity, Float economyPrice, Float infant_price, Float child_price, int businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired) {
+    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, Date departureTime, Date arrivalTime, String description, int economyCapacity, Float economyPrice, Float infant_price, Float child_price, int businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired, float economyBaggage, float businessBaggage, float economyCabinBaggage, float businessCabinBaggage, boolean hasEntertainment, String aircraftType) {
         this.id = id;
         this.flightCode = flightCode;
         this.airline = airline;
@@ -88,6 +106,12 @@ public class Flight {
         this.status = status;
         this.dateOfDeparture = dateOfDeparture;
         this.retired = retired;
+        this.economyBaggage = economyBaggage;
+        this.businessBaggage = businessBaggage;
+        this.economyCabinBaggage = economyCabinBaggage;
+        this.businessCabinBaggage = businessCabinBaggage;
+        this.hasEntertainment = hasEntertainment;
+        AircraftType = aircraftType;
     }
 
     public Float getInfant_price() {

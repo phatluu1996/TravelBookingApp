@@ -29,7 +29,6 @@ public class Hotel {
     @Column(name = "address",columnDefinition = "nvarchar(255)")
     private String address;
 
-
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     private Instant createdAt;
@@ -53,6 +52,11 @@ public class Hotel {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
     private List<Room> rooms;
+
+    @OneToMany
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("hotel")
+    private List<Image> images;
 
     public Hotel() {
     }
