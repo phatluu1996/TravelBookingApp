@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "room_rating")
-public class RoomRating {
+@Table(name = "hotel_feedback")
+public class HotelFeedBack {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,48 +16,55 @@ public class RoomRating {
     private String feedback;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("ratings")
-    private Room room;
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("rating")
+    private Hotel hotel;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public RoomRating() {
+    public HotelFeedBack() {
     }
 
-    public RoomRating(Long id, double rating, String feedback, Room room, User user) {
+    public HotelFeedBack(Long id, double rating, String feedback, Hotel hotel, User user) {
         this.id = id;
         this.rating = rating;
         this.feedback = feedback;
-        this.room = room;
+        this.hotel = hotel;
         this.user = user;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public double getRating() {
         return rating;
     }
+
     public void setRating(double rating) {
         this.rating = rating;
     }
+
     public String getFeedback() {
         return feedback;
     }
+
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
-    public Room getRoom() {
-        return room;
+
+    public Hotel getHotel() {
+        return hotel;
     }
-    public void setRoom(Room room) {
-        this.room = room;
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
     public User getUser() {

@@ -38,7 +38,7 @@ public class Airline {
     @Column(name = "homepage")
     private String homepage;
 
-    @Column(name = "email")
+        @Column(name = "email")
     private String email;
 
     @Column(name = "created_at", nullable = false)

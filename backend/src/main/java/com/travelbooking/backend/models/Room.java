@@ -10,54 +10,55 @@ import java.util.List;
 @Table(name = "room")
 public class Room {
     @Id
-    @Column(name = "id")
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     @Column(name = "room_number")
     private int roomNumber;
-    @Column(name = "room_status",nullable = false)
-    private Boolean roomStatus;
+
+    @Column(name = "available_to")
+    private Date availableTo;
+
+    @Column(name = "available_from")
+    private Date availableFrom;
+
     @Column(name = "retired", nullable = true)
     private Boolean retired;
 
-    @OneToOne
-    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "room_type", referencedColumnName = "id")
     private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("rooms")
-    private Hotel hotel;
+    private Hotel hotelName;
 
-    @OneToMany
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
     @JsonIgnoreProperties("room")
-    private List<RoomRating> ratings;
+    private HotelBooking hotelBooking;
 
-    @OneToMany
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("room")
-    private List<HotelBookingRoom> hotelBookingRooms;
-    
     public Room() {
     }
 
-    public Room(long id, int roomNumber, Boolean roomStatus, Boolean retired, RoomType roomType, Hotel hotel, List<RoomRating> ratings, List<HotelBookingRoom> hotelBookingRooms) {
+    public Room(Long id, int roomNumber, Date availableTo, Date availableFrom, Boolean retired, RoomType roomType, Hotel hotelName, HotelBooking hotelBooking) {
         this.id = id;
         this.roomNumber = roomNumber;
-        this.roomStatus = roomStatus;
+        this.availableTo = availableTo;
+        this.availableFrom = availableFrom;
         this.retired = retired;
         this.roomType = roomType;
-        this.hotel = hotel;
-        this.ratings = ratings;
-        this.hotelBookingRooms = hotelBookingRooms;
+        this.hotelName = hotelName;
+        this.hotelBooking = hotelBooking;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,12 +70,20 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public Boolean getRoomStatus() {
-        return roomStatus;
+    public Date getAvailableTo() {
+        return availableTo;
     }
 
-    public void setRoomStatus(Boolean roomStatus) {
-        this.roomStatus = roomStatus;
+    public void setAvailableTo(Date availableTo) {
+        this.availableTo = availableTo;
+    }
+
+    public Date getAvailableFrom() {
+        return availableFrom;
+    }
+
+    public void setAvailableFrom(Date availableFrom) {
+        this.availableFrom = availableFrom;
     }
 
     public Boolean getRetired() {
@@ -93,27 +102,19 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public Hotel getHotel() {
-        return hotel;
+    public Hotel getHotelName() {
+        return hotelName;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public void setHotelName(Hotel hotelName) {
+        this.hotelName = hotelName;
     }
 
-    public List<RoomRating> getRatings() {
-        return ratings;
+    public HotelBooking getHotelBooking() {
+        return hotelBooking;
     }
 
-    public void setRatings(List<RoomRating> ratings) {
-        this.ratings = ratings;
-    }
-
-    public List<HotelBookingRoom> getHotelBookingRooms() {
-        return hotelBookingRooms;
-    }
-
-    public void setHotelBookingRooms(List<HotelBookingRoom> hotelBookingRooms) {
-        this.hotelBookingRooms = hotelBookingRooms;
+    public void setHotelBooking(HotelBooking hotelBooking) {
+        this.hotelBooking = hotelBooking;
     }
 }
