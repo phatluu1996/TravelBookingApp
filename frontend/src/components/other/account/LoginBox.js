@@ -18,10 +18,10 @@ function LoginBox(props) {
             <div className="billing-form-item mb-0">
                 <div className="billing-title-wrap border-bottom-0 pr-0 pl-0 pb-0 text-center">
                     <h3 className="widget-title font-size-28 pb-0">
-                        {/* {title} */}
+                        {props.title}
                     </h3>
                     <p className="font-size-16 font-weight-medium">
-                        {/* {subtitle} */}
+                        {props.subtitle}
                     </p>
                 </div>
                 <div className="billing-content">

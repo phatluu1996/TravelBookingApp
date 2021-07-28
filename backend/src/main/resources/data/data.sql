@@ -12184,7 +12184,8 @@ INSERT INTO dbo.airline ([airline_name],[contact_name],[contact_title],
 
 INSERT INTO dbo.flight([airline_id],[flight_code],[retired],[status],[description],
 [business_capacity],[business_price],[economy_capacity],[economy_price],[child_price],[infant_price],
-[departure_city],[departure_time],[arrival_city],[arrival_time],[date_of_departure]) VALUES
+[departure_city],[departure_time],[arrival_city],[arrival_time],[date_of_departure],
+[business_baggage],[business_cabin_baggage],[economy_baggage],[economy_cabin_baggage],[has_entertainment], [aircraft_type]) VALUES
 (1, N'VJ-146',0, N'Available', N'Hạng thương gia 20kgs, Hạng Phổ thông: Không Hành lý, Airbus A320, Hàng ghế 3-3',6,122,168,50,30,10, N'SGN', N'20:15', N'HAN', N'22:20', N''),
 (1, N'VJ-160',0, N'Available', N'Hạng thương gia 20kgs, Hạng Phổ thông: Không Hành lý, Airbus A321, Hàng ghế 3-3',6,120,160,55,30,10, N'SGN', N'21:20', N'HAN', N'23:35', N''),
 (1, N'VJ-170',0, N'Available', N'Hạng thương gia 20kgs, Hạng Phổ thông: Không Hành lý, Airbus A321, Hàng ghế 3-3',6,110,168,48,30,10, N'SGN', N'21:45', N'HAN', N'23:55', N''),

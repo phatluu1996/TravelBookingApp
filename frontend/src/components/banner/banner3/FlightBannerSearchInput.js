@@ -105,8 +105,8 @@ function FlightBannerSearchInput(props) {
         e.preventDefault();
         console.log(props);
         var form = e.target;
-        props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDay.value, form.returnDay.value, form.seatClass.value);
-        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDay=${form.departureDay.value}&returnDay=${form.returnDay.value}&seatClass=${form.seatClass.value}`);
+        props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
+        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
     }
 
     const swapCity = (e) => {
@@ -196,7 +196,7 @@ function FlightBannerSearchInput(props) {
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon4"><FontAwesomeIcon icon={faCalendar} /></span>
                             </div>
-                            <input type='text' className="form-control" name="departureDay" id="departureDay" />
+                            <input type='date' className="form-control" name="departureDate" id="departureDate" />
                         </div>
                     </div>
                     <div className="form-group col-md-3">
@@ -206,7 +206,7 @@ function FlightBannerSearchInput(props) {
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="basic-addon5"><FontAwesomeIcon icon={faCalendar} /></span>
                             </div>
-                            <input type='text' className="form-control" name="returnDay" id="returnDay" />
+                            <input type='date' className="form-control" name="returnDate" id="returnDate" />
                         </div>
                     </div>
                     <div className="form-group col">
@@ -240,8 +240,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getFlight: (from, to, ddate) => {
-            dispatch(fetchFlight(from, to, ddate))
+        getFlight: (from, to, adult, child, infant, ddate, rdate, seatClass) => {
+            dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatClass))
         },        
     };
 };

@@ -40,7 +40,7 @@ public class Flight {
     private String description;
 
     @Column(name = "economy_capacity")
-    private int economyCapacity;
+    private Integer economyCapacity;
 
     @Column(name = "economy_price")
     private Float economyPrice;
@@ -52,7 +52,7 @@ public class Flight {
     private Float child_price;
 
     @Column(name = "business_capacity")
-    private int businessCapacity;
+    private Integer businessCapacity;
 
     @Column(name = "business_price")
     private Float businessPrice;
@@ -67,28 +67,28 @@ public class Flight {
     @Column(name = "retired",nullable = true)
     private boolean retired;
 
-    @Column(name = "economy_baggage")
-    private float economyBaggage;
+    @Column(name = "economy_baggage",nullable = true)
+    private Float economyBaggage;
 
-    @Column(name = "business_baggage")
-    private float businessBaggage;
+    @Column(name = "business_baggage",nullable = true)
+    private Float businessBaggage;
 
-    @Column(name = "economy_cabin_baggage") //Xách tay
-    private float economyCabinBaggage;
+    @Column(name = "economy_cabin_baggage",nullable = true) //Xách tay
+    private Float economyCabinBaggage;
 
-    @Column(name = "business_cabin_baggage")
-    private float businessCabinBaggage;
+    @Column(name = "business_cabin_baggage",nullable = true)
+    private Float businessCabinBaggage;
 
-    @Column(name = "has_entertainment")
-    private boolean hasEntertainment;
+    @Column(name = "has_entertainment",nullable = true)
+    private Boolean hasEntertainment;
 
-    @Column(name = "aircraft_type")
-    private String AircraftType;
+    @Column(name = "aircraft_type",nullable = true)
+    private String aircraftType;
 
     public Flight() {
     }
 
-    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, Date departureTime, Date arrivalTime, String description, int economyCapacity, Float economyPrice, Float infant_price, Float child_price, int businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired, float economyBaggage, float businessBaggage, float economyCabinBaggage, float businessCabinBaggage, boolean hasEntertainment, String aircraftType) {
+    public Flight(Long id, String flightCode, Airline airline, String departureCity, String arrivalCity, Date departureTime, Date arrivalTime, String description, Integer economyCapacity, Float economyPrice, Float infant_price, Float child_price, Integer businessCapacity, Float businessPrice, String status, Date dateOfDeparture, boolean retired, Float economyBaggage, Float businessBaggage, Float economyCabinBaggage, Float businessCabinBaggage, Boolean hasEntertainment, String aircraftType) {
         this.id = id;
         this.flightCode = flightCode;
         this.airline = airline;
@@ -111,7 +111,7 @@ public class Flight {
         this.economyCabinBaggage = economyCabinBaggage;
         this.businessCabinBaggage = businessCabinBaggage;
         this.hasEntertainment = hasEntertainment;
-        AircraftType = aircraftType;
+        this.aircraftType = aircraftType;
     }
 
     public Float getInfant_price() {
@@ -248,5 +248,61 @@ public class Flight {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setEconomyCapacity(Integer economyCapacity) {
+        this.economyCapacity = economyCapacity;
+    }
+
+    public void setBusinessCapacity(Integer businessCapacity) {
+        this.businessCapacity = businessCapacity;
+    }
+
+    public Float getEconomyBaggage() {
+        return economyBaggage;
+    }
+
+    public void setEconomyBaggage(Float economyBaggage) {
+        this.economyBaggage = economyBaggage;
+    }
+
+    public Float getBusinessBaggage() {
+        return businessBaggage;
+    }
+
+    public void setBusinessBaggage(Float businessBaggage) {
+        this.businessBaggage = businessBaggage;
+    }
+
+    public Float getEconomyCabinBaggage() {
+        return economyCabinBaggage;
+    }
+
+    public void setEconomyCabinBaggage(Float economyCabinBaggage) {
+        this.economyCabinBaggage = economyCabinBaggage;
+    }
+
+    public Float getBusinessCabinBaggage() {
+        return businessCabinBaggage;
+    }
+
+    public void setBusinessCabinBaggage(Float businessCabinBaggage) {
+        this.businessCabinBaggage = businessCabinBaggage;
+    }
+
+    public Boolean getHasEntertainment() {
+        return hasEntertainment;
+    }
+
+    public void setHasEntertainment(Boolean hasEntertainment) {
+        this.hasEntertainment = hasEntertainment;
+    }
+
+    public String getAircraftType() {
+        return aircraftType;
+    }
+
+    public void setAircraftType(String aircraftType) {
+        this.aircraftType = aircraftType;
     }
 }

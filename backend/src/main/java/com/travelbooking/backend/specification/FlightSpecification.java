@@ -11,7 +11,7 @@ public final class FlightSpecification {
                                                             Optional<String> to,
                                                             Optional<Date>  dateOfDeparture,
                                                             Boolean retired){
-        return Specification.where(fromCityContains(from).and(toCityContains(to)).and(dateEqualTo(dateOfDeparture)).and(isRetired(retired)));
+        return Specification.where(fromCityContains(from).and(toCityContains(to)).and(isRetired(retired)));
     }
 
     public static Specification<Flight> fromCityContains(Optional<String> departureCity){

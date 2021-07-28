@@ -31,10 +31,12 @@ function FlightList(props) {
 
     useEffect(() => {
         var mount = false;
-        if(!query.get("from") && !query.get("to") && !query.get("departureDay")){
+        if(!query.get("from") && !query.get("to") && !query.get("departureDate") && !query.get("returnDate") && !query.get("seatClass") && !query.get("adult") && !query.get("child") && !query.get("infant")){
             history.push("/index3");
         }else{
-            props.getFlight(query.get("from"), query.get("to"), query.get("departureDay"));    
+            if(!props.flight){
+                props.getFlight(query.get("from"), query.get("to"), query.get("adult"), query.get("child"), query.get("infant"),query.get("departureDate"), query.get("returnDate"), query.get("seatClass"));    
+            }
         }            
         return () => {
             mount = true;
@@ -99,9 +101,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getFlight : (from, to, ddate) => {
-            dispatch(fetchFlight(from, to, ddate))    
-        }
+        getFlight: (from, to, adult, child, infant, ddate, rdate, seatClass) => {
+            dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatClass))
+        },        
     };
 };
 

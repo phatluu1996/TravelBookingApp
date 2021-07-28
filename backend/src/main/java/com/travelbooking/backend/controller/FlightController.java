@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -74,8 +75,14 @@ public class FlightController {
     @GetMapping("/findFlights")
     public Collection<Flight> findFlights(@RequestParam Optional<String> from,
                                           @RequestParam Optional<String> to,
-                                          @RequestParam String departureDay) {
-        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(convertToDate(departureDay)),Boolean.FALSE);
+                                          @RequestParam(required = false) Date departureDate,
+                                          @RequestParam(required = false) Date returnDate,
+                                          @RequestParam(required = false) Integer adult,
+                                          @RequestParam(required = false) Integer child,
+                                          @RequestParam(required = false) Integer infant,
+                                          @RequestParam(required = false) String seatClass
+                                          ) {
+        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, null,Boolean.FALSE);
         return flightRepository.findAll(spec);
     }
 
