@@ -44,12 +44,12 @@ public class Hotel {
     private Account account;
 
     @OneToMany
-    @JoinColumn(name = "feed_back_id",referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id",referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
     private List<HotelFeedBack> hotelFeedBacks;
 
     @OneToMany
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
     private List<Room> rooms;
 

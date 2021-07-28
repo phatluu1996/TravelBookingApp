@@ -40,7 +40,7 @@ public class Room {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("rooms")
+    @JsonIgnoreProperties("room")
     private Hotel hotel;
 
     @OneToOne
@@ -49,7 +49,7 @@ public class Room {
     private HotelBookingRoom hotelBookingRoom;
 
     @OneToMany
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("room")
     private List<Image> images;
 

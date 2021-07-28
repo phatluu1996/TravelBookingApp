@@ -36,15 +36,10 @@ public class User {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @OneToMany
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("user")
-    private List<HotelFeedBack> hotelFeedBacks;
-
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location, List<HotelFeedBack> hotelFeedBacks) {
+    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,7 +50,7 @@ public class User {
         this.retired = retired;
         this.account = account;
         this.location = location;
-        this.hotelFeedBacks = hotelFeedBacks;
+
     }
 
     public Long getId() {
@@ -136,13 +131,5 @@ public class User {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public List<HotelFeedBack> getHotelFeedBacks() {
-        return hotelFeedBacks;
-    }
-
-    public void setHotelFeedBacks(List<HotelFeedBack> hotelFeedBacks) {
-        this.hotelFeedBacks = hotelFeedBacks;
     }
 }
