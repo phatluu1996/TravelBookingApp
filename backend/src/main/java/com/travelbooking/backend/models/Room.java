@@ -17,18 +17,26 @@ public class Room {
     @Column(name = "room_number")
     private int roomNumber;
 
-    @Column(name = "available_to")
-    private Date availableTo;
+//    @Column(name = "available_to")
+//    private Date availableTo;
 
     @Column(name = "available_from")
     private Date availableFrom;
 
+    @Column(name = "room_type")
+    private String roomType;
+
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "max_adult")
+    private int maxAdult;
+
+    @Column(name = "max_children")
+    private int maxChildren;
+
     @Column(name = "retired", nullable = true)
     private Boolean retired;
-
-    @ManyToOne
-    @JoinColumn(name = "room_type_id", referencedColumnName = "id")
-    private RoomType roomType;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
@@ -36,9 +44,9 @@ public class Room {
     private Hotel hotel;
 
     @OneToOne
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @JoinColumn(name = "booking_room_id", referencedColumnName = "id")
     @JsonIgnoreProperties("room")
-    private HotelBooking hotelBooking;
+    private HotelBookingRoom hotelBookingRoom;
 
     @OneToMany
     @JoinColumn(name = "image_id", referencedColumnName = "id")
@@ -48,15 +56,18 @@ public class Room {
     public Room() {
     }
 
-    public Room(Long id, int roomNumber, Date availableTo, Date availableFrom, Boolean retired, RoomType roomType, Hotel hotel, HotelBooking hotelBooking) {
+    public Room(Long id, int roomNumber, Date availableFrom, String roomType, double price, int maxAdult, int maxChildren, Boolean retired, Hotel hotel, HotelBookingRoom hotelBookingRoom, List<Image> images) {
         this.id = id;
         this.roomNumber = roomNumber;
-        this.availableTo = availableTo;
         this.availableFrom = availableFrom;
-        this.retired = retired;
         this.roomType = roomType;
+        this.price = price;
+        this.maxAdult = maxAdult;
+        this.maxChildren = maxChildren;
+        this.retired = retired;
         this.hotel = hotel;
-        this.hotelBooking = hotelBooking;
+        this.hotelBookingRoom = hotelBookingRoom;
+        this.images = images;
     }
 
     public Long getId() {
@@ -75,20 +86,44 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public Date getAvailableTo() {
-        return availableTo;
-    }
-
-    public void setAvailableTo(Date availableTo) {
-        this.availableTo = availableTo;
-    }
-
     public Date getAvailableFrom() {
         return availableFrom;
     }
 
     public void setAvailableFrom(Date availableFrom) {
         this.availableFrom = availableFrom;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getMaxAdult() {
+        return maxAdult;
+    }
+
+    public void setMaxAdult(int maxAdult) {
+        this.maxAdult = maxAdult;
+    }
+
+    public int getMaxChildren() {
+        return maxChildren;
+    }
+
+    public void setMaxChildren(int maxChildren) {
+        this.maxChildren = maxChildren;
     }
 
     public Boolean getRetired() {
@@ -99,14 +134,6 @@ public class Room {
         this.retired = retired;
     }
 
-    public RoomType getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(RoomType roomType) {
-        this.roomType = roomType;
-    }
-
     public Hotel getHotel() {
         return hotel;
     }
@@ -115,11 +142,19 @@ public class Room {
         this.hotel = hotel;
     }
 
-    public HotelBooking getHotelBooking() {
-        return hotelBooking;
+    public HotelBookingRoom getHotelBookingRoom() {
+        return hotelBookingRoom;
     }
 
-    public void setHotelBooking(HotelBooking hotelBooking) {
-        this.hotelBooking = hotelBooking;
+    public void setHotelBookingRoom(HotelBookingRoom hotelBookingRoom) {
+        this.hotelBookingRoom = hotelBookingRoom;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }
