@@ -61,7 +61,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -75,14 +75,7 @@ public class Hotel {
         this.account = account;
         this.hotelFeedBacks = hotelFeedBacks;
         this.rooms = rooms;
-    }
-
-    public List<HotelFeedBack> getHotelFeedBacks() {
-        return hotelFeedBacks;
-    }
-
-    public void setHotelFeedBacks(List<HotelFeedBack> hotelFeedBacks) {
-        this.hotelFeedBacks = hotelFeedBacks;
+        this.images = images;
     }
 
     public Long getId() {
@@ -173,11 +166,27 @@ public class Hotel {
         this.account = account;
     }
 
+    public List<HotelFeedBack> getHotelFeedBacks() {
+        return hotelFeedBacks;
+    }
+
+    public void setHotelFeedBacks(List<HotelFeedBack> hotelFeedBacks) {
+        this.hotelFeedBacks = hotelFeedBacks;
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
 
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

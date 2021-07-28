@@ -17,7 +17,7 @@ public class HotelFeedBack {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("rating")
+    @JsonIgnoreProperties("hotel_feedback")
     private Hotel hotel;
 
     @ManyToOne

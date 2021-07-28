@@ -1,18 +1,17 @@
 package com.travelbooking.backend.controller;
 
+import com.travelbooking.backend.models.Flight;
+import com.travelbooking.backend.specification.FlightSpecification;
+import com.travelbooking.backend.specification.HotelSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
 
 import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.repository.HotelRepository;
@@ -29,6 +28,19 @@ public class HotelController {
     private final Logger log = LoggerFactory.getLogger(HotelController.class);
     @Autowired
     private HotelRepository hotelRepository;
+
+
+    //http://localhost:8080/api/hotels/Search
+    @GetMapping("/hotels/Search")
+    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "address") Optional<String> address,
+                                         @RequestParam (required = false, name = "number_adult") Optional<Integer> number_adult,
+                                         @RequestParam (required = false, name = "number_children") Optional<Integer> number_children,
+                                        @RequestParam (required = false, name = "check_out_date") Optional<String> check_out_date,
+                                        @RequestParam (required = false, name = "check_in_date") Optional<String> check_in_date) {
+        Date currentUtilDate = new Date();
+        Specification<Hotel> spec = HotelSpecification.createSpecification(address,Boolean.FALSE,number_adult,number_children,check_out_date,check_in_date,currentUtilDate);
+        return hotelRepository.findAll(spec);
+    }
 
     //http://localhost:8080/api/hotels
     @GetMapping("/hotels")
@@ -68,6 +80,7 @@ public class HotelController {
             Hotel result = hotelRepository.save(hotel);
             return ResponseEntity.ok().body(result);
         }
+
 
     
 }
