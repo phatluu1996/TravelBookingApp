@@ -17,7 +17,7 @@ public class HotelBookingDetail {
 
     @OneToMany
     @JoinColumn(name = "hotel_booking_detail_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("hotelBookingDetail")
+    @JsonIgnoreProperties("hotel_booking_detail")
     private List<HotelBookingRoom> hotelBookingRooms;
 
     public HotelBookingDetail() {

@@ -14,25 +14,22 @@ public class HotelFeedBack {
     private double rating;
     @Column(name = "feedback")
     private String feedback;
-
+    @Column(name = "user_id")
+    private  int userId;
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel_feedback")
     private Hotel hotel;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
     public HotelFeedBack() {
     }
 
-    public HotelFeedBack(Long id, double rating, String feedback, Hotel hotel, User user) {
+    public HotelFeedBack(Long id, double rating, String feedback, int userId, Hotel hotel) {
         this.id = id;
         this.rating = rating;
         this.feedback = feedback;
+        this.userId = userId;
         this.hotel = hotel;
-        this.user = user;
     }
 
     public Long getId() {
@@ -59,19 +56,19 @@ public class HotelFeedBack {
         this.feedback = feedback;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public Hotel getHotel() {
         return hotel;
     }
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

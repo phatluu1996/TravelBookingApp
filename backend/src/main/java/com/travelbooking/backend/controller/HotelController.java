@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -30,15 +32,16 @@ public class HotelController {
     private HotelRepository hotelRepository;
 
 
-    //http://localhost:8080/api/hotels/Search
-    @GetMapping("/hotels/Search")
-    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "address") Optional<String> address,
-                                         @RequestParam (required = false, name = "number_adult") Optional<Integer> number_adult,
-                                         @RequestParam (required = false, name = "number_children") Optional<Integer> number_children,
-                                        @RequestParam (required = false, name = "check_out_date") Optional<String> check_out_date,
-                                        @RequestParam (required = false, name = "check_in_date") Optional<String> check_in_date) {
-        Date currentUtilDate = new Date();
-        Specification<Hotel> spec = HotelSpecification.createSpecification(address,Boolean.FALSE,number_adult,number_children,check_out_date,check_in_date,currentUtilDate);
+    //http://localhost:8080/api/hotel
+    @GetMapping("/hotel")
+    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "location") Integer location,
+                                         @RequestParam (required = false, name = "number_adult") Integer number_adult,
+                                         @RequestParam (required = false, name = "number_children") Integer number_children,
+                                        @RequestParam (required = false, name = "check_in_date") String check_in_date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        Specification<Hotel> spec = HotelSpecification.createSpecification(location,Boolean.FALSE,number_adult,number_children,formatter.parse(check_in_date));
         return hotelRepository.findAll(spec);
     }
 
