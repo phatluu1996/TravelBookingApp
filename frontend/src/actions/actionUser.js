@@ -52,7 +52,6 @@ export const signup = (firstname, lastname, username, email, password) => async 
             payload: responseBody
         });        
     } catch (error) {
-        console.error(error);
         dispatch({
             type: SIGNUP_USER_ERROR,
             message: error

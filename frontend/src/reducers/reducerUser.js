@@ -35,6 +35,7 @@ const reducerUser = (state = initialState, action) => {
         message: action.message
       };
       return state;
+      
     case SIGNUP_USER_REQUEST:
       return {
         ...state,
@@ -53,6 +54,7 @@ const reducerUser = (state = initialState, action) => {
     case SIGNUP_USER_ERROR:
       state = {
         ...state,
+        success : false,
         requesting: false,
         message: action.message
       };

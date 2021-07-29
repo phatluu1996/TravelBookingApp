@@ -5,11 +5,13 @@ import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
+import Common from '../../../utils/Common';
 
 function LoginBox(props) {
 
     const history = useHistory();
     const [errLogin, setErrLogin] = useState(false);
+    const [isRequest, setIsRequest] = useState(false);
     const [error, setError] = useState({
         username: '',
         password: ''
@@ -39,18 +41,21 @@ function LoginBox(props) {
         var form = e.target;
         if (validateForm(e)) {
             props.doSignin(form.username.value, form.password.value);
+            setIsRequest(true);
         }
     }
 
     useEffect(() => {
         var mount = false;
         
-        if (props.user.message) {
+        if (props.user.message && isRequest) {
             setErrLogin(true);
         }
-        if (props.user.data) {
-            sessionStorage.setItem('user', props.user.data.username);
-            sessionStorage.setItem('userToken', props.user.data.accessToken);
+        if (props.user.data && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
+            Common.set1UserSession(props.user.data.accessToken, props.user.data.username);
+            history.push("/");
+        }
+        if(Common.getUser() && Common.getToken()){
             history.push("/");
         }
         return () => {

@@ -22,11 +22,11 @@ function SignUp() {
             {/* <Breadcrumb CurrentPgTitle="Sign Up" img={state.breadcrumbimg} /> */}
             <LoginBreadcrumb/>
 
-            <section className="form-shared padding-top-40px padding-bottom-100px">
+            <section className="form-shared padding-top-20px padding-bottom-20px">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">
-                            <SignUpBox title="Create an account!" subtitle="with your social network" />
+                            <SignUpBox title="Create new user account !" subtitle="be our member." />
                         </div>
                     </div>
                 </div>

@@ -75,8 +75,8 @@ public class FlightController {
     @GetMapping("/findFlights")
     public Collection<Flight> findFlights(@RequestParam Optional<String> from,
                                           @RequestParam Optional<String> to,
-                                          @RequestParam(required = false) Date departureDate,
-                                          @RequestParam(required = false) Date returnDate,
+                                          @RequestParam(required = false) String departureDate,
+                                          @RequestParam(required = false) String returnDate,
                                           @RequestParam(required = false) Integer adult,
                                           @RequestParam(required = false) Integer child,
                                           @RequestParam(required = false) Integer infant,

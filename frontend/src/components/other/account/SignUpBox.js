@@ -11,6 +11,7 @@ function SignUpBox(props) {
     const history = useHistory();
     const [statusSignup, setStatuSignup] = useState(false);
     const [messageSignup, setMessageSignup] = useState("");
+    const [isRequest, setIsRequest] = useState(false)
     const [isAlert, setIsAlert] = useState(false);
     const [validateError, setValidateError] = useState({
         firstName: '',
@@ -19,8 +20,8 @@ function SignUpBox(props) {
         email: '',
         password: '',
         confirmPassword: '',
-        agreePolicy:'',
-        errLogic:''
+        agreePolicy: '',
+        errLogic: ''
     });
 
     const getName = (name) => {
@@ -37,6 +38,8 @@ function SignUpBox(props) {
                 return "Password";
             case 'confirmPassword':
                 return "Confirm Password";
+            case 'agreePolicy':
+                return "Privacy Policy & Terms Agreement"
             default:
                 return "";
         }
@@ -47,57 +50,47 @@ function SignUpBox(props) {
 
         if (!form.firstName.value) {
             err.firstName = "First name is required!";
-        } else { 
-            if(!err.errLogic){
-                err.firstName = ""; 
-            }
+        } else {
+            err.firstName = "";
         }
 
         if (!form.lastName.value) {
             err.lastName = "Last name is required!";
-        } else { 
-            if(!err.errLogic){
-                err.lastName = ""; 
-            }
+        } else {
+            err.lastName = "";
         }
 
         if (!form.userName.value) {
             err.userName = "Username is required!";
-        } else { 
-            if(!err.errLogic){
-                err.userName = ""; 
-            }
+        } else {
+            err.userName = "";
         }
 
         if (!form.email.value) {
             err.email = "Email is required!";
-        } else { 
-            if(!err.errLogic){
-                err.email = ""; 
-            }
+        } else {
+            err.email = "";
         }
 
         if (!form.password.value) {
             err.password = "Password is required!";
-        } else { 
-            if(!err.errLogic){
-                err.password = ""; 
-            }
+        } else {
+            err.password = "";
         }
 
         if (!form.confirmPassword.value) {
             err.confirmPassword = "Confirm password is required!";
-        } else { 
-            if(!err.errLogic){
-                err.confirmPassword = ""; 
-            }
+        } else {
+            err.confirmPassword = "";
         }
 
-        if (!form.policy.isChecked){
-            err.agreePolicy = "Agree Policy is required!";
-        }else{ err.agreePolicy = '';}
+        if (!form.agreePolicy.checked) {
+            err.agreePolicy = "Privacy Policy & Terms Agreement is required !";
+        } else {
+            err.agreePolicy = "";
+        }
 
-        if (err.firstName || err.lastName || err.userName || err.email || err.password || err.confirmPassword) {
+        if (err.firstName || err.lastName || err.userName || err.email || err.password || err.confirmPassword || err.agreePolicy) {
             setValidateError(err);
             return false;
         }
@@ -105,37 +98,45 @@ function SignUpBox(props) {
     }
 
     const handleChange = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         const err = { ...validateError };
 
-        if (!e.target.value) {
-            err[e.target.name] = `${getName(e.target.name)} is required`;
-        } else { err[e.target.name] = ""; }
+        if (e.target.type !== "checkbox") {
+            if (!e.target.value) {
+                err[e.target.name] = `${getName(e.target.name)} is required !`;
+            } else {
+                err[e.target.name] = "";
+            }
+        } else {
+            if (!e.target.checked) {
+                err[e.target.name] = `${getName(e.target.name)} is required !`;
+            } else {
+                err[e.target.name] = "";
+            }
+        }
 
-        if(e.target.name === "email" && e.target.value){
-            let regex =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-            if(!regex.test(e.target.value)){
+
+        if (e.target.name === "email" && e.target.value) {
+            let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!regex.test(e.target.value)) {
                 err.email = "Email is invalid.";
-                err.errLogic = "email";
-            }else{err.email = "";}
+                // err.errLogic = "email";
+            } else { err.email = ""; }
         }
 
-        if(e.target.name === "password" && e.target.value){
+        if (e.target.name === "password" && e.target.value) {
             let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
-            if(!regex.test(e.target.value)){
+            if (!regex.test(e.target.value)) {
                 err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
-                err.errLogic = "password";
-            }else{err.password = "";}
+            } else { err.password = ""; }
         }
 
-        if(e.target.name === "confirmPassword" && e.target.value){
-            if(e.target.value !== document.getElementById('password').value){
+        if (e.target.name === "confirmPassword" && e.target.value) {
+            if (e.target.value !== e.target.form.password.value) {
                 err.confirmPassword = "Password must match!";
-                err.errLogic = "confirmPassword";
-            }else{err.confirmPassword = "";}
-        }
-        if (!err.firstName && !err.lastName && !err.userName && !err.email && !err.password && !err.confirmPassword) {
-            err.errLogic = "";
+            } else {
+                err.confirmPassword = "";
+            }
         }
         setValidateError(err);
     }
@@ -145,32 +146,43 @@ function SignUpBox(props) {
         var form = e.target;
         if (validateForm(e)) {
             props.doSignup(form.firstName.value, form.lastName.value, form.userName.value, form.email.value, form.password.value);
+            setIsRequest(true);
         }
     }
 
     useEffect(() => {
         var mount = false;
-        
-        if (props.user.data) {
-            if(!props.user.data.success){
-                setStatuSignup(false);
+
+        console.log(props);
+        if(props.user.data && isRequest){
+            if(props.user.data.success){
+                setStatuSignup(true);
                 setIsAlert(true);
                 setMessageSignup(props.user.data.message);
             }else{
-                setStatuSignup(true);
+                setStatuSignup(false);
                 setIsAlert(true);
                 setMessageSignup(props.user.data.message);
             }
         }else{
+            setStatuSignup(false);
             setIsAlert(false);
-        }
+        }        
+
         return () => {
             mount = true;
         }
-    });
+    }, [props]);
 
     return (
         <>
+            {statusSignup ? (<div className="billing-form-item">
+                {statusSignup && isAlert && <div className="col-lg-12 mt-3">
+                    <div className="alert alert-success">
+                        {messageSignup} <strong className="btn" onClick={(e) => history.push("/login")}>Sign In</strong>
+                    </div>
+                </div>}
+            </div>):(
             <div className="billing-form-item mb-0">
                 <div className="billing-title-wrap border-bottom-0 pr-0 pl-0 pb-0 text-center">
                     <h3 className="widget-title font-size-28 pb-0">
@@ -266,19 +278,14 @@ function SignUpBox(props) {
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <div className="custom-checkbox d-block mr-0">
-                                        <input type="checkbox" id="chb13" name='policy' className={`${validateError.agreePolicy ? 'is-invalid' : ''}`}/>
+                                        <input type="checkbox" id="chb13" name='agreePolicy' className={`${validateError.agreePolicy ? 'is-invalid' : ''}`} onChange={handleChange} />
                                         <label htmlFor="chb13">I Agree to Dirto's <Link to="#" className="color-text">Privacy Policy</Link> & <Link to="#" className="color-text">Terms of Services</Link></label>
                                         <div className="invalid-feedback">{validateError.agreePolicy}</div>
                                     </div>
                                 </div>
                             </div>
-                            {statusSignup === false && isAlert && <div className="col-lg-12 margin-top-10px">
+                            {isAlert && <div className="col-lg-12 margin-top-10px">
                                 <div className="alert alert-danger">
-                                    {messageSignup}
-                                </div>
-                            </div>}
-                            {statusSignup && isAlert && <div className="col-lg-12 margin-top-10px">
-                                <div className="alert alert-success">
                                     {messageSignup}
                                 </div>
                             </div>}
@@ -297,7 +304,7 @@ function SignUpBox(props) {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div>)}
         </>
     );
 }
