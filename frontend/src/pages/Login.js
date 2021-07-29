@@ -15,12 +15,12 @@ function Login() {
     return (
         <main className="login-page">
             {/* Header */}
-            <GeneralHeader className="mb-5"/>
+            <GeneralHeader/>
 
             {/* Breadcrumb */}
-            {/* <LoginBreadcrumb CurrentPgTitle="Login" img={"https://besthqwallpapers.com/Uploads/17-12-2017/33761/thumb2-halong-bay-4k-ocean-summer-vietnam.jpg"} /> */}
+            <LoginBreadcrumb img={"https://besthqwallpapers.com/Uploads/17-12-2017/33761/thumb2-halong-bay-4k-ocean-summer-vietnam.jpg"} />
 
-            <section className="form-shared padding-bottom-80px padding-top-100px margin-top-80px">
+            <section className="form-shared padding-bottom-80px mt-5">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 mx-auto">

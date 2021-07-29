@@ -1,18 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SignInOptions from "./SignInOptions";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
 
 function LoginBox(props) {
+
+    const history = useHistory();
+    const [errLogin, setErrLogin] = useState(false);
+    const [error, setError] = useState({
+        username: '',
+        password: ''
+    });
+
+    const validateForm = (e) => {
+        var form = e.target;
+        const err = { ...error };
+
+        if (!form.username.value) {
+            err.username = 'User name is required.';
+        }else{err.username = "";}
+        
+        if (!form.password.value) {
+            err.password = 'Password is required.';
+        }else{err.password = "";}
+
+        if (err.username || err.password) {
+            setError(err);
+            return false;
+        }
+        return true;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(props);
         var form = e.target;
-        props.doSignin(form.username.value, form.password.value);
+        if (validateForm(e)) {
+            props.doSignin(form.username.value, form.password.value);
+        }
     }
+
+    useEffect(() => {
+        var mount = false;
+        
+        if (props.user.message) {
+            setErrLogin(true);
+        }
+        if (props.user.data) {
+            sessionStorage.setItem('user', props.user.data.username);
+            sessionStorage.setItem('userToken', props.user.data.accessToken);
+            history.push("/");
+        }
+        return () => {
+            mount = true;
+        }
+    });
+
     return (
         <>
             <div className="billing-form-item mb-0">
@@ -30,23 +75,25 @@ function LoginBox(props) {
                             <div className="form-row">
                                 <div className="col-lg-12">
                                     <div className="form-group">
-                                        <label className="label-text" style={{color: "#333f57"}}>Username, or email</label>         
+                                        <label className="label-text" style={{ color: "#333f57" }}>Username</label>
                                         <div className="input-group">
                                             <div className="input-group-prepend">
                                                 <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faUser} /></span>
                                             </div>
-                                            <input name='username' type="text" className="form-control"/>
+                                            <input name='username' type="text" className={`form-control ${error.username ? 'is-invalid' : ''}`} />
+                                            <div className="invalid-feedback">{error.username}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
                                     <div className="form-group">
-                                        <label className="label-text" style={{color: "#333f57"}}>Password</label>
+                                        <label className="label-text" style={{ color: "#333f57" }}>Password</label>
                                         <div className="input-group">
                                             <div className="input-group-prepend">
                                                 <span className="input-group-text" id="basic-addon1"><FontAwesomeIcon icon={faLock} /></span>
                                             </div>
-                                            <input name='password' type="password" className="form-control"/>
+                                            <input name='password' type="password" className={`form-control ${error.password ? 'is-invalid' : ''}`} />
+                                            <div className="invalid-feedback">{error.password}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -68,8 +115,13 @@ function LoginBox(props) {
                                 <div className="col-lg-12">
                                     <p className="font-weight-medium">Not a member? <Link to="/sign-up" className="color-text"> Register</Link></p>
                                 </div>
+                                {errLogin && <div className="col-lg-12 margin-top-10px">
+                                    <div className="alert alert-danger">
+                                        <strong>Login fail!</strong> Wrong username or password.
+                                    </div>
+                                </div>}
                                 <div className="col-lg-12">
-                                    <div className="btn-box margin-top-20px">
+                                    <div className="btn-box margin-top-10px">
                                         <button className="theme-btn border-0 w-100" type="submit">
                                             Login now
                                         </button>
@@ -93,7 +145,7 @@ function LoginBox(props) {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        user : state.user,
+        user: state.user,
     };
 };
 
@@ -101,8 +153,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         doSignin: (username, password) => {
             dispatch(signin(username, password))
-        },        
-        
+        },
+
     };
 };
 

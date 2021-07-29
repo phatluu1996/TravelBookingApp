@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface AirlineRepository extends JpaRepository<Airline, Long>, JpaSpecificationExecutor {
     Boolean existsByEmail(String email);
+    Airline getByAccountId(Long id);
 }

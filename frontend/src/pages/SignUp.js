@@ -7,6 +7,7 @@ import Footer from "../components/common/footer/Footer";
 import ScrollTopBtn from "../components/common/ScrollTopBtn";
 import breadcrumbimg from '../assets/images/bread-bg.jpg'
 import sectiondata from "../store/store";
+import LoginBreadcrumb from '../components/common/LoginBreadcrumb';
 
 const state = {
     breadcrumbimg: breadcrumbimg,
@@ -18,7 +19,8 @@ function SignUp() {
             <GeneralHeader />
 
             {/* Breadcrumb */}
-            <Breadcrumb CurrentPgTitle="Sign Up" img={state.breadcrumbimg} />
+            {/* <Breadcrumb CurrentPgTitle="Sign Up" img={state.breadcrumbimg} /> */}
+            <LoginBreadcrumb/>
 
             <section className="form-shared padding-top-40px padding-bottom-100px">
                 <div className="container">
