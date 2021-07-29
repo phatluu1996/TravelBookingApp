@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { logout, isLogin } from '../utils';
 import { Link } from 'react-router-dom';
 import Header from './Layout/Header';
 import Footer from './Layout/Footer';
 
 const Home = () => {
-    const handleLogout = () => {
-        logout();
-        this.setState({
-            isLogin: false
-        })
+    const handleSubmit = () => {
+
     }
 
     return (<>
@@ -54,6 +50,8 @@ const Home = () => {
                 </div>
 
             </div>
+
+
 
             <div className="wrapper-a-holder full-width-search">
                 <div className="wrapper-a">
@@ -216,7 +214,7 @@ const Home = () => {
                                     </footer>
                                 </form>
 
-                                <form className="search-tab-content">
+                                <form onSubmit={handleSubmit} className="search-tab-content">
                                     <div className="page-search-p">
 
                                         <div className="search-large-i">

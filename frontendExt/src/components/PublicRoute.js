@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { isLogin } from '../utils';
+import Common from '../utils/Common';
 
 const PublicRoute = ({component: Component, restricted, ...rest}) => {
     return (
         <Route {...rest} render={props => (
-            isLogin() && restricted ?
+            Common.getUser() && Common.getToken() && restricted ?
                 <Redirect to="/dashboard" />
             : <Component {...props} />
         )} />
