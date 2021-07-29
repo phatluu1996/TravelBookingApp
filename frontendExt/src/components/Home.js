@@ -2,10 +2,120 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Layout/Header';
 import Footer from './Layout/Footer';
+import { connect } from 'react-redux';
+import { fetchFlight } from '../actions/actionFlight';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlaneArrival, faPlaneDeparture, faCalendar, faRetweet, faSearch, faUserFriends, faChild, faBaby, faMale, faChair } from '@fortawesome/free-solid-svg-icons'
+import { useEffect } from 'react';
 
-const Home = () => {
-    const handleSubmit = () => {
+const Home = (props) => {
+    const province = {
+        properties: [
+            {
+                value: '',
+                label: '--'
+            },
+            {
+                value: 'SGN',
+                label: 'TP.HCM'
+            }, {
+                value: 'HAN',
+                label: 'Hà Nội'
+            }, {
+                value: 'DAD',
+                label: 'Đà Nẵng'
+            }, {
+                value: 'CXR',
+                label: 'Nha Trang'
+            }, {
+                value: 'DLI',
+                label: 'Đà Lạt'
+            }, {
+                value: 'PQC',
+                label: 'Phú Quốc'
+            }, {
+                value: 'VCA',
+                label: 'Cần Thơ'
+            }, {
+                value: 'VCS',
+                label: 'Côn Đảo'
+            }, {
+                value: 'VKG',
+                label: 'Rạch Giá'
+            }, {
+                value: 'CAH',
+                label: 'Cà Mau'
+            }, {
+                value: 'BMV',
+                label: 'Buôn Ma Thuộc'
+            }, {
+                value: 'UIH',
+                label: 'Quy Nhơn'
+            }, {
+                value: 'THD',
+                label: 'Thanh Hóa'
+            }, {
+                value: 'VII',
+                label: 'Vinh'
+            }, {
+                value: 'HUI',
+                label: 'Huế'
+            }, {
+                value: 'VDH',
+                label: 'Đồng Hới'
+            }, {
+                value: 'TBB',
+                label: 'Tuy Hòa'
+            }, {
+                value: 'VCL',
+                label: 'Chu Lai'
+            }, {
+                value: 'PXU',
+                label: 'Pleiku'
+            }, {
+                value: 'HPH',
+                label: 'Hải Phòng'
+            }, {
+                value: 'DIN',
+                label: 'Điện Biên'
+            }, {
+                value: 'VDO',
+                label: 'Vân Đồn'
+            }
+        ]
+    }
 
+    const seatClass = {
+        properties: [
+            {
+                value: 'ECONOMY',
+                label: 'Economy'
+            },
+            {
+                value: 'BUSINESS',
+                label: 'Business'
+            }
+        ]
+    }
+
+    const swapCity = () => {
+
+    }
+
+    useEffect(() => {
+        let mount = false;
+        console.log(props.flights.data);
+        return () => {
+            mount = true;
+        }
+    }, [props])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(props);
+        var form = e.target;
+        props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
+        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
     }
 
     return (<>
@@ -60,7 +170,7 @@ const Home = () => {
                     <div className="page-search full-width-search search-type-b">
                         <div className="search-type-padding">
                             <nav className="page-search-tabs">
-                                <div className="search-tab active">Hotels</div>        
+                                <div className="search-tab active">Hotels</div>
                                 <div className="search-tab ">FLights</div>
                                 <div className="clear"></div>
                             </nav>
@@ -219,65 +329,20 @@ const Home = () => {
 
                                         <div className="search-large-i">
 
-                                            <div className="srch-tab-line no-margin-bottom">
-                                                <div className="srch-tab-left">
-                                                    <label>From</label>
-                                                    <div className="input-a"><input type="text"
-                                                        placeholder="Austria, vienna" /></div>
-                                                </div>
-                                                <div className="srch-tab-right">
-                                                    <label>to</label>
-                                                    <div className="input-a"><input type="text" placeholder="--" /></div>
-                                                </div>
-                                                <div className="clear"></div>
-                                            </div>
-
-                                        </div>
-
-
-                                        <div className="search-large-i">
-
-                                            <div className="srch-tab-line no-margin-bottom">
-                                                <div className="srch-tab-left">
-                                                    <label>Departure</label>
-                                                    <div className="input-a"><input type="text" className="date-inpt"
-                                                        placeholder="mm/dd/yy" /> <span className="date-icon"></span></div>
-                                                </div>
-                                                <div className="srch-tab-right">
-                                                    <label>arrivals</label>
-                                                    <div className="input-a"><input type="text" className="date-inpt"
-                                                        placeholder="mm/dd/yy" /> <span className="date-icon"></span></div>
-                                                </div>
-                                                <div className="clear"></div>
-                                            </div>
-
-                                        </div>
-
-
-                                        <div className="search-large-i">
-
-                                            <div className="srch-tab-line no-margin-bottom">
+                                            <div className="srch-tab-line">
                                                 <div className="srch-tab-left transformed">
-                                                    <label>Peoples</label>
+                                                    <label>From</label>
                                                     <div className="select-wrapper">
-                                                        <select className="custom-select">
-                                                            <option>--</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
+                                                        <select className="custom-select" name="from" id="departure-city">
+                                                            {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="srch-tab-right transformed">
-                                                    <label>className </label>
+                                                    <label>To</label>
                                                     <div className="select-wrapper">
-                                                        <select className="custom-select">
-                                                            <option>--</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
+                                                        <select className="custom-select" name="to" id="arrival-city">
+                                                            {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -285,6 +350,89 @@ const Home = () => {
                                             </div>
 
                                         </div>
+
+                                        <div className="search-large-i">
+
+                                            <div className="srch-tab-line">
+                                                <div className="srch-tab-left">
+                                                    <label>Departure</label>
+                                                    <div className="input-a"><input type="text" className="date-inpt" name="departureDate" id="departureDate"
+                                                        placeholder="mm/dd/yy" /> <span className="date-icon"></span></div>
+                                                </div>
+                                                <div className="srch-tab-right">
+                                                    <label>arrivals</label>
+                                                    <div className="input-a"><input type="text" className="date-inpt" name="returnDate" id="returnDate"
+                                                        placeholder="mm/dd/yy" /> <span className="date-icon"></span></div>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="search-large-i">
+
+                                            <div className="srch-tab-line">
+                                                <div className="srch-tab-3c">
+                                                    <label>Adult</label>
+                                                    {/* <div className="select-wrapper">
+                                                        <select name="adult" className="custom-select">
+                                                            <option>--</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                        </select>
+                                                    </div> */}
+                                                    <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7"/></div>
+                                                </div>
+                                                <div className="srch-tab-3c">
+                                                    <label>Child</label>
+                                                    {/* <div className="select-wrapper">
+                                                        <select name="child" className="custom-select">
+                                                            <option>--</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                        </select>
+                                                    </div> */}
+                                                    <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6"/></div>
+                                                </div>
+                                                <div className="srch-tab-3c">
+                                                    <label>Infant</label>
+                                                    {/* <div className="select-wrapper">
+                                                        <select name="infant" className="custom-select">
+                                                            <option>--</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                        </select>
+                                                    </div> */}
+                                                    <div className="input-a"><input name="infant" type="number" defaultValue={0} max="6"/></div>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="search-large-i mt-2">
+                                            <div className="srch-tab-line">
+                                                <div className="srch-tab-left">
+                                                    <label>className </label>
+                                                    <div className="select-wrapper">
+                                                        <select className="custom-select" name="seatClass" id="seatClass">
+                                                            {seatClass.properties.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="clear"></div>
+                                        </div>
+
+
+
+
 
                                         <div className="clear"></div>
 
@@ -348,7 +496,8 @@ const Home = () => {
 
                                     </div>
                                     <footer className="search-footer">
-                                        <button className="srch-btn">Search</button>
+                                        {/* <button onClick={swapCity} className="btn btn-circle rotate"><FontAwesomeIcon icon={faRetweet} color="#FFFFFF" /></button> */}
+                                        <button type="submit" className="srch-btn">Search</button>
                                         <span className="srch-lbl">Advanced Search options</span>
                                         <div className="clear"></div>
                                     </footer>
@@ -1035,4 +1184,19 @@ const Home = () => {
     );
 };
 
-export default Home;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        flights: state.flight,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getFlight: (from, to, adult, child, infant, ddate, rdate, seatClass) => {
+            dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatClass))
+        },
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

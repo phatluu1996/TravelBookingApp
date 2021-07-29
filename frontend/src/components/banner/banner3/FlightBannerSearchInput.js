@@ -220,7 +220,7 @@ function FlightBannerSearchInput(props) {
                             </select>
                         </div>
                     </div>
-                    <div className="form-group col mt-2">
+                    <div className="form-group col">
                         <label htmlFor="search-button" className="font-weight-bold text-secondary"></label>
                         <div className="input-group">
                             <button className="btn btn-primary" type="submit"><FontAwesomeIcon icon={faSearch} color="#ffff" id="search-button"/> Search Flights</button>

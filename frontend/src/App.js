@@ -95,6 +95,7 @@ const App = () => {
             <AppRoute path="/blog-left-sidebar" component={BlogLeftSidebar} />
             <AppRoute path="/blog-right-sidebar" component={BlogRightSidebar} />
             <AppRoute path="/blog-single" component={BlogDetail} />
+            
             <AppRoute path="/login" component={Login} />
             <AppRoute path="/sign-up" component={SignUp} />
 

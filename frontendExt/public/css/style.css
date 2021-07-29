@@ -456,6 +456,15 @@ button.srch-btn {cursor: pointer; font-family: 'Montserrat'; font-size:11px; fon
     text-transform:uppercase;
 }
 
+.input-a input[type='number'] {
+	width:100%;
+	border:0px; 
+	background:transparent;
+    font-family: "Raleway";
+    font-size: 11px;
+    text-transform:uppercase;
+}
+
 .textarea-a {
  	padding:7px 7px 7px 7px;
  	background: #fff none repeat scroll 0 0;
@@ -3230,4 +3239,31 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
     }
 }
 
+.btn-circle {
+  width: fit-content;
+  height: fit-content;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+  color: #006eff;
+}
+
+.rotate{
+  -moz-transition: all 0.15s linear;
+  -webkit-transition: all 0.15s linear;
+  transition: all 0.15s linear;
+}
+
+.rotate.click{
+  -ms-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.mt-2{
+  margin-top: 20px;
+}
 
