@@ -2,9 +2,11 @@ package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.Account;
 import com.travelbooking.backend.models.Airline;
+import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.models.User;
 import com.travelbooking.backend.repository.AccountRepository;
 import com.travelbooking.backend.repository.AirlineRepository;
+import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.repository.UserRepository;
 import com.travelbooking.backend.security.jwt.JwtUtils;
 import com.travelbooking.backend.security.payload.request.LoginRequest;
@@ -41,8 +43,8 @@ public class AuthController {
     @Autowired
     AirlineRepository airlineRepository;
 
-//    @Autowired
-//    HotelRepository hotelRepository;
+    @Autowired
+    HotelRepository hotelRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -68,11 +70,11 @@ public class AuthController {
         if(roles.get(0).equals("ROLE_ADMIN")){
             headerName = "Admin";
         }else if (roles.get(0).equals("ROLE_AIRLINE")){
-            headerName = airlineRepository.getById(userDetails.getId()).getAirlineName();
-//        }else if(roles.get(0).equals("ROLE_HOTEL")){
-//            headerName = hotelRepository.getById(userDetails.getId()).getHotelName();
+            headerName = airlineRepository.getByAccountId(userDetails.getId()).getAirlineName();
+        }else if(roles.get(0).equals("ROLE_HOTEL")){
+            headerName = hotelRepository.getByAccountId(userDetails.getId()).getHotelName();
         }else {
-            User tpUser = userRepository.getById(userDetails.getId());
+            User tpUser = userRepository.getByAccountId(userDetails.getId());
             headerName = tpUser.getFirstName() + " " + tpUser.getLastName();
         }
 
@@ -87,19 +89,14 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (accountRepository.existsByUserName(signUpRequest.getUsername())) {
             return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-        if (signUpRequest.getEmail() == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Missing Email!"));
+                    .ok()
+                    .body(new MessageResponse("Username is already in use!", false));
         }
 
         // Create new user's account
         User user;
         Airline airline;
-//        Hotel hotel;
+        Hotel hotel;
 
         Account account = new Account(signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword())
@@ -108,8 +105,8 @@ public class AuthController {
         String strRoles = signUpRequest.getRole();
         if (strRoles == null) {
             return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Role is not found."));
+                    .ok()
+                    .body(new MessageResponse("Role is not found.",false));
         } else {
             switch (strRoles.toLowerCase()) {
                 case "admin":
@@ -123,10 +120,10 @@ public class AuthController {
                     airline = new Airline();
                     airline.setAirlineName(signUpRequest.getAirlineName());
 
-                    if (airlineRepository.existsByEmail(signUpRequest.getEmail())) {
+                    if (airlineRepository.existsByEmail(signUpRequest.getEmail())){
                         return ResponseEntity
-                                .badRequest()
-                                .body(new MessageResponse("Error: Email is already in use!"));
+                                .ok()
+                                .body(new MessageResponse("Email is already in use!", false));
                     }else {
                         airline.setEmail(signUpRequest.getEmail());
                         airline.setAccount(account);
@@ -137,19 +134,19 @@ public class AuthController {
                 case "hotel":
                     account.setRole("HOTEL");
 
-//                    hotel = new Hotel();
-//                    hotel.setHotelName(signUpRequest.getHotelName);
+                    hotel = new Hotel();
+                    hotel.setHotelName(signUpRequest.getHotelName());
 
-//                    if (hotelRepository.existsByEmail(signUpRequest.getEmail())) {
-//                        return ResponseEntity
-//                                .badRequest()
-//                                .body(new MessageResponse("Error: Email is already in use!"));
-//                    }else {
-//                        hotel.setEmail(signUpRequest.getEmail());
-//                        hotel.setAccount(account);
+                    if (hotelRepository.existsByEmail(signUpRequest.getEmail())){
+                        return ResponseEntity
+                                .ok()
+                                .body(new MessageResponse("Email is already in use!", false));
+                    }else {
+                        hotel.setEmail(signUpRequest.getEmail());
+                        hotel.setAccount(account);
                         accountRepository.save(account);
-//                        hotelRepository.save(hotel);
-//                    }
+                        hotelRepository.save(hotel);
+                    }
                     break;
                 case "user":
                     account.setRole("USER");
@@ -160,8 +157,8 @@ public class AuthController {
 
                     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                         return ResponseEntity
-                                .badRequest()
-                                .body(new MessageResponse("Error: Email is already in use!"));
+                                .ok()
+                                .body(new MessageResponse("Email is already in use!",false));
                     }else {
                         user.setEmail(signUpRequest.getEmail());
                         user.setAccount(account);
@@ -171,11 +168,11 @@ public class AuthController {
                     break;
                 default:
                     return ResponseEntity
-                            .badRequest()
-                            .body(new MessageResponse("Error: Role is not found."));
+                            .ok()
+                            .body(new MessageResponse("Role is not found.",false));
             }
         }
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!", true));
     }
 }

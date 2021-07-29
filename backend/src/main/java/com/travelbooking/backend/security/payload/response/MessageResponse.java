@@ -2,9 +2,11 @@ package com.travelbooking.backend.security.payload.response;
 
 public class MessageResponse {
     private String message;
+    private boolean isSuccess;
 
-    public MessageResponse(String message) {
+    public MessageResponse(String message, boolean isSuccess) {
         this.message = message;
+        this.isSuccess = isSuccess;
     }
 
     public String getMessage() {
@@ -13,5 +15,13 @@ public class MessageResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
     }
 }
