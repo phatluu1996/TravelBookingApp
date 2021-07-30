@@ -1,42 +1,23 @@
 import React, { Component } from 'react';
 import HeaderViewed from './Header/HeaderViewed';
+import Login from './Header/Login';
+import Register from './Header/Register';
 
 const Header = () => {
+    
     return (<>
         <div className="overlay"></div>
         <div className="autorize-popup">
             <div className="autorize-tabs">
-                <a href="#" className="autorize-tab-a current">Sign in</a>
-                <a href="#" className="autorize-tab-b">Register</a>
-                <a href="#" className="autorize-close"></a>
+                <a className="autorize-tab-a current">Sign in</a>
+                <a className="autorize-tab-b">Register</a>
+                <a className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            <section className="autorize-tab-content">
-                <div className="autorize-padding">
-                    <h6 className="autorize-lbl">Welocome! Login in to Your Accont</h6>
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Password" />
-                    <footer className="autorize-bottom">
-                        <button className="authorize-btn">Login</button>
-                        <a href="#" className="authorize-forget-pass">Forgot your password?</a>
-                        <div className="clear"></div>
-                    </footer>
-                </div>
-            </section>
-            <section className="autorize-tab-content">
-                <div className="autorize-padding">
-                    <h6 className="autorize-lbl">Register for Your Account</h6>
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Password" />
-                    <footer className="autorize-bottom">
-                        <button className="authorize-btn">Registration</button>
-                        <div className="clear"></div>
-                    </footer>
-                </div>
-            </section>
+            <Login/>
+            <Register/>
         </div>
-
-
+        
         <header id="top">
             <div className="header-a">
                 <div className="wrapper-padding">
