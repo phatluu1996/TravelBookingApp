@@ -169,7 +169,6 @@ const Home = (props) => {
         // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
         document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=0`;
     };
-
     const handleSubmit2 = (e) => {
         e.preventDefault();
         // console.log(props);

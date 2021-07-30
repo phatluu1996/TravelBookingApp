@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderViewed from './Header/HeaderViewed';
+import PopupLogin from './Header/PopupLogin';
 
 const Header = () => {
     return (<>
@@ -8,33 +9,11 @@ const Header = () => {
         <div className="autorize-popup">
             <div className="autorize-tabs">
                 <a href="#" className="autorize-tab-a current">Sign in</a>
-                <a href="#" className="autorize-tab-b">Register</a>
+                <a href="#" className="autorize-tab-b"></a>
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            <section className="autorize-tab-content">
-                <div className="autorize-padding">
-                    <h6 className="autorize-lbl">Welocome! Login in to Your Accont</h6>
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Password" />
-                    <footer className="autorize-bottom">
-                        <button className="authorize-btn">Login</button>
-                        <a href="#" className="authorize-forget-pass">Forgot your password?</a>
-                        <div className="clear"></div>
-                    </footer>
-                </div>
-            </section>
-            <section className="autorize-tab-content">
-                <div className="autorize-padding">
-                    <h6 className="autorize-lbl">Register for Your Account</h6>
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Password" />
-                    <footer className="autorize-bottom">
-                        <button className="authorize-btn">Registration</button>
-                        <div className="clear"></div>
-                    </footer>
-                </div>
-            </section>
+            <PopupLogin/>
         </div>
 
 
@@ -107,26 +86,8 @@ const Header = () => {
                                 </ul>
                             </li>
                             <li><a className="has-child" href="#">Airline</a>
-                                    <ul>
-                                        <li><a href="/airline">Airline Profile</a></li>
-                                    </ul>
-                                </li>
-                            <li><a className="has-child" href="#">Tours</a>
                                 <ul>
-                                    <li><a href="tour_alternative.html">Tours list style</a></li>
-                                    <li><a href="tour_grid.html">tours grid style</a></li>
-                                    <li><a href="tour_simple.html">Tours simple style</a></li>
-                                    <li><a href="tour_detail.html">Tour detail page</a></li>
-                                    <li><a href="tour_booking.html">tour booking page</a></li>
-                                    <li><a href="booking_complete.html">booking complete</a></li>
-                                </ul>
-                            </li>
-                            <li><a className="has-child" href="#">Pages</a>
-                                <ul>
-                                    <li><a href="about_us.html">about us style one</a></li>
-
-                                    <li><a href="services.html">services</a></li>
-                                    <li><a href="contacts.html">contact us</a></li>
+                                    <li><a href="/airline">Airline Profile</a></li>
                                 </ul>
                             </li>
                             <li><a className="has-child" href="#">Portfolio</a>

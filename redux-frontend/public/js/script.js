@@ -178,11 +178,12 @@ $(document).ready(function(){
 			$('.autorize-popup').animate({top: '-300px'}, 300, function(){
 				$('.overlay').fadeOut();	
 			});
-		} else {
-			var $index = $(this).index();
-			$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
-			$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
-		}
+		} 
+		// else {
+		// 	var $index = $(this).index();
+		// 	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
+		// 	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
+		// }
 		return false;
 	});
 
