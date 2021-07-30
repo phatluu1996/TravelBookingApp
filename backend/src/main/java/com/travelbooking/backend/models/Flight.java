@@ -64,25 +64,25 @@ public class Flight {
     @Temporal(TemporalType.DATE)
     private Date dateOfDeparture;
 
-    @Column(name = "retired",nullable = true)
+    @Column(name = "retired", nullable = true)
     private boolean retired;
 
-    @Column(name = "economy_baggage",nullable = true)
+    @Column(name = "economy_baggage", nullable = true)
     private Float economyBaggage;
 
-    @Column(name = "business_baggage",nullable = true)
+    @Column(name = "business_baggage", nullable = true)
     private Float businessBaggage;
 
-    @Column(name = "economy_cabin_baggage",nullable = true) //Xách tay
+    @Column(name = "economy_cabin_baggage", nullable = true) //Xách tay
     private Float economyCabinBaggage;
 
-    @Column(name = "business_cabin_baggage",nullable = true)
+    @Column(name = "business_cabin_baggage", nullable = true)
     private Float businessCabinBaggage;
 
-    @Column(name = "has_entertainment",nullable = true)
+    @Column(name = "has_entertainment", nullable = true)
     private Boolean hasEntertainment;
 
-    @Column(name = "aircraft_type",nullable = true)
+    @Column(name = "aircraft_type", nullable = true)
     private String aircraftType;
 
     public Flight() {
@@ -112,38 +112,6 @@ public class Flight {
         this.businessCabinBaggage = businessCabinBaggage;
         this.hasEntertainment = hasEntertainment;
         this.aircraftType = aircraftType;
-    }
-
-    public Float getInfant_price() {
-        return infant_price;
-    }
-
-    public void setInfant_price(Float infant_price) {
-        this.infant_price = infant_price;
-    }
-
-    public Float getChild_price() {
-        return child_price;
-    }
-
-    public void setChild_price(Float child_price) {
-        this.child_price = child_price;
-    }
-
-    public Date getDateOfDeparture() {
-        return dateOfDeparture;
-    }
-
-    public void setDateOfDeparture(Date dateOfDeparture) {
-        this.dateOfDeparture = dateOfDeparture;
-    }
-
-    public boolean isRetired() {
-        return retired;
-    }
-
-    public void setRetired(boolean retired) {
-        this.retired = retired;
     }
 
     public Long getId() {
@@ -210,11 +178,11 @@ public class Flight {
         this.description = description;
     }
 
-    public int getEconomyCapacity() {
+    public Integer getEconomyCapacity() {
         return economyCapacity;
     }
 
-    public void setEconomyCapacity(int economyCapacity) {
+    public void setEconomyCapacity(Integer economyCapacity) {
         this.economyCapacity = economyCapacity;
     }
 
@@ -226,11 +194,27 @@ public class Flight {
         this.economyPrice = economyPrice;
     }
 
-    public int getBusinessCapacity() {
+    public Float getInfant_price() {
+        return infant_price;
+    }
+
+    public void setInfant_price(Float infant_price) {
+        this.infant_price = infant_price;
+    }
+
+    public Float getChild_price() {
+        return child_price;
+    }
+
+    public void setChild_price(Float child_price) {
+        this.child_price = child_price;
+    }
+
+    public Integer getBusinessCapacity() {
         return businessCapacity;
     }
 
-    public void setBusinessCapacity(int businessCapacity) {
+    public void setBusinessCapacity(Integer businessCapacity) {
         this.businessCapacity = businessCapacity;
     }
 
@@ -250,12 +234,20 @@ public class Flight {
         this.status = status;
     }
 
-    public void setEconomyCapacity(Integer economyCapacity) {
-        this.economyCapacity = economyCapacity;
+    public Date getDateOfDeparture() {
+        return dateOfDeparture;
     }
 
-    public void setBusinessCapacity(Integer businessCapacity) {
-        this.businessCapacity = businessCapacity;
+    public void setDateOfDeparture(Date dateOfDeparture) {
+        this.dateOfDeparture = dateOfDeparture;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 
     public Float getEconomyBaggage() {
