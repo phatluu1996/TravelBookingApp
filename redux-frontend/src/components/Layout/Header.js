@@ -160,7 +160,7 @@ const Header = () => {
 
 
                 <div className="wrapper-padding">
-                    <div className="header-logo"><Link to="/"><img alt="" src="img/logo.png" /></Link></div>
+                    <div className="header-logo"><a href="/"><img alt="" src="img/logo.png" /></a></div>
                     <div className="header-right">
                         <div className="hdr-srch">
                             <a href="#" className="hdr-srch-btn"></a>

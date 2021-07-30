@@ -9,6 +9,10 @@ import com.travelbooking.backend.specification.FlightSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -73,17 +77,27 @@ public class FlightController {
     }
 
     @GetMapping("/findFlights")
-    public Collection<Flight> findFlights(@RequestParam Optional<String> from,
+    public Page<Flight> findFlights(@RequestParam Optional<String> from,
                                           @RequestParam Optional<String> to,
                                           @RequestParam(required = false) String departureDate,
                                           @RequestParam(required = false) String returnDate,
                                           @RequestParam(required = false) Integer adult,
                                           @RequestParam(required = false) Integer child,
                                           @RequestParam(required = false) Integer infant,
-                                          @RequestParam(required = false) String seatClass
+                                          @RequestParam(required = false) String seatClass,
+                                          @RequestParam(defaultValue = "0") int page
                                           ) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, null,Boolean.FALSE);
-        return flightRepository.findAll(spec);
+        Pageable paging = PageRequest.of(page, 8, Sort.by("id")).previousOrFirst();
+
+        Page<Flight> pagedResult = flightRepository.findAll(spec, paging);
+
+//        if(pagedResult.hasContent()) {
+//            return pagedResult.getContent();
+//        } else {
+//            return new ArrayList<Flight>();
+//        }
+        return pagedResult;
     }
 
     private Date convertToDate(String day){

@@ -13,14 +13,14 @@ import { connect } from 'react-redux';
 const App = () => {
 
     useEffect(() => {
-      // let mount = false;
+      let mount = false;
 
       console.log("Render !");
-
-      // return () => {
-      //   mount = true;
-      // }
-    })
+      
+      return () => {
+        mount = true;
+      }
+    },[])
 
     return (
       <BrowserRouter>

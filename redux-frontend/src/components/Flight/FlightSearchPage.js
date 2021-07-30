@@ -5,6 +5,8 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { fetchFlight } from "../../actions/actionFlight";
+import { miniSerializeError } from "@reduxjs/toolkit";
+import { faHourglass } from "@fortawesome/free-solid-svg-icons";
 // import { useQuery } from "../../utils/QueryParam";
 
 function useQuery() {
@@ -14,7 +16,7 @@ function useQuery() {
 const FlightSearchPage = (props) => {
     const history = useHistory();
     let queryParam = useQuery();
-
+    const [queryFilter, setQueryFilter] = useState();
     const province = {
         properties: [
             {
@@ -108,6 +110,47 @@ const FlightSearchPage = (props) => {
         return province.properties.find(item => item.value === code)?.label;
     }
 
+    const getTimeDiff = (_startTime, _endTime, type) => {
+        let startTime = new Date(_startTime.replace(/-/g, '/'));
+        let endTime = new Date(_endTime.replace(/-/g, '/'));
+        let diff = endTime.getTime() - startTime.getTime(); //Time difference in milliseconds
+        let day = Math.floor(diff / (24 * 60 * 60 * 1000)); //day
+        let hour = Math.floor(diff / (60 * 60 * 1000)) - day * 24; //Time
+        let minute = Math.floor(diff / (60 * 1000)) - day * 24 * 60 - hour * 60; //Minute
+        let second = Math.floor(diff / 1000) - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60; //second
+        // console.log(day, hour, minute, second);
+        switch(type){
+            case "h":
+                return hour;
+            case "m":
+                return minute;
+            default:
+                return minute;
+        }
+    }
+
+    const timeDiff = (time1, time2) => {
+        let valuestart = time1 +":00";
+        let valuestop = time2 +":00";
+        let hours;
+        let minutes;
+
+        if (new Date("01/01/2007 " + valuestart) < new Date("01/01/2007 " + valuestop)) {
+            var diff = getTimeDiff("01/01/2007 " + valuestart,"01/01/2007 " + valuestop, 'm');
+            // hours = Math.floor((diff / 60));
+            hours = getTimeDiff("01/01/2007 " + valuestart,"01/01/2007 " + valuestop, 'h');
+            minutes = (diff % 60);
+        } else {
+            var diff1 = getTimeDiff("01/01/2007 " + '24:00', "01/01/2007 " + valuestart, 'm');
+            var diff2 = getTimeDiff("01/01/2007 " + valuestop, "01/01/2007 " + '00:00', 'm');
+            var totalDiff = diff1 + diff2;
+            hours = Math.floor((totalDiff / 60));
+            minutes = (totalDiff % 60);
+        };
+
+        return hours + "H " + minutes + "M";
+    }
+
     useEffect(() => {
         let mount = false;
 
@@ -116,13 +159,32 @@ const FlightSearchPage = (props) => {
         } else {
             if (!props.flight) {
                 props.getFlight(queryParam.get("from"), queryParam.get("to"), queryParam.get("adult"), queryParam.get("child"), queryParam.get("infant"), queryParam.get("departureDate"), queryParam.get("returnDate"), queryParam.get("seatClass"));
+                console.log(props.flights);
             }
+            let filter = {
+                from : queryParam.get("from"),
+                to : queryParam.get("to"),
+                departureDate : queryParam.get("departureDate"),
+                returnDate : queryParam.get("returnDate"),
+                seatClass : queryParam.get("seatClass"),
+                adult : queryParam.get("adult"),
+                child : queryParam.get("child"),
+                infant : queryParam.get("infant")
+            }
+            setQueryFilter(filter);
         }
 
         return () => {
             mount = true;
         }
     }, [])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(props.flights);
+        var form = e.target;
+        props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
+    }
 
     return (<>
         <Header></Header>
@@ -144,7 +206,7 @@ const FlightSearchPage = (props) => {
                             </div>
 
                             <div className="side-block fly-in">
-                                <div className="side-block-search">
+                                <form className="side-block-search" onSubmit={handleSubmit}>
                                     <div className="page-search-p">
 
 
@@ -172,17 +234,17 @@ const FlightSearchPage = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left">
                                                 <label>Departure</label>
-                                                <div className="input-a"><input type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("departureDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("departureDate")} /> <span className="date-icon"></span></div>
                                             </div>
                                             <div className="srch-tab-right">
                                                 <label>Return</label>
-                                                <div className="input-a"><input type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("returnDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("returnDate")} /> <span className="date-icon"></span></div>
                                             </div>
                                             <div className="clear"></div>
                                         </div>
 
 
-                                        <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Seat Class</label>
                                                 <div className="select-wrapper">
@@ -193,24 +255,27 @@ const FlightSearchPage = (props) => {
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Passengers</label>
-                                                <div className="select-wrapper">
-                                                    <select className="custom-select">
-                                                        <option>--</option>
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                    </select>
-                                                </div>
+                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" /></div>
+                                            </div>
+
+                                            <div className="clear"></div>
+                                        </div>
+                                        <div className="srch-tab-line no-margin-bottom">
+                                            <div className="srch-tab-left transformed">
+                                                <label>Seat Class</label>
+                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6" /></div>
+                                            </div>
+                                            <div className="srch-tab-right transformed">
+                                                <label>Passengers</label>
+                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="6" /></div>
                                             </div>
 
                                             <div className="clear"></div>
                                         </div>
 
-                                        <button className="srch-btn">Search</button>
+                                        <button type="submit" className="srch-btn">Search</button>
                                     </div>
-
-                                </div>
+                                </form>
                             </div>
 
 
@@ -391,83 +456,83 @@ const FlightSearchPage = (props) => {
                                         <a className="show-thumbs chosen" ></a>
                                         <div className="clear"></div>
                                     </div>
-
+{/* List Flight here */}
                                     <div className="catalog-row alternative">
-
-
-                                        <div className="alt-flight fly-in">
-                                            <div className="alt-flight-a">
-                                                <div className="alt-flight-l">
-                                                    <div className="alt-flight-lb">
-                                                        <div className="alt-center">
-                                                            <div className="alt-center-l">
-                                                                <div className="alt-center-lp">
-                                                                    <div className="alt-logo">
-                                                                        <a ><img alt="" src="img/fl-transp-01.png" /></a>
+                                        {props.flights?.data?.map(flight =>
+                                            <div className="alt-flight fly-in">
+                                                <div className="alt-flight-a">
+                                                    <div className="alt-flight-l">
+                                                        <div className="alt-flight-lb">
+                                                            <div className="alt-center">
+                                                                <div className="alt-center-l">
+                                                                    <div className="alt-center-lp">
+                                                                        <div className="alt-logo">
+                                                                            <a ><img alt="" src="img/fl-transp-01.png" /></a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="alt-center-c">
-                                                                <div className="alt-center-cb">
-                                                                    <div className="alt-center-cp">
-                                                                        <div className="alt-lbl">New York - Vienna</div>
-                                                                        <div className="alt-info"><b>06.01.15</b> One way trip</div>
-                                                                        <div className="alt-devider"></div>
-                                                                        <div className="flight-line-b">
-                                                                            <b>details</b>
-                                                                            <span>Only 2 seats!</span>
+                                                                <div className="alt-center-c">
+                                                                    <div className="alt-center-cb">
+                                                                        <div className="alt-center-cp">
+                                                                            <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>
+                                                                            <div className="alt-info">One way trip</div>
+                                                                            <div className="alt-devider"></div>
+                                                                            <div className="flight-line-b">
+                                                                                <b>details</b>
+                                                                                <span>Only 2 seats!</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-departure">
+                                                                                <b>Departure</b>
+                                                                                <span>{flight.departureTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-arrival">
+                                                                                <b>Arrival</b>
+                                                                                <span>{flight.arrivalTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-time">
+                                                                                <b>time</b>
+                                                                                <span>{timeDiff(flight.departureTime, flight.arrivalTime)}</span>
+                                                                            </div>
+                                                                            <div className="clear"></div>
                                                                         </div>
-                                                                        <div className="alt-data-i alt-departure">
-                                                                            <b>Departure</b>
-                                                                            <span>14:12</span>
-                                                                        </div>
-                                                                        <div className="alt-data-i alt-arrival">
-                                                                            <b>Arrival</b>
-                                                                            <span>17:50</span>
-                                                                        </div>
-                                                                        <div className="alt-data-i alt-time">
-                                                                            <b>time</b>
-                                                                            <span>14H 50M</span>
-                                                                        </div>
-                                                                        <div className="clear"></div>
                                                                     </div>
+                                                                    <div className="clear"></div>
                                                                 </div>
-                                                                <div className="clear"></div>
                                                             </div>
+                                                            <div className="clear"></div>
                                                         </div>
                                                         <div className="clear"></div>
+                                                    </div>
+                                                </div>
+                                                <div className="alt-flight-lr">
+                                                    <div className="padding">
+                                                        <div className="flt-i-price">{queryParam.get("seatClass") == "ECONOMY" ? flight.economyPrice : flight.businessPrice}$</div>
+                                                        <div className="flt-i-price-b">avg/person</div>
+                                                        <a className="cat-list-btn" >select now</a>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                                <div className="clear"></div>
+                                                <div className="alt-details">
+                                                    <div className="alt-details-i">
+                                                        <b>Connections</b>
+                                                        <span>Berlin, Germany</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>14:20 John F Kennedy (JFK)</b>
+                                                        <span>USA</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Flight LO-98 Boeing 787-8 (Jet) Economy</b>
+                                                        <span>Operated by Austrian Airlines</span>
                                                     </div>
                                                     <div className="clear"></div>
                                                 </div>
                                             </div>
-                                            <div className="alt-flight-lr">
-                                                <div className="padding">
-                                                    <div className="flt-i-price">634.24$</div>
-                                                    <div className="flt-i-price-b">avg/person</div>
-                                                    <a className="cat-list-btn" >select now</a>
-                                                </div>
-                                                <div className="clear"></div>
-                                            </div>
-                                            <div className="clear"></div>
-                                            <div className="alt-details">
-                                                <div className="alt-details-i">
-                                                    <b>Connections</b>
-                                                    <span>Berlin, Germany</span>
-                                                </div>
-                                                <div className="alt-details-i">
-                                                    <b>14:20 John F Kennedy (JFK)</b>
-                                                    <span>USA</span>
-                                                </div>
-                                                <div className="alt-details-i">
-                                                    <b>Flight LO-98 Boeing 787-8 (Jet) Economy</b>
-                                                    <span>Operated by Austrian Airlines</span>
-                                                </div>
-                                                <div className="clear"></div>
-                                            </div>
-                                        </div>
+                                        )}
 
-
-                                        <div className="alt-flight fly-in">
+                                        <>
+                                            {/* <div className="alt-flight fly-in">
                                             <div className="alt-flight-a">
                                                 <div className="alt-flight-l">
                                                     <div className="alt-flight-lb">
@@ -968,10 +1033,11 @@ const FlightSearchPage = (props) => {
                                                 </div>
                                                 <div className="clear"></div>
                                             </div>
-                                        </div>
-
+                                        </div> */}
+                                        </>
 
                                     </div>
+
 
                                     <div className="clear"></div>
 
@@ -998,7 +1064,7 @@ const FlightSearchPage = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        flights: state.flight,
+        flights: state.flight
     };
 };
 
