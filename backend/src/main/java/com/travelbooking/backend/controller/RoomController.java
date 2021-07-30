@@ -1,7 +1,9 @@
 package com.travelbooking.backend.controller;
 import java.util.Collection;
 
+import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.models.Room;
+import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.repository.RoomRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 
@@ -26,6 +28,9 @@ public class RoomController {
     private final Logger log = LoggerFactory.getLogger(HotelController.class);
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @GetMapping("/rooms")
     public Collection<Room> getRooms() {

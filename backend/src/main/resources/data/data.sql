@@ -12452,65 +12452,65 @@ INSERT INTO dbo.flight([airline_id],[flight_code],[retired],[status],[descriptio
     (2, N'VN-1826',0, N'Available', N' Hàng ghế 3-3',12,150,168,38,30,10, N'PQC', N'15:20', N'SGN', N'16:30',N'', 30, 18, 0, 12, 0, N'Airbus A321'),
     (2, N'VN-1828',0, N'Available', N' Hàng ghế 3-3',12,150,168,38,30,10, N'PQC', N'17:25', N'SGN', N'18:35',N'', 30, 18, 0, 12, 0, N'Airbus A321')
 
---Hotel Account
-INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','bachpham'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','hoanguyen'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','ngocle'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
+-- --Hotel Account
+-- INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
+-- ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','bachpham'),
+-- ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','hoanguyen'),
+-- ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','ngocle'),
+-- ('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
 --Hotel
-INSERT INTO [dbo].[hotel]
-([address]
-    ,[contact_name]
-    ,[contact_title]
-    ,[created_at]
-    ,[email]
-    ,[hotel_name]
-    ,[phone]
-    ,[retired]
-    ,[account_id]
-    ,[location_id])
-VALUES
-    (N'400 Xô Viết Nghệ Tỉnh',N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',0824728690,0,27,1),
-    (N'321 Bạch Đằng',N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',0824728690,0,28,2),
-    (N'105 Phạm Văn Hai',N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','SunShine',0824728690,0,29,3),
-    (N'107 Hóc Môn',N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','SunShine',0824728690,0,30,4)
+-- INSERT INTO [dbo].[hotel]
+-- ([address]
+--     ,[contact_name]
+--     ,[contact_title]
+--     ,[created_at]
+--     ,[email]
+--     ,[hotel_name]
+--     ,[phone]
+--     ,[retired]
+--     ,[account_id]
+--     ,[location_id])
+-- VALUES
+--     (N'400 Xô Viết Nghệ Tỉnh',N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',0824728690,0,27,1),
+--     (N'321 Bạch Đằng',N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',0824728690,0,28,2),
+--     (N'105 Phạm Văn Hai',N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','SunShine',0824728690,0,29,3),
+--     (N'107 Hóc Môn',N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','SunShine',0824728690,0,30,4)
 --Room
-INSERT INTO [dbo].[room]
-([available_from]
-    ,[max_adult]
-    ,[max_children]
-    ,[price]
-    ,[retired]
-    ,[room_number]
-    ,[room_type]
-    ,[hotel_id]
-    ,[booking_room_id])
-VALUES
-    ('11/9/2021',2,1,30,0,1,N'Bình Thường',1,null),
-    ('11/9/2021',4,2,40,0,1,N'Cao Cấp',1,null),
-    ('11/8/2021',2,1,30,0,1,N'Bình Thường',2,null),
-    ('11/8/2021',4,2,40,0,1,N'Cao Cấp',2,null),
-    ('11/8/2021',2,1,30,0,1,N'Bình Thường',3,null),
-    ('11/7/2021',4,2,40,0,1,N'Cao Cấp',3,null),
-    ('11/9/2021',2,1,30,0,1,N'Bình Thường',4,null),
-    ('11/7/2021',4,2,40,0,1,N'Cao Cấp',4,null),
-    ('11/7/2021',1,0,40,0,1,N'Phòng Nhỏ',4,null)
---FeedBack
-INSERT INTO [dbo].[hotel_feedback]
-([feedback]
-    ,[rating]
-    ,[user_id]
-    ,[hotel_id])
-VALUES
-    ('Phòng tốt , giá hợp lý',4.5,15,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,16,1),
-    ('Phòng tốt , giá hợp lý',4.5,17,2),
-    ('Phòng tốt , giá hợp lý',4.5,18,2),
-    ('Phòng tốt , giá hợp lý',4.5,19,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,20,4),
-    ('Phòng tốt , giá hợp lý',4,20,4),
-    ('Phòng tốt , giá hợp lý',4.5,17,4)
+-- INSERT INTO [dbo].[room]
+-- ([available_from]
+--     ,[max_adult]
+--     ,[max_children]
+--     ,[price]
+--     ,[retired]
+--     ,[room_number]
+--     ,[room_type]
+--     ,[hotel_id]
+--     ,[booking_room_id])
+-- VALUES
+--     ('11/9/2021',2,1,30,0,1,N'Bình Thường',1,null),
+--     ('11/9/2021',4,2,40,0,1,N'Cao Cấp',1,null),
+--     ('11/8/2021',2,1,30,0,1,N'Bình Thường',2,null),
+--     ('11/8/2021',4,2,40,0,1,N'Cao Cấp',2,null),
+--     ('11/8/2021',2,1,30,0,1,N'Bình Thường',3,null),
+--     ('11/7/2021',4,2,40,0,1,N'Cao Cấp',3,null),
+--     ('11/9/2021',2,1,30,0,1,N'Bình Thường',4,null),
+--     ('11/7/2021',4,2,40,0,1,N'Cao Cấp',4,null),
+--     ('11/7/2021',1,0,40,0,1,N'Phòng Nhỏ',4,null)
+-- --FeedBack
+-- INSERT INTO [dbo].[hotel_feedback]
+-- ([feedback]
+--     ,[rating]
+--     ,[user_id]
+--     ,[hotel_id])
+-- VALUES
+--     ('Phòng tốt , giá hợp lý',4.5,15,1),
+--     ('Phòng tốt , Đầy đủ tiện nghi',5,16,1),
+--     ('Phòng tốt , giá hợp lý',4.5,17,2),
+--     ('Phòng tốt , giá hợp lý',4.5,18,2),
+--     ('Phòng tốt , giá hợp lý',4.5,19,3),
+--     ('Phòng tốt ,dịch vụ tạm dược',3,20,4),
+--     ('Phòng tốt , giá hợp lý',4,20,4),
+--     ('Phòng tốt , giá hợp lý',4.5,17,4)
 
 
 
