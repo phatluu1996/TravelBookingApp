@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Header from './Layout/Header';
 import Footer from './Layout/Footer';
 import { connect } from 'react-redux';
@@ -9,6 +9,8 @@ import { faPlaneArrival, faPlaneDeparture, faCalendar, faRetweet, faSearch, faUs
 import { useEffect } from 'react';
 
 const Home = (props) => {
+    const history = useHistory();
+
     const province = {
         properties: [
             {
@@ -112,10 +114,11 @@ const Home = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(props);
+        // console.log(props);
         var form = e.target;
-        props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
-        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
+        // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
+        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
+        //document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`;
     }
 
     return (<>
@@ -125,8 +128,8 @@ const Home = (props) => {
 
                 <div className="mp-slider-row slim-slider">
                     <div className="swiper-container">
-                        <a href="#" className="arrow-left"></a>
-                        <a href="#" className="arrow-right"></a>
+                        <a  className="arrow-left"></a>
+                        <a  className="arrow-right"></a>
                         <div className="swiper-pagination"></div>
                         <div className="swiper-wrapper">
                             <div className="swiper-slide">
@@ -134,7 +137,7 @@ const Home = (props) => {
                                     <div className="mp-slider-lbl">Great journey begins with a small step</div>
                                     <div className="mp-slider-lbl-a">Make Your Life Better and Bright! You must trip with Us!
                                     </div>
-                                    {/* <div className="mp-slider-btn"><a href="#" className="btn-a">Learn more</a></div> */}
+                                    {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                 </div>
                             </div>
                             <div className="swiper-slide">
@@ -143,7 +146,7 @@ const Home = (props) => {
                                     <div className="mp-slider-lbl">Relax with us. we love our clients</div>
                                     <div className="mp-slider-lbl-a">Make Your Life Better and Bright! You must trip with Us!
                                     </div>
-                                    {/* <div className="mp-slider-btn"><a href="#" className="btn-a">Learn more</a></div> */}
+                                    {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                 </div>
                             </div>
                             <div className="swiper-slide">
@@ -152,7 +155,7 @@ const Home = (props) => {
                                     <div className="mp-slider-lbl">Booking flight with your friends</div>
                                     <div className="mp-slider-lbl-a">Make Your Life Better and Bright! You must trip with Us!
                                     </div>
-                                    {/* <div className="mp-slider-btn"><a href="#" className="btn-a">Learn more</a></div> */}
+                                    {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                 </div>
                             </div>
                         </div>
@@ -373,42 +376,17 @@ const Home = (props) => {
 
                                             <div className="srch-tab-line">
                                                 <div className="srch-tab-3c">
-                                                    <label>Adult</label>
-                                                    {/* <div className="select-wrapper">
-                                                        <select name="adult" className="custom-select">
-                                                            <option>--</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
-                                                    </div> */}
+                                                    <label>Adult</label>                
                                                     <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7"/></div>
                                                 </div>
                                                 <div className="srch-tab-3c">
                                                     <label>Child</label>
-                                                    {/* <div className="select-wrapper">
-                                                        <select name="child" className="custom-select">
-                                                            <option>--</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
-                                                    </div> */}
+                     
                                                     <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6"/></div>
                                                 </div>
                                                 <div className="srch-tab-3c">
                                                     <label>Infant</label>
-                                                    {/* <div className="select-wrapper">
-                                                        <select name="infant" className="custom-select">
-                                                            <option>--</option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                        </select>
-                                                    </div> */}
+                                       
                                                     <div className="input-a"><input name="infant" type="number" defaultValue={0} max="6"/></div>
                                                 </div>
                                                 <div className="clear"></div>
@@ -416,7 +394,7 @@ const Home = (props) => {
 
                                         </div>
 
-                                        <div className="search-large-i mt-2">
+                                        <div className="search-large-i">
                                             <div className="srch-tab-line">
                                                 <div className="srch-tab-left">
                                                     <label>className </label>
@@ -509,17 +487,6 @@ const Home = (props) => {
                 </div>
             </div>
             
-            <table>
-                <thead>
-                    <tr>
-                        ID
-                    </tr>
-                </thead>
-                <tbody>
-                {props.flights?.data?.map(flight => <tr key={flight.id}><td>{flight.id}</td></tr>)}
-                </tbody>
-            </table>
-
             <div className="mp-pop">
                 <div className="wrapper-padding-a">
                     <div className="popular-slider">
@@ -532,23 +499,23 @@ const Home = (props) => {
                             <div id="offers" className="owl-slider">
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-01.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Andrassy Thai Hotel</a></div>
+                                        <div className="offer-slider-link"><a >Andrassy Thai Hotel</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">Location: Thailand </div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -564,23 +531,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-02.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Campanile Cracovie</a></div>
+                                        <div className="offer-slider-link"><a >Campanile Cracovie</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">location: poland</div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -596,23 +563,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-03.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Park Plaza Westminster</a></div>
+                                        <div className="offer-slider-link"><a >Park Plaza Westminster</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">Location: Thailand </div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -628,23 +595,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-04.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Ermin's Hotel</a></div>
+                                        <div className="offer-slider-link"><a >Ermin's Hotel</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">location: england</div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -660,23 +627,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-01.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Andrassy Thai Hotel</a></div>
+                                        <div className="offer-slider-link"><a >Andrassy Thai Hotel</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">Location: Thailand </div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -692,23 +659,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-02.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Campanile Cracovie</a></div>
+                                        <div className="offer-slider-link"><a >Campanile Cracovie</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">location: poland</div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -724,23 +691,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-03.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Park Plaza Westminster</a></div>
+                                        <div className="offer-slider-link"><a >Park Plaza Westminster</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">Location: Thailand </div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -756,23 +723,23 @@ const Home = (props) => {
 
 
                                 <div className="offer-slider-i">
-                                    <a className="offer-slider-img" href="#">
+                                    <a className="offer-slider-img" >
                                         <img alt="" src="img/slide-04.jpg" />
                                         <span className="offer-slider-overlay">
                                             <span className="offer-slider-btn">view details</span>
                                         </span>
                                     </a>
                                     <div className="offer-slider-txt">
-                                        <div className="offer-slider-link"><a href="#">Ermin's Hotel</a></div>
+                                        <div className="offer-slider-link"><a >Ermin's Hotel</a></div>
                                         <div className="offer-slider-l">
                                             <div className="offer-slider-location">location: england</div>
                                             <nav className="stars">
                                                 <ul>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                                    <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                                    <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                                 </ul>
                                                 <div className="clear"></div>
                                             </nav>
@@ -871,11 +838,11 @@ const Home = (props) => {
                             <div className="testimonials-c">
                                 <nav>
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -891,11 +858,11 @@ const Home = (props) => {
                             <div className="testimonials-c">
                                 <nav>
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/ts-star-a.png" /></a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -923,7 +890,7 @@ const Home = (props) => {
                                         <div className="flat-adv-b">how to choose a tour</div>
                                         <div className="flat-adv-c">Perspiciatis unde omnis iste natus doxes sit voluptatem
                                             accusantium doloremque la dantiumeaque ipsa.</div>
-                                        <a className="flat-adv-btn" href="#">Read more</a>
+                                        <a className="flat-adv-btn" >Read more</a>
                                     </div>
                                 </div>
                             </div>
@@ -938,7 +905,7 @@ const Home = (props) => {
                                         <div className="flat-adv-b">booking of tickets</div>
                                         <div className="flat-adv-c">Perspiciatis unde omnis iste natus doxes sit voluptatem
                                             accusantium doloremque la dantiumeaque ipsa.</div>
-                                        <a className="flat-adv-btn" href="#">Read more</a>
+                                        <a className="flat-adv-btn" >Read more</a>
                                     </div>
                                 </div>
                             </div>
@@ -953,7 +920,7 @@ const Home = (props) => {
                                         <div className="flat-adv-b">weekend getaway</div>
                                         <div className="flat-adv-c">Perspiciatis unde omnis iste natus doxes sit voluptatem
                                             accusantium doloremque la dantiumeaque ipsa.</div>
-                                        <a className="flat-adv-btn" href="#">Read more</a>
+                                        <a className="flat-adv-btn" >Read more</a>
                                     </div>
                                 </div>
                             </div>
@@ -968,7 +935,7 @@ const Home = (props) => {
                                         <div className="flat-adv-b">Traveling with family</div>
                                         <div className="flat-adv-c">Perspiciatis unde omnis iste natus doxes sit voluptatem
                                             accusantium doloremque la dantiumeaque ipsa.</div>
-                                        <a className="flat-adv-btn" href="#">Read more</a>
+                                        <a className="flat-adv-btn" >Read more</a>
                                     </div>
                                 </div>
                             </div>
@@ -986,23 +953,23 @@ const Home = (props) => {
                 <div className="mp-popular-row popular-flat">
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-04.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">The Hotel 1060 Vienna</a></div>
+                            <div className="offer-slider-link"><a >The Hotel 1060 Vienna</a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1017,23 +984,23 @@ const Home = (props) => {
 
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-05.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">Pension Dr. Geissler</a></div>
+                            <div className="offer-slider-link"><a >Pension Dr. Geissler</a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1048,23 +1015,23 @@ const Home = (props) => {
 
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-06.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">Hotel Mailberger Hof</a></div>
+                            <div className="offer-slider-link"><a >Hotel Mailberger Hof</a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1079,23 +1046,23 @@ const Home = (props) => {
 
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-07.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">Hotel Bellevue Wien</a></div>
+                            <div className="offer-slider-link"><a >Hotel Bellevue Wien</a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1110,23 +1077,23 @@ const Home = (props) => {
 
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-08.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">Manesol Boutique Lamartine </a></div>
+                            <div className="offer-slider-link"><a >Manesol Boutique Lamartine </a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1141,23 +1108,23 @@ const Home = (props) => {
 
 
                     <div className="fly-in offer-slider-i">
-                        <a className="offer-slider-img" href="#">
+                        <a className="offer-slider-img" >
                             <img alt="" src="img/offer-big-09.jpg" />
                             <span className="offer-slider-overlay">
                                 <span className="offer-slider-btn">view details</span>
                             </span>
                         </a>
                         <div className="offer-slider-txt">
-                            <div className="offer-slider-link"><a href="#">The Empress Theodora Hotel</a></div>
+                            <div className="offer-slider-link"><a >The Empress Theodora Hotel</a></div>
                             <div className="offer-slider-l">
                                 <div className="offer-slider-location">11 NOV 2014 - 22 NOV 2014</div>
                                 <nav className="stars">
                                     <ul>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-b.png" /></a></li>
-                                        <li><a href="#"><img alt="" src="img/star-a.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-b.png" /></a></li>
+                                        <li><a ><img alt="" src="img/star-a.png" /></a></li>
                                     </ul>
                                     <div className="clear"></div>
                                 </nav>
@@ -1181,12 +1148,12 @@ const Home = (props) => {
                         eos qui.</p>
                 </header>
                 <div className="partners fly-in">
-                    <a href="#"><img alt="" src="img/partner-01.png" /></a>
-                    <a href="#"><img alt="" src="img/partner-02.png" /></a>
-                    <a href="#"><img alt="" src="img/partner-03.png" /></a>
-                    <a href="#"><img alt="" src="img/partner-04.png" /></a>
-                    <a href="#"><img alt="" src="img/partner-05.png" /></a>
-                    <a href="#"><img alt="" src="img/partner-06.png" /></a>
+                    <a ><img alt="" src="img/partner-01.png" /></a>
+                    <a ><img alt="" src="img/partner-02.png" /></a>
+                    <a ><img alt="" src="img/partner-03.png" /></a>
+                    <a ><img alt="" src="img/partner-04.png" /></a>
+                    <a ><img alt="" src="img/partner-05.png" /></a>
+                    <a ><img alt="" src="img/partner-06.png" /></a>
                 </div>
             </div>
         </div>

@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+
 export default class Common {
     static getUser = () => {
         const userStr = sessionStorage.getItem('user');
@@ -21,4 +23,6 @@ export default class Common {
         sessionStorage.setItem('userToken', token);
         sessionStorage.setItem('user', JSON.stringify(user));
     }
+
+    
 }
