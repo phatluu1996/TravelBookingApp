@@ -40,7 +40,7 @@ const Header = () => {
         <header id="top">
             <div className="header-a">
                 <div className="wrapper-padding">
-                    <div className="header-phone"><span>1 - 555 - 555 - 555</span></div>
+                    <div className="header-phone"><span>0 - 888 - 555 - 555</span></div>
                     <div className="header-account">
                         <a href="#">My account</a>
                     </div>
@@ -105,6 +105,11 @@ const Header = () => {
                                     <li><a href="booking_complete.html">booking complete</a></li>
                                 </ul>
                             </li>
+                            <li><a className="has-child" href="#">Airline</a>
+                                    <ul>
+                                        <li><a href="/airline">Airline Profile</a></li>
+                                    </ul>
+                                </li>
                             <li><a className="has-child" href="#">Tours</a>
                                 <ul>
                                     <li><a href="tour_alternative.html">Tours list style</a></li>
@@ -196,6 +201,11 @@ const Header = () => {
                                         <li><a href="flight_detail.html">Flights detail page</a></li>
                                         <li><a href="flight_booking.html">Flights booking page</a></li>
                                         <li><a href="booking_complete.html">booking complete</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Airline</a>
+                                    <ul>
+                                        <li><a href="/airline">Airline Profile</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#">Tours</a>
