@@ -7,18 +7,21 @@ export const DELETE_FLIGHT = "DELETE_FLIGHT";
 export const LIST_FLIGHTS = "LIST_FLIGHTS";
 
 
-export const createFlight = (flightCode,departureCity,arrivalCity,
-    departureTime,arrivalTime,description,economyCapacity,economyPrice,
-    infant_price,child_price,businessCapacity,businessPrice,status,airline,
-    economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
-    hasEntertainment,aircraftType) => async (dispatch) => 
+// flightCode,departureCity,arrivalCity,
+//     departureTime,arrivalTime,description,economyCapacity,economyPrice,
+//     infant_price,child_price,businessCapacity,businessPrice,status,airline,
+//     economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
+//     hasEntertainment,aircraftType
+
+// {flightCode,departureCity,arrivalCity,
+//     departureTime,arrivalTime,description,economyCapacity,economyPrice,
+//     infant_price,child_price,businessCapacity,businessPrice,status,airline,
+//     economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
+//     hasEntertainment,aircraftType }
+export const createFlight = (data) => async (dispatch) => 
     {
         try {
-            const res = await flightApi.createFlight({flightCode,departureCity,arrivalCity,
-                departureTime,arrivalTime,description,economyCapacity,economyPrice,
-                infant_price,child_price,businessCapacity,businessPrice,status,airline,
-                economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
-                hasEntertainment,aircraftType });
+            const res = await flightApi.createFlight(data);
   
             dispatch({
                 type: CREATE_FLIGHT,

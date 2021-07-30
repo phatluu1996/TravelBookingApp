@@ -7,21 +7,9 @@ import { connect } from "react-redux";
 
 import { retrieveAirline } from "../../actions/actionAirline";
 import { listFlightsByAirline } from "../../actions/actionFlightByAirline";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlaneArrival,
-  faPlaneDeparture,
-  faCalendar,
-  faRetweet,
-  faSearch,
-  faUserFriends,
-  faChild,
-  faBaby,
-  faMale,
-  faChair,
-} from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector, useDispatch } from "react-redux";
+import AddNewFlight from "./AddNewFlight";
 
 // function useQuery() {
 //     return new URLSearchParams(useLocation().search);
@@ -32,19 +20,23 @@ const Airline = (props) => {
   const dispatch = useDispatch();
 
   const airline = useSelector((state) => state.airline);
-  
+
   const flights = useSelector((state) => state.flights);
 
-
-  const id  = 2;
+  const id = 2;
 
   const getAirline = (id) => {
     dispatch(retrieveAirline(id));
   };
 
+  const fullAddress = (addr) => {
+    return addr.street + ", " + addr.ward.prefix 
+    + " " + addr.ward.name + ", " + addr.district.prefix + " " + addr.district.name
+    + ", " + addr.province.name  + ", " + addr.postalCode;
+  }
+
   useEffect(() => {
     var mount = false;
-    
 
     getAirline(id);
     // const flights = listFlights(2)
@@ -69,192 +61,28 @@ const Airline = (props) => {
               <div className="clear"></div>
             </div>
           </div>
-        </div>
-
-        <div className="typography">
           <div className="content-wrapper">
             <div className="shortcodes-block">
-              <div className="accordeons-toggles">
-                <div className="typography-heading">{airline.airline.airlineName}</div>
-                <div className="shortcodes-left">
-                  <div className="toggle">
-                    <div className="toggle-i open">
-                      <div className="toggle-ia">
-                        <div className="toggle-ia-a">
-                          <div className="toggle-ia-l">
-                            <a href="#" className="toggle-trigger"></a>
-                          </div>
-                          <div className="toggle-ia-r">
-                            <div className="toggle-ia-rb">
-                              <div className="toggle-lbl">
-                                perspiciatis unde omnis iste natus
-                              </div>
-                              <div className="toggle-txt">
-                                Voluptatem quia voluptas sit aspern atur aut
-                                odit aut fugit, sed quia cons equuntur magni
-                                dolores eos qui voluptatem sequi nesciunt.
-                              </div>
-                            </div>
-                            <div className="clear"></div>
-                          </div>
+              <div className="p-item-page" style={{ paddingBottom: "250px" }}>
+                <div className="p-item-page-l">
+                  <div className="p-item-page-lb">
+                    <div className="p-item-padding">
+                      <div id="p-item-slider">
+                        <div className="p-item-slide">
+                          <img
+                            alt=""
+                            src="img/p-slider-01.jpg"
+                            style={{ width: "45%" }}
+                          />
                         </div>
-                        <div className="clear"></div>
-                      </div>
-                    </div>
-                    <div className="toggle-i">
-                      <div className="toggle-ia">
-                        <div className="toggle-ia-a">
-                          <div className="toggle-ia-l">
-                            <a href="#" className="toggle-trigger"></a>
-                          </div>
-                          <div className="toggle-ia-r">
-                            <div className="toggle-ia-rb">
-                              <div className="toggle-lbl">
-                                simply dummy text of the printing
-                              </div>
-                              <div className="toggle-txt">
-                                Voluptatem quia voluptas sit aspern atur aut
-                                odit aut fugit, sed quia cons equuntur magni
-                                dolores eos qui voluptatem sequi nesciunt.
-                              </div>
-                            </div>
-                            <div className="clear"></div>
-                          </div>
-                        </div>
-                        <div className="clear"></div>
-                      </div>
-                    </div>
-                    <div className="toggle-i">
-                      <div className="toggle-ia">
-                        <div className="toggle-ia-a">
-                          <div className="toggle-ia-l">
-                            <a href="#" className="toggle-trigger"></a>
-                          </div>
-                          <div className="toggle-ia-r">
-                            <div className="toggle-ia-rb">
-                              <div className="toggle-lbl">
-                                crambled it to make a type specimen
-                              </div>
-                              <div className="toggle-txt">
-                                Voluptatem quia voluptas sit aspern atur aut
-                                odit aut fugit, sed quia cons equuntur magni
-                                dolores eos qui voluptatem sequi nesciunt.
-                              </div>
-                            </div>
-                            <div className="clear"></div>
-                          </div>
-                        </div>
-                        <div className="clear"></div>
                       </div>
                     </div>
                   </div>
+                  <br className="clear" />
                 </div>
-                <div className="shortcodes-right">
-                  <div className="accordeon">
-                    <div className="accordeon-item open">
-                      <div className="accordeon-a">
-                        <i className="accordeon-icon"></i>
-                        <span>perspiciatis unde omnis iste natus</span>
-                        <div className="clear"></div>
-                      </div>
-                      <div className="accordeon-b">
-                        Voluptatem quia voluptas sit aspern atur aut odit aut
-                        fugit, sed quia cons equuntur magni dolores eos qui
-                        voluptatem sequi nesciunt.
-                      </div>
-                    </div>
-                    <div className="accordeon-item">
-                      <div className="accordeon-a">
-                        <i className="accordeon-icon"></i>
-                        <span>simply dummy text of the printing</span>
-                        <div className="clear"></div>
-                      </div>
-                      <div className="accordeon-b">
-                        Voluptatem quia voluptas sit aspern atur aut odit aut
-                        fugit, sed quia cons equuntur magni dolores eos qui
-                        voluptatem sequi nesciunt.
-                      </div>
-                    </div>
-                    <div className="accordeon-item">
-                      <div className="accordeon-a">
-                        <i className="accordeon-icon"></i>
-                        <span>crambled it to make a type specimen</span>
-                        <div className="clear"></div>
-                      </div>
-                      <div className="accordeon-b">
-                        Voluptatem quia voluptas sit aspern atur aut odit aut
-                        fugit, sed quia cons equuntur magni dolores eos qui
-                        voluptatem sequi nesciunt.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="clear"></div>
               </div>
-              <div className="tabs">
-                <div className="typography-heading">tabs</div>
-                <div className="shortcodes-left">
-                  <div className="tabs-type-a tabs-block">
-                    <nav className="tabs-nav">
-                      <ul>
-                        <li>
-                          <a className="active" href="#">
-                            Sample tab #1
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">Sample tab #2</a>
-                        </li>
-                        <li>
-                          <a href="#">Sample tab #3</a>
-                        </li>
-                      </ul>
-                      <div className="clear"></div>
-                    </nav>
-                    <div className="tabs-content">
-                      <div className="tabs-content-i">
-                        <p>
-                          Aperiam, eaque ipsa quae ab illo inventore veritatis
-                          et quasi architecto beatae vitae dicta sunt explicabo.
-                          Nemo enim ipsam voluptatem quia. Voluptas sit
-                          aspernatur aut odit aut fugit, sed quia consequuntu.
-                        </p>
-                        <p>
-                          Magni dolores eos qui ratione voluptatem sequi
-                          nesciunt eque porro quisquam est, qui dolorem ipsum
-                          quia dolor sit amet, consectetur.
-                        </p>
-                      </div>
-                      <div className="tabs-content-i">
-                        <p>
-                          Aperiam, eaque ipsa quae ab illo inventore veritatis
-                          et quasi architecto beatae vitae dicta sunt explicabo.
-                          Nemo enim ipsam voluptatem quia. Voluptas sit
-                          aspernatur aut odit aut fugit, sed quia consequuntu.
-                        </p>
-                        <p>
-                          Magni dolores eos qui ratione voluptatem sequi
-                          nesciunt eque porro quisquam est, qui dolorem ipsum
-                          quia dolor sit amet, consectetur.
-                        </p>
-                      </div>
-                      <div className="tabs-content-i">
-                        <p>
-                          Aperiam, eaque ipsa quae ab illo inventore veritatis
-                          et quasi architecto beatae vitae dicta sunt explicabo.
-                          Nemo enim ipsam voluptatem quia. Voluptas sit
-                          aspernatur aut odit aut fugit, sed quia consequuntu.
-                        </p>
-                        <p>
-                          Magni dolores eos qui ratione voluptatem sequi
-                          nesciunt eque porro quisquam est, qui dolorem ipsum
-                          quia dolor sit amet, consectetur.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="shortcodes-right">
+              <div className="p-item-page-r">
+                <div className="shortcodes-right" style={{ width: "100%" }}>
                   <div className="tabs-type-b tabs-block">
                     <div className="tabs-type-bi">
                       <div className="tabs-type-bi-a">
@@ -263,17 +91,12 @@ const Airline = (props) => {
                             <ul>
                               <li>
                                 <a className="active" href="#">
-                                  Sample tab #1 <span></span>
+                                  Information <span></span>
                                 </a>
                               </li>
                               <li>
                                 <a href="#">
-                                  Sample tab #2 <span></span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  Sample tab #3 <span></span>
+                                  Contact details <span></span>
                                 </a>
                               </li>
                             </ul>
@@ -285,49 +108,91 @@ const Airline = (props) => {
                             <div className="tabs-type-bi-p">
                               <div className="tabs-content">
                                 <div className="tabs-content-i">
-                                  <p>
-                                    Aperiam, eaque ipsa quae ab illo inventore
-                                    veritatis et quasi architecto beatae vitae
-                                    dicta sunt explicabo. Nemo enim ipsam
-                                    voluptatem quia. Voluptas sit aspernatur aut
-                                    odit aut fugit, sed quia consequuntu.
-                                  </p>
-                                  <p>
-                                    Magni dolores eos qui ratione voluptatem
-                                    sequi nesciunt eque porro quisquam est, qui
-                                    dolorem ipsum quia dolor sit amet,
-                                    consectetur.
-                                  </p>
+                                  <div className="p-item-details">
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Airline Name
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.airlineName}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Homepage
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.homepage}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Phone
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.phone}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Fax
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.fax}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Address
+                                      </div>
+                                      <div className="p-item-details-ir">{fullAddress(airline.airline?.location)}</div>
+                                      <div className="clear"></div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div className="tabs-content-i">
-                                  <p>
-                                    Aperiam, eaque ipsa quae ab illo inventore
-                                    veritatis et quasi architecto beatae vitae
-                                    dicta sunt explicabo. Nemo enim ipsam
-                                    voluptatem quia. Voluptas sit aspernatur aut
-                                    odit aut fugit, sed quia consequuntu.
-                                  </p>
-                                  <p>
-                                    Magni dolores eos qui ratione voluptatem
-                                    sequi nesciunt eque porro quisquam est, qui
-                                    dolorem ipsum quia dolor sit amet,
-                                    consectetur.
-                                  </p>
-                                </div>
-                                <div className="tabs-content-i">
-                                  <p>
-                                    Aperiam, eaque ipsa quae ab illo inventore
-                                    veritatis et quasi architecto beatae vitae
-                                    dicta sunt explicabo. Nemo enim ipsam
-                                    voluptatem quia. Voluptas sit aspernatur aut
-                                    odit aut fugit, sed quia consequuntu.
-                                  </p>
-                                  <p>
-                                    Magni dolores eos qui ratione voluptatem
-                                    sequi nesciunt eque porro quisquam est, qui
-                                    dolorem ipsum quia dolor sit amet,
-                                    consectetur.
-                                  </p>
+                                  <div className="p-item-details">
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Contact Name
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.contactName}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Title
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.contactTitle}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Mobile
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.mobile}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                    <div className="p-item-details-i">
+                                      <div className="p-item-details-il">
+                                        Email
+                                      </div>
+                                      <div className="p-item-details-ir">
+                                        {airline.airline.email}
+                                      </div>
+                                      <div className="clear"></div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -337,110 +202,104 @@ const Airline = (props) => {
                       </div>
                       <div className="clear"></div>
                     </div>
+                    <h3>Description</h3>
+                    <div className="p-item-more">
+                      Cursus. Morbi ut mi. Nullam enim leo, egestas id,
+                      condimentum at, laoreet mattis, massa. Sed eleifend
+                      nonummy diam. Praesent mauris ante, elementum et,
+                      bibendrem ipsum dolor sit amet, consectetuer adipiscing
+                      elit. Nam cursus. Morbi ut mi. Nullam enim leo.
+                    </div>
+                    <div className="p-item-social">
+                      <a className="team-fb" href="#"></a>
+                      <a className="team-tw" href="#"></a>
+                      <a className="team-gp" href="#"></a>
+                      <a className="team-inst" href="#"></a>
+                      <a className="team-pint" href="#"></a>
+                    </div>
                   </div>
-                </div>
-                <div className="clear"></div>
-              </div>
-              <div className="message-box">
-                <div className="typography-heading">Message boxes</div>
-                <div className="message-box-a">
-                  nvidunt ut labore et dolore magna aliquyam
-                </div>
-                <div className="message-box-b">
-                  t, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-                  tincidunt
-                </div>
-                <div className="message-box-c">
-                  diam nonummy nibh euismod tincidunt ut laoreet{" "}
-                </div>
-              </div>
-              <div className="list-elements">
-                <div className="typography-heading">LIST ELEMENTS</div>
-                <div className="list-row">
-                  <div className="list-row-i">
-                    <nav className="marked-a">
-                      <ul>
-                        <li>Unde omnis iste natus doxes sit voluptatem;</li>
-                        <li>Rccusantium doloremque la dantium totam;</li>
-                        <li>Aperiam eaque ipsa quaeab illo inventore;</li>
-                        <li>
-                          Veritatis et quasi architecto beatae vitae dicta;{" "}
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                  <div className="list-row-i">
-                    <nav className="marked-b">
-                      <ul>
-                        <li>Unde omnis iste natus doxes sit voluptatem;</li>
-                        <li>Rccusantium doloremque la dantium totam;</li>
-                        <li>Aperiam eaque ipsa quaeab illo inventore;</li>
-                        <li>
-                          Veritatis et quasi architecto beatae vitae dicta;{" "}
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                  <div className="list-row-i">
-                    <nav className="marked-c">
-                      <ul>
-                        <li>Unde omnis iste natus doxes sit voluptatem;</li>
-                        <li>Rccusantium doloremque la dantium totam;</li>
-                        <li>Aperiam eaque ipsa quaeab illo inventore;</li>
-                        <li>
-                          Veritatis et quasi architecto beatae vitae dicta;{" "}
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-                <div className="clear"></div>
-              </div>
-              <div className="tables">
-                <div className="typography-heading">Flights List</div>
-                <div className="shortcodes">
-                  <table className="table-a light">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Flight</th>
-                          <th>From</th>
-                          <th>To</th>
-                          <th>Schedule Time</th>
-                          <th>Arrival Time</th>
-                          <th>Business</th>
-                          <th>Economic</th>
-                          <th>Aircraft</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                    
-                    <tbody>
-                    {
-                        airline?.airline?.flights?.map(item => 
-                          <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.flightCode}</td>
-                            <td>{item.departureCity}</td>
-                            <td>{item.arrivalCity}</td>
-                            <td>{item.departureTime}</td>
-                            <td>{item.arrivalTime}</td>
-                            <td>{item.businessCapacity}</td>
-                            <td>{item.economyCapacity}</td>
-                            <td>{item.aircraftType}</td>
-                            <td>{item.status}</td>
-                        </tr>)                       
-                    }
-                    </tbody>
-                    <tfoot></tfoot>                    
-                  </table>
                 </div>
                 <div className="clear"></div>
               </div>
             </div>
           </div>
         </div>
+        <div className="main-cont">
+          <div className="body-wrapper">
+            <div className="wrapper-padding">
+              <div className="typography-heading">For Flight Management</div>
+              <AddNewFlight airlineId={id}/>
+            </div>
+          </div>
+        </div>
+
+        <div className="content-wrapper">
+          <div className="tables">
+            <div className="typography-heading">Scheduled Flights List</div>
+            <div className="shortcodes">
+              <table className="table-a light">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Flight</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Schedule Time</th>
+                    <th>Arrival Time</th>
+                    <th>Business</th>
+                    <th>Economic</th>
+                    <th>Aircraft</th>
+                    <th>Status</th>
+                    <th>#</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {airline?.airline?.flights?.map((item, i) => (
+                    <tr key={i + 1}>
+                      <td>{i + 1}</td>
+                      <td>{item.flightCode}</td>
+                      <td>{item.departureCity}</td>
+                      <td>{item.arrivalCity}</td>
+                      <td>{item.departureTime}</td>
+                      <td>{item.arrivalTime}</td>
+                      <td>{item.businessCapacity}</td>
+                      <td>{item.economyCapacity}</td>
+                      <td>{item.aircraftType}</td>
+                      <td>{item.status}</td>
+                      <td>
+                        <a
+                          href="#"
+                          className="header-viewed-btn"
+                          style={{
+                            padding: "5px 5px 0px 10px",
+                            color: "#ff7200",
+                          }}
+                        >
+                          Update
+                        </a>
+                        <a
+                          href="#"
+                          className="header-viewed-btn"
+                          style={{
+                            padding: "5px 5px 0px 10px",
+                            color: "#ff7200",
+                          }}
+                        >
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot></tfoot>
+              </table>
+            </div>
+            <div className="clear"></div>
+          </div>
+        </div>
       </div>
+
       <Footer />
     </>
   );

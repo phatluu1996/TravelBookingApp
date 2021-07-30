@@ -2329,7 +2329,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .p-item-page {width:100%; padding-bottom:54px; float: left; font-family:'Raleway';}
 .p-item-page-l {margin:3px 348px 0px 0px;}
 .p-item-page-lb {width:100%; float:left; overflow:hidden;}
-.p-item-page-r {width:348px; font-family:'Raleway'; float:left; overflow:hidden; margin:0 0 0 -348px;}
+.p-item-page-r {width:700px; font-family:'Raleway'; float:left; overflow:hidden; margin:0 0 0 -700px;}
 .p-item-page-r h3 {font-weight:normal; font-family:'Montserrat'; color:#3a4142; font-size:13px; text-transform:uppercase;}
 .p-item-details {padding-top:14px; padding-bottom:29px;}
 .p-item-details-i {font-size:13px; border-bottom:1px solid #f0f0f0; padding-bottom:7px; margin-bottom:7px; color:#687172;}
