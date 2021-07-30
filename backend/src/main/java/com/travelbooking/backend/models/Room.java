@@ -17,11 +17,10 @@ public class Room {
     @Column(name = "room_number")
     private int roomNumber;
 
-//    @Column(name = "available_to")
-//    private Date availableTo;
 
-    @Column(name = "available_from")
-    private Date availableFrom;
+
+    @Column(name = "available_time",nullable = true)
+    private Date availableTime;
 
     @Column(name = "room_type")
     private String roomType;
@@ -56,10 +55,10 @@ public class Room {
     public Room() {
     }
 
-    public Room(Long id, int roomNumber, Date availableFrom, String roomType, double price, int maxAdult, int maxChildren, Boolean retired, Hotel hotel, HotelBookingRoom hotelBookingRoom, List<Image> images) {
+    public Room(Long id, int roomNumber, Date availableTime, String roomType, double price, int maxAdult, int maxChildren, Boolean retired, Hotel hotel, HotelBookingRoom hotelBookingRoom, List<Image> images) {
         this.id = id;
         this.roomNumber = roomNumber;
-        this.availableFrom = availableFrom;
+        this.availableTime = availableTime;
         this.roomType = roomType;
         this.price = price;
         this.maxAdult = maxAdult;
@@ -86,12 +85,12 @@ public class Room {
         this.roomNumber = roomNumber;
     }
 
-    public Date getAvailableFrom() {
-        return availableFrom;
+    public Date getAvailableTime() {
+        return availableTime;
     }
 
-    public void setAvailableFrom(Date availableFrom) {
-        this.availableFrom = availableFrom;
+    public void setAvailableTime(Date availableTime) {
+        this.availableTime = availableTime;
     }
 
     public String getRoomType() {

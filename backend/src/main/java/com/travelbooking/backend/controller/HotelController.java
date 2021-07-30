@@ -1,8 +1,11 @@
 package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.Flight;
+import com.travelbooking.backend.models.Room;
+import com.travelbooking.backend.repository.RoomRepository;
 import com.travelbooking.backend.specification.FlightSpecification;
 import com.travelbooking.backend.specification.HotelSpecification;
+import com.travelbooking.backend.specification.RoomSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +33,28 @@ public class HotelController {
     private final Logger log = LoggerFactory.getLogger(HotelController.class);
     @Autowired
     private HotelRepository hotelRepository;
-
+    @Autowired
+    private RoomRepository roomRepository;
 
     //http://localhost:8080/api/hotel
     @GetMapping("/hotel")
     public Collection<Hotel> getHotels(@RequestParam(required = false, name = "location") Integer location,
                                          @RequestParam (required = false, name = "number_adult") Integer number_adult,
                                          @RequestParam (required = false, name = "number_children") Integer number_children,
-                                        @RequestParam (required = false, name = "check_in_date") String check_in_date) throws ParseException {
+                                        @RequestParam (required = false, name = "check_in_date") String check_in_date,
+                                       @RequestParam(required = false, name = "price") Double price,
+                                       @RequestParam(required = false,name = "rating" )Float rating) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        Specification<Hotel> spec = HotelSpecification.createSpecification(location,Boolean.FALSE,number_adult,number_children,formatter.parse(check_in_date));
+        Specification<Hotel> spec = HotelSpecification.createSpecification(location,Boolean.FALSE,number_adult,number_children,price,rating,formatter.parse(check_in_date));
         return hotelRepository.findAll(spec);
+    }
+    //http://localhost:8080/api/hotel
+    @GetMapping("/hotel/listRooms/{id}")
+    public Collection<Room> getRoomsByHotelId(@PathVariable Long id){
+                Specification<Room> spec =  RoomSpecification.createSpecification(id,false);
+                return roomRepository.findAll(spec);
     }
 
     //http://localhost:8080/api/hotels

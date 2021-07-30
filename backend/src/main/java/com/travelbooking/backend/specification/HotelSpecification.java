@@ -17,23 +17,29 @@ public final class HotelSpecification {
                                                            , Boolean retired
                                                            , Integer number_adult,
                                                            Integer number_children,
+                                                           Double price,
+                                                           Float rating,
                                                            Date check_in_date){
         return Specification.where(locationCheck(location)
                         .and(isRetired(retired))
                                 .and(checkNumAdult(number_adult))
                                         .and(checkNumChildren(number_children))
                                                .and(checkAvailableDate(check_in_date))
-//                                                    .and(checkInCheckOutCheck(check_out_date,check_in_date))
-        );
+                                                    .and(priceCheck(price))
+                                                        .and(ratingCheck(rating)));
     }
 
 
     public static Specification<Hotel> locationCheck(Integer location){
-//        return (hotel,cq,cb) -> {
-//            Join<Hotel,Location> joinTable = hotel.join("location");
-//            return cb.like(joinTable.get("maxAdult"),"'" + number_adult + "'");
-//        };
        return (hotel,cq,cb) -> cb.equal(hotel.get("location"),location);
+    }
+
+    public static Specification<Hotel> priceCheck(Double price){
+        return (hotel,cq,cb) -> price != 0 ? cb.lessThanOrEqualTo(hotel.get("price"),price):null;
+    }
+
+    public static Specification<Hotel> ratingCheck(Float rating){
+        return (hotel,cq,cb) -> rating != 0 ?cb.equal(hotel.get("hotelRating"),rating):cb.lessThanOrEqualTo(hotel.get("hotelRating"),5);
     }
 
     public static Specification<Hotel> checkNumAdult(Integer number_adult){
@@ -44,7 +50,6 @@ public final class HotelSpecification {
     }
 
     public static Specification<Hotel> checkNumChildren(Integer number_children){
-
         return (hotel,cq,cb) -> {
             Join<Hotel,Room> joinTable = hotel.join("rooms");
             return cb.greaterThanOrEqualTo(joinTable.get("maxChildren"),number_children);
@@ -55,7 +60,7 @@ public final class HotelSpecification {
     public static Specification<Hotel> checkAvailableDate(Date check_in_date){
         return (hotel,cq,cb) -> {
             Join<Hotel,Room> joinTable = hotel.join("rooms");
-            return cb.greaterThanOrEqualTo(joinTable.get("availableFrom"),check_in_date);
+            return cb.greaterThanOrEqualTo(joinTable.get("availableTime"),check_in_date);
         };
     }
 
@@ -94,6 +99,9 @@ public final class HotelSpecification {
 
     public static Specification<Hotel> isRetired(Boolean retired) {
         return (hotel, cq, cb) -> retired != null ? cb.equal(hotel.get("retired"), retired) : null;
+    }
+    public static Specification<Hotel> isHavePaymentAtHotel(Boolean paymentCheck) {
+        return (hotel, cq, cb) -> paymentCheck != null ? cb.equal(hotel.get("retired"), paymentCheck) : null;
     }
 
 }

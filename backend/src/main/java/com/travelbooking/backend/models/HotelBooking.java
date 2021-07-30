@@ -32,9 +32,10 @@ public class HotelBooking {
     @LastModifiedDate
     @Column(name = "update_at")
     private Date updateAt;
-
     @Column(name = "payment_method", columnDefinition = "nvarchar(100)")
     private String paymentMethod;
+
+
     @Column(name = "retired", nullable = true)
     private boolean retired;
 

@@ -16,6 +16,7 @@ public class Hotel {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "hotel_name",columnDefinition = "nvarchar(150)")
     private String hotelName;
     @Column(name = "email")
@@ -28,6 +29,10 @@ public class Hotel {
     private String contactTitle;
     @Column(name = "address",columnDefinition = "nvarchar(255)")
     private String address;
+    @Column(name = "hotel_rating",nullable = true)
+    private Float hotelRating;
+    @Column(name = "payment_at_the_hotel",nullable = true)
+    private Boolean paymentAtTheHotel;
 
     @Column(name = "created_at", nullable = false)
     @CreatedDate
@@ -61,7 +66,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -69,6 +74,8 @@ public class Hotel {
         this.contactName = contactName;
         this.contactTitle = contactTitle;
         this.address = address;
+        this.hotelRating = hotelRating;
+        this.paymentAtTheHotel = paymentAtTheHotel;
         this.createdAt = createdAt;
         this.retired = retired;
         this.location = location;
@@ -132,6 +139,22 @@ public class Hotel {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Float getHotelRating() {
+        return hotelRating;
+    }
+
+    public void setHotelRating(Float hotelRating) {
+        this.hotelRating = hotelRating;
+    }
+
+    public Boolean getPaymentAtTheHotel() {
+        return paymentAtTheHotel;
+    }
+
+    public void setPaymentAtTheHotel(Boolean paymentAtTheHotel) {
+        this.paymentAtTheHotel = paymentAtTheHotel;
     }
 
     public Instant getCreatedAt() {

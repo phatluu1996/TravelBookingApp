@@ -14,6 +14,7 @@ public class Image {
     @Column(name = "path", nullable = false)
     public String imagePath;
 
+    @Column(name = "alt", nullable = false)
     public String imageAlt;
 
     @ManyToOne

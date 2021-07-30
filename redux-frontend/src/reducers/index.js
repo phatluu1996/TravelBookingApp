@@ -4,13 +4,15 @@ import reducerFlight from './reducerFlight'
 import reducerUser from './reducerUser';
 import reducerAirline from './reducerAirline';
 import reducerFlightByAirline from './reducerFlightByAirline';
+import reducerProvince from './reduceLocation';
 
 
 const reducers = combineReducers({
 	flight : reducerFlight,
 	user : reducerUser,
 	airline: reducerAirline,
-	flights : reducerFlightByAirline
+	flights : reducerFlightByAirline,
+	province: reducerProvince
 });
 
 export default (state, action) => reducers(state, action);
