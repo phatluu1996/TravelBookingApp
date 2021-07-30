@@ -1,6 +1,7 @@
 package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.Airline;
+import com.travelbooking.backend.models.Flight;
 import com.travelbooking.backend.repository.AirlineRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -60,5 +62,8 @@ public class AirlineController {
         return ResponseEntity.ok().body(result);
     }
 
-
+    @GetMapping("/airline/listFlights")
+    public Collection<Flight> listFlightByAirline(@RequestParam Long id){
+        return airlineRepository.listFlightByAirline(id);
+    }
 }
