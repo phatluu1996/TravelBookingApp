@@ -44,6 +44,7 @@ import SignUp from "./pages/SignUp";
 import Error from "./pages/Error";
 import FlightList from './pages/listings/FlightList';
 import HomePage from './pages/homes/HomePage';
+import Airline from './pages/dashboard/Airline';
 
 
 const App = () => {
@@ -101,6 +102,7 @@ const App = () => {
 
             
             <AppRoute exact path="/" component={HomePage}/>
+            <AppRoute exact path="/airline" component={Airline}/>
             <AppRoute path="/flight-list" component={FlightList} />
             <AppRoute component={Error} />
           </Switch>
