@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import HeaderViewed from './Header/HeaderViewed';
 import PopupLogin from './Header/PopupLogin';
 
@@ -13,17 +12,31 @@ const Header = () => {
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            <PopupLogin/>
+            <PopupLogin />
         </div>
-
 
         <header id="top">
             <div className="header-a">
                 <div className="wrapper-padding">
                     <div className="header-phone"><span>0 - 888 - 555 - 555</span></div>
-                    <div className="header-account">
-                        <a href="#">My account</a>
-                    </div>
+                    {
+                        !sessionStorage.getItem('user') && !sessionStorage.getItem('token') &&
+                        <>
+                            <div className="header-account">
+                                <a href="#">Login</a>
+                            </div>
+                            <div className="header-signup">
+                                <a href="http://localhost:3000/register">Register</a>
+                            </div>
+                        </>
+                    }
+                    {
+                        sessionStorage.getItem('user') && sessionStorage.getItem('userToken') &&
+                        <div className="header-signup">
+                            <a href="#" style={{color:'#ff7200'}}>{sessionStorage.getItem('user')}</a>
+                        </div>
+                    }
+
                     <div className="header-social">
                         <a href="#" className="social-twitter"></a>
                         <a href="#" className="social-facebook"></a>
@@ -31,7 +44,7 @@ const Header = () => {
                         <a href="#" className="social-pinterest"></a>
                         <a href="#" className="social-instagram"></a>
                     </div>
-                    <HeaderViewed/>
+                    <HeaderViewed />
                     <div className="header-lang">
                         <a href="#"><img alt="" src="img/en.gif" /></a>
                         <div className="langs-drop">
@@ -45,8 +58,7 @@ const Header = () => {
                         <a href="#">USD</a>
                         <div className="curency-drop">
                             <div><a href="#">usd</a></div>
-                            <div><a href="#">Eur</a></div>
-                            <div><a href="#">GBR</a></div>
+                            <div><a href="#">VND</a></div>
                         </div>
                     </div>
                     <div className="clear"></div>
@@ -88,30 +100,6 @@ const Header = () => {
                             <li><a className="has-child" href="#">Airline</a>
                                 <ul>
                                     <li><a href="/airline">Airline Profile</a></li>
-                                </ul>
-                            </li>
-                            <li><a className="has-child" href="#">Portfolio</a>
-                                <ul>
-                                    <li><a href="portfolio_three_collumns.html">Portfolio three columns</a></li>
-                                    <li><a href="portfolio_four_collumns.html">portfolio four columns</a></li>
-                                    <li><a href="item_page.html">item page</a></li>
-                                    <li><a href="item_page_full_width.html">Item page full width style</a></li>
-                                </ul>
-                            </li>
-                            <li><a className="has-child" href="#">Blog</a>
-                                <ul>
-                                    <li><a href="blog_with_sidebar.html">Blog with sidebar</a></li>
-                                    <li><a href="blog_masonry.html">blog masonry style</a></li>
-                                    <li><a href="standart_blog_post.html">Blog post example</a></li>
-                                </ul>
-                            </li>
-                            <li><a className="has-child" href="#">Features</a>
-                                <ul>
-                                    <li><a href="typography.html">typography</a></li>
-                                    <li><a href="shortcodes.html">shortcodes</a></li>
-                                    <li><a href="interactive_elements.html">interactive elements</a></li>
-                                    <li><a href="cover_galleries.html">cover galleries</a></li>
-                                    <li><a href="columns.html">columns</a></li>
                                 </ul>
                             </li>
                             <li><a href="contacts.html">CONTACS</a></li>
@@ -168,48 +156,6 @@ const Header = () => {
                                 <li><a href="#">Airline</a>
                                     <ul>
                                         <li><a href="/airline">Airline Profile</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Tours</a>
-                                    <ul>
-                                        <li><a href="tour_alternative.html">Tours list style</a></li>
-                                        <li><a href="tour_grid.html">tours grid style</a></li>
-                                        <li><a href="tour_simple.html">Tours simple style</a></li>
-                                        <li><a href="tour_detail.html">Tour detail page</a></li>
-                                        <li><a href="tour_booking.html">tour booking page</a></li>
-                                        <li><a href="booking_complete.html">booking complete</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Pages</a>
-                                    <ul>
-                                        <li><a href="about_us.html">about us style one</a></li>
-
-                                        <li><a href="services.html">services</a></li>
-                                        <li><a href="contacts.html">contact us</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Portfolio</a>
-                                    <ul>
-                                        <li><a href="portfolio_three_collumns.html">Portfolio three columns</a></li>
-                                        <li><a href="portfolio_four_collumns.html">portfolio four columns</a></li>
-                                        <li><a href="item_page.html">item page</a></li>
-                                        <li><a href="item_page_full_width.html">Item page full width style</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Blog</a>
-                                    <ul>
-                                        <li><a href="blog_with_sidebar.html">Blog with sidebar</a></li>
-                                        <li><a href="blog_masonry.html">blog masonry style</a></li>
-                                        <li><a href="standart_blog_post.html">Blog post example</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Features</a>
-                                    <ul>
-                                        <li><a href="typography.html">typography</a></li>
-                                        <li><a href="shortcodes.html">shortcodes</a></li>
-                                        <li><a href="interactive_elements.html">interactive elements</a></li>
-                                        <li><a href="cover_galleries.html">cover galleries</a></li>
-                                        <li><a href="columns.html">columns</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="contacts.html">Contacts</a></li>

@@ -227,7 +227,7 @@ const Home = (props) => {
                                         className="slide-section slide-b"
                                         style={{
                                             background:
-                                                "url(img/sider-03.jpg) center center no-repeat cover",
+                                                "url(img/sider-03.jpg) center no-repeat",
                                         }}
                                     >
                                         <div className="mp-slider-lbl">
