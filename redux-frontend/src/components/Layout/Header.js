@@ -1,8 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import HeaderViewed from './Header/HeaderViewed';
 import PopupLogin from './Header/PopupLogin';
+import $ from 'jquery';
 
-const Header = () => {
+const Header = () => {   
+    const [user, setUser] = useState(null);
+    const submitLogin = (user) => {
+        setUser(user);
+    }
+
     return (<>
         <div className="overlay"></div>
         <div className="autorize-popup">
@@ -12,7 +18,7 @@ const Header = () => {
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            <PopupLogin />
+            <PopupLogin onSubmitUser={submitLogin} />
         </div>
 
         <header id="top">

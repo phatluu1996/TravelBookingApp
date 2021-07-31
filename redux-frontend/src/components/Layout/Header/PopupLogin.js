@@ -2,11 +2,13 @@ import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
 import Common from '../../../utils/Common';
+import $ from 'jquery';
 
 function PopupLogin(props) {
 
     const [errLogin, setErrLogin] = useState(false);
     const [isRequest, setIsRequest] = useState(false);
+
     const [error, setError] = useState({
         username: '',
         password: ''
@@ -66,11 +68,14 @@ function PopupLogin(props) {
                 setErrLogin(true);
             }
             if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-                Common.setUserSession(props.user.data.accessToken, props.user.data.username);
-                document.location.href = "http://localhost:3000/";
+                Common.setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header);
+                // document.location.href = "/";
+                props.onSubmitUser(props.user.data);
+                //TODO
+                closePopup();
             }
             if (!props.user.data && Common.getUser() && Common.getToken()) {
-                document.location.href = "http://localhost:3000/";
+                document.location.href = "/";
             }
         }
 
@@ -79,31 +84,48 @@ function PopupLogin(props) {
         }
     });
 
+    const closePopup = () => {
+        $('.autorize-popup').animate({top: '-300px'}, 300, function(){
+            $('.overlay').fadeOut();	
+        });
+    }
+
+
     return (<>
-        <form className="autorize-tab-content" onSubmit={handleSubmit}>
-            <div className="autorize-padding" style={{ marginTop: '20px' }}>
-                <h6 className="autorize-lbl">Welocome! Login in to Your Accont</h6>
-                <div>
-                    <div className="autorize-input-lbl">Username:</div>
-                    <div className="validate-error">{error.username}</div>
-                    <input type="text" name="username" onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
-                </div>
-
-                <div>
-                    <div className="autorize-input-lbl">Password:</div>
-                    <div className="validate-error">{error.password}</div>
-                    <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
-                </div>
-
-                <footer className="autorize-bottom">
-                    <button className="authorize-btn" type="submit">Login</button>
-                    <a href="#" className="authorize-forget-pass">Forgot your password?</a>
-                    <div className="clear"></div>
-                    {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
-                        Login Fail! Wrong user name or password.</div>}
-                </footer>
+        <div className="overlay"></div>
+        <div className="autorize-popup">
+            <div className="autorize-tabs">
+                <a href="#" className="autorize-tab-a current">Sign in</a>
+                <a href="#" className="autorize-tab-b"></a>
+                <a href="#" className="autorize-close"></a>
+                <div className="clear"></div>
             </div>
-        </form>
+            <form className="autorize-tab-content" onSubmit={handleSubmit}>
+                <div className="autorize-padding" style={{ marginTop: '20px' }}>
+                    <h6 className="autorize-lbl">Welocome! Login in to Your Accont</h6>
+                    <div>
+                        <div className="autorize-input-lbl">Username:</div>
+                        <div className="validate-error">{error.username}</div>
+                        <input type="text" name="username" onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
+                    </div>
+
+                    <div>
+                        <div className="autorize-input-lbl">Password:</div>
+                        <div className="validate-error">{error.password}</div>
+                        <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
+                    </div>
+
+                    <footer className="autorize-bottom">
+                        <button className="authorize-btn" type="submit">Login</button>
+                        <a href="#" className="authorize-forget-pass">Forgot your password?</a>
+                        <div className="clear"></div>
+                        {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
+                            Login Fail! Wrong user name or password.</div>}
+                    </footer>
+                </div>
+            </form>
+        </div>
+
     </>);
 }
 const mapStateToProps = (state, ownProps) => {

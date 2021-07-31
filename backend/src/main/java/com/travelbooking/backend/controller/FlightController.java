@@ -78,17 +78,20 @@ public class FlightController {
 
     @GetMapping("/findFlights")
     public Page<Flight> findFlights(@RequestParam Optional<String> from,
-                                          @RequestParam Optional<String> to,
-                                          @RequestParam(required = false) String departureDate,
-                                          @RequestParam(required = false) String returnDate,
-                                          @RequestParam(required = false) Integer adult,
-                                          @RequestParam(required = false) Integer child,
-                                          @RequestParam(required = false) Integer infant,
-                                          @RequestParam(required = false) String seatClass,
-                                          @RequestParam(defaultValue = "0") int page
+                                  @RequestParam Optional<String> to,
+                                  @RequestParam(required = false) String departureDate,
+                                  @RequestParam(required = false) String returnDate,
+                                  @RequestParam(required = false) Integer adult,
+                                  @RequestParam(required = false) Integer child,
+                                  @RequestParam(required = false) Integer infant,
+                                  @RequestParam(required = false) String seatClass,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "id") String sortBy,
+                                    @RequestParam(defaultValue = "asc")  String sortDir
+
                                           ) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, null,Boolean.FALSE);
-        Pageable paging = PageRequest.of(page, 8, Sort.by("id")).previousOrFirst();
+        Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
 
         Page<Flight> pagedResult = flightRepository.findAll(spec, paging);
 

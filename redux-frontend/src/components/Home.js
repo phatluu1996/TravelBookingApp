@@ -140,7 +140,6 @@ const Home = (props) => {
 
     useEffect(() => {
         let mount = false;
-        console.log(props.flights.data);
         props.getProvince();
         
         return () => {
@@ -167,7 +166,7 @@ const Home = (props) => {
         var form = e.target;
         // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
         // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
-        document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=0`;
+        document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
     };
     const handleSubmit2 = (e) => {
         e.preventDefault();
@@ -1767,18 +1766,12 @@ const Home = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        flights: state.flight,
         provinces: state.province,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getFlight: (from, to, adult, child, infant, ddate, rdate, seatClass) => {
-            dispatch(
-                fetchFlight(from, to, adult, child, infant, ddate, rdate, seatClass)
-            );
-        },
         getProvince: () => {
             dispatch(retrieveProvince());
         },

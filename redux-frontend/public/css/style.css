@@ -2,7 +2,7 @@
 html { -webkit-text-size-adjust: auto; -ms-text-size-adjust: auto; }
 html, body, img, form {margin: 0px; padding: 0px; border: none; letter-spacing:normal;}
 html, body {height:100%;-webkit-font-smoothing: antialiased;}
-body {background-color:#fafafa;}
+body {background-color:#f7f7f7;}
 body.inner-body {background-color:#fff;}
 body.gray-inner {background-color:#fafafa;}
 body, td {font: 14px Arial, sans-serif; color: #000;}
@@ -497,6 +497,10 @@ button.srch-btn {cursor: pointer; font-family: 'Montserrat'; font-size:11px; fon
     text-transform:uppercase;
 }
 
+.input-a.in-valid {
+  border: 2px solid red !important;
+}
+
 .input-a input[type='number'] {
 	width:100%;
 	border:0px; 
@@ -726,7 +730,9 @@ button.srch-btn {cursor: pointer; font-family: 'Montserrat'; font-size:11px; fon
 .show-thumbs.chosen,
 .show-table.chosen,
 .show-list.chosen {background-position: left -29px;}
-
+show-list:hover{
+  border: 2px #ff7200 ;
+}
 .cat-list-item-h {width:100%; float: left;}
 .cat-list-item-l {width:241px; float:left; margin: 0px; padding: 0px ; line-height: 0px; overflow:hidden;}
 .cat-list-item-l img {width:100%;}
