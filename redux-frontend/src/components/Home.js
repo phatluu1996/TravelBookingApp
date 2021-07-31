@@ -24,6 +24,7 @@ import { retrieveProvince } from "../actions/actionLocation";
 const Home = (props) => {
     const [selectProvince, setSelectProvince] = useState(null);
     const [selectDistrict, setSelectDistrict] = useState(null);
+    const [selectWard, setSelectWard] = useState(null);
     const history = useHistory();
 
     const province = {
@@ -141,25 +142,82 @@ const Home = (props) => {
     useEffect(() => {
         let mount = false;
         props.getProvince();
-        
+
         return () => {
             mount = true;
         };
     }, []);
-    const onChangeProvince = (e) =>{
-        if(e.currentTarget.value === "0"){
-            document.getElementById("districts").value =  "0";
-            document.getElementById("wards").value = "0";
+
+    const onChangeProvince = (e) => {
+        document
+            .querySelector("#districts")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        document
+            .querySelector("#wards")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        if (e.currentTarget.id === "0") {
             setSelectDistrict(null);
-         }
-        setSelectProvince(props.provinces.data.find(item =>item.id === parseInt(e.currentTarget.value)));
-            
-    }
-    const onChangeDistrict = (e) =>{
-        const sl = {...selectProvince.districts.find(item => item.id === parseInt(e.currentTarget.value))}
-        setSelectDistrict(sl);
-    }
-    
+            setSelectProvince(null);
+            setSelectWard(null);
+        } else {
+            setSelectProvince(
+                props.provinces.data.find(
+                    (item) => item.id === parseInt(e.currentTarget.value)
+                )
+            );
+        }
+    };
+    const onChangeDistrict = (e) => {
+        document
+            .querySelector("#wards")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        if (e.currentTarget.id === "0") {
+            setSelectDistrict(null);
+            setSelectWard(null);
+        } else {
+            setSelectDistrict(
+                selectProvince.districts.find(
+                    (item) => item.id === parseInt(e.currentTarget.value)
+                )
+            );
+        }
+    };
+    const onChangeWard = (e) => {
+        setSelectWard(
+            selectDistrict.wards.find(
+                (item) => item.id === parseInt(e.currentTarget.value)
+            )
+        );
+    };
+
+    const getNextDate = (e) => {
+        const tomorrow = new Date(e);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const date = new Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        }).format(tomorrow);
+        return date;
+    };
+
+    const handleSubmitHotel = (e) => {
+        e.preventDefault();
+        var form = e.target;
+        const today = new Date();
+
+        document.location.href = `/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
+            }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
+            }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
+            }&checkInDate=${form.checkInDate.value === ""
+                ? getNextDate(today)
+                : form.checkInDate.value
+            }&checkOutDate=${form.checkOutDate.value === ""
+                ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value)
+                : form.checkOutDate.value
+            }&numRoom=${form.roomHotel.value}`;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log(props);
@@ -167,14 +225,6 @@ const Home = (props) => {
         // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
         // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
         document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
-    };
-    const handleSubmit2 = (e) => {
-        e.preventDefault();
-        // console.log(props);
-        var form = e.target;
-        // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
-        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
-        document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=0`;
     };
 
     return (
@@ -225,8 +275,7 @@ const Home = (props) => {
                                     <div
                                         className="slide-section slide-b"
                                         style={{
-                                            background:
-                                                "url(img/sider-03.jpg) center no-repeat",
+                                            background: "url(img/sider-03.jpg) center no-repeat",
                                         }}
                                     >
                                         <div className="mp-slider-lbl">
@@ -254,7 +303,7 @@ const Home = (props) => {
                                 </nav>
                                 <div className="page-search-content">
                                     <form
-                                        onSubmit={handleSubmit2}
+                                        onSubmit={handleSubmitHotel}
                                         className=" search-tab-content"
                                     >
                                         <div className="page-search-p">
@@ -269,9 +318,9 @@ const Home = (props) => {
                                                                 name="seatClass"
                                                                 id="provinces"
                                                             >
-                                                                 <option key={0} value={0}>
-                                                                            --
-                                                                    </option>
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
                                                                 {props.provinces?.data?.map((item) => (
                                                                     <option key={item.id} value={item.id}>
                                                                         {item.name}
@@ -289,9 +338,9 @@ const Home = (props) => {
                                                                 name="seatClass"
                                                                 id="districts"
                                                             >
-                                                                  <option key={0} value={0}>
-                                                                            --
-                                                                    </option>
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
                                                                 {selectProvince?.districts?.map((item) => (
                                                                     <option key={item.id} value={item.id}>
                                                                         {item.name}
@@ -307,10 +356,11 @@ const Home = (props) => {
                                                                 className="custom-select"
                                                                 name="seatClass"
                                                                 id="wards"
+                                                                onChange={onChangeWard}
                                                             >
-                                                                  <option key={0} value={0}>
-                                                                            --
-                                                                    </option>
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
                                                                 {selectDistrict?.wards?.map((item) => (
                                                                     <option key={item.id} value={item.id}>
                                                                         {item.name}
@@ -327,6 +377,8 @@ const Home = (props) => {
                                                         <label>Check in</label>
                                                         <div className="input-a">
                                                             <input
+                                                                name="checkInDate"
+                                                                id="checkInDate"
                                                                 type="text"
                                                                 className="date-inpt"
                                                                 placeholder="mm/dd/yy"
@@ -338,6 +390,8 @@ const Home = (props) => {
                                                         <label>Check out</label>
                                                         <div className="input-a">
                                                             <input
+                                                                name="checkOutDate"
+                                                                id="checkOutDate"
                                                                 type="text"
                                                                 className="date-inpt"
                                                                 placeholder="mm/dd/yy"
@@ -353,97 +407,52 @@ const Home = (props) => {
                                                 <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-3c">
                                                         <label>Rooms</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
+
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="roomHotel"
+                                                                name="roomHotel"
+                                                                type="number"
+                                                                defaultValue={1}
+                                                                min="1"
+                                                                max="30"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-3c">
                                                         <label>adult</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="adultHotel"
+                                                                name="adultHotel"
+                                                                type="number"
+                                                                defaultValue={1}
+                                                                min="1"
+                                                                max="7"
+                                                            />
                                                         </div>
+
                                                     </div>
+
                                                     <div className="srch-tab-3c">
                                                         <label>Child</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="childRenHotel"
+                                                                name="childRenHotel"
+                                                                type="number"
+                                                                defaultValue={0}
+                                                                min="0"
+                                                                max="7"
+                                                            />
                                                         </div>
+
                                                     </div>
                                                     <div className="clear"></div>
                                                 </div>
                                             </div>
 
                                             <div className="clear"></div>
-
-                                            <div className="search-asvanced">
-                                                <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <div className="srch-tab-left">
-                                                            <label>hotel stars</label>
-                                                            <div className="input-a">
-                                                                <input type="text" placeholder="--" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="srch-tab-right">
-                                                            <label>Price</label>
-                                                            <div className="input-a">
-                                                                <input type="text" placeholder="--" />
-                                                            </div>
-                                                        </div>
-                                                        <div className="clear"></div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <label>Property type</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <label>Rating</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="clear"></div>
-                                            </div>
                                         </div>
                                         <footer className="search-footer">
                                             <button className="srch-btn">Search</button>

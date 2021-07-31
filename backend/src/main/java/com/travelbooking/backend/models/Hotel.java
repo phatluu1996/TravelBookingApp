@@ -33,6 +33,8 @@ public class Hotel {
     private Float hotelRating;
     @Column(name = "payment_at_the_hotel",nullable = true)
     private Boolean paymentAtTheHotel;
+    @Column(name = "number_of_room",nullable = true)
+    private int  numberOfRoom;
 
     @Column(name = "created_at", nullable = false)
     @CreatedDate
@@ -66,7 +68,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, int numberOfRoom, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -76,6 +78,7 @@ public class Hotel {
         this.address = address;
         this.hotelRating = hotelRating;
         this.paymentAtTheHotel = paymentAtTheHotel;
+        this.numberOfRoom = numberOfRoom;
         this.createdAt = createdAt;
         this.retired = retired;
         this.location = location;
@@ -155,6 +158,14 @@ public class Hotel {
 
     public void setPaymentAtTheHotel(Boolean paymentAtTheHotel) {
         this.paymentAtTheHotel = paymentAtTheHotel;
+    }
+
+    public int getNumberOfRoom() {
+        return numberOfRoom;
+    }
+
+    public void setNumberOfRoom(int numberOfRoom) {
+        this.numberOfRoom = numberOfRoom;
     }
 
     public Instant getCreatedAt() {

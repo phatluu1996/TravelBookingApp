@@ -13,25 +13,50 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 
 public final class HotelSpecification {
-    public static Specification<Hotel> createSpecification(Integer location
+    public static Specification<Hotel> createSpecification(Integer province,
+                                                           Integer district,
+                                                           Integer ward
                                                            , Boolean retired
                                                            , Integer number_adult,
                                                            Integer number_children,
-                                                           Double price,
-                                                           Float rating,
+                                                           Integer numRoom,
                                                            Date check_in_date){
-        return Specification.where(locationCheck(location)
+        return Specification.where(
+                allCheck(province,district,ward,number_adult,number_children,check_in_date,numRoom)
+//                        .and(districtCheck(district))
+//                        .and(wardCheck(ward))
                         .and(isRetired(retired))
-                                .and(checkNumAdult(number_adult))
-                                        .and(checkNumChildren(number_children))
-                                               .and(checkAvailableDate(check_in_date))
-                                                    .and(priceCheck(price))
-                                                        .and(ratingCheck(rating)));
+//                                .and(checkNumAdult(number_adult))
+//                                       .and(checkNumChildren(number_children))
+//                                               .and(checkAvailableDate(check_in_date))
+//                                                    .and(roomStatusCheck(numRoom))
+//                                                        .and(ratingCheck(rating))
+        );
     }
 
 
-    public static Specification<Hotel> locationCheck(Integer location){
-       return (hotel,cq,cb) -> cb.equal(hotel.get("location"),location);
+    public static Specification<Hotel> allCheck(Integer province,Integer district,Integer ward,Integer number_adult,Integer number_children,Date check_in_date,Integer numRoom){
+        return (hotel,cq,cb) -> {
+            Join<Hotel,Location> joinTableLocation = hotel.join("location");
+            Join<Hotel,Room> joinTableRoom = hotel.join("rooms");
+
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            if(province != 0){
+                predicates.add(cb.equal(joinTableLocation.get("province"),province));
+            }else if(district != 0){
+                predicates.add(cb.equal(joinTableLocation.get("district"),district));
+            }else if(ward != 0){
+                predicates.add(cb.equal(joinTableLocation.get("ward"),ward));
+            }else if(number_children != 0){
+                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
+            }
+                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
+                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));
+                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
+
+                cq.distinct(true);
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     public static Specification<Hotel> priceCheck(Double price){
@@ -42,25 +67,9 @@ public final class HotelSpecification {
         return (hotel,cq,cb) -> rating != 0 ?cb.equal(hotel.get("hotelRating"),rating):cb.lessThanOrEqualTo(hotel.get("hotelRating"),5);
     }
 
-    public static Specification<Hotel> checkNumAdult(Integer number_adult){
+    public static Specification<Hotel> roomStatusCheck(Integer numRoom){
         return (hotel,cq,cb) -> {
-            Join<Hotel,Room> joinTable = hotel.join("rooms");
-            return cb.greaterThanOrEqualTo(joinTable.get("maxAdult"), number_adult);
-        };
-    }
-
-    public static Specification<Hotel> checkNumChildren(Integer number_children){
-        return (hotel,cq,cb) -> {
-            Join<Hotel,Room> joinTable = hotel.join("rooms");
-            return cb.greaterThanOrEqualTo(joinTable.get("maxChildren"),number_children);
-        };
-
-    }
-
-    public static Specification<Hotel> checkAvailableDate(Date check_in_date){
-        return (hotel,cq,cb) -> {
-            Join<Hotel,Room> joinTable = hotel.join("rooms");
-            return cb.greaterThanOrEqualTo(joinTable.get("availableTime"),check_in_date);
+            return cb.greaterThan(hotel.get("numberOfRoom"),numRoom);
         };
     }
 
