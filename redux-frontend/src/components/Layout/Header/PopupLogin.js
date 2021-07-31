@@ -61,17 +61,19 @@ function PopupLogin(props) {
 
     useEffect(() => {
         var mount = false;
+        if (props.user.form === 'login') {
+            if (props.user.message && isRequest) {
+                setErrLogin(true);
+            }
+            if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
+                Common.setUserSession(props.user.data.accessToken, props.user.data.username);
+                document.location.href = "http://localhost:3000/";
+            }
+            if (!props.user.data && Common.getUser() && Common.getToken()) {
+                document.location.href = "http://localhost:3000/";
+            }
+        }
 
-        if (props.user.message && isRequest) {
-            setErrLogin(true);
-        }
-        if (props.user.data && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-            Common.setUserSession(props.user.data.accessToken, props.user.data.username);
-            document.location.href = "http://localhost:3000/";
-        }
-        if (props.user.data &&Common.getUser() && Common.getToken()) {
-            document.location.href = "http://localhost:3000/";
-        }
         return () => {
             mount = true;
         }
@@ -84,13 +86,13 @@ function PopupLogin(props) {
                 <div>
                     <div className="autorize-input-lbl">Username:</div>
                     <div className="validate-error">{error.username}</div>
-                    <input type="text" name="username"  onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
+                    <input type="text" name="username" onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
                 </div>
 
                 <div>
                     <div className="autorize-input-lbl">Password:</div>
                     <div className="validate-error">{error.password}</div>
-                    <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`}/>
+                    <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                 </div>
 
                 <footer className="autorize-bottom">
