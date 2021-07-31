@@ -5,6 +5,7 @@ import {
 } from "../actions/actionUser";
 
 const initialState = {
+  form: null,
   requesting: false,
   success: false,
   message: null,
@@ -24,7 +25,8 @@ const reducerUser = (state = initialState, action) => {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload
+        data: action.payload,
+        form:'login'
       };
       return state;
 
@@ -32,7 +34,8 @@ const reducerUser = (state = initialState, action) => {
       state = {
         ...state,
         requesting: false,
-        message: action.message
+        message: action.message,
+        form:'login'
       };
       return state;
       
@@ -47,7 +50,8 @@ const reducerUser = (state = initialState, action) => {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload
+        data: action.payload,
+        form:'signup'
       };
       return state;
 
@@ -56,7 +60,8 @@ const reducerUser = (state = initialState, action) => {
         ...state,
         success : false,
         requesting: false,
-        message: action.message
+        message: action.message,
+        form:'signup'
       };
       return state;
 

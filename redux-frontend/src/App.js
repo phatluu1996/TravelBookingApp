@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Airline from './components/Airline/Airline';
 import FlightSearchPage from './components/Flight/FlightSearchPage';
+import Register from './components/Layout/Register';
 import { connect } from 'react-redux';
 
 
@@ -27,7 +28,7 @@ const App = () => {
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
           <PublicRoute restricted={false} component={Airline} path="/airline" />
-
+          <PublicRoute restricted={false} component={Register} path="/register" />
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
 
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
