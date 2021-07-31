@@ -49,8 +49,10 @@ input,select,button,textarea {outline:none;}
 .header-phone {float:left; padding:11px 16px 0px 16px;height:29px;border-left:1px solid #333333;border-right:1px solid #333333;}
 .header-phone span {background:url(../img/icon-phone.png) left top no-repeat; background-position:left 1px; padding:1px 0px 0px 25px;font-size:11px;color:#fff;font-family: 'Montserrat', sans-serif; font-weight:700;display:inline-block;min-height:15px;}
 .header-phone a[href^=tel]{color:#fff; text-decoration:none;}
-.header-account {float:right;}
+.header-account {float:right; background-color: #ff7200;}
+.header-signup {float:right;}
 .header-account a {color:#fff;font-size:11px;text-transform:uppercase;font-family:'Montserrat';font-weight:700;text-decoration:none;display:inline-block;border-left:1px solid #333333;border-right:1px solid #333333;	padding:14px 22px 0px 22px;height:26px;	}
+.header-signup a {color:#fff;font-size:11px;text-transform:uppercase;font-family:'Montserrat';font-weight:700;text-decoration:none;display:inline-block;border-left:1px solid #333333;border-right:1px solid #333333;	padding:14px 22px 0px 22px;height:26px;	}
 .header-social {float:right;border-left:1px solid #333333;	padding:13px 22px 0px 25px;height:27px;	}
 .header-social a {display:inline-block;width:14px;height:14px;margin:0px 9px 0px 9px;}
 .header-social .social-twitter {background:url(../img/head-twitter.png) left top no-repeat;margin-left:0px;}
@@ -209,9 +211,8 @@ input,select,button,textarea {outline:none;}
 }
 .wrapper-padding-custom{
   max-width: 500px !important;
-  border: 1px solid grey;
   padding: 20px;
-  box-shadow: grey 1px 1px 2px 2px;
+  background-color: #fff !important;
 }
 /*---------------------------------------------------------------*/
 .autorize-padding {
@@ -279,11 +280,12 @@ input,select,button,textarea {outline:none;}
 }
 
 .header-account a:hover,
+.header-signup a:hover,
 .header-viewed-btn:hover,
 .header-viewed:hover .header-viewed-btn,
 .header-curency a:hover,
 .header-nav ul li a:hover {
-	color:#ff7200;
+	color:#ff000d;
 }
 .header-nav ul li {
 	position:relative;
@@ -3246,6 +3248,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
  .catalog-head .search-select {width:100%; float:none; margin-bottom:15px;}
  .catalog-head .search-select:last-child {margin-bottom:0px;}
  .header-account a {padding-left: 19px; padding-right: 19px;}
+ .header-signup a {padding-left: 19px; padding-right: 19px;}
  .header-lang {display: none;}
  .tweeter-item-r {width:93.2%;}
  .search-widget input[type="text"] {width:93.2%;}

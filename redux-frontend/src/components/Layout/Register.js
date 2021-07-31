@@ -139,109 +139,110 @@ function Register(props) {
         e.preventDefault();
         var form = e.target;
         if (validateForm(e)) {
-            props.doSignup(form.firstName.value, form.lastName.value, form.userName.value, form.email.value, form.password.value); 
+            props.doSignup(form.firstName.value, form.lastName.value, form.userName.value, form.email.value, form.password.value);
             setIsRequest(true);
         }
     }
 
     useEffect(() => {
         var mount = false;
-        if(props.user.form === 'signup'){
-            if(props.user.data && isRequest){
-                if(props.user.data.success){
+        if (props.user.form === 'signup') {
+            if (props.user.data && isRequest) {
+                if (props.user.data.success) {
                     setStatuSignup(true);
                     setMessageSignup(props.user.data.message);
                     document.location.href = "http://localhost:3000/";
-                }else{
+                } else {
                     setStatuSignup(false);
                     setMessageSignup(props.user.data.message);
                 }
-            }else{
+            } else {
                 setStatuSignup(false);
                 setMessageSignup(props.user.message);
-            }  
+            }
         }
 
         return () => {
             mount = true;
         }
-    },[props]);
+    }, [props]);
 
     return (<>
-        <Header />
-        <div className="main-cont">
-            <form onSubmit={handleSignupSubmit}>
-                <div className="body-wrapper" style={{ paddingTop: '150px' }}>
-                    <div className="wrapper-padding wrapper-padding-custom">
-                        <h2 style={{ textAlign: 'center', fontSize: '23px' }}>REGISTER</h2>
-                        <p style={{ textAlign: 'center', marginBottom: '20px' }}>Register for Your Account</p>
-                        <div className="booking-form">
-                            <div>
-                                <div className="booking-form-i">
-                                    <label className="custom-lbl">First Name:</label>
-                                    <div className={`input ${validateError.firstName ? 'is-invalid' : ''}`} ><input type="text" name="firstName" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.firstName}</div>
+        <body>
+            <Header />
+            <div className="main-cont">
+                <form onSubmit={handleSignupSubmit}>
+                    <div className="body-wrapper" style={{ paddingTop: '150px'}}>
+                        <div className="wrapper-padding wrapper-padding-custom">
+                            <h2 style={{ textAlign: 'center', fontSize: '23px' }}>REGISTER</h2>
+                            <p style={{ textAlign: 'center', marginBottom: '20px' }}>Register for Your Account</p>
+                            <div className="booking-form">
+                                <div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">First Name:</label>
+                                        <div className={`input ${validateError.firstName ? 'is-invalid' : ''}`} ><input type="text" name="firstName" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.firstName}</div>
+                                    </div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Last Name:</label>
+                                        <div className={`input ${validateError.lastName ? 'is-invalid' : ''}`}><input type="text" name="lastName" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.lastName}</div>
+                                    </div>
+                                    <div className="clear"></div>
                                 </div>
-                                <div className="booking-form-i">
-                                    <label className="custom-lbl">Last Name:</label>
-                                    <div className={`input ${validateError.lastName ? 'is-invalid' : ''}`}><input type="text" name="lastName" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.lastName}</div>
+                                <div>
+                                    <div className="booking-form-i booking-form-i-custom">
+                                        <label className="custom-lbl">Username:</label>
+                                        <div className={`input ${validateError.userName ? 'is-invalid' : ''}`}><input type="text" name="userName" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.userName}</div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i booking-form-i-custom">
+                                        <label className="custom-lbl">Email:</label>
+                                        <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="email" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.email}</div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i booking-form-i-custom">
+                                        <label className="custom-lbl">Password:</label>
+                                        <div className={`input ${validateError.password ? 'is-invalid' : ''}`}><input type="password" name="password" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.password}</div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i booking-form-i-custom">
+                                        <label className="custom-lbl">Confirm Password:</label>
+                                        <div className={`input ${validateError.confirmPassword ? 'is-invalid' : ''}`}><input type="password" name="confirmPassword" onChange={handleChange} /></div>
+                                        <div className="booking-error-input">{validateError.confirmPassword}</div>
+                                    </div>
                                 </div>
                                 <div className="clear"></div>
-                            </div>
-                            <div>
-                                <div className="booking-form-i booking-form-i-custom">
-                                    <label className="custom-lbl">Username:</label>
-                                    <div className={`input ${validateError.userName ? 'is-invalid' : ''}`}><input type="text" name="userName" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.userName}</div>
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" />
+                                        I want to receive Sparrow news in the future
+                                    </label>
+                                    <div className="booking-error-input"></div>
                                 </div>
-                                <div className="clear"></div>
+                                <div className="booking-devider"></div>
                             </div>
-                            <div>
-                                <div className="booking-form-i booking-form-i-custom">
-                                    <label className="custom-lbl">Email:</label>
-                                    <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="email" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.email}</div>
-                                </div>
-                                <div className="clear"></div>
+                            <div className="booking-complete" style={{ float: 'left' }}>
+                                <button className="booking-complete-btn" type="submit" style={{ marginTop: '0' }}>REGISTER</button>
                             </div>
-                            <div>
-                                <div className="booking-form-i booking-form-i-custom">
-                                    <label className="custom-lbl">Password:</label>
-                                    <div className={`input ${validateError.password ? 'is-invalid' : ''}`}><input type="password" name="password" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.password}</div>
-                                </div>
-                                <div className="clear"></div>
-                            </div>
-                            <div>
-                                <div className="booking-form-i booking-form-i-custom">
-                                    <label className="custom-lbl">Confirm Password:</label>
-                                    <div className={`input ${validateError.confirmPassword ? 'is-invalid' : ''}`}><input type="password" name="confirmPassword" onChange={handleChange}/></div>
-                                    <div className="booking-error-input">{validateError.confirmPassword}</div>
-                                </div>
-                            </div>
+                            <div className={`${statusSignup ? 'booking-success-input' : 'booking-error-input'}`} style={{ float: 'left', marginLeft: '10px', marginTop: '10px' }}>{messageSignup}</div>
                             <div className="clear"></div>
-                            <div className="checkbox">
-                                <label>
-                                    <input type="checkbox" value="" />
-                                    I want to receive Sparrow news in the future
-                                </label>
-                                <div className="booking-error-input"></div>
-                            </div>
-                            <div className="booking-devider"></div>
                         </div>
-                        <div className="booking-complete" style={{float:'left'}}>
-                            <button className="booking-complete-btn" type="submit" style={{marginTop:'0'}}>REGISTER</button>
-                        </div>
-                        <div className={`${statusSignup?'booking-success-input':'booking-error-input'}`}  style={{float:'left',marginLeft:'10px', marginTop:'10px'}}>{messageSignup}</div>
                         <div className="clear"></div>
                     </div>
-                    <div className="clear"></div>
-                </div>
-            </form>
-        </div>
-
-        <Footer />
+                </form>
+            </div>
+            <Footer />
+        </body>
     </>);
 }
 
