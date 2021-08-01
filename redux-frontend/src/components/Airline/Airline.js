@@ -1,19 +1,11 @@
 import { useEffect, setState, useState, Component } from "react";
 import React from "react";
-import { Link } from "react-router-dom";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
-import { connect } from "react-redux";
-
-import { retrieveAirline } from "../../actions/actionAirline";
-import { listFlightsByAirline } from "../../actions/actionFlightByAirline";
+import { retrieveAirline, updateAirline } from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
-import AddNewFlight from "./AddNewFlight";
-
-// function useQuery() {
-//     return new URLSearchParams(useLocation().search);
-// }
+import UpdateAirline from "./Component/UpdateAirline";
 
 const Airline = (props) => {
   // let query = useQuery();
@@ -29,18 +21,36 @@ const Airline = (props) => {
     dispatch(retrieveAirline(id));
   };
 
-  const fullAddress = (addr) => {
-    return addr.street + ", " + addr.ward.prefix 
-    + " " + addr.ward.name + ", " + addr.district.prefix + " " + addr.district.name
-    + ", " + addr.province.name  + ", " + addr.postalCode;
+  const editAirline = (airlineid, data) =>{
+    dispatch(updateAirline(airlineid, data));
   }
 
+  const updateAirlineHandler= (id,data) =>{
+    editAirline(id,data);
+   }
+
+
+  const fullAddress = (addr) => {
+    return (
+      addr?.street +
+      ", " +
+      addr?.ward.prefix +
+      " " +
+      addr?.ward.name +
+      ", " +
+      addr?.district.prefix +
+      " " +
+      addr?.district.name +
+      ", " +
+      addr?.province.name +
+      ", " +
+      addr?.postalCode
+    );
+  };
   useEffect(() => {
     var mount = false;
-
     getAirline(id);
-    // const flights = listFlights(2)
-    // console.log(flights);
+    
     return () => {
       mount = true;
     };
@@ -50,20 +60,27 @@ const Airline = (props) => {
   return (
     <>
       <Header />
-      <div className="main-cont">
-        <div className="inner-page">
-          <div className="inner-breadcrumbs">
+      <UpdateAirline airlineId={id} onUpdateAirline={updateAirlineHandler}/>
+
+ 
+
+      <div className="main-cont"  style={{backgroundColor:'#fff'}}>
+        <div className="inner-page" >
+          <div className="inner-breadcrumbs" >
             <div className="content-wrapper">
-              <div className="page-title">Airline Profile</div>
+              <div className="page-title">
+                Airline - <span>Profile</span>
+              </div>
               <div className="breadcrumbs">
-                <a href="#">Home</a> / <span>Profile</span>
+                <a href="/">Home</a> / <a href="#">Airline</a> /{" "}
+                <span>Profile</span>
               </div>
               <div className="clear"></div>
             </div>
           </div>
-          <div className="content-wrapper">
-            <div className="shortcodes-block">
-              <div className="p-item-page" style={{ paddingBottom: "250px" }}>
+          <div className="content-wrapper" >
+            <div className="shortcodes-block" >
+              <div className="p-item-page" style={{ paddingBottom:'250px' }}>
                 <div className="p-item-page-l">
                   <div className="p-item-page-lb">
                     <div className="p-item-padding">
@@ -149,8 +166,13 @@ const Airline = (props) => {
                                       <div className="p-item-details-il">
                                         Address
                                       </div>
-                                      <div className="p-item-details-ir">{fullAddress(airline.airline?.location)}</div>
+                                      <div className="p-item-details-ir">
+                                        {fullAddress(airline.airline?.location)}
+                                      </div>
                                       <div className="clear"></div>
+                                    </div>
+                                    <div className="update-form">
+                                       <a href="#" style={{float:'right'}}>Update </a>
                                     </div>
                                   </div>
                                 </div>
@@ -224,76 +246,193 @@ const Airline = (props) => {
             </div>
           </div>
         </div>
-        <div className="main-cont">
-          <div className="body-wrapper">
-            <div className="wrapper-padding">
-              <div className="typography-heading">For Flight Management</div>
-              <AddNewFlight airlineId={id}/>
+        <div className="about-content">
+          <div className="content-wrapper">
+            <header className="page-lbl fly-in">
+              <div className="offer-slider-lbl">Additional Services</div>
+              <p>
+                Our sincere thanks to all valued customers and partners for your
+                support!
+              </p>
+            </header>
+            <div className="services fly-in">
+              <div className="services-row">
+                <div className="services-i">
+                  <div className="services-img">
+                    <img
+                      alt=""
+                      src="img/icon-bag.png"
+                      style={{ width: "40px", height: "40px" }}
+                    />
+                  </div>
+                  <div className="services-lbl">Prepaid Baggage</div>
+                  <div className="services-txt">
+                    Don't get stuck at the airport - plan ahead to save time and
+                    money on your baggage by purchasing prepaid excess baggage.
+                  </div>
+                </div>
+
+                <div className="services-i">
+                  <div className="services-img">
+                    <img
+                      alt=""
+                      src="img/airplane-seat.png"
+                      style={{ width: "40px", height: "40px" }}
+                    />
+                  </div>
+                  <div className="services-lbl">Advanced Seat Selection</div>
+                  <div className="services-txt">
+                    With advanced seat selection, passengers can enjoy more
+                    space to stretch their legs or avoid sitting separately from
+                    their friends or family.{" "}
+                  </div>
+                </div>
+
+                <div className="services-i">
+                  <div className="services-img">
+                    <img
+                      alt=""
+                      src="img/insurance-icon.png"
+                      style={{ width: "40px", height: "40px" }}
+                    />
+                  </div>
+                  <div className="services-lbl">Travel Insurance </div>
+                  <div className="services-txt">
+                    {" "}
+                    Passengers can be fully assured with Medical Assistance and
+                    Emergency Medical Services of AAI who is a consultant and
+                    assistance provider working 24/7 in more than 200 countries
+                    around the world.
+                  </div>
+                </div>
+
+                <div className="services-i">
+                  <div className="services-img">
+                    <img
+                      alt=""
+                      src="img/upgrade-business.png"
+                      style={{ width: "40px", height: "40px" }}
+                    />
+                  </div>
+                  <div className="services-lbl">Upgrade At Airport </div>
+                  <div className="services-txt">
+                    Have chances to experience our premium in-flight services
+                    and enjoy more space for working or relaxation.{" "}
+                  </div>
+                </div>
+              </div>
+              <div className="clear"></div>
             </div>
           </div>
         </div>
 
-        <div className="content-wrapper">
-          <div className="tables">
-            <div className="typography-heading">Scheduled Flights List</div>
-            <div className="shortcodes">
-              <table className="table-a light">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Flight</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Schedule Time</th>
-                    <th>Arrival Time</th>
-                    <th>Business</th>
-                    <th>Economic</th>
-                    <th>Aircraft</th>
-                    <th>Status</th>
-                    <th>#</th>
-                  </tr>
-                </thead>
+        <div className="about-us-devider fly-in"></div>
 
-                <tbody>
-                  {airline?.airline?.flights?.map((item, i) => (
-                    <tr key={i + 1}>
-                      <td>{i + 1}</td>
-                      <td>{item.flightCode}</td>
-                      <td>{item.departureCity}</td>
-                      <td>{item.arrivalCity}</td>
-                      <td>{item.departureTime}</td>
-                      <td>{item.arrivalTime}</td>
-                      <td>{item.businessCapacity}</td>
-                      <td>{item.economyCapacity}</td>
-                      <td>{item.aircraftType}</td>
-                      <td>{item.status}</td>
-                      <td>
-                        <a
-                          href="#"
-                          className="header-viewed-btn"
-                          style={{
-                            padding: "5px 5px 0px 10px",
-                            color: "#ff7200",
-                          }}
-                        >
-                          Update
-                        </a>
-                        <a
-                          href="#"
-                          className="header-viewed-btn"
-                          style={{
-                            padding: "5px 5px 0px 10px",
-                            color: "#ff7200",
-                          }}
-                        >
-                          Delete
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot></tfoot>
-              </table>
+        <div className="solutions">
+          <div className="content-wrapper">
+            <header className="page-lbl fly-in">
+              <div className="offer-slider-lbl">Highlight</div>
+              <p>
+                Subscribe to our newsletter and keep updated on the latest
+                offers and news.
+              </p>
+            </header>
+            <div className="solutions-row fly-in">
+              <div className="solutions-i">
+                <div className="solution-icon-a"></div>
+                <div className="solutions-over">
+                  <div className="solutions-over-a">
+                    <div className="solutions-over-b">
+                      <div className="solutions-over-c">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-lbl">Check-in Online</div>
+                      </div>
+                      <div className="solutions-over-d">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-txt">
+                          Check-in Online, Skip the line!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="solutions-img">
+                  <img
+                    alt=""
+                    src="img/checkin.jpg"
+                    style={{ width: "346px", height: "254px" }}
+                  />
+                </div>
+              </div>
+
+              <div className="solutions-i">
+                <div className="solution-icon-a"></div>
+                <div className="solutions-over">
+                  <div className="solutions-over-a">
+                    <div className="solutions-over-b">
+                      <div className="solutions-over-c">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-lbl">
+                          Manage booking easily!
+                        </div>
+                      </div>
+                      <div className="solutions-over-d">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-txt">
+                          Rebook and reroute without fee. Cancel booking is
+                          easily, too!
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="solutions-img">
+                  <img
+                    alt=""
+                    src="img/managebooking.jpg"
+                    style={{ width: "346px", height: "254px" }}
+                  />
+                </div>
+              </div>
+
+              <div className="solutions-i">
+                <div className="solution-icon-a"></div>
+                <div className="solutions-over">
+                  <div className="solutions-over-a">
+                    <div className="solutions-over-b">
+                      <div className="solutions-over-c">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-lbl">Fly safely</div>
+                      </div>
+                      <div className="solutions-over-d">
+                        <i>
+                          <img alt="" src="img/icon-complete.png" />
+                        </i>
+                        <div className="solution-txt">
+                          Fly with us safely and enjoy our best services.{" "}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="solutions-img">
+                  <img
+                    alt=""
+                    src="img/flysafely.jpg"
+                    style={{ width: "346px", height: "254px" }}
+                  />
+                </div>
+              </div>
             </div>
             <div className="clear"></div>
           </div>

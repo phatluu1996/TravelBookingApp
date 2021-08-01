@@ -187,6 +187,34 @@ $(document).ready(function(){
 		return false;
 	});
 
+	$('.update-form a').on('click',function(){
+		$('.overlay2').fadeIn(function(){
+			$('.update-form-popup').animate({top: '50%'}, 300).find('input:text').eq('0').focus();
+		});
+		return false;
+	});
+
+	$('.overlay2').on('click',function(){
+		$('.update-form-popup').animate({top: '-300px'}, 300, function(){
+			$('.overlay2').fadeOut();	
+		});
+	});
+
+	$('.update-tab-content').eq('0').css('display','block');
+	$('.update-tabs a').on('click',function(){
+		if ( $(this).is('.update-close') ) {
+			$('.update-form-popup').animate({top: '-300px'}, 300, function(){
+				$('.overlay2').fadeOut();	
+			});
+		} 
+		// else {
+		// 	var $index = $(this).index();
+		// 	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
+		// 	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
+		// }
+		return false;
+	});
+
 	$('map area').on({
 		mouseenter: function(){
 			var $id = $(this).attr('id');

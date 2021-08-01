@@ -5,11 +5,16 @@ import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
+
 import Airline from './components/Airline/Airline';
+import CreateNewFlight from './components/Airline/CreateNewFlight';
+import ListFlight from './components/Airline/ListFlight';
+
 import FlightSearchPage from './components/Flight/FlightSearchPage';
 import Register from './components/Layout/Register';
 import UserProfile from'./components/User/UserProfile';
 import { connect } from 'react-redux';
+import EditFlight from './components/Airline/EditFlight';
 
 
 const App = () => {
@@ -28,11 +33,13 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
+          <PublicRoute restricted={false} component={CreateNewFlight} path="/create-flight" />
+          <PublicRoute restricted={false} component={EditFlight} path="/edit-flight" />
           <PublicRoute restricted={false} component={Airline} path="/airline" />
+          <PublicRoute restricted={false} component={ListFlight} path="/list-flight"/>
           <PublicRoute restricted={false} component={Register} path="/register" />
           <PublicRoute restricted={false} component={UserProfile} path="/user" />
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
-
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
         </Switch>
       </BrowserRouter>
