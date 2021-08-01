@@ -1863,12 +1863,12 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .tab-item {display:none; position:relative;}
 .tab-item:nth-child(1) {display:block;}
 
-.wishlist-btn-l {float:left; width:39px; height:41px; display:block; float:left; border-right:1px solid #e5e5e5;}
+.wishlist-btn-l {float:left; width:39px; height:41px; display:block; border-right:1px solid #e5e5e5;}
 .wishlist-btn-r {float:right; width:266px; height:27px; padding-top:14px; font-size:12px; text-transform:uppercase; font-family:'Raleway'; color:#6a7880; font-weight:600; text-align:center; display:block;}
 .wishlist-btn-l i {display:block; background:url(../img/whishlist.png) left top no-repeat; float:left; margin:16px 0px 0px 15px; width:10px; height:10px;}
 
 .book-btn {display:block; background:#ff7200; height:41px; margin-bottom:15px; border:1px solid #ff7200; border-radius:3px;}
-.book-btn-l {float:left; width:39px; height:41px; display:block; float:left; border-right:1px solid #ed6b00;}
+.book-btn-l {float:left; width:39px; height:41px; display:block; border-right:1px solid #ed6b00;}
 .book-btn-r {float:right; width:266px; height:27px; padding-top:14px; font-size:12px; text-transform:uppercase; font-family:'Raleway'; color:#ffffff; font-weight:600; text-align:center; display:block;}
 .book-btn-l i {display:block; background:url(../img/book-icon.png) left top no-repeat; float:left; margin:17px 0px 0px 14px; width:12px; height:8px;}
 

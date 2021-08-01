@@ -1,8 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { connect } from 'react-redux';
-import { signin, signup } from '../../actions/actionUser';
+import { signup } from '../../actions/actionUser';
 
 function Register(props) {
     const [statusSignup, setStatuSignup] = useState(false);

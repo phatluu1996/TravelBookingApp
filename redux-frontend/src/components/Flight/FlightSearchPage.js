@@ -165,7 +165,7 @@ const FlightSearchPage = (props) => {
         } else {
             if (!props.flight) {
                 props.getFlight(queryParam.get("from"), queryParam.get("to"), queryParam.get("adult"), queryParam.get("child"), queryParam.get("infant"), queryParam.get("departureDate"), queryParam.get("returnDate"), queryParam.get("seatClass"), queryParam.get("priceFrom"), queryParam.get("priceTo"), 1, queryParam.get("sortBy"), queryParam.get("sortDir"));
-                // console.log(props.flights);
+                console.log(props.flights);
             }
             let filter = {
                 from: queryParam.get("from"),
@@ -229,9 +229,9 @@ const FlightSearchPage = (props) => {
         setQueryFilter(filter);
         setSeatClassType(form.seatClass.value);
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
         // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value, getAmount(form.priceFrom.value), getAmount(form.priceTo.value), 1, "id", "asc");//queryFilter.sortBy //queryFilter.sortDir
-        // window.history.pushState({}, null, `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=${getAmount(form.priceFrom.value)}&priceTo=${getAmount(form.priceTo.value)}&page${1}&sortBy=id&sortDir=asc`)
+        // window.history.pushState({}, null, `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=${getAmount(form.priceFrom.value)}&priceTo=${getAmount(form.priceTo.value)}&page=${1}&sortBy=id&sortDir=asc`)
     }
 
     const setPage = (e) => {
@@ -240,7 +240,7 @@ const FlightSearchPage = (props) => {
         filter.page = parseInt(index);
         setQueryFilter(filter);
         props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
     }
 
     const onChangeSortBy = (e) => {
@@ -249,16 +249,16 @@ const FlightSearchPage = (props) => {
         filter.page = 1;
         setQueryFilter(filter);
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
-    
+
     const onChangeSortDir = (e) => {
         var filter = { ...queryFilter };
         filter.sortDir = e.target.value;
         filter.page = 1;
         setQueryFilter(filter);
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
 
     const toggleDetails = (e) => {
@@ -674,9 +674,20 @@ const FlightSearchPage = (props) => {
 
                                     <div className="pagination">
                                         <a >{"<"}</a>
-                                        <a className="active" >1</a>
-                                        <a >2</a>
-                                        <a >3</a>
+                                        {
+                                            props?.flights?.data?.first ? (<>
+                                                <a className="active">1</a>
+                                                {props?.flights?.data?.totalPages >= 2 && <a value={2} onClick={setPage}>2</a>}
+                                                {props?.flights?.data?.totalPages >= 3 && <a value={3} onClick={setPage}>3</a>}</>)
+                                                : props?.flights?.data?.last ? (<>
+                                                    {props?.flights?.data?.totalPages >= 3 && <a value={props?.flights?.data?.totalPages-2} onClick={setPage}>{props?.flights?.data?.totalPages-2}</a>}
+                                                    {props?.flights?.data?.totalPages >= 2 && <a value={props?.flights?.data?.totalPages-1} onClick={setPage}>{props?.flights?.data?.totalPages-1}</a>}
+                                                    <a className="active">{props?.flights?.data?.totalPages}</a></>)
+                                                    : (<>
+                                                        <a value={props?.flights?.data?.number} onClick={setPage}>{props?.flights?.data?.number}</a>
+                                                        <a className="active">{props?.flights?.data?.number+1}</a>
+                                                        <a value={props?.flights?.data?.number + 2} onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                        }
                                         <a >{">"}</a>
                                         <div className="clear"></div>
                                     </div>

@@ -78,22 +78,7 @@ const Header = () => {
                                     </a>
                                     <ul>
                                         <li>
-                                            <a href="hotel_list.html">Hotels standard list</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_simple_style.html">Hotels simple style</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_detail_style.html">Hotels detail style</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_detail.html">Hotel item page</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_booking.html">Hotel booking page</a>
-                                        </li>
-                                        <li>
-                                            <a >booking complete page</a>
+                                            <Link to="/hotel-detail">Hotel item page</Link>
                                         </li>
                                     </ul>
                                 </li>
@@ -186,31 +171,10 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <a >Hotels</a>
-                                        <ul>
+                                        <ul>                                            
                                             <li>
-                                                <a href="hotel_list.html">Hotels standard list</a>
-                                            </li>
-                                            <li>
-                                                <a href="hotel_simple_style.html">
-                                                    Hotels simple style
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="hotel_detail_style.html">
-                                                    Hotels detail style
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="hotel_detail.html">Hotel item page</a>
-                                            </li>
-                                            <li>
-                                                <a href="hotel_booking.html">Hotel booking page</a>
-                                            </li>
-                                            <li>
-                                                <a href="booking_complete.html">
-                                                    booking complete page
-                                                </a>
-                                            </li>
+                                                <Link to="/hotel-detail">Hotel item page</Link>
+                                            </li>                                            
                                         </ul>
                                     </li>
                                     <li>

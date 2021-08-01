@@ -4,21 +4,8 @@ import 'jquery-ui/ui/widgets/datepicker';
 import 'jquery-ui/ui/widgets/slider';
 import Swiper from 'swiper';
 
-{/* <script src="js/jquery.min.js"></script>
-<script src="js/idangerous.swiper.js"></script>
-<script src="js/slideInit.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/bxSlider.js"></script>
-<script src="js/jqeury.appear.js"></script>
-<script src="js/custom.select.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/script.js"></script>
-<script src="js/jquery.formstyler.js"></script>
-<script src="js/custom.input.js"></script> */}  
-
 export const customAppear = () => {
     (function ($) {
-        "use strict";
         (function ($) {
             var selectors = [];
             var check_binded = false;
@@ -210,25 +197,25 @@ export const customSliderInit = () => {
         },
         speed: 1000,
         autoplay: 200,
-        loop : true,
+        loop: true,
     });
 
 
     $(document).resize(function () {
-        "use strict";
+
         $slideInit();
     });
     $(document).focus(function () {
-        "use strict";
+
         $slideInit();
     });
 }
 
 export const customSelectInput = () => {
     (function (a) {
-        "use strict";
+
         a.fn.extend({
-            customSelect: function (c) {
+            customSelect: function (cx) {
                 if (typeof document.body.style.maxHeight === "undefined") {
                     return this
                 }
@@ -237,7 +224,7 @@ export const customSelectInput = () => {
                     mapClass: true,
                     mapStyle: true
                 },
-                    c = a.extend(e, c),
+                    c = a.extend(e, cx),
                     d = c.customClass,
                     f = function (h, k) {
                         var g = h.find(":selected"),
@@ -302,7 +289,7 @@ export const customSelectInput = () => {
                             g.trigger("blur.customSelect");
                             g.trigger("focus.customSelect")
                         } else {
-                            if (j.which == 13 || j.which == 27) {
+                            if (j.which === 13 || j.which === 27) {
                                 f(g, h)
                             }
                         }
@@ -1390,7 +1377,7 @@ export const customOtherTags = () => {
                     p = new RegExp(activeElementTag, ['i']),
                     result = p.exec(tagFilters);
 
-                if (result == null && isOnScreen(el)) {
+                if (result === null && isOnScreen(el)) {
                     if (e.keyCode === 39) {
                         clickNextBind(e);
                         return false;
@@ -2212,6 +2199,59 @@ export const customOtherTags = () => {
         }
     });
 
+    $('.h-tab-i a').on('click', function () {
+        var $index = $(this).closest('.h-tab-i').index();
+        $('.h-tab-i').removeClass('active');
+        $('.h-tab-i').eq($index).addClass('active');
+
+        if ($(this).is('.initMap')) {
+            $('.tab-map').css('opacity', '0');
+            $('#preloader').show();
+            $('.tab-item').hide().eq($index).fadeIn(function () {
+                // var mylat = '52.569334';
+                // var mylong = '13.380216';
+                // var mapOptions = {
+                //     zoom: 13,
+                //     disableDefaultUI: true,
+                //     zoomControl: true,
+                //     zoomControlOptions: {
+                //         style: google.maps.ZoomControlStyle.LARGE,
+                //         position: google.maps.ControlPosition.LEFT_CENTER
+                //     },
+                //     center: new google.maps.LatLng(mylat, mylong), // New York 
+                // };
+                // var mapElement = document.getElementById('map');
+                // var map = new google.maps.Map(mapElement, mapOptions);
+                // google.maps.event.addDomListener(window, 'resize', init);
+                // google.maps.event.addListenerOnce(map, 'idle', function () {
+                //     var place = new google.maps.LatLng(52.569334, 13.380216);
+                //     var image = new google.maps.MarkerImage('img/map.png',
+                //         new google.maps.Size(19, 29),
+                //         new google.maps.Point(0, 0),
+                //         new google.maps.Point(0, 32));
+                //     var marker = new google.maps.Marker({
+                //         map: map,
+                //         icon: image,
+                //         draggable: false,
+                //         animation: google.maps.Animation.DROP,
+                //         position: place
+                //     });
+
+                    $('.tab-map').css('opacity', '1');
+                    $('#preloader').hide();
+                    $('.map-contacts').each(function (index) {
+                        $(this).delay(141 * index).fadeIn();
+                    });
+
+                // });
+                // google.maps.event.trigger(map, 'resize');
+            });
+        } else {
+            $('.tab-item').hide().eq($index).fadeIn();
+        }
+        return false;
+    });
+
     $('.tabs-nav a').on('click', function () {
         var $parent = $(this).closest('.tabs-block')
         var $index = $(this).closest('li').index();
@@ -2308,11 +2348,11 @@ export const customOtherTags = () => {
 }
 
 const init_validation = (target) => {
-    "use strict";
+
     function validate(target) {
         var valid = true;
         $(target).find('.req').each(function () {
-            if ($(this).val() == '') {
+            if ($(this).val() === '') {
                 valid = false;
                 $(this).parent().addClass('errored');
             }
@@ -2333,8 +2373,8 @@ const init_validation = (target) => {
 
     //Styler
     (function ($) {
-        "use strict";
-        $.fn.styler = function (opt) {
+
+        $.fn.styler = function (_opt) {
 
             var opt = $.extend({
                 idSuffix: '-styler',
@@ -2342,7 +2382,7 @@ const init_validation = (target) => {
                 selectVisibleOptions: 0,
                 singleSelectzIndex: '100',
                 selectSmartPositioning: true
-            }, opt);
+            }, _opt);
 
             return this.each(function () {
                 var el = $(this);
@@ -2395,7 +2435,7 @@ const init_validation = (target) => {
                             })
                                 // ббаОаБб аПаЕбаЕаКаЛббаАаЛбб баЕаКаБаОаКб, аКаОбаОббаЙ аНаАбаОаДаИббб аВ баЕаГаЕ label
                                 .keydown(function (e) {
-                                    if (el.parent('label').length && (e.which == 13 || e.which == 32)) checkbox.click();
+                                    if (el.parent('label').length && (e.which === 13 || e.which === 32)) checkbox.click();
                                 })
                                 .focus(function () {
                                     if (!checkbox.is('.disabled')) checkbox.addClass('focused');
@@ -2503,8 +2543,8 @@ const init_validation = (target) => {
                                 function preventScrolling(selector) {
                                     selector.unbind('mousewheel DOMMouseScroll').bind('mousewheel DOMMouseScroll', function (e) {
                                         var scrollTo = null;
-                                        if (e.type == 'mousewheel') { scrollTo = (e.originalEvent.wheelDelta * -1); }
-                                        else if (e.type == 'DOMMouseScroll') { scrollTo = 40 * e.originalEvent.detail; }
+                                        if (e.type === 'mousewheel') { scrollTo = (e.originalEvent.wheelDelta * -1); }
+                                        else if (e.type === 'DOMMouseScroll') { scrollTo = 40 * e.originalEvent.detail; }
                                         if (scrollTo) { e.preventDefault(); $(this).scrollTop(scrollTo + $(this).scrollTop()); }
                                     });
                                 }
@@ -2573,8 +2613,8 @@ const init_validation = (target) => {
                                         var li = $('li', dropdown);
                                         if (li.filter('.selected').length < 1) li.first().addClass('selected sel');
                                         var selectHeight = selectbox.outerHeight();
-                                        if (dropdown.css('left') == 'auto') dropdown.css({ left: 0 });
-                                        if (dropdown.css('top') == 'auto') dropdown.css({ top: selectHeight });
+                                        if (dropdown.css('left') === 'auto') dropdown.css({ left: 0 });
+                                        if (dropdown.css('top') === 'auto') dropdown.css({ top: selectHeight });
                                         var liHeight = li.outerHeight();
                                         var position = dropdown.css('top');
                                         dropdown.hide();
@@ -2678,14 +2718,14 @@ const init_validation = (target) => {
                                                 divText.text(option.filter(':selected').text());
                                                 li.removeClass('selected sel').not('.optgroup').eq(el[0].selectedIndex).addClass('selected sel');
                                                 // аВаВаЕбб, аВаЛаЕаВаО, PageUp
-                                                if (e.which == 38 || e.which == 37 || e.which == 33) {
+                                                if (e.which === 38 || e.which === 37 || e.which === 33) {
                                                     dropdown.scrollTop(dropdown.scrollTop() + li.filter('.selected').position().top);
                                                 }
                                                 // аВаНаИаЗ, аВаПбаАаВаО, PageDown
-                                                if (e.which == 40 || e.which == 39 || e.which == 34) {
+                                                if (e.which === 40 || e.which === 39 || e.which === 34) {
                                                     dropdown.scrollTop(dropdown.scrollTop() + li.filter('.selected').position().top - dropdown.innerHeight() + liHeight);
                                                 }
-                                                if (e.which == 13) {
+                                                if (e.which === 13) {
                                                     dropdown.hide();
                                                 }
                                             });
@@ -2772,7 +2812,7 @@ const init_validation = (target) => {
                                                         else $(this).not('.disabled, .optgroup').addClass('selected');
                                                     });
                                                 }
-                                                if (li.filter('.selected').length == 1) clkd.addClass('first');
+                                                if (li.filter('.selected').length === 1) clkd.addClass('first');
                                             }
 
                                             // аОбаМаЕбаАаЕаМ аВбаБбаАаНаНбаЕ аМбббб
@@ -2812,11 +2852,11 @@ const init_validation = (target) => {
                                         if (ulHeight > selectbox.height()) {
                                             el.keydown(function (e) {
                                                 // аВаВаЕбб, аВаЛаЕаВаО, PageUp
-                                                if (e.which == 38 || e.which == 37 || e.which == 33) {
+                                                if (e.which === 38 || e.which === 37 || e.which === 33) {
                                                     ul.scrollTop(ul.scrollTop() + li.filter('.selected').position().top - liHeight);
                                                 }
                                                 // аВаНаИаЗ, аВаПбаАаВаО, PageDown
-                                                if (e.which == 40 || e.which == 39 || e.which == 34) {
+                                                if (e.which === 40 || e.which === 39 || e.which === 34) {
                                                     ul.scrollTop(ul.scrollTop() + li.filter('.selected:last').position().top - ul.innerHeight() + liHeight * 2);
                                                 }
                                             });
@@ -2884,6 +2924,61 @@ const init_validation = (target) => {
         });
         $(this).find(".time-from").text($this.find(".time-range").slider("values", 0));
         $(this).find(".time-to").text($this.find(".time-range").slider("values", 1));
+    });
+
+    //Hotel Detail
+    $('.review-ranger').each(function () {
+        var $this = $(this);
+        var $index = $(this).index();
+        if ($index == '0') {
+            var $val = '3.0'
+        } else if ($index == '1') {
+            var $val = '3.8'
+        } else if ($index == '2') {
+            var $val = '2.8'
+        } else if ($index == '3') {
+            var $val = '4.8'
+        } else if ($index == '4') {
+            var $val = '4.3'
+        } else if ($index == '5') {
+            var $val = '5.0'
+        }
+        $this.find('.slider-range-min').slider({
+            range: "min",
+            step: 0.1,
+            value: $val,
+            min: 0.1,
+            max: 5.1,
+            create: function (event, ui) {
+                $this.find('.ui-slider-handle').append('<span class="range-holder"><i></i></span>');
+            },
+            slide: function (event, ui) {
+                $this.find(".range-holder i").text(ui.value);
+            }
+        });
+        $this.find(".range-holder i").text($val);
+    });
+
+    $('#reasons-slider').bxSlider({
+        infiniteLoop: true,
+        speed: 500,
+        mode: 'fade',
+        minSlides: 1,
+        maxSlides: 1,
+        moveSlides: 1,
+        auto: true,
+        slideMargin: 0
+    });
+
+    $('#gallery').bxSlider({
+        infiniteLoop: true,
+        speed: 500,
+        slideWidth: 108,
+        minSlides: 1,
+        maxSlides: 6,
+        moveSlides: 1,
+        auto: false,
+        slideMargin: 7
     });
 }
 
