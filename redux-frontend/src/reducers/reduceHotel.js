@@ -1,25 +1,40 @@
-import {RETRIEVE_HOTEL,UPDATE_HOTEL,} from "../actions/actionHotel";
+import {FETCH_HOTEL_REQUEST,FETCH_HOTEL_SUCCESS,FETCH_HOTEL_ERROR} from "../actions/actionHotel";
 
 const initialState = {
-    hotel: {},
-}
+    requesting: false,
+    success: false,
+    message: null,
+    data: null
+  }
 
-function reducerHotel(hotel = initialState, action) {
-    const { type, payload } = action;
-  
-    switch (type) {
-        case RETRIEVE_HOTEL:
-            return {
-                ...hotel,
-                hotel:payload
-            }
-  
-        case UPDATE_HOTEL:
-            return {...hotel,hotel:payload};
-        
+function reducerHotel(state = initialState, action) {
+    switch (action.type) {
+        case FETCH_HOTEL_REQUEST:
+          return {
+            ...state,
+            requesting: true
+          };
+    
+        case FETCH_HOTEL_SUCCESS:
+          state = {
+            ...state,
+            requesting: false,
+            success: true,
+            data: action.payload
+          };
+          return state;
+    
+        case FETCH_HOTEL_ERROR:
+          state = {
+            ...state,
+            requesting: false,
+            message: action.message
+          };
+          return state;
+    
         default:
-            return hotel;
-    }
+          return state;
+      }
 
   };
   

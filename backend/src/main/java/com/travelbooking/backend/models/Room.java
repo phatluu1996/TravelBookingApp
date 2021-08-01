@@ -17,8 +17,6 @@ public class Room {
     @Column(name = "room_number")
     private int roomNumber;
 
-
-
     @Column(name = "available_time",nullable = true)
     private Date availableTime;
 
@@ -33,6 +31,9 @@ public class Room {
 
     @Column(name = "max_children")
     private int maxChildren;
+
+    @Column(name = "room_status")
+    private Boolean roomStatus;
 
     @Column(name = "retired", nullable = true)
     private Boolean retired;
@@ -55,7 +56,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(Long id, int roomNumber, Date availableTime, String roomType, double price, int maxAdult, int maxChildren, Boolean retired, Hotel hotel, HotelBookingRoom hotelBookingRoom, List<Image> images) {
+    public Room(Long id, int roomNumber, Date availableTime, String roomType, double price, int maxAdult, int maxChildren, Boolean roomStatus, Boolean retired, Hotel hotel, HotelBookingRoom hotelBookingRoom, List<Image> images) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.availableTime = availableTime;
@@ -63,6 +64,7 @@ public class Room {
         this.price = price;
         this.maxAdult = maxAdult;
         this.maxChildren = maxChildren;
+        this.roomStatus = roomStatus;
         this.retired = retired;
         this.hotel = hotel;
         this.hotelBookingRoom = hotelBookingRoom;
@@ -123,6 +125,14 @@ public class Room {
 
     public void setMaxChildren(int maxChildren) {
         this.maxChildren = maxChildren;
+    }
+
+    public Boolean getRoomStatus() {
+        return roomStatus;
+    }
+
+    public void setRoomStatus(Boolean roomStatus) {
+        this.roomStatus = roomStatus;
     }
 
     public Boolean getRetired() {

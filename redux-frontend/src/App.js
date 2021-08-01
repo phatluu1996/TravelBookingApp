@@ -14,7 +14,10 @@ import FlightSearchPage from './components/Flight/FlightSearchPage';
 import Register from './components/Layout/Register';
 import UserProfile from'./components/User/UserProfile';
 import { connect } from 'react-redux';
+
+import HotelSearchPage from './components/Hotel/HotelSearchPage';
 import EditFlight from './components/Airline/EditFlight';
+
 
 
 const App = () => {
@@ -40,6 +43,7 @@ const App = () => {
           <PublicRoute restricted={false} component={Register} path="/register" />
           <PublicRoute restricted={false} component={UserProfile} path="/user" />
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
+          <PublicRoute restricted={false} component={HotelSearchPage} path="/hotel-list" />
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
         </Switch>
       </BrowserRouter>
