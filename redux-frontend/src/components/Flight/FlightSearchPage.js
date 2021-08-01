@@ -236,6 +236,11 @@ const FlightSearchPage = (props) => {
 
     const setPage = (e) => {
         var index = e.target.value;
+        if(!index){
+            index = e.currentTarget.text;
+            window.scrollTo(0, 0);
+            document.getElementById("page").value = index;
+        }
         var filter = { ...queryFilter };
         filter.page = parseInt(index);
         setQueryFilter(filter);
@@ -294,7 +299,6 @@ const FlightSearchPage = (props) => {
         var price = seatClassType === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
         return price;
     }
-
 
     return (<>
         <Header></Header>
@@ -672,25 +676,25 @@ const FlightSearchPage = (props) => {
 
                                     <div className="clear"></div>
 
-                                    <div className="pagination">
+                                    {props.flights.data && (<div className="pagination">
                                         <a >{"<"}</a>
                                         {
                                             props?.flights?.data?.first ? (<>
                                                 <a className="active">1</a>
-                                                {props?.flights?.data?.totalPages >= 2 && <a value={2} onClick={setPage}>2</a>}
-                                                {props?.flights?.data?.totalPages >= 3 && <a value={3} onClick={setPage}>3</a>}</>)
+                                                {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
+                                                {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
                                                 : props?.flights?.data?.last ? (<>
-                                                    {props?.flights?.data?.totalPages >= 3 && <a value={props?.flights?.data?.totalPages-2} onClick={setPage}>{props?.flights?.data?.totalPages-2}</a>}
-                                                    {props?.flights?.data?.totalPages >= 2 && <a value={props?.flights?.data?.totalPages-1} onClick={setPage}>{props?.flights?.data?.totalPages-1}</a>}
+                                                    {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages-2}</a>}
+                                                    {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages-1}</a>}
                                                     <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                     : (<>
-                                                        <a value={props?.flights?.data?.number} onClick={setPage}>{props?.flights?.data?.number}</a>
+                                                        <a onClick={setPage}>{props?.flights?.data?.number}</a>
                                                         <a className="active">{props?.flights?.data?.number+1}</a>
-                                                        <a value={props?.flights?.data?.number + 2} onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                                        <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
                                         }
                                         <a >{">"}</a>
                                         <div className="clear"></div>
-                                    </div>
+                                    </div>)}
                                 </div>
                             </div>
                             <br className="clear" />
