@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react';
 import HeaderViewed from './Header/HeaderViewed';
 import PopupLogin from './Header/PopupLogin';
 import $ from 'jquery';
+import { Link } from 'react-router-dom';
 
 const Header = () => {   
     const [user, setUser] = useState(null);
@@ -32,7 +33,7 @@ const Header = () => {
                                 <a href="#">Login</a>
                             </div>
                             <div className="header-signup">
-                                <a href="http://localhost:3000/register">Register</a>
+                                <a href="/register">Register</a>
                             </div>
                         </>
                     }
@@ -115,7 +116,7 @@ const Header = () => {
 
 
                 <div className="wrapper-padding">
-                    <div className="header-logo"><a href="/"><img alt="" src="img/logo.png" /></a></div>
+                    <div className="header-logo"><Link to="/"><img alt="" src="img/logo.png" /></Link></div>
                     <div className="header-right">
                         <div className="hdr-srch">
                             <a href="#" className="hdr-srch-btn"></a>

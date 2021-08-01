@@ -1,5 +1,8 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +15,7 @@ public class FlightBookingDetail {
 
     @ManyToOne
     @JoinColumn(name = "flight_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("flightBookingDetails")
     private Flight flight;
 
     @ManyToOne
@@ -40,10 +44,13 @@ public class FlightBookingDetail {
     @Column(name = "retired", nullable = true)
     private boolean retired;
 
+    @Column(name = "price_type", nullable = true) //0: Economy Type, 1: Business Type
+    private Integer priceType = 0;
+
     public FlightBookingDetail() {
     }
 
-    public FlightBookingDetail(Long id,Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired) {
+    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired, Integer priceType) {
         this.id = id;
         this.flight = flight;
         this.flightBooking = flightBooking;
@@ -54,6 +61,7 @@ public class FlightBookingDetail {
         this.packageAllowance = packageAllowance;
         this.specialRequest = specialRequest;
         this.retired = retired;
+        this.priceType = priceType;
     }
 
     public boolean isRetired() {
@@ -134,5 +142,13 @@ public class FlightBookingDetail {
 
     public void setSpecialRequest(String specialRequest) {
         this.specialRequest = specialRequest;
+    }
+
+    public Integer getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(Integer priceType) {
+        this.priceType = priceType;
     }
 }

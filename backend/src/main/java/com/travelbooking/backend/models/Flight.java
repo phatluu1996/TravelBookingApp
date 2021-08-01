@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "flight")
@@ -84,6 +85,11 @@ public class Flight {
 
     @Column(name = "aircraft_type", nullable = true)
     private String aircraftType;
+
+    @OneToMany
+    @JoinColumn(name = "flight_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("flight")
+    private List<FlightBookingDetail> flightBookingDetails;
 
     public Flight() {
     }
@@ -296,5 +302,13 @@ public class Flight {
 
     public void setAircraftType(String aircraftType) {
         this.aircraftType = aircraftType;
+    }
+
+    public List<FlightBookingDetail> getFlightBookingDetails() {
+        return flightBookingDetails;
+    }
+
+    public void setFlightBookingDetails(List<FlightBookingDetail> flightBookingDetails) {
+        this.flightBookingDetails = flightBookingDetails;
     }
 }

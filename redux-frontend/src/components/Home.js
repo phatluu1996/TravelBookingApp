@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Header from "./Layout/Header";
 import Footer from "./Layout/Footer";
@@ -17,9 +17,10 @@ import {
     faMale,
     faChair,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
-import { useState } from "react";
 import { retrieveProvince } from "../actions/actionLocation";
+import $ from 'jquery';
+import { importAll } from "../utils/JqueryImport";
+
 
 const Home = (props) => {
     const [selectProvince, setSelectProvince] = useState(null);
@@ -140,8 +141,10 @@ const Home = (props) => {
 
     useEffect(() => {
         let mount = false;
-        props.getProvince();
-        
+
+        importAll();
+
+        props.getProvince();        
         return () => {
             mount = true;
         };
@@ -165,8 +168,8 @@ const Home = (props) => {
         // console.log(props);
         var form = e.target;
         // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
-        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
-        document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
+        // document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`;
+        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
     };
     const handleSubmit2 = (e) => {
         e.preventDefault();

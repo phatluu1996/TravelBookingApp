@@ -1,4 +1,4 @@
-window.onchange = function () {
+window.onload = function () {
 	"use strict";
 	var $slideInit = function () {
 		$('.mp-slider-lbl,.mp-slider-lbl-a,.mp-slider-lbl-b,.btn-a').css('opacity', '0');
@@ -46,11 +46,11 @@ window.onchange = function () {
 		mySwiper.swipeNext()
 	});
 }
-$(window).resize(function () {
-	"use strict";	
-	$slideInit();
-});
-$(window).focus(function () {
-	"use strict";
-	$slideInit();
-});
+// $(window).resize(function () {
+// 	"use strict";	
+// 	$slideInit();
+// });
+// $(window).focus(function () {
+// 	"use strict";
+// 	$slideInit();
+// });

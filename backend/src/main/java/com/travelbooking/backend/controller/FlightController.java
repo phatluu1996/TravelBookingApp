@@ -2,6 +2,7 @@ package com.travelbooking.backend.controller;
 
 import com.sun.istack.Nullable;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.travelbooking.backend.repository.FlightRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 import com.travelbooking.backend.models.Flight;
@@ -38,7 +39,7 @@ public class FlightController {
     public Collection<Flight> getFlights(@RequestParam (required = false, name = "from") Optional<String> from,
                                          @RequestParam (required = false, name = "to") Optional<String> to,
                                          @RequestParam (required = false, name = "departureDay") Optional<Date> departureDay) {
-        Specification<Flight> spec = FlightSpecification.createSpecification(from,to,departureDay,Boolean.FALSE);
+        Specification<Flight> spec = FlightSpecification.createSpecification(from,to,null, null, Boolean.TRUE,Boolean.FALSE);
         return flightRepository.findAll(spec);
     }
 
@@ -85,12 +86,14 @@ public class FlightController {
                                   @RequestParam(required = false) Integer child,
                                   @RequestParam(required = false) Integer infant,
                                   @RequestParam(required = false) String seatClass,
+                                  @RequestParam(required = false, defaultValue = "0") Integer priceFrom,
+                                  @RequestParam(required = false, defaultValue = "1500") Integer priceTo,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "id") String sortBy,
                                     @RequestParam(defaultValue = "asc")  String sortDir
 
                                           ) {
-        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, null,Boolean.FALSE);
+        Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
         Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
 
         Page<Flight> pagedResult = flightRepository.findAll(spec, paging);

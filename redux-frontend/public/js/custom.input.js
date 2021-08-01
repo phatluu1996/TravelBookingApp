@@ -15,7 +15,7 @@ $(document).ready(function () {
         range: true,
         min: 0,
         max: 1500,
-        values: [275, 1100],
+        values: [0, 1500],
         slide: function (event, ui) {
           ammount_from.val(ui.values[0] + '$');
           ammount_to.val(ui.values[1] + '$');

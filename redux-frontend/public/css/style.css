@@ -7,7 +7,7 @@ body.inner-body {background-color:#fff;}
 body.gray-inner {background-color:#fafafa;}
 body, td {font: 14px Arial, sans-serif; color: #000;}
 a {color: #000;	text-decoration: underline;}
-a:hover {text-decoration: none;}
+a:hover {text-decoration: none;cursor: pointer;}
 td {vertical-align: top;}
 p {padding: 0px; margin: 0px 0px 14px 0px;}
 object {outline:none;}
@@ -762,7 +762,11 @@ show-list:hover{
 .cat-list-item .offer-slider-r {float: none; margin-bottom: 18px; font-family: 'Raleway';}
 .cat-list-item .stars {margin-bottom: 7px;}
 .cat-list-btn {display: inline-block; font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:9px 15px 9px 15px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}
-.cat-list-btn:hover {color:#ff7200;}                                             
+.cat-list-btn:hover {color:#ff7200; border: 1px solid;}          
+.cat-list-btn-sm {display: inline-flex;font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:10px 15px 11px 15px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}                                   
+.cat-list-btn-sm:hover {color:#ff7200; border: 1px solid;} 
+.cat-list-btn-sm:hover .cat-list-btn-sm-icon{color:#ff7200}
+.margin-right-3px{margin-right: 3px;}
 .cat-list-item .cat-list-btn {padding-left:26px; padding-right:26px;}
 .cat-list-content-l .offer-slider-link {margin-bottom:8px;}
 .cat-list-item-rb  .offer-slider-r b {font-weight:500 !important; margin-bottom:7px;}                                              

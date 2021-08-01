@@ -9,9 +9,21 @@ import java.util.Optional;
 public final class FlightSpecification {
     public static Specification<Flight> createSpecification(Optional<String> from,
                                                             Optional<String> to,
-                                                            Optional<Date>  dateOfDeparture,
+                                                            Optional<Integer> priceFrom,
+                                                            Optional<Integer> priceTo,
+                                                            Boolean isEconomy,
                                                             Boolean retired){
-        return Specification.where(fromCityContains(from).and(toCityContains(to)).and(isRetired(retired)));
+        return Specification.where(fromCityContains(from).and(toCityContains(to)).and(fromPrice(priceFrom, isEconomy)).and(toPrice(priceTo, isEconomy)).and(isRetired(retired)));
+    }
+
+    public static Specification<Flight> fromPrice(Optional<Integer> priceFrom,  boolean isEconomy){
+        return (flight, cq, cb) -> priceFrom.map(name ->
+                cb.greaterThanOrEqualTo(isEconomy ? flight.get("economyPrice") : flight.get("businessPrice"),name)).orElse(null);
+    }
+
+    public static Specification<Flight> toPrice(Optional<Integer> priceTo, boolean isEconomy){
+        return (flight, cq, cb) -> priceTo.map(name ->
+                cb.lessThanOrEqualTo(isEconomy ? flight.get("economyPrice") : flight.get("businessPrice"),name)).orElse(null);
     }
 
     public static Specification<Flight> fromCityContains(Optional<String> departureCity){
