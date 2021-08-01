@@ -2,6 +2,7 @@ import { useEffect, setState, useState, Component } from "react";
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
+import { importAll } from "../../utils/JqueryImport";
 import { retrieveAirline } from "../../actions/actionAirline";
 import {Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +23,7 @@ const ListFlight = (props) => {
 
   useEffect(() => {
     var mount = false;
+    importAll(); 
     getAirline(id);
 
     return () => {
@@ -93,7 +95,7 @@ const ListFlight = (props) => {
                             <Link  style={{
                               padding: "5px 5px 0px 10px",
                               color: "#ff7200",
-                            }} className="header-viewed-btn" to={`/edit-flight/${ item.id }`}>Edit</Link>
+                            }} className="header-viewed-btn" to={`/edit-flight?id=${ item.id }`}>Edit</Link>
                           {/* </a> */}
                           <a
                             href="#"

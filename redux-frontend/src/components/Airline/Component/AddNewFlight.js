@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { importAll } from "../../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
 import { createFlight } from "../../../actions/actionFlightByAirline";
 
@@ -282,6 +283,9 @@ const AddNewFlight = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     var form = e.target;
+    // if (e.target.type === 'checkbox'){
+    //   e.target.name:
+    // }
     if (validateForm(e)) {
       addFlight({
         departureCity: form.departureCity.value,
@@ -317,7 +321,7 @@ const AddNewFlight = (props) => {
             <div className="sp-page-lb">
               <div className="sp-page-p">
                 <div className="booking-left">
-                  <h2>Create new flight</h2>
+                  <h2>Create Flight Form</h2>
                   <form onSubmit={handleSubmit}>
                     <div className="booking-form">
                       <div className="booking-form-i">
@@ -426,7 +430,7 @@ const AddNewFlight = (props) => {
                             <input
                               className="form-control"
                               type="checkbox"
-                              value="true"
+                              defaultChecked={true}
                               name="hasEntertainment"
                             />
                             Inflight Entertainment

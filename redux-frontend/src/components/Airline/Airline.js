@@ -2,6 +2,7 @@ import { useEffect, setState, useState, Component } from "react";
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
+import { importAll } from "../../utils/JqueryImport";
 import { retrieveAirline, updateAirline } from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -49,6 +50,7 @@ const Airline = (props) => {
   };
   useEffect(() => {
     var mount = false;
+    importAll(); 
     getAirline(id);
     
     return () => {
@@ -62,7 +64,6 @@ const Airline = (props) => {
       <Header />
       <UpdateAirline airlineId={id} onUpdateAirline={updateAirlineHandler}/>
 
- 
 
       <div className="main-cont"  style={{backgroundColor:'#fff'}}>
         <div className="inner-page" >

@@ -70,7 +70,9 @@ public class AirlineController {
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "id") String sortBy,
                                             @RequestParam(defaultValue = "asc")  String sortDir){
+
         Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
         return airlineRepository.listFlightByAirline(id, paging);
+
     }
 }

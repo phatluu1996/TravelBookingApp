@@ -133,10 +133,10 @@ const Header = () => {
                                             <a href="/airline">Airline Profile</a>
                                         </li>
                                         <li>
-                                            <a href="/create-flight">Create flight</a>
+                                            <a href="/create-flight">Create Flight</a>
                                         </li>
                                         <li>
-                                            <a href="/list-flight">List flight</a>
+                                            <a href="/list-flight">List Flights</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -245,10 +245,10 @@ const Header = () => {
                                                 <a href="/airline">Airline Profile</a>
                                             </li>
                                             <li>
-                                                <a href="/create-flight">Create flight</a>
+                                                <a href="/create-flight">Create Flight</a>
                                             </li>
                                             <li>
-                                                <a href="/list-flight">List flight</a>
+                                                <a href="/list-flight">List Flights</a>
                                             </li>
                                         </ul>
                                     </li>

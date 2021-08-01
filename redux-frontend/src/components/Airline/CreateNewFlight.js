@@ -2,6 +2,7 @@ import { useEffect} from "react";
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
+import { importAll } from "../../utils/JqueryImport";
 import { retrieveAirline} from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -22,6 +23,7 @@ const CreateNewFlight = (props) => {
 
   useEffect(() => {
     var mount = false;
+    importAll(); 
     getAirline(id);
     return () => {
       mount = true;
