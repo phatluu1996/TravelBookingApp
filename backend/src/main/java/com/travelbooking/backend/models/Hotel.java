@@ -36,9 +36,13 @@ public class Hotel {
     @Column(name = "number_of_room",nullable = true)
     private int  numberOfRoom;
 
+    @Column(name = "avg_price_at_night",nullable = true)
+    private int  avgPriceAtNight;
+
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     private Instant createdAt;
+
     @Column(name = "retired", nullable = true)
     private Boolean retired;
 
@@ -68,7 +72,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, int numberOfRoom, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -79,6 +83,7 @@ public class Hotel {
         this.hotelRating = hotelRating;
         this.paymentAtTheHotel = paymentAtTheHotel;
         this.numberOfRoom = numberOfRoom;
+        this.avgPriceAtNight = avgPriceAtNight;
         this.createdAt = createdAt;
         this.retired = retired;
         this.location = location;
@@ -166,6 +171,14 @@ public class Hotel {
 
     public void setNumberOfRoom(int numberOfRoom) {
         this.numberOfRoom = numberOfRoom;
+    }
+
+    public int getAvgPriceAtNight() {
+        return avgPriceAtNight;
+    }
+
+    public void setAvgPriceAtNight(int avgPriceAtNight) {
+        this.avgPriceAtNight = avgPriceAtNight;
     }
 
     public Instant getCreatedAt() {

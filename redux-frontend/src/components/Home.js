@@ -209,6 +209,7 @@ const Home = (props) => {
         var form = e.target;
         const today = new Date();
 
+        // history.push()
         document.location.href = `/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
             }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
             }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value

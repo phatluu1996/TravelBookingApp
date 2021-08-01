@@ -20,7 +20,6 @@ const HotelSearchPage = (props) => {
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
   const [selectWard, setSelectWard] = useState(null);
-
   const provinceLabel = (code) => {
     // return province.properties.find(item => item.value === code)?.label;
   };
@@ -157,7 +156,7 @@ const HotelSearchPage = (props) => {
           queryParam.get("checkInDate"),
           queryParam.get("numRoom")
         );
-        console.log(props.hotel);
+        // console.log(props.getHotels());
       }
       let filter = {
         province: queryParam.get("province"),
@@ -175,26 +174,30 @@ const HotelSearchPage = (props) => {
     };
   }, []);
 
+  const getNextDate = (e) => {
+    const tomorrow = new Date(e);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const date = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    }).format(tomorrow);
+    return date;
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(props.hotels);
     var form = e.target;
     const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
+    
     props.getHotels(
       form.provinces.value,
       form.districts.value,
       form.wards.value,
       form.numAdult.value,
       form.numChildren.value,
-      form.checkInDate.value==""? new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).format(tomorrow):form.checkInDate.value,
+      form.checkInDate.value == "" ? getNextDate(today) : form.checkInDate.value,
       form.numRoom.value
     );
   };
@@ -334,7 +337,7 @@ const HotelSearchPage = (props) => {
                               id="numAdult"
                               name="numAdult"
                               type="number"
-                              defaultValue={0}
+                              defaultValue={queryParam.get("numberAdult")}
                               min="0"
                               max="6"
                             />
@@ -347,7 +350,7 @@ const HotelSearchPage = (props) => {
                               id="numChildren"
                               name="numChildren"
                               type="number"
-                              defaultValue={0}
+                              defaultValue={queryParam.get("numberChildren")}
                               max="6"
                             />
                           </div>
@@ -358,7 +361,7 @@ const HotelSearchPage = (props) => {
                             <input
                               name="numRoom"
                               type="number"
-                              defaultValue={1}
+                              defaultValue={queryParam.get("numRoom")}
                               min="1"
                               max="30"
                             />
@@ -532,8 +535,8 @@ const HotelSearchPage = (props) => {
 
                     <div className="catalog-row with-text">
                       {/* Hotel List  */}
-
                       {props.hotels?.data?.map((hotel) => (
+                       
                         <div className="offer-slider-i catalog-i fly-in">
                           <a href="#" className="offer-slider-img">
                             <img alt="" src="img/catalog-09.jpg" />
@@ -548,7 +551,9 @@ const HotelSearchPage = (props) => {
                             </div>
                             <div className="offer-slider-l">
                               <div className="offer-slider-location">
-                                {hotel.location}
+                                {/* {hotel.location.map((location) =>(
+                                        
+                                ))} */}
                               </div>
                               <nav className="stars">
                                 <ul>
@@ -582,13 +587,15 @@ const HotelSearchPage = (props) => {
                               </nav>
                             </div>
                             <div className="offer-slider-r">
-                              <b>{hotel.rooms[0].price}</b>
+                              <b>
+                                {hotel.rooms[0].price}$   
+                                </b>
                               <span>avg/night</span>
                             </div>
                             <div className="offer-slider-devider"></div>
                             <div className="clear"></div>
                             <div className="offer-slider-lead">
-                              {hotel.rooms[0].roomType}
+                               {hotel.rooms[0].roomType}
                             </div>
                             <a className="cat-list-btn" href="#">
                               Book now
@@ -624,7 +631,7 @@ const HotelSearchPage = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    hotels: state.hotel,
+    hotels: state.hotels,
     provinces: state.province,
   };
 };
@@ -640,7 +647,7 @@ const mapDispatchToProps = (dispatch) => {
       checkInDate,
       numRoom
     ) => {
-    dispatch(
+      dispatch(
         fetchHotel(
           province,
           district,
