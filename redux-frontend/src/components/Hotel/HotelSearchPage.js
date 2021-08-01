@@ -65,7 +65,16 @@ const HotelSearchPage = (props) => {
       )
     );
   };
-
+  
+  const getPagination = (list = [], page = 1, itemsPerPage = 10) => {
+    if (!Array.isArray(list) || list.length === 0) {
+      return [];
+    }
+    const startIdx = (page - 1) * itemsPerPage;
+    const endIdx = startIdx + itemsPerPage - 1;
+  
+    return list.slice(startIdx, endIdx);
+  };
   const getTimeDiff = (_startTime, _endTime, type) => {
     let startTime = new Date(_startTime.replace(/-/g, "/"));
     let endTime = new Date(_endTime.replace(/-/g, "/"));
@@ -184,11 +193,6 @@ const HotelSearchPage = (props) => {
     }).format(tomorrow);
     return date;
 };
-
-const getAmount = (money) => {
-  return money ? money.replace("$", "") : 0;
-}
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -592,7 +596,7 @@ const getAmount = (money) => {
                             <div className="offer-slider-r">
                               <b>
                                 {hotel.rooms[0].price}$   
-                               </b>
+                                </b>
                               <span>avg/night</span>
                             </div>
                             <div className="offer-slider-devider"></div>

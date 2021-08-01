@@ -7,7 +7,6 @@ import com.travelbooking.backend.specification.FlightSpecification;
 import com.travelbooking.backend.specification.HotelSpecification;
 import com.travelbooking.backend.specification.RoomSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,23 +41,19 @@ public class HotelController {
 
     //http://localhost:8080/api/findHotels
     @GetMapping("/findHotels")
-    public Page<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
+    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
                                        @RequestParam(required = false, name = "district") Integer district,
                                        @RequestParam(required = false, name = "ward") Integer ward,
                                          @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
                                          @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
                                         @RequestParam (required = false, name = "checkInDate") Date checkInDate,
-                                       @RequestParam (required = false, name = "numRoom") Integer numRoom,
-                                       @RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "id") String sortBy,
-                                       @RequestParam(defaultValue = "asc")  String sortDir
+                                       @RequestParam (required = false, name = "numRoom") Integer numRoom
                                             ) throws ParseException {
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         Specification<Hotel> spec = HotelSpecification.createSpecification(province,district,ward,Boolean.FALSE,numberAdult,numberChildren,numRoom,checkInDate);
-        Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
-        Page<Hotel> pagedResult = hotelRepository.findAll(spec,paging);
-        return pagedResult;
+//        Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
+        return hotelRepository.findAll(spec);
     }
     //http://localhost:8080/api/hotel
     @GetMapping("/hotel/listRooms/{id}")
