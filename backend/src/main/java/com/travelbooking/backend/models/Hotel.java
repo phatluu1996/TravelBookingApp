@@ -36,7 +36,7 @@ public class Hotel {
     @Column(name = "number_of_room",nullable = true)
     private int  numberOfRoom;
 
-    @Column(name = "avg_price_at_night",nullable = true)
+    @Column(name = "avg_price_at_night",columnDefinition = "integer default 0")
     private int  avgPriceAtNight;
 
     @Column(name = "created_at", nullable = false)

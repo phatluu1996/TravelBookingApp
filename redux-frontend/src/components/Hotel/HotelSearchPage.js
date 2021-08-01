@@ -185,6 +185,11 @@ const HotelSearchPage = (props) => {
     return date;
 };
 
+const getAmount = (money) => {
+  return money ? money.replace("$", "") : 0;
+}
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(props.hotels);
@@ -551,9 +556,7 @@ const HotelSearchPage = (props) => {
                             </div>
                             <div className="offer-slider-l">
                               <div className="offer-slider-location">
-                                {/* {hotel.location.map((location) =>(
-                                        
-                                ))} */}
+                                {hotel.location.province.name}
                               </div>
                               <nav className="stars">
                                 <ul>
@@ -589,13 +592,13 @@ const HotelSearchPage = (props) => {
                             <div className="offer-slider-r">
                               <b>
                                 {hotel.rooms[0].price}$   
-                                </b>
+                               </b>
                               <span>avg/night</span>
                             </div>
                             <div className="offer-slider-devider"></div>
                             <div className="clear"></div>
                             <div className="offer-slider-lead">
-                               {hotel.rooms[0].roomType}
+                               {/* {hotel.rooms[0].roomType} */}
                             </div>
                             <a className="cat-list-btn" href="#">
                               Book now

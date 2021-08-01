@@ -12461,6 +12461,7 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 --Hotel
 INSERT INTO [dbo].[hotel]
 ([address]
+    ,[avg_price_at_night]
     ,[contact_name]
     ,[contact_title]
     ,[created_at]
@@ -12474,10 +12475,10 @@ INSERT INTO [dbo].[hotel]
     ,[account_id]
     ,[location_id])
 VALUES
-    (N'400 Xô Viết Nghệ Tỉnh',N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',null,10,0,0824728690,0,27,1),
-    (N'321 Bạch Đằng',N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',null,10,0,0824728690,0,28,2),
-    (N'105 Phạm Văn Hai',N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','DarkNight',null,10,0,0824728690,0,29,3),
-    (N'107 Hóc Môn',N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','BoomBoom',null,10,0,0824728690,0,30,4)
+    (N'400 Xô Viết Nghệ Tỉnh',0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',3,10,0,0824728690,0,27,1),
+    (N'321 Bạch Đằng',0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',4,10,0,0824728690,0,28,2),
+    (N'105 Phạm Văn Hai',0,N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','DarkNight',5,10,0,0824728690,0,29,3),
+    (N'107 Hóc Môn',0,N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','BoomBoom',3.5,10,0,0824728690,0,30,4)
 --Room
 INSERT INTO [dbo].[room]
 ([available_time]

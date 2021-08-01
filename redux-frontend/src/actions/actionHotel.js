@@ -43,7 +43,7 @@ export const updateHotel = (id, data) => async (dispatch) => {
 export const fetchHotel = (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom) => async dispatch => {
     try {
         dispatch({ type: FETCH_HOTEL_REQUEST });
-        const url = `${ROOT_URL}/api/hotel?province=${province}&district=${district}&ward=${ward}&numberAdult=${numberAdult}&numberChildren=${numberChildren}&checkInDate=${checkInDate}&numRoom=${numRoom}`;
+        const url = `${ROOT_URL}/api/findHotels?province=${province}&district=${district}&ward=${ward}&numberAdult=${numberAdult}&numberChildren=${numberChildren}&checkInDate=${checkInDate}&numRoom=${numRoom}`;
         console.log(url);
         const response = await axios.get(url)
         const responseBody = await response.data;

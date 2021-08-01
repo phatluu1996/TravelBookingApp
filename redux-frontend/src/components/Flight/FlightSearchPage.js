@@ -251,7 +251,7 @@ const FlightSearchPage = (props) => {
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
         window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
-
+    
     const onChangeSortDir = (e) => {
         var filter = { ...queryFilter };
         filter.sortDir = e.target.value;
