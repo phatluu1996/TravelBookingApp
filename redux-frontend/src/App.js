@@ -11,12 +11,13 @@ import CreateNewFlight from './components/Airline/CreateNewFlight';
 import ListFlight from './components/Airline/ListFlight';
 
 import FlightSearchPage from './components/Flight/FlightSearchPage';
+import FlightBookingPage from './components/Flight/FlightBookingPage';
 import Register from './components/Layout/Register';
 import UserProfile from'./components/User/UserProfile';
 import { connect } from 'react-redux';
 import HotelSearchPage from './components/Hotel/HotelSearchPage';
 import EditFlight from './components/Airline/EditFlight';
-import FlightBookingPage from './components/Flight/FlightBookingPage';
+// import FlightBookingPage from './components/Flight/FlightBookingPage';
 
 
 const App = () => {
@@ -43,7 +44,6 @@ const App = () => {
           <PublicRoute restricted={false} component={UserProfile} path="/user" />
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
           <PublicRoute restricted={false} component={FlightBookingPage} path="/flight-booking" />
-
           <PublicRoute restricted={false} component={HotelSearchPage} path="/hotel-list" />
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
         </Switch>
