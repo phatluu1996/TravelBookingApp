@@ -38,16 +38,17 @@ public class HotelController {
 
     //http://localhost:8080/api/hotel
     @GetMapping("/hotel")
-    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "location") Integer location,
-                                         @RequestParam (required = false, name = "number_adult") Integer number_adult,
-                                         @RequestParam (required = false, name = "number_children") Integer number_children,
-                                        @RequestParam (required = false, name = "check_in_date") String check_in_date,
-                                       @RequestParam(required = false, name = "price") Double price,
-                                       @RequestParam(required = false,name = "rating" )Float rating) throws ParseException {
+    public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
+                                       @RequestParam(required = false, name = "district") Integer district,
+                                       @RequestParam(required = false, name = "ward") Integer ward,
+                                         @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
+                                         @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
+                                        @RequestParam (required = false, name = "checkInDate") Date checkInDate,
+                                       @RequestParam (required = false, name = "numRoom") Integer numRoom
+                                            ) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-
-        Specification<Hotel> spec = HotelSpecification.createSpecification(location,Boolean.FALSE,number_adult,number_children,price,rating,formatter.parse(check_in_date));
+        Specification<Hotel> spec = HotelSpecification.createSpecification(province,district,ward,Boolean.FALSE,numberAdult,numberChildren,numRoom,checkInDate);
         return hotelRepository.findAll(spec);
     }
     //http://localhost:8080/api/hotel
