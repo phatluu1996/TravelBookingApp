@@ -1,23 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link } from 'react-router-dom';
+import Common from "../../utils/Common";
 
 const Header = () => {
+    const [user, setUser] = useState(null)
     return (
         <>
-            <div className="overlay"></div>
-            <div className="autorize-popup">
-                <div className="autorize-tabs">
-                    <a href="#" className="autorize-tab-a current">
-                        Sign in
-                    </a>
-                    <a href="#" className="autorize-tab-b"></a>
-                    <a href="#" className="autorize-close"></a>
-                    <div className="clear"></div>
-                </div>
-                <PopupLogin />
-            </div>
+            <PopupLogin onSubmitUser={setUser}/>
 
             <header id="top">
                 <div className="header-a">
@@ -25,33 +16,33 @@ const Header = () => {
                         <div className="header-phone">
                             <span>0 - 888 - 555 - 555</span>
                         </div>
-                        {!sessionStorage.getItem("user") &&
-                            !sessionStorage.getItem("token") && (
+                        {!Common.getUser() &&
+                            !Common.getToken() && (
                                 <>
                                     <div className="header-account">
-                                        <a href="#">Login</a>
+                                        <a>Login</a>
                                     </div>
                                     <div className="header-signup">
                                         <Link to="/register">Register</Link>
                                     </div>
                                 </>
                             )}
-                        {sessionStorage.getItem("user") &&
-                            sessionStorage.getItem("userToken") && (
+                        {Common.getUser() &&
+                            Common.getToken() (
                                 <div className="header-signup">
-                                    <a href="#" style={{ color: "#ff7200" }}>
-                                        {sessionStorage.getItem("user")}
+                                    <a  style={{ color: "#ff7200" }}>
+                                        {Common.getUserFullName()}
                                     </a>
                                 </div>
                             )}
                         <div className="header-curency">
-                            <a href="#">USD</a>
+                            <a >USD</a>
                             <div className="curency-drop">
                                 <div>
-                                    <a href="#">usd</a>
+                                    <a >usd</a>
                                 </div>
                                 <div>
-                                    <a href="#">VND</a>
+                                    <a >VND</a>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +54,7 @@ const Header = () => {
                         <nav>
                             <ul>
                                 <li>
-                                    <a className="has-child" href="#">
+                                    <a className="has-child" >
                                         HOME
                                     </a>
                                     <ul>
@@ -82,7 +73,7 @@ const Header = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <a className="has-child" href="#">
+                                    <a className="has-child" >
                                         Hotels
                                     </a>
                                     <ul>
@@ -102,12 +93,12 @@ const Header = () => {
                                             <a href="hotel_booking.html">Hotel booking page</a>
                                         </li>
                                         <li>
-                                            <a href="#">booking complete page</a>
+                                            <a >booking complete page</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a className="has-child" href="#">
+                                    <a className="has-child" >
                                         Flights
                                     </a>
                                     <ul>
@@ -134,7 +125,7 @@ const Header = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <a className="has-child" href="#">
+                                    <a className="has-child" >
                                         Airline
                                     </a>
                                     <ul>
@@ -163,21 +154,21 @@ const Header = () => {
                         </div>
                         <div className="header-right">
                             <div className="hdr-srch">
-                                <a href="#" className="hdr-srch-btn"></a>
+                                <a  className="hdr-srch-btn"></a>
                             </div>
                             <div className="hdr-srch-overlay">
                                 <div className="hdr-srch-overlay-a">
                                     <input type="text" placeholder="Start typing..." />
-                                    <a href="#" className="srch-close"></a>
+                                    <a  className="srch-close"></a>
                                     <div className="clear"></div>
                                 </div>
                             </div>
                             <div className="hdr-srch-devider"></div>
-                            <a href="#" className="menu-btn"></a>
+                            <a  className="menu-btn"></a>
                             <nav className="header-nav">
                                 <ul>
                                     <li>
-                                        <a href="#">Home</a>
+                                        <a >Home</a>
                                         <ul>
                                             <li>
                                                 <a href="index.html">Home style one</a>
@@ -194,7 +185,7 @@ const Header = () => {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="#">Hotels</a>
+                                        <a >Hotels</a>
                                         <ul>
                                             <li>
                                                 <a href="hotel_list.html">Hotels standard list</a>
@@ -223,7 +214,7 @@ const Header = () => {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="#">Flights</a>
+                                        <a >Flights</a>
                                         <ul>
                                             <li>
                                                 <a href="flight_round_trip.html">Flights round trip</a>
@@ -248,7 +239,7 @@ const Header = () => {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="#">Airline</a>
+                                        <a >Airline</a>
                                         <ul>
                                             <li>
                                                 <a href="/airline">Airline Profile</a>

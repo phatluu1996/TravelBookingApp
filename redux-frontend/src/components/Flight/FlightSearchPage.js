@@ -157,7 +157,7 @@ const FlightSearchPage = (props) => {
 
     useEffect(() => {
         let mount = false;
-        
+        window.scrollTo(0, 0);
         importAll();
 
         if (!queryParam.get("from") && !queryParam.get("to") && !queryParam.get("departureDate") && !queryParam.get("returnDate") && !queryParam.get("seatClass") && !queryParam.get("adult") && !queryParam.get("child") && !queryParam.get("infant") && !queryParam.get("page") && !queryParam.get("sortDir") && !queryParam.get("sortBy") && !queryParam.get("priceFrom") && !queryParam.get("priceTo")) {
@@ -271,14 +271,6 @@ const FlightSearchPage = (props) => {
         }
     }
 
-    const toggleDetails2 = (e) => {
-        var $parent = $(e.currentTarget).closest('.toggle-i');
-		if ( $parent.is('.open') ) {
-			$parent.removeClass('open').find('.toggle-txt').hide();	
-		} else {
-			$parent.addClass('open').find('.toggle-txt').fadeIn();
-		}
-    }
 
     const getAmount = (money) => {
         return money ? money.replace("$", "") : 0;

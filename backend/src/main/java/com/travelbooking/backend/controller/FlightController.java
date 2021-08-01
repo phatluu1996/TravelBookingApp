@@ -90,7 +90,7 @@ public class FlightController {
                                   @RequestParam(required = false, defaultValue = "1500") Integer priceTo,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "id") String sortBy,
-                                    @RequestParam(defaultValue = "asc")  String sortDir
+                                  @RequestParam(defaultValue = "asc")  String sortDir
 
                                           ) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
