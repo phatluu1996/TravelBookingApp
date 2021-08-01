@@ -304,7 +304,7 @@ const FlightSearchPage = (props) => {
                     <div className="page-head">
                         <div className="page-title">Flights - <span>Search</span></div>
                         <div className="breadcrumbs">
-                            <a href="/">Home</a> / <span>Flight Search Result</span>
+                            <Link to="/">Home</Link> / <span>Flight Search Result</span>
                         </div>
                         <div className="clear"></div>
                     </div>

@@ -20,6 +20,9 @@ import {
 import { retrieveProvince } from "../actions/actionLocation";
 import $ from 'jquery';
 import { importAll } from "../utils/JqueryImport";
+// import { Swiper, SwiperSlide } from "swiper/react";
+import Swiper from 'swiper';
+
 
 
 const Home = (props) => {
@@ -145,7 +148,7 @@ const Home = (props) => {
 
         importAll();
 
-        props.getProvince();        
+        props.getProvince();
         return () => {
             mount = true;
         };
@@ -238,61 +241,43 @@ const Home = (props) => {
             <div className="main-cont">
                 <div className="mp-slider search-only">
                     <div className="mp-slider-row slim-slider">
-                        <div className="swiper-container">
-                            <a className="arrow-left"></a>
-                            <a className="arrow-right"></a>
-                            <div className="swiper-pagination"></div>
-                            <div className="swiper-wrapper">
-                                <div className="swiper-slide">
-                                    <div
-                                        className="slide-section"
-                                        style={{
-                                            background:
-                                                "url(img/sider-01.jpg) center center no-repeat",
-                                        }}
-                                    >
+
+                        <div class="swiper-container my-swiper">
+
+                            <div class="swiper-wrapper">
+
+                                <div class="swiper-slide">
+                                    <div className="slide-section" style={{ background: "url(img/sider-01.jpg) center center no-repeat", }}>
                                         <div className="mp-slider-lbl">
                                             Great journey begins with a small step
                                         </div>
                                         <div className="mp-slider-lbl-a">
                                             Make Your Life Better and Bright! You must trip with Us!
                                         </div>
-                                        {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                     </div>
                                 </div>
-                                <div className="swiper-slide">
-                                    <div
-                                        className="slide-section slide-b"
-                                        style={{
-                                            background: "url(img/sider-02.jpg) center no-repeat",
-                                        }}
-                                    >
+                                <div class="swiper-slide">
+                                    <div className="slide-section" style={{ background: "url(img/sider-02.jpg) center center no-repeat" }}>
                                         <div className="mp-slider-lbl">
                                             Relax with us. we love our clients
                                         </div>
                                         <div className="mp-slider-lbl-a">
                                             Make Your Life Better and Bright! You must trip with Us!
                                         </div>
-                                        {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                     </div>
                                 </div>
-                                <div className="swiper-slide">
-                                    <div
-                                        className="slide-section slide-b"
-                                        style={{
-                                            background: "url(img/sider-03.jpg) center no-repeat",
-                                        }}
-                                    >
+                                <div class="swiper-slide">
+                                    <div className="slide-section slide-b" style={{ background: "url(img/sider-03.jpg) center no-repeat" }}>
                                         <div className="mp-slider-lbl">
                                             Booking flight with your friends
                                         </div>
                                         <div className="mp-slider-lbl-a">
                                             Make Your Life Better and Bright! You must trip with Us!
                                         </div>
-                                        {/* <div className="mp-slider-btn"><a  className="btn-a">Learn more</a></div> */}
                                     </div>
                                 </div>
                             </div>
+                            <div class="swiper-pagination"></div>
                         </div>
                     </div>
                 </div>
