@@ -2,8 +2,7 @@ import $ from 'jquery'
 import jQuery from 'jquery'
 import 'jquery-ui/ui/widgets/datepicker';
 import 'jquery-ui/ui/widgets/slider';
-import { Swiper } from 'swiper';
-
+import Swiper from 'swiper';
 
 {/* <script src="js/jquery.min.js"></script>
 <script src="js/idangerous.swiper.js"></script>
@@ -15,7 +14,7 @@ import { Swiper } from 'swiper';
 <script src="js/jquery-ui.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/jquery.formstyler.js"></script>
-<script src="js/custom.input.js"></script> */}
+<script src="js/custom.input.js"></script> */}  
 
 export const customAppear = () => {
     (function ($) {
@@ -180,6 +179,7 @@ export const customAppear = () => {
 }
 
 export const customSliderInit = () => {
+
     var $slideInit = function () {
         $('.mp-slider-lbl,.mp-slider-lbl-a,.mp-slider-lbl-b,.btn-a').css('opacity', '0');
         $('.mp-slider-lbl,.mp-slider-lbl-a,.mp-slider-lbl-b,.btn-a').css('top', '20px');
@@ -202,28 +202,23 @@ export const customSliderInit = () => {
         }, 360);
     }
 
-    var mySwiper = new Swiper('.swiper-container', {
-        mode: 'horizontal',
-        loop: true,
-        // autoplay: 7000,
-        speed: 1000,
-        paginationClickable: true,
-        speed: 1000,
-        createPagination: true,
-        pagination: '.swiper-pagination',
-        onSwiperCreated: function (swiper) {
-            $slideInit();
-            $('.swiper-preloader-bg').fadeOut();
-            $('#preloader').remove();
+    var swiper = new Swiper('.swiper-container', {
+        direction: "vertical",
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
         },
-        onSlideChangeEnd: function (swiper) { $slideInit(); }
+        speed: 1000,
+        autoplay: 200,
+        loop : true,
     });
 
-    $(window).resize(function () {
+
+    $(document).resize(function () {
         "use strict";
         $slideInit();
     });
-    $(window).focus(function () {
+    $(document).focus(function () {
         "use strict";
         $slideInit();
     });

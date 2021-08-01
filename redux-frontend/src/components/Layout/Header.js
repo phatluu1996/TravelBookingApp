@@ -148,9 +148,9 @@ const Header = () => {
                     </div>
                     <div className="wrapper-padding">
                         <div className="header-logo">
-                            <a href="/">
+                            <Link to="/">
                                 <img alt="" src="img/logo.png" />
-                            </a>
+                            </Link>
                         </div>
                         <div className="header-right">
                             <div className="hdr-srch">
@@ -260,122 +260,6 @@ const Header = () => {
                         </div>
                         <div className="clear"></div>
                     </div>
-                </div>
-
-
-                <div className="wrapper-padding">
-                    <div className="header-logo">
-                        <a href="/">
-                            <img alt="" src="img/logo.png" />
-                        </a>
-                    </div>
-                    <div className="header-right">
-                        <div className="hdr-srch">
-                            <a href="#" className="hdr-srch-btn"></a>
-                        </div>
-                        <div className="hdr-srch-overlay">
-                            <div className="hdr-srch-overlay-a">
-                                <input type="text" placeholder="Start typing..." />
-                                <a href="#" className="srch-close"></a>
-                                <div className="clear"></div>
-                            </div>
-                        </div>
-                        <div className="hdr-srch-devider"></div>
-                        <a href="#" className="menu-btn"></a>
-                        <nav className="header-nav">
-                            <ul>
-                                <li>
-                                    <a href="#">Home</a>
-                                    <ul>
-                                        <li>
-                                            <a href="index.html">Home style one</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_02.html">Home style two</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_03.html">Home style three</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_04.html">Home style four</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Hotels</a>
-                                    <ul>
-                                        <li>
-                                            <a href="hotel_list.html">Hotels standard list</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_simple_style.html">
-                                                Hotels simple style
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_detail_style.html">
-                                                Hotels detail style
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_detail.html">Hotel item page</a>
-                                        </li>
-                                        <li>
-                                            <a href="hotel_booking.html">Hotel booking page</a>
-                                        </li>
-                                        <li>
-                                            <a href="booking_complete.html">
-                                                booking complete page
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Flights</a>
-                                    <ul>
-                                        <li>
-                                            <a href="flight_round_trip.html">Flights round trip</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_one_way.html">flights one way trip</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_alternative.html">
-                                                flights alternative style
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_detail.html">Flights detail page</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_booking.html">Flights booking page</a>
-                                        </li>
-                                        <li>
-                                            <a href="booking_complete.html">booking complete</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Airline</a>
-                                    <ul>
-                                        <li>
-                                            <a href="/airline">Airline Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="/create-flight">Create flight</a>
-                                        </li>
-                                        <li>
-                                            <a href="/list-flight">List flight</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="contacts.html">Contacts</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div className="clear"></div>
                 </div>
             </header>
         </>
