@@ -2,22 +2,8 @@ import React, { Component } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 
-const Header = () => {   
-    const [user, setUser] = useState(null);
-    const submitLogin = (user) => {
-        setUser(user);
-    }
-
-    return (<>
-        <div className="overlay"></div>
-        <div className="autorize-popup">
-            <div className="autorize-tabs">
-                <a href="#" className="autorize-tab-a current">Sign in</a>
-                <a href="#" className="autorize-tab-b"></a>
-                <a href="#" className="autorize-close"></a>
-                <div className="clear"></div>
-            </div>
-            <PopupLogin onSubmitUser={submitLogin} />
+const Header = () => {
+  return (
     <>
       <div className="overlay"></div>
       <div className="autorize-popup">
