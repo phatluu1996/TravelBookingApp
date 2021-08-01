@@ -9,10 +9,16 @@ import * as serviceWorker from './serviceWorker';
 import reducers from './reducers';
 
 import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const enhancers = [];
+enhancers.push(applyMiddleware(thunk));
+const composeEnhancers =
+    (typeof window !== "undefined" &&
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+const store = createStore(reducers, composeEnhancers(...enhancers));
 
 const history = createBrowserHistory();
 
