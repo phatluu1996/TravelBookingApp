@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { fetchHotel } from "../../actions/actionHotel";
 import { importAll } from "../../utils/JqueryImport";
+import Pagination from "./Pagination";
 // import { useQuery } from "../../utils/QueryParam";
 
 function useQuery() {
@@ -19,6 +20,13 @@ const HotelSearchPage = (props) => {
   const [queryFilter, setQueryFilter] = useState();
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
+  const [itemsList, setItemsList] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
+
+  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("price");
+  const [sortDir, setSortDir] = useState("asc");
+
   const [selectWard, setSelectWard] = useState(null);
   const provinceLabel = (code) => {
     // return province.properties.find(item => item.value === code)?.label;
@@ -65,16 +73,7 @@ const HotelSearchPage = (props) => {
       )
     );
   };
-  
-  const getPagination = (list = [], page = 1, itemsPerPage = 10) => {
-    if (!Array.isArray(list) || list.length === 0) {
-      return [];
-    }
-    const startIdx = (page - 1) * itemsPerPage;
-    const endIdx = startIdx + itemsPerPage - 1;
-  
-    return list.slice(startIdx, endIdx);
-  };
+
   const getTimeDiff = (_startTime, _endTime, type) => {
     let startTime = new Date(_startTime.replace(/-/g, "/"));
     let endTime = new Date(_endTime.replace(/-/g, "/"));
@@ -138,11 +137,84 @@ const HotelSearchPage = (props) => {
     return hours + "H " + minutes + "M";
   };
 
+  const getPagination = (list = [], page, itemsPerPage, by, dir) => {
+    if (!Array.isArray(list) || list.length === 0) {
+      return [];
+    }
+
+    var sortList = list.sort((a, b) => {
+      switch (by) {
+        case "rating":
+          return dir === "desc"
+            ? b.hotelRating - a.hotelRating
+            : a.hotelRating - b.hotelRating;
+        case "price":
+          return dir === "desc"
+            ? avgPrice(b) - avgPrice(a)
+            : avgPrice(a) - avgPrice(b);
+        case "name":
+          if (dir === "desc") {
+            if (b.hotelName > a.hotelName) {
+              return 1;
+            } else if (b.hotelName < a.hotelName) {
+              return -1;
+            }
+            return 0;
+          } else {
+            if (b.hotelName < a.hotelName) {
+              return 1;
+            } else if (b.hotelName > a.hotelName) {
+              return -1;
+            }
+            return 0;
+          }
+          case "province":
+            if (dir === "desc") {
+              if (b.location.province.name > a.location.province.name) {
+                return 1;
+              } else if (b.location.province.name < a.location.province.name) {
+                return -1;
+              }
+              return 0;
+            } else {
+              if (b.location.province.name < a.location.province.name) {
+                return 1;
+              } else if (b.location.province.name > a.location.province.name) {
+                return -1;
+              }
+              return 0;
+            }
+      }
+    });
+
+    const startIdx = (page - 1) * itemsPerPage;
+    const endIdx = startIdx + itemsPerPage - 1 + 1;
+
+    return sortList.slice(startIdx, endIdx);
+  };
+
+  const avgPrice = (hotel) => {
+    var sum = 0;
+    hotel?.rooms?.forEach((room) => {
+      sum = sum + parseInt(room.price);
+    });
+    return (sum / parseInt(hotel.rooms.length)).toFixed(2);
+  };
+
+  const onchangeSortBy = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  const onchangeSortDir = (e) => {
+    setSortDir(e.target.value);
+  };
+
   useEffect(() => {
     let mount = false;
 
     importAll();
     console.log(props.getProvince());
+
     // (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom)
     if (
       !queryParam.get("province") &&
@@ -165,8 +237,8 @@ const HotelSearchPage = (props) => {
           queryParam.get("checkInDate"),
           queryParam.get("numRoom")
         );
-        // console.log(props.getHotels());
       }
+      setPage(1);
       let filter = {
         province: queryParam.get("province"),
         district: queryParam.get("district"),
@@ -176,6 +248,7 @@ const HotelSearchPage = (props) => {
         checkInDate: queryParam.get("checkInDate"),
         numRoom: queryParam.get("numRoom"),
       };
+      // setListItem(getPagination(props.hotels.data));
       setQueryFilter(filter);
     }
     return () => {
@@ -187,28 +260,31 @@ const HotelSearchPage = (props) => {
     const tomorrow = new Date(e);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const date = new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     }).format(tomorrow);
     return date;
-};
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(props.hotels);
     var form = e.target;
     const today = new Date();
-    
+
     props.getHotels(
       form.provinces.value,
       form.districts.value,
       form.wards.value,
       form.numAdult.value,
       form.numChildren.value,
-      form.checkInDate.value == "" ? getNextDate(today) : form.checkInDate.value,
+      form.checkInDate.value == ""
+        ? getNextDate(today)
+        : form.checkInDate.value,
       form.numRoom.value
     );
+    setPage(1);
   };
 
   return (
@@ -519,21 +595,20 @@ const HotelSearchPage = (props) => {
                     <div className="catalog-head large fly-in">
                       <label>Sorting results by:</label>
                       <div className="search-select">
-                        <select>
-                          <option>Price</option>
-                          <option>Price</option>
-                          <option>Price</option>
-                          <option>Price</option>
-                          <option>Price</option>
+                        <select defaultValue={sortBy} onChange={onchangeSortBy}>
+                          <option value="price">AVG PRICE</option>
+                          <option value="name">NAME</option>
+                          <option value="rating">RATING</option>
+                          <option value="province">PROVINCE</option>
                         </select>
                       </div>
                       <div className="search-select">
-                        <select>
-                          <option>Rating</option>
-                          <option>Rating</option>
-                          <option>Rating</option>
-                          <option>Rating</option>
-                          <option>Rating</option>
+                        <select
+                          defaultValue={sortDir}
+                          onChange={onchangeSortDir}
+                        >
+                          <option value="asc">ASC</option>
+                          <option value="desc">DESC</option>
                         </select>
                       </div>
                       {/* <a href="#" className="show-list"></a>
@@ -543,14 +618,20 @@ const HotelSearchPage = (props) => {
                     </div>
 
                     <div className="catalog-row with-text">
-                      {/* Hotel List  */}
-                      {props.hotels?.data?.map((hotel) => (
-                       
+                      {getPagination(
+                        props.hotels.data,
+                        page,
+                        itemsPerPage,
+                        sortBy,
+                        sortDir
+                      ).map((hotel) => (
                         <div className="offer-slider-i catalog-i fly-in">
                           <a href="#" className="offer-slider-img">
                             <img alt="" src="img/catalog-09.jpg" />
                             <span className="offer-slider-overlay">
-                              <span className="offer-slider-btn">view details</span>
+                              <span className="offer-slider-btn">
+                                view details
+                              </span>
                               <span></span>
                             </span>
                           </a>
@@ -564,45 +645,37 @@ const HotelSearchPage = (props) => {
                               </div>
                               <nav className="stars">
                                 <ul>
-                                  <li>
-                                    <a href="#">
-                                      <img alt="" src="img/star-b.png" />
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#">
-                                      <img alt="" src="img/star-b.png" />
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#">
-                                      <img alt="" src="img/star-b.png" />
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#">
-                                      <img alt="" src="img/star-b.png" />
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="#">
-                                      <img alt="" src="img/star-a.png" />
-                                    </a>
-                                  </li>
+                                  {[...Array(5)].map(
+                                    (item, index) =>
+                                      // {
+                                      index + 1 >
+                                      Math.ceil(hotel.hotelRating) ? (
+                                        <li key={index}>
+                                          <a>
+                                            <img alt="" src="img/star-a.png" />
+                                          </a>
+                                        </li>
+                                      ) : (
+                                        <li key={index}>
+                                          <a>
+                                            <img alt="" src="img/star-b.png" />
+                                          </a>
+                                        </li>
+                                      )
+                                    // }
+                                  )}
                                 </ul>
                                 <div className="clear"></div>
                               </nav>
                             </div>
                             <div className="offer-slider-r">
-                              <b>
-                                {hotel.rooms[0].price}$   
-                                </b>
+                              <b>{avgPrice(hotel)}$</b>
                               <span>avg/night</span>
                             </div>
                             <div className="offer-slider-devider"></div>
                             <div className="clear"></div>
                             <div className="offer-slider-lead">
-                               {/* {hotel.rooms[0].roomType} */}
+                              {/* {hotel.rooms[0].roomType} */}
                             </div>
                             <a className="cat-list-btn" href="#">
                               Book now
@@ -613,15 +686,11 @@ const HotelSearchPage = (props) => {
                     </div>
 
                     <div className="clear"></div>
-
-                    <div className="pagination">
-                      <a className="active" href="#">
-                        1
-                      </a>
-                      <a href="#">2</a>
-                      <a href="#">3</a>
-                      <div className="clear"></div>
-                    </div>
+                    <Pagination
+                      itemsPerPage={itemsPerPage}
+                      listItem={props.hotels?.data?.length}
+                      setPageNum={setPage}
+                    />
                   </div>
                 </div>
                 <br className="clear" />
