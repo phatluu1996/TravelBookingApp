@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createFlight } from "../../actions/actionFlightByAirline";
+import { createFlight } from "../../../actions/actionFlightByAirline";
 
 const province = {
   properties: [
@@ -110,14 +110,11 @@ const status = {
 const AddNewFlight = (props) => {
   const dispatch = useDispatch();
 
-  const airlineId = props.airlineId;
-
   const flights = useSelector((state) => state.flights);
 
   const addFlight = (data) => {
     dispatch(createFlight(data));
   };
-  const [errCreate, setErrCreate] = useState(false);
   const [isRequest, setIsRequest] = useState(false);
   const [error, setError] = useState({
     departureCity: "",
@@ -306,7 +303,7 @@ const AddNewFlight = (props) => {
         child_price: form.child_price.value,
         economyPrice: form.economyPrice.value,
         businessPrice: form.businessPrice.value,
-        airline: {id : parseInt(form.airline.value)}
+        airline: { id: parseInt(form.airline.value) },
       });
       setIsRequest(true);
     }
@@ -344,17 +341,12 @@ const AddNewFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                      <div
-                            className="validate-error"
-                            style={{}}
-                          >
-                            {error.arrivalCity}
-                          </div>
+                        <div className="validate-error" style={{}}>
+                          {error.arrivalCity}
+                        </div>
                         <label>Arrival City</label>
-                        
-                        <div className="form-group select-wrapper srch-tab-line">
-                         
 
+                        <div className="form-group select-wrapper srch-tab-line">
                           <select
                             className="custom-select form-control"
                             name="arrivalCity"
@@ -375,14 +367,14 @@ const AddNewFlight = (props) => {
                         <label>Flight Code</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.flightCode}
                         </div>
 
                         <div className="input form-group">
                           <input
-                          placeholder="..."
+                            placeholder="..."
                             className="form-control"
                             name="flightCode"
                             type="text"
@@ -413,14 +405,14 @@ const AddNewFlight = (props) => {
 
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.description}
                         </div>
 
                         <div className="input form-group">
                           <input
-                          placeholder = "..."
+                            placeholder="..."
                             onChange={handleChange}
                             className="form-control"
                             name="description"
@@ -448,14 +440,14 @@ const AddNewFlight = (props) => {
                           <label>Departure time</label>
                           <div
                             className="validate-error"
-                            style={{  float: "none"}}
+                            style={{ float: "none" }}
                           >
                             {error.departureTime}
                           </div>
 
                           <div className="input form-group">
                             <input
-                            placeholder = "00:00"
+                              placeholder="00:00"
                               onChange={handleChange}
                               className="form-control"
                               type="text"
@@ -467,14 +459,14 @@ const AddNewFlight = (props) => {
                           <label>Arrival time</label>
                           <div
                             className="validate-error"
-                            style={{  float: "none"}}
+                            style={{ float: "none" }}
                           >
                             {error.arrivalTime}
                           </div>
 
                           <div className="input">
                             <input
-                            placeholder = "00:00"
+                              placeholder="00:00"
                               onChange={handleChange}
                               type="text"
                               className="form-control"
@@ -486,14 +478,14 @@ const AddNewFlight = (props) => {
                           <label>Aircraft</label>
                           <div
                             className="validate-error"
-                            style={{  float: "none"}}
+                            style={{ float: "none" }}
                           >
                             {error.aircraftType}
                           </div>
 
                           <div className="input">
                             <input
-                            placeholder = "Airbus..."
+                              placeholder="Airbus..."
                               onChange={handleChange}
                               className="form-control"
                               type="text"
@@ -509,7 +501,7 @@ const AddNewFlight = (props) => {
                         <label>Business Capacity</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.businessCapacity}
                         </div>
@@ -519,7 +511,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="0"
                             max="40"
                             name="businessCapacity"
@@ -536,7 +528,7 @@ const AddNewFlight = (props) => {
                         <label>Economy Capacity</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.economyCapacity}
                         </div>
@@ -546,7 +538,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="1"
                             max="500"
                             name="economyCapacity"
@@ -567,7 +559,7 @@ const AddNewFlight = (props) => {
                         <label>Business Baggage Allowance</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.businessBaggage}
                         </div>
@@ -577,7 +569,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="0"
                             max="100"
                             name="businessBaggage"
@@ -594,7 +586,7 @@ const AddNewFlight = (props) => {
                         <label>Economy Baggage Allowance</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.economyBaggage}
                         </div>
@@ -604,7 +596,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="0"
                             max="100"
                             name="economyBaggage"
@@ -621,7 +613,7 @@ const AddNewFlight = (props) => {
                         <label>Business Cabin-Baggage Allowance</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.businessCabinBaggage}
                         </div>
@@ -631,7 +623,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="0"
                             max="40"
                             name="businessCabinBaggage"
@@ -648,7 +640,7 @@ const AddNewFlight = (props) => {
                         <label>Economy Cabin-Baggage Allowance</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.economyCabinBaggage}
                         </div>
@@ -658,7 +650,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "0"
+                            placeholder="0"
                             min="0"
                             max="40"
                             name="economyCabinBaggage"
@@ -680,7 +672,7 @@ const AddNewFlight = (props) => {
                         <label>Business Ticket Price</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.businessPrice}
                         </div>
@@ -689,7 +681,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "1.0"
+                            placeholder="1.0"
                             min="0"
                             max="10000"
                             step="0.1"
@@ -707,7 +699,7 @@ const AddNewFlight = (props) => {
                         <label>Economy Ticket Price</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.economyPrice}
                         </div>
@@ -717,7 +709,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "1.0"
+                            placeholder="1.0"
                             min="0"
                             max="1000"
                             step="0.1"
@@ -735,7 +727,7 @@ const AddNewFlight = (props) => {
                         <label>Child Price</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.child_price}
                         </div>
@@ -745,7 +737,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder = "1.0"
+                            placeholder="1.0"
                             min="0"
                             max="1000"
                             step="0.1"
@@ -763,7 +755,7 @@ const AddNewFlight = (props) => {
                         <label>Infant price</label>
                         <div
                           className="validate-error"
-                          style={{  float: "none"}}
+                          style={{ float: "none" }}
                         >
                           {error.infant_price}
                         </div>
@@ -772,7 +764,7 @@ const AddNewFlight = (props) => {
                           <input
                             onChange={handleChange}
                             className="form-control"
-                            placeholder = "1.0"
+                            placeholder="1.0"
                             type="number"
                             min="0"
                             max="1000"
@@ -794,6 +786,7 @@ const AddNewFlight = (props) => {
 
                     <div className="booking-complete">
                       <input
+                        readOnly
                         className="form-control"
                         type="number"
                         name="airline"
