@@ -14,9 +14,9 @@ import FlightSearchPage from './components/Flight/FlightSearchPage';
 import Register from './components/Layout/Register';
 import UserProfile from'./components/User/UserProfile';
 import { connect } from 'react-redux';
-import FlightBookingPage from './components/Flight/FlightBookingPage';
-import EditFlight from './components/Airline/EditFlight';
 import HotelSearchPage from './components/Hotel/HotelSearchPage';
+import EditFlight from './components/Airline/EditFlight';
+
 
 const App = () => {
 
