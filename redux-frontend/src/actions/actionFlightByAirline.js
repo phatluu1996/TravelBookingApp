@@ -13,11 +13,6 @@ export const LIST_FLIGHTS = "LIST_FLIGHTS";
 //     economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
 //     hasEntertainment,aircraftType
 
-// {flightCode,departureCity,arrivalCity,
-//     departureTime,arrivalTime,description,economyCapacity,economyPrice,
-//     infant_price,child_price,businessCapacity,businessPrice,status,airline,
-//     economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
-//     hasEntertainment,aircraftType }
 export const createFlight = (data) => async (dispatch) => 
     {
         try {
