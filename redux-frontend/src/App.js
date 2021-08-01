@@ -39,7 +39,7 @@ const App = () => {
           <PublicRoute restricted={false} component={Home} path="/" exact />
           <PublicRoute restricted={false} component={CreateNewFlight} path="/create-flight" />
           <PublicRoute restricted={false} component={EditFlight} path="/edit-flight" />
-          <PublicRoute restricted={false} component={Airline} path="/airline" />
+          <PrivateRoute restricted={false} component={Airline} path="/airline" />
           <PublicRoute restricted={false} component={ListFlight} path="/list-flight"/>
           <PublicRoute restricted={false} component={Register} path="/register" />
           <PublicRoute restricted={false} component={UserProfile} path="/user" />

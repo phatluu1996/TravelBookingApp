@@ -16,8 +16,7 @@ const Header = () => {
                         <div className="header-phone">
                             <span>0 - 888 - 555 - 555</span>
                         </div>
-                        {!Common.getUser() &&
-                            !Common.getToken() && (
+                        {!Common.getUser() && (
                                 <>
                                     <div className="header-account">
                                         <a>Login</a>
@@ -27,8 +26,7 @@ const Header = () => {
                                     </div>
                                 </>
                             )}
-                        {Common.getUser() &&
-                            Common.getToken()(
+                        {Common.getUser() && (
                                 <div className="header-signup">
                                     <a style={{ color: "#ff7200" }}>
                                         {Common.getUserFullName()}

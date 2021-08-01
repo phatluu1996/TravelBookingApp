@@ -31,7 +31,7 @@ const ListFlight = (props) => {
     return () => {
       mount = true;
     };
-  }, [props]);
+  }, []);
   console.log(airline);
   return (
     <>

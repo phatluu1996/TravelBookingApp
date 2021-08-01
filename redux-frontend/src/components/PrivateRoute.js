@@ -10,7 +10,7 @@ const PrivateRoute = ({component: Component, ...rest}) => {
         <Route {...rest} render={props => (
             Common.getUser() ?
                 <Component {...props} />
-            : <Redirect to="/signin" />
+            : <Redirect to="/" />
         )} />
     );
 };

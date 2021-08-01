@@ -7,6 +7,7 @@ import { retrieveAirline, updateAirline } from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
 import UpdateAirline from "./Component/UpdateAirline";
+import Common from "../../utils/Common";
 
 const Airline = (props) => {
   // let query = useQuery();
@@ -16,7 +17,7 @@ const Airline = (props) => {
 
   const flights = useSelector((state) => state.flights);
 
-  const id = 2;
+  const id = parseInt(Common.getUserId());
 
   const getAirline = (id) => {
     dispatch(retrieveAirline(id));
@@ -56,7 +57,7 @@ const Airline = (props) => {
     return () => {
       mount = true;
     };
-  }, [props]);
+  }, []);
   console.log(airline);
 
   return (

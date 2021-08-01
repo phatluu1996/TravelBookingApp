@@ -145,7 +145,7 @@ const Home = (props) => {
 
     useEffect(() => {
         let mount = false;
-
+        window.scrollTo(0, 100);
         importAll();
 
         props.getProvince();

@@ -1,5 +1,3 @@
-import { useLocation } from "react-router-dom";
-
 export default class Common {
     static getUser = () => {
         return sessionStorage.getItem('user');
@@ -19,12 +17,22 @@ export default class Common {
         sessionStorage.removeItem('userToken');
         sessionStorage.removeItem('user');
     }
+
+    static getUserId = () => {
+        return sessionStorage.getItem('userId');
+    }
+
+    static getRole = () => {
+        return sessionStorage.getItem('userRole');
+    }
     
     // set the token and user from the session storage
-    static setUserSession = (token, user, name) => {
+    static setUserSession = (token, user, name, userIndex, role) => {
         sessionStorage.setItem('userToken', token);
         sessionStorage.setItem('user', user);
         sessionStorage.setItem('userName', name);
+        sessionStorage.setItem('userId', userIndex);
+        sessionStorage.setItem('userRole', role);
     }
 
     

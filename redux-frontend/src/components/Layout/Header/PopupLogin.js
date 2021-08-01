@@ -68,7 +68,7 @@ function PopupLogin(props) {
                 setErrLogin(true);
             }
             if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-                Common.setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header);
+                Common.setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header, props.user.data.id, props.user.data.roles[0]);
                 // document.location.href = "/";
                 props.onSubmitUser(props.user.data);
                 //TODO
@@ -82,7 +82,7 @@ function PopupLogin(props) {
         return () => {
             mount = true;
         }
-    });
+    },[]);
 
     const closePopup = () => {
         $('.autorize-popup').animate({top: '-300px'}, 300, function(){
