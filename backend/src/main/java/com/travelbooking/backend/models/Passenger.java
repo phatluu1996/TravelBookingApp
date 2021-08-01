@@ -106,8 +106,8 @@ public class Passenger {
         this.cardIdNumber = cardIdNumber;
     }
 
-    public int getCardType() {
-        return cardType;
+    public int getCardType(int cardType) {
+        return this.cardType;
     }
 
     public void setCardType(int cardType) {

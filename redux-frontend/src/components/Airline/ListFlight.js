@@ -3,10 +3,11 @@ import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { importAll } from "../../utils/JqueryImport";
+import { Link } from "react-router-dom";
+
 import { retrieveAirline } from "../../actions/actionAirline";
-import {Link } from 'react-router-dom'
+
 import { useSelector, useDispatch } from "react-redux";
-import EditFlight from "./EditFlight";
 
 const ListFlight = (props) => {
   const dispatch = useDispatch();
@@ -23,7 +24,8 @@ const ListFlight = (props) => {
 
   useEffect(() => {
     var mount = false;
-    importAll(); 
+    window.scrollTo(0, 0);
+    importAll();
     getAirline(id);
 
     return () => {
@@ -31,7 +33,6 @@ const ListFlight = (props) => {
     };
   }, [props]);
   console.log(airline);
-
   return (
     <>
       <Header />
@@ -81,7 +82,9 @@ const ListFlight = (props) => {
                         <td>{item.arrivalTime}</td>
                         <td>{item.businessCapacity}</td>
                         <td>{item.economyCapacity}</td>
+
                         <td>{item.aircraftType}</td>
+
                         <td>{item.status}</td>
                         <td>
                           {/* <a

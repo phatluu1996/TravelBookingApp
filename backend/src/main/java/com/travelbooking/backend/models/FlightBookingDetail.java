@@ -29,14 +29,11 @@ public class FlightBookingDetail {
     @Column(name = "ticket_number")
     private String ticketNumber;
 
-    @Column(name = "seat_number")
-    private String seatNumber;
-
     @Column(name = "price")
     private Float price;
 
-    @Column(name = "package_allowance")
-    private int packageAllowance;
+    @Column(name = "package_allowance", nullable = true)
+    private int packageAllowance = 0;
 
     @Column(name = "special_request", nullable = true)
     private String specialRequest;
@@ -56,7 +53,6 @@ public class FlightBookingDetail {
         this.flightBooking = flightBooking;
         this.passenger = passenger;
         this.ticketNumber = ticketNumber;
-        this.seatNumber = seatNumber;
         this.price = price;
         this.packageAllowance = packageAllowance;
         this.specialRequest = specialRequest;
@@ -110,14 +106,6 @@ public class FlightBookingDetail {
 
     public void setTicketNumber(String ticketNumber) {
         this.ticketNumber = ticketNumber;
-    }
-
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(String seatNumber) {
-        this.seatNumber = seatNumber;
     }
 
     public Float getPrice() {

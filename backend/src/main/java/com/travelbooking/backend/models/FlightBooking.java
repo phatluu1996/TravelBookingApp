@@ -28,7 +28,7 @@ public class FlightBooking {
     @Column(name = "total_passengers", nullable = true)
     private int totalPassengers;
 
-    @Column(name = "status", nullable = true)
+    @Column(name = "status", nullable = true) //1: Confirm 2:Cancel
     private int status;
 
     @Column(name = "note", nullable = true, columnDefinition = "nvarchar(max)")
