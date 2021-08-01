@@ -55,14 +55,16 @@ export const customSliderInit = () => {
         },
         onSlideChangeEnd: function (swiper) { $slideInit(); }
     });
-    $('.arrow-left').on('click', function (e) {
-        e.preventDefault()
-        mySwiper.swipePrev()
-    });
-    $('.arrow-right').on('click', function (e) {
-        e.preventDefault()
-        mySwiper.swipeNext()
-    });
+
+    // $('.arrow-left').on('click', function (e) {
+    //     e.preventDefault()
+    //     mySwiper.swipePrev()
+    // });
+
+    // $('.arrow-right').on('click', function (e) {
+    //     e.preventDefault()
+    //     mySwiper.swipeNext()
+    // });
 
     $(window).resize(function () {
         "use strict";
@@ -2146,7 +2148,7 @@ export const customOtherTags = () => {
     //TODO fix
     $('.date-inpt').datepicker();
     $('.custom-select').customSelect();
-    // if($('.owl-slider')){
+
     //     $('.owl-slider').owlCarousel({
     //         items:4, 
     //         autoPlay: 3000,
@@ -2156,7 +2158,7 @@ export const customOtherTags = () => {
     //         itemsMobile: [479,1], //1 item between 479 and 0
     //         stopOnHover: true
     //     });
-    // }
+
 
     $('#testimonials-slider').bxSlider({
         infiniteLoop: true,

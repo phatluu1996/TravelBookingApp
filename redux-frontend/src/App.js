@@ -18,8 +18,6 @@ import FlightBookingPage from './components/Flight/FlightBookingPage';
 import EditFlight from './components/Airline/EditFlight';
 import HotelSearchPage from './components/Hotel/HotelSearchPage';
 
-
-
 const App = () => {
 
     useEffect(() => {

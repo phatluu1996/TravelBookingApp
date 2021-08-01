@@ -6,6 +6,7 @@ import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { fetchHotel } from "../../actions/actionHotel";
+import { importAll } from "../../utils/JqueryImport";
 // import { useQuery } from "../../utils/QueryParam";
 
 function useQuery() {
@@ -131,6 +132,8 @@ const HotelSearchPage = (props) => {
 
   useEffect(() => {
     let mount = false;
+
+    importAll();
     console.log(props.getProvince());
     // (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom)
     if (
