@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { importAll } from "../../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
-import { createFlight } from "../../../actions/actionFlightByAirline";
+import {
+  retrieveFlight,
+  updateFlight,
+} from "../../../actions/actionFlightByAirline";
+import { useHistory } from 'react-router-dom';
+
 
 const province = {
   properties: [
@@ -108,15 +113,19 @@ const status = {
   ],
 };
 
-const AddNewFlight = (props) => {
+const EditScheduleFlight = (props) => {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const flights = useSelector((state) => state.flights);
 
-  const addFlight = (data) => {
-    dispatch(createFlight(data));
+  const getFlightToEdit = (id) => {
+    dispatch(retrieveFlight(id));
   };
-  const [isRequest, setIsRequest] = useState(false);
+
+  const editFlight = (id, data) => {
+    dispatch(updateFlight(id, data));
+  };
   const [error, setError] = useState({
     departureCity: "",
     arrivalCity: "",
@@ -283,35 +292,42 @@ const AddNewFlight = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     var form = e.target;
-    // if (e.target.type === 'checkbox'){
-    //   e.target.name:
-    // }
     if (validateForm(e)) {
-      addFlight({
-        departureCity: form.departureCity.value,
-        arrivalCity: form.arrivalCity.value,
-        flightCode: form.flightCode.value,
-        status: form.status.value,
-        description: form.description.value,
-        hasEntertainment: form.hasEntertainment.value,
-        departureTime: form.departureTime.value,
-        arrivalTime: form.arrivalTime.value,
-        aircraftType: form.aircraftType.value,
-        businessCapacity: form.businessCapacity.value,
-        economyCabinBaggage: form.economyCabinBaggage.value,
-        businessCabinBaggage: form.businessCabinBaggage.value,
-        economyBaggage: form.economyBaggage.value,
-        businessBaggage: form.businessBaggage.value,
-        economyCapacity: form.economyCapacity.value,
-        infant_price: form.infant_price.value,
-        child_price: form.child_price.value,
-        economyPrice: form.economyPrice.value,
-        businessPrice: form.businessPrice.value,
-        airline: { id: parseInt(form.airline.value) },
-      });
-      setIsRequest(true);
+      var data = flights;
+      flights.departureCity = form.departureCity.value;
+      flights.arrivalCity = form.arrivalCity.value;
+      flights.flightCode = form.flightCode.value;
+      flights.status = form.status.value;
+      flights.description = form.description.value;
+      flights.hasEntertainment = form.hasEntertainment.value;
+      flights.departureTime = form.departureTime.value;
+      flights.arrivalTime = form.arrivalTime.value;
+      flights.aircraftType = form.aircraftType.value;
+      flights.businessCapacity = form.businessCapacity.value;
+      flights.economyCabinBaggage = form.economyCabinBaggage.value;
+      flights.businessCabinBaggage = form.businessCabinBaggage.value;
+      flights.economyBaggage = form.economyBaggage.value;
+      flights.businessBaggage = form.businessBaggage.value;
+      flights.economyCapacity = form.economyCapacity.value;
+      flights.infant_price = form.infant_price.value;
+      flights.child_price = form.child_price.value;
+      flights.economyPrice = form.economyPrice.value;
+      flights.businessPrice = form.businessPrice.value;
+      // flights.airline: { id: parseInt(form.airline.value)
+      editFlight(parseInt(props.fltId), data);
+      history.push(`\list-flight`);
     }
   };
+
+  useEffect(() => {
+    var mount = false;
+    window.scrollTo(0, 0);
+    importAll(); 
+    getFlightToEdit(props.fltId);
+    return () => {
+      mount = true;
+    };
+  }, []);
 
   return (
     <>
@@ -321,7 +337,7 @@ const AddNewFlight = (props) => {
             <div className="sp-page-lb">
               <div className="sp-page-p">
                 <div className="booking-left">
-                  <h2>Create Flight Form</h2>
+                  <h2>Edit Flight Form</h2>
                   <form onSubmit={handleSubmit}>
                     <div className="booking-form">
                       <div className="booking-form-i">
@@ -332,6 +348,7 @@ const AddNewFlight = (props) => {
                             className="custom-select form-control"
                             name="departureCity"
                             id="departureCity"
+                            defaultValue={flights.departureCity}
                           >
                             {province.properties.map((province) => (
                               <option
@@ -355,6 +372,7 @@ const AddNewFlight = (props) => {
                             className="custom-select form-control"
                             name="arrivalCity"
                             id="arrivalCity"
+                            defaultValue={flights.arrivalCity}
                           >
                             {province.properties.map((province) => (
                               <option
@@ -378,7 +396,7 @@ const AddNewFlight = (props) => {
 
                         <div className="input form-group">
                           <input
-                            placeholder="..."
+                            defaultValue={flights.flightCode}
                             className="form-control"
                             name="flightCode"
                             type="text"
@@ -393,6 +411,7 @@ const AddNewFlight = (props) => {
                             className="form-control custom-select"
                             name="status"
                             id="status"
+                            defaultValue={flights.status}
                           >
                             {status.properties.map((status) => (
                               <option key={status.value} value={status.value}>
@@ -416,7 +435,7 @@ const AddNewFlight = (props) => {
 
                         <div className="input form-group">
                           <input
-                            placeholder="..."
+                            defaultValue={flights.description}
                             onChange={handleChange}
                             className="form-control"
                             name="description"
@@ -430,8 +449,8 @@ const AddNewFlight = (props) => {
                             <input
                               className="form-control"
                               type="checkbox"
-                              defaultChecked={true}
                               name="hasEntertainment"
+                              defaultValue={flights.hasEntertainment ? "checked" : ""}
                             />
                             Inflight Entertainment
                           </label>
@@ -451,11 +470,11 @@ const AddNewFlight = (props) => {
 
                           <div className="input form-group">
                             <input
-                              placeholder="00:00"
                               onChange={handleChange}
                               className="form-control"
                               type="text"
                               name="departureTime"
+                              defaultValue={flights.departureTime}
                             />
                           </div>
                         </div>
@@ -470,7 +489,7 @@ const AddNewFlight = (props) => {
 
                           <div className="input">
                             <input
-                              placeholder="00:00"
+                              defaultValue={flights.arrivalTime}
                               onChange={handleChange}
                               type="text"
                               className="form-control"
@@ -489,7 +508,7 @@ const AddNewFlight = (props) => {
 
                           <div className="input">
                             <input
-                              placeholder="Airbus..."
+                              defaultValue={flights.aircraftType}
                               onChange={handleChange}
                               className="form-control"
                               type="text"
@@ -515,7 +534,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.businessCapacity}
                             min="0"
                             max="40"
                             name="businessCapacity"
@@ -542,7 +561,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.economyCapacity}
                             min="1"
                             max="500"
                             name="economyCapacity"
@@ -573,7 +592,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.businessBaggage}
                             min="0"
                             max="100"
                             name="businessBaggage"
@@ -600,7 +619,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.economyBaggage}
                             min="0"
                             max="100"
                             name="economyBaggage"
@@ -627,7 +646,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.businessCabinBaggage}
                             min="0"
                             max="40"
                             name="businessCabinBaggage"
@@ -654,7 +673,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="0"
+                            defaultValue={flights.economyCabinBaggage}
                             min="0"
                             max="40"
                             name="economyCabinBaggage"
@@ -685,7 +704,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="1.0"
+                            defaultValue={flights.businessPrice}
                             min="0"
                             max="10000"
                             step="0.1"
@@ -713,7 +732,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="1.0"
+                            defaultValue={flights.economyPrice}
                             min="0"
                             max="1000"
                             step="0.1"
@@ -733,7 +752,7 @@ const AddNewFlight = (props) => {
                           className="validate-error"
                           style={{ float: "none" }}
                         >
-                          {error.child_price}
+                          {error.economyPrice}
                         </div>
 
                         <div className="input">
@@ -741,7 +760,7 @@ const AddNewFlight = (props) => {
                             onChange={handleChange}
                             className="form-control"
                             type="number"
-                            placeholder="1.0"
+                            defaultValue={flights.economyPrice}
                             min="0"
                             max="1000"
                             step="0.1"
@@ -768,7 +787,7 @@ const AddNewFlight = (props) => {
                           <input
                             onChange={handleChange}
                             className="form-control"
-                            placeholder="1.0"
+                            defaultValue={flights.infant_price}
                             type="number"
                             min="0"
                             max="1000"
@@ -789,14 +808,7 @@ const AddNewFlight = (props) => {
                     <div className="booking-devider no-margin"></div>
 
                     <div className="booking-complete">
-                      <input
-                        readOnly
-                        className="form-control"
-                        type="number"
-                        name="airline"
-                        value={props.airlineId}
-                        hidden
-                      />
+                      
                       <h2>Review and create new flight</h2>
                       <p>
                         Voluptatem quia voluptas sit aspernatur aut odit aut
@@ -804,7 +816,7 @@ const AddNewFlight = (props) => {
                         voluptatem sequi nesciunt.{" "}
                       </p>
                       <button className="booking-complete-btn" type="submit">
-                        Add new flight to schedule
+                        Confirm Data Edited!
                       </button>
                     </div>
                   </form>
@@ -935,4 +947,4 @@ const AddNewFlight = (props) => {
   );
 };
 
-export default AddNewFlight;
+export default EditScheduleFlight;

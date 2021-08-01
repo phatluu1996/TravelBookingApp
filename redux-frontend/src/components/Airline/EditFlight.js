@@ -1,7 +1,8 @@
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
-// import EditScheduleFlight from "./Component/EditScheduleFlight";
+import { importAll } from "../../utils/JqueryImport";
+import EditScheduleFlight from "./Component/EditScheduleFlight";
 import { useLocation } from "react-router-dom";
 
 export const useQuery = () => {
@@ -12,7 +13,7 @@ const EditFlight = (props) => {
   let queryParam = useQuery();
   const flightId =queryParam.get("id");
   return (
-    <body class="inner-body">
+    <body className="inner-body">
       <Header />   
         <div className="main-cont">
         <div className="inner-page">
@@ -22,7 +23,7 @@ const EditFlight = (props) => {
                 Airline - <span>Edit Flight</span>
               </div>
               <div className="breadcrumbs">
-                <a href="/">Home</a> / <a href="/airline">Airline</a> /{" "}
+                <a href="/">Home</a> / <a href="/airline">Airline</a> / <a href="/list-flight">List Flights</a> /{" "}
                 <span>Edit Flight</span>
               </div>
               <div className="clear"></div>
@@ -32,7 +33,7 @@ const EditFlight = (props) => {
           <div className="body-wrapper" style={{paddingTop:'30px' }}>
             <div className="wrapper-padding">
               <div className="typography-heading">Edit Schedule Flight </div>
-              {/* <EditScheduleFlight fltId={flightId} /> */}
+              <EditScheduleFlight fltId={flightId} />
             </div>
           </div>
         </div>

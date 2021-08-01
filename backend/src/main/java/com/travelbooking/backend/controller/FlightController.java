@@ -92,6 +92,7 @@ public class FlightController {
                                   @RequestParam(defaultValue = "id") String sortBy,
                                   @RequestParam(defaultValue = "asc")  String sortDir
 
+
                                           ) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
         Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();

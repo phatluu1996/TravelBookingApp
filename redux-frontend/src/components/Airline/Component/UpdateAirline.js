@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { importAll } from "../../../utils/JqueryImport";
 import { retrieveAirline } from "../../../actions/actionAirline";
 import { useSelector, useDispatch } from "react-redux";
 import $ from "jquery";
@@ -134,6 +135,7 @@ const UpdateAirline = (props) => {
 
   useEffect(() => {
     var mount = false;
+    importAll(); 
     getAirline(airlineId);
     return () => {
       mount = true;

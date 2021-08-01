@@ -19,16 +19,14 @@ function reducerFlightByAirline(flights = {}, action) {
             return payload;
   
         case UPDATE_FLIGHT:
-            return flights.map((flight) => {
-                if (flight.id === payload.id) {
-                    return {
-                        ...flight,
-                        ...payload,
-                    };
-                } else {
-                    return flight;
-                }
-            });
+            if (flights.id === payload.id) {
+                return {
+                    ...flights,
+                    ...payload,
+                };
+            } else {
+                return flights;
+            }
   
         case DELETE_FLIGHT:
             return flights.filter(({ id }) => id !== payload.id);

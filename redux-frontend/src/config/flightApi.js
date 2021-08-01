@@ -32,8 +32,8 @@ class flightApi {
         return http.post(`/flight/${id}`);
     }
 
-    listFlightsByAirline(id) {
-        return http.get(`/airline/listFlights?id=${id}`);
+    listFlightsByAirline(id, page, sortBy, sortDir) {
+        return http.get(`/airline/listFlights?id=${id}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`);
     }
 }
 

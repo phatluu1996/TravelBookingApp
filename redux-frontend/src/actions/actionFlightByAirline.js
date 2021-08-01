@@ -70,9 +70,9 @@ export const deleteFlight = (id) => async (dispatch) => {
     }
 };
   
-export const listFlightsByAirline = (id) => async (dispatch) => {
+export const listFlightsByAirline = (id,page, sortBy, sortDir) => async (dispatch) => {
     try {
-        const res = await flightApi.listFlightsByAirline(id);
+        const res = await flightApi.listFlightsByAirline(id, page, sortBy, sortDir);
   
         dispatch({
             type: LIST_FLIGHTS,
