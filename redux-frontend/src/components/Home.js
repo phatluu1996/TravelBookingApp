@@ -141,14 +141,11 @@ const Home = (props) => {
         ],
     };
 
-    const swapCity = () => { };
-
     useEffect(() => {
         let mount = false;
-        window.scrollTo(0, 100);
-        importAll();
-
-        props.getProvince();
+        window.scrollTo(0, 0);   
+        importAll();     
+        props.getProvince();        
         return () => {
             mount = true;
         };
@@ -213,7 +210,7 @@ const Home = (props) => {
         const today = new Date();
 
         // history.push()
-        document.location.href = `/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
+        history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : ""
             }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
             }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
             }&checkInDate=${form.checkInDate.value === ""
@@ -222,7 +219,7 @@ const Home = (props) => {
             }&checkOutDate=${form.checkOutDate.value === ""
                 ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value)
                 : form.checkOutDate.value
-            }&numRoom=${form.roomHotel.value}`;
+            }&numRoom=${form.roomHotel.value}`);
     };
 
     const handleSubmit = (e) => {
@@ -242,11 +239,10 @@ const Home = (props) => {
                 <div className="mp-slider search-only">
                     <div className="mp-slider-row slim-slider">
 
-                        <div class="swiper-container my-swiper">
+                        <div className="swiper-container">
+                            <div className="swiper-wrapper">
 
-                            <div class="swiper-wrapper">
-
-                                <div class="swiper-slide">
+                                <div className="swiper-slide">
                                     <div className="slide-section" style={{ background: "url(img/sider-01.jpg) center center no-repeat", }}>
                                         <div className="mp-slider-lbl">
                                             Great journey begins with a small step
@@ -256,7 +252,7 @@ const Home = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div className="swiper-slide">
                                     <div className="slide-section" style={{ background: "url(img/sider-02.jpg) center center no-repeat" }}>
                                         <div className="mp-slider-lbl">
                                             Relax with us. we love our clients
@@ -266,7 +262,7 @@ const Home = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="swiper-slide">
+                                <div className="swiper-slide">
                                     <div className="slide-section slide-b" style={{ background: "url(img/sider-03.jpg) center no-repeat" }}>
                                         <div className="mp-slider-lbl">
                                             Booking flight with your friends
@@ -277,7 +273,7 @@ const Home = (props) => {
                                     </div>
                                 </div>
                             </div>
-                            <div class="swiper-pagination"></div>
+                            <div className="swiper-pagination"></div>
                         </div>
                     </div>
                 </div>
@@ -325,7 +321,7 @@ const Home = (props) => {
                                                             <select
                                                                 onChange={onChangeDistrict}
                                                                 className="custom-select"
-                                                                name="seatClass"
+                                                                name="district"
                                                                 id="districts"
                                                             >
                                                                 <option key={0} value={0}>
@@ -344,7 +340,7 @@ const Home = (props) => {
                                                         <div className="select-wrapper">
                                                             <select
                                                                 className="custom-select"
-                                                                name="seatClass"
+                                                                name="ward"
                                                                 id="wards"
                                                                 onChange={onChangeWard}
                                                             >
@@ -445,8 +441,7 @@ const Home = (props) => {
                                             <div className="clear"></div>
                                         </div>
                                         <footer className="search-footer">
-                                            <button className="srch-btn">Search</button>
-                                            <span className="srch-lbl">Advanced Search options</span>
+                                            <button className="srch-btn">Search</button>                                            
                                             <div className="clear"></div>
                                         </footer>
                                     </form>
@@ -505,7 +500,7 @@ const Home = (props) => {
 
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line">
-                                                    <div className="srch-tab-left">
+                                                    <div className="srch-tab-3c">
                                                         <label>Departure</label>
                                                         <div className="input-a">
                                                             <input
@@ -518,7 +513,7 @@ const Home = (props) => {
                                                             <span className="date-icon"></span>
                                                         </div>
                                                     </div>
-                                                    <div className="srch-tab-right">
+                                                    <div className="srch-tab-3c">
                                                         <label>arrivals</label>
                                                         <div className="input-a">
                                                             <input
@@ -529,6 +524,22 @@ const Home = (props) => {
                                                                 placeholder="mm/dd/yy"
                                                             />{" "}
                                                             <span className="date-icon"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>seat class </label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                className="custom-select"
+                                                                name="seatClass"
+                                                                id="seatClass"
+                                                            >
+                                                                {seatClass.properties.map((item) => (
+                                                                    <option key={item.value} value={item.value}>
+                                                                        {item.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div className="clear"></div>
@@ -577,33 +588,11 @@ const Home = (props) => {
                                                     <div className="clear"></div>
                                                 </div>
                                             </div>
-
-                                            <div className="search-large-i">
-                                                <div className="srch-tab-line">
-                                                    <div className="srch-tab-left">
-                                                        <label>className </label>
-                                                        <div className="select-wrapper">
-                                                            <select
-                                                                className="custom-select"
-                                                                name="seatClass"
-                                                                id="seatClass"
-                                                            >
-                                                                {seatClass.properties.map((item) => (
-                                                                    <option key={item.value} value={item.value}>
-                                                                        {item.label}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="clear"></div>
-                                            </div>
-
+                                            
                                             <div className="clear"></div>
 
-                                            <div className="search-asvanced">
-                                                <div className="search-large-i">
+                                              {/*<div className="search-asvanced">
+                                               <div className="search-large-i">
                                                     <div className="srch-tab-line no-margin-bottom">
                                                         <label>Price</label>
                                                         <div className="select-wrapper">
@@ -648,15 +637,15 @@ const Home = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="clear"></div>
-                                            </div>
+                                                <div className="clear"></div> 
+                                            </div>*/}
                                         </div>
                                         <footer className="search-footer">
                                             {/* <button onClick={swapCity} className="btn btn-circle rotate"><FontAwesomeIcon icon={faRetweet} color="#FFFFFF" /></button> */}
                                             <button type="submit" className="srch-btn">
                                                 Search
                                             </button>
-                                            <span className="srch-lbl">Advanced Search options</span>
+                                            <span className="srch-lbl">Swap City</span>
                                             <div className="clear"></div>
                                         </footer>
                                     </form>

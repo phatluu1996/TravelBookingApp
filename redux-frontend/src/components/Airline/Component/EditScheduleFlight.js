@@ -315,14 +315,28 @@ const EditScheduleFlight = (props) => {
       flights.businessPrice = form.businessPrice.value;
       // flights.airline: { id: parseInt(form.airline.value)
       editFlight(parseInt(props.fltId), data);
-      history.push(`\list-flight`);
+      history.push("/list-flight");
     }
   };
 
   useEffect(() => {
+    let mount = false;
+    if (flights && Object.keys(flights).length !== 0) {      
+      document.querySelector("#departureCity").value = flights.departureCity;
+      document.querySelector("#departureCity").parentElement.querySelector(".customSelectInner").innerHTML = province.properties.find(item => item.value === flights.departureCity).label;
+      document .querySelector("#arrivalCity").value = flights.arrivalCity;
+      document.querySelector("#arrivalCity").parentElement.querySelector(".customSelectInner").innerHTML = province.properties.find(item => item.value === flights.arrivalCity).label;
+    }
+
+    return () => {
+      mount = true;
+    }
+  }, [flights])
+
+  useEffect(() => {
     var mount = false;
     window.scrollTo(0, 0);
-    importAll(); 
+    importAll();
     getFlightToEdit(props.fltId);
     return () => {
       mount = true;
@@ -348,7 +362,7 @@ const EditScheduleFlight = (props) => {
                             className="custom-select form-control"
                             name="departureCity"
                             id="departureCity"
-                            defaultValue={flights.departureCity}
+                            defaultValue={flights?.departureCity}
                           >
                             {province.properties.map((province) => (
                               <option
@@ -372,7 +386,7 @@ const EditScheduleFlight = (props) => {
                             className="custom-select form-control"
                             name="arrivalCity"
                             id="arrivalCity"
-                            defaultValue={flights.arrivalCity}
+                            defaultValue={flights?.arrivalCity}
                           >
                             {province.properties.map((province) => (
                               <option
