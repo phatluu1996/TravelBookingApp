@@ -112,7 +112,7 @@ input,select,button,textarea {outline:none;}
 .swiper-container {position:relative;}
 .swiper-preloader-bg {width:100%; height:100%; background:#fcf8f5; position:absolute; left:0px; top:0px; z-index:99;}
 .swiper-preloader {position:absolute; z-index:999; left:50%; top:50%; width:30px; height:30px; margin-left:-15px; margin-top:-15px;}
-.swiper-container, .swiper-slide {width:100%;height:807px;}
+.swiper-container, .swiper-slide {width:100%;height:507px;}
 .swiper-pagination {position:absolute; right:40px; bottom:32px; z-index:999;}
 .swiper-pagination-switch {display:block; cursor:pointer; width:6px; height:6px; margin-top:4px; border:1px solid #fff; border-radius:10000px;}
 .swiper-visible-switch.swiper-active-switch {background:#fff;}
@@ -692,6 +692,16 @@ button.srch-btn {cursor: pointer; font-family: 'Montserrat'; font-size:11px; fon
 	font-size:10px;
 	text-transform:uppercase;
 }
+.srch-lbl-ext {
+	cursor:pointer;
+	float:right;
+	font-family: 'Raleway';
+	font-weight:500;
+	color:#566065;
+	margin:12px 0px 0px 0px;
+	font-size:10px;
+	text-transform:uppercase;
+}
 .mp-offesr {
 	font-family: 'Raleway';
 	padding:180px 0px 0px 0px;
@@ -871,9 +881,7 @@ show-list:hover{
 .cat-list-item .stars {margin-bottom: 7px;}
 .cat-list-btn {display: inline-block; font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:9px 15px 9px 15px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}
 .cat-list-btn:hover {color:#ff7200; border: 1px solid;}          
-.cat-list-btn-sm {display: inline-flex;font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:10px 15px 11px 15px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}                                   
-.cat-list-btn-sm:hover {color:#ff7200; border: 1px solid;} 
-.cat-list-btn-sm:hover .cat-list-btn-sm-icon{color:#ff7200}
+
 .margin-right-3px{margin-right: 3px;}
 .cat-list-item .cat-list-btn {padding-left:26px; padding-right:26px;}
 .cat-list-content-l .offer-slider-link {margin-bottom:8px;}
@@ -2301,6 +2309,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .gray-inner .inner-breadcrumbs {border-bottom:1px solid #ededed; max-width:1100px; margin:0 auto;}
 
 .content-wrapper {max-width:1100px; margin:0 auto;}
+.content-wrapper.ext-width {max-width:1250px !important;}
 .inner-breadcrumbs {margin-bottom:93px;}
 .inner-breadcrumbs .page-title {font-family:'Montserrat'; float:left; margin:27px 0px 0px 0px; font-weight:normal; font-size:17px; color:#141d1e;}
 .inner-breadcrumbs .breadcrumbs {margin:31px 0px 0px 0px;}
@@ -3038,6 +3047,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
   .p-item-padding {margin-right: 0px ;}
   .p-item-page {float: none;}
   .with-text .offer-slider-txt,.offer-slider-txt {min-height: auto;}
+}
   
 @media screen and (max-width:860px)  {
     .shortcodes-left,.shortcodes-right {width:100%; float: none; margin: 0px 0px 60px 0px;}
@@ -3433,10 +3443,11 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
   margin-top: 20px;
 }
 
-/*.validate-error{
-  color: 'red';
-  font-size: '13px';
-  float:'right';
-  margin-top:'15px';
-  padding-right:'5px';
-} */
+.mr-1{
+  margin-right: 5px;
+}
+
+.list-btn-sm {display: inline-flex;font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:10px 10px 10px 10px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}                                   
+.list-btn-sm:hover {color:#ff7200; border: 1px solid;} 
+.list-btn-sm:hover .list-btn-sm-icon{color:#ff7200}
+

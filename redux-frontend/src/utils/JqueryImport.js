@@ -2370,7 +2370,124 @@ const init_validation = (target) => {
 
     if (target) { return validate(target); }
 
+    formStyler();
+    
+    // Custom Input
+    (function ($) {
+        $(function () {
+            $('input:checkbox,input:radio,.search-engine-range-selection-container input:radio').styler();
+        })
+    })(jQuery);
 
+    var slider_range = $("#slider-range");
+    var ammount_from = $("#ammount-from");
+    var ammount_to = $("#ammount-to");
+
+
+    $(function () {
+        slider_range.slider({
+            range: true,
+            min: 0,
+            max: 1500,
+            values: [0, 1500],
+            slide: function (event, ui) {
+                ammount_from.val(ui.values[0] + '$');
+                ammount_to.val(ui.values[1] + '$');
+            }
+        });
+        ammount_from.val(slider_range.slider("values", 0) + '$');
+        ammount_to.val(slider_range.slider("values", 1) + '$');
+    });
+
+
+    $(".side-time").each(function () {
+        var $this = $(this);
+        $this.find('.time-range').slider({
+            range: true,
+            min: 0,
+            max: 24,
+            values: [3, 20],
+            slide: function (event, ui) {
+                $this.find(".time-from").text(ui.values[0]);
+                $this.find(".time-to").text(ui.values[1]);
+            }
+        });
+        $(this).find(".time-from").text($this.find(".time-range").slider("values", 0));
+        $(this).find(".time-to").text($this.find(".time-range").slider("values", 1));
+    });
+
+    //Hotel Detail
+    $('.review-ranger').each(function () {
+        var $this = $(this);
+        var $index = $(this).index();
+        if ($index == '0') {
+            var $val = '3.0'
+        } else if ($index == '1') {
+            var $val = '3.8'
+        } else if ($index == '2') {
+            var $val = '2.8'
+        } else if ($index == '3') {
+            var $val = '4.8'
+        } else if ($index == '4') {
+            var $val = '4.3'
+        } else if ($index == '5') {
+            var $val = '5.0'
+        }
+        $this.find('.slider-range-min').slider({
+            range: "min",
+            step: 0.1,
+            value: $val,
+            min: 0.1,
+            max: 5.1,
+            create: function (event, ui) {
+                $this.find('.ui-slider-handle').append('<span class="range-holder"><i></i></span>');
+            },
+            slide: function (event, ui) {
+                $this.find(".range-holder i").text(ui.value);
+            }
+        });
+        $this.find(".range-holder i").text($val);
+    });
+
+    $('#reasons-slider').bxSlider({
+        infiniteLoop: true,
+        speed: 500,
+        mode: 'fade',
+        minSlides: 1,
+        maxSlides: 1,
+        moveSlides: 1,
+        auto: true,
+        slideMargin: 0
+    });
+
+    $('#gallery').bxSlider({
+        infiniteLoop: true,
+        speed: 500,
+        slideWidth: 108,
+        minSlides: 1,
+        maxSlides: 6,
+        moveSlides: 1,
+        auto: false,
+        slideMargin: 7
+    });
+}
+
+export const customCheckBoxInput = () => {
+    formStyler();
+
+    $('.checkbox input').styler({
+        selectSearch: true
+    });
+}
+
+export const importAll = () => {
+    customAppear();
+    customSelectInput();
+    customSliderInit();
+    customOtherTags();
+}
+
+export const formStyler = () => {
     //Styler
     (function ($) {
 
@@ -2413,9 +2530,11 @@ const init_validation = (target) => {
                                     if (el.is(':checked')) {
                                         el.prop('checked', false);
                                         checkbox.removeClass('checked');
+                                        checkbox[0].parentElement.getElementsByTagName("input")[0].removeAttribute("checked");
                                     } else {
                                         el.prop('checked', true);
                                         checkbox.addClass('checked');
+                                        checkbox[0].parentElement.getElementsByTagName("input")[0].setAttribute("checked", "");
                                     }
                                     el.change();
                                     return false;
@@ -2882,109 +3001,5 @@ const init_validation = (target) => {
 
         }
     })(jQuery);
-    // Custom Input
-    (function ($) {
-        $(function () {
-            $('input:checkbox,input:radio,.search-engine-range-selection-container input:radio').styler();
-        })
-    })(jQuery);
-
-    var slider_range = $("#slider-range");
-    var ammount_from = $("#ammount-from");
-    var ammount_to = $("#ammount-to");
-
-
-    $(function () {
-        slider_range.slider({
-            range: true,
-            min: 0,
-            max: 1500,
-            values: [0, 1500],
-            slide: function (event, ui) {
-                ammount_from.val(ui.values[0] + '$');
-                ammount_to.val(ui.values[1] + '$');
-            }
-        });
-        ammount_from.val(slider_range.slider("values", 0) + '$');
-        ammount_to.val(slider_range.slider("values", 1) + '$');
-    });
-
-
-    $(".side-time").each(function () {
-        var $this = $(this);
-        $this.find('.time-range').slider({
-            range: true,
-            min: 0,
-            max: 24,
-            values: [3, 20],
-            slide: function (event, ui) {
-                $this.find(".time-from").text(ui.values[0]);
-                $this.find(".time-to").text(ui.values[1]);
-            }
-        });
-        $(this).find(".time-from").text($this.find(".time-range").slider("values", 0));
-        $(this).find(".time-to").text($this.find(".time-range").slider("values", 1));
-    });
-
-    //Hotel Detail
-    $('.review-ranger').each(function () {
-        var $this = $(this);
-        var $index = $(this).index();
-        if ($index == '0') {
-            var $val = '3.0'
-        } else if ($index == '1') {
-            var $val = '3.8'
-        } else if ($index == '2') {
-            var $val = '2.8'
-        } else if ($index == '3') {
-            var $val = '4.8'
-        } else if ($index == '4') {
-            var $val = '4.3'
-        } else if ($index == '5') {
-            var $val = '5.0'
-        }
-        $this.find('.slider-range-min').slider({
-            range: "min",
-            step: 0.1,
-            value: $val,
-            min: 0.1,
-            max: 5.1,
-            create: function (event, ui) {
-                $this.find('.ui-slider-handle').append('<span class="range-holder"><i></i></span>');
-            },
-            slide: function (event, ui) {
-                $this.find(".range-holder i").text(ui.value);
-            }
-        });
-        $this.find(".range-holder i").text($val);
-    });
-
-    $('#reasons-slider').bxSlider({
-        infiniteLoop: true,
-        speed: 500,
-        mode: 'fade',
-        minSlides: 1,
-        maxSlides: 1,
-        moveSlides: 1,
-        auto: true,
-        slideMargin: 0
-    });
-
-    $('#gallery').bxSlider({
-        infiniteLoop: true,
-        speed: 500,
-        slideWidth: 108,
-        minSlides: 1,
-        maxSlides: 6,
-        moveSlides: 1,
-        auto: false,
-        slideMargin: 7
-    });
 }
 
-export const importAll = () => {
-    customAppear();
-    customSelectInput();
-    customSliderInit();
-    customOtherTags();
-}

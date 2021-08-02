@@ -28,9 +28,9 @@ const Header = () => {
                             )}
                         {Common.getUser() && (
                                 <div className="header-signup">
-                                    <a style={{ color: "#ff7200" }}>
+                                    <Link to="/user" style={{ color: "#ff7200" }}>
                                         {Common.getUserFullName()}
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
                         <div className="header-curency">
@@ -151,52 +151,30 @@ const Header = () => {
                             <nav className="header-nav">
                                 <ul>
                                     <li>
-                                        <a >Home</a>
-                                        <ul>
-                                            <li>
-                                                <a href="index.html">Home style one</a>
-                                            </li>
-                                            <li>
-                                                <a href="index_02.html">Home style two</a>
-                                            </li>
-                                            <li>
-                                                <a href="index_03.html">Home style three</a>
-                                            </li>
-                                            <li>
-                                                <a href="index_04.html">Home style four</a>
-                                            </li>
-                                        </ul>
+                                        <Link to="/" >Home</Link>
                                     </li>
                                     <li>
-                                        <a >Hotels</a>
+                                        <Link>Hotels</Link>
                                         <ul>                                            
                                             <li>
                                                 <Link to="/hotel-detail">Hotel item page</Link>
-                                            </li>                                            
+                                            </li>  
+                                            <li>
+                                                <Link to="/hotel-booking">Hotel Booking Page</Link>
+                                            </li>     
+                                            <li>
+                                                <Link to="/hotel-booking-complete">Hotel Booking Finish</Link>
+                                            </li>                                        
                                         </ul>
                                     </li>
                                     <li>
                                         <a >Flights</a>
                                         <ul>
                                             <li>
-                                                <a href="flight_round_trip.html">Flights round trip</a>
+                                                <Link href="/flight-booking">Flights Booking Page</Link>
                                             </li>
                                             <li>
-                                                <a href="flight_one_way.html">flights one way trip</a>
-                                            </li>
-                                            <li>
-                                                <a href="flight_alternative.html">
-                                                    flights alternative style
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="flight_detail.html">Flights detail page</a>
-                                            </li>
-                                            <li>
-                                                <a href="flight_booking.html">Flights booking page</a>
-                                            </li>
-                                            <li>
-                                                <a href="booking_complete.html">booking complete</a>
+                                                <Link href="/flight-booking-complete">Flight Booking Finish</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -215,7 +193,7 @@ const Header = () => {
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="contacts.html">Contacts</a>
+                                        <a href="/contact-us">Contacts</a>
                                     </li>
                                 </ul>
                             </nav>

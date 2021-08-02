@@ -33,12 +33,10 @@ const HotelSearchPage = (props) => {
   };
 
   const onChangeProvince = (e) => {
-    document
-      .querySelector("#districts")
-      .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    document
-      .querySelector("#wards")
-      .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+    document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = "--";
+    document.querySelector("#districts").value = 0;
+    document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = "--";
+    document.querySelector("#wards").value = 0;
     if (e.currentTarget.id === "0") {
       setSelectDistrict(null);
       setSelectProvince(null);
@@ -52,9 +50,7 @@ const HotelSearchPage = (props) => {
     }
   };
   const onChangeDistrict = (e) => {
-    document
-      .querySelector("#wards")
-      .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+    document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = "--";
     if (e.currentTarget.id === "0") {
       setSelectDistrict(null);
       setSelectWard(null);
@@ -168,22 +164,22 @@ const HotelSearchPage = (props) => {
             }
             return 0;
           }
-          case "province":
-            if (dir === "desc") {
-              if (b.location.province.name > a.location.province.name) {
-                return 1;
-              } else if (b.location.province.name < a.location.province.name) {
-                return -1;
-              }
-              return 0;
-            } else {
-              if (b.location.province.name < a.location.province.name) {
-                return 1;
-              } else if (b.location.province.name > a.location.province.name) {
-                return -1;
-              }
-              return 0;
+        case "province":
+          if (dir === "desc") {
+            if (b.location.province.name > a.location.province.name) {
+              return 1;
+            } else if (b.location.province.name < a.location.province.name) {
+              return -1;
             }
+            return 0;
+          } else {
+            if (b.location.province.name < a.location.province.name) {
+              return 1;
+            } else if (b.location.province.name > a.location.province.name) {
+              return -1;
+            }
+            return 0;
+          }
       }
     });
 
@@ -213,7 +209,7 @@ const HotelSearchPage = (props) => {
     let mount = false;
 
     importAll();
-    console.log(props.getProvince());
+    props.getProvince();
 
     // (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom)
     if (
@@ -256,6 +252,28 @@ const HotelSearchPage = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    let mount = false;
+    if (props.provinces.data) {
+      var _province = props.provinces.data.find(item => item.id == queryParam.get("province"));
+      var _district = _province.districts.find(item => item.id == queryParam.get("district"));
+      var _ward = _district.wards.find(item => item.id == queryParam.get("ward"));
+      document.querySelector("#provinces").value = queryParam.get("province");
+      setSelectProvince(_province);
+      document.querySelector("#districts").value = queryParam.get("district");
+      setSelectDistrict(_district)
+      document .querySelector("#wards").value = queryParam.get("ward");
+      setSelectWard(_ward);
+      document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+      document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+      document .querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+    }
+
+    return () => {
+      mount = true;
+    }
+  }, [props.provinces.data])
+
   const getNextDate = (e) => {
     const tomorrow = new Date(e);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -286,6 +304,14 @@ const HotelSearchPage = (props) => {
     );
     setPage(1);
   };
+
+  const getDistrictsList = () => {
+    return props.provinces?.data?.find(item => item.id == queryParam.get("province")).districts;
+  }
+
+  const getWardsList = () => {
+    return getDistrictsList()?.find(item => item.id == queryParam.get("district")).wards;
+  }
 
   return (
     <>
@@ -649,7 +675,7 @@ const HotelSearchPage = (props) => {
                                     (item, index) =>
                                       // {
                                       index + 1 >
-                                      Math.ceil(hotel.hotelRating) ? (
+                                        Math.ceil(hotel.hotelRating) ? (
                                         <li key={index}>
                                           <a>
                                             <img alt="" src="img/star-a.png" />

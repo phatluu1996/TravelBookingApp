@@ -58,6 +58,7 @@ function PopupLogin(props) {
         if (validateForm(e)) {
             props.doSignin(form.username.value, form.password.value);
             setIsRequest(true);
+
         }
     }
 

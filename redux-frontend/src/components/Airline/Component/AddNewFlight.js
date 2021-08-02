@@ -286,31 +286,31 @@ const AddNewFlight = (props) => {
     // if (e.target.type === 'checkbox'){
     //   e.target.name:
     // }
-    if (validateForm(e)) {
-      addFlight({
-        departureCity: form.departureCity.value,
-        arrivalCity: form.arrivalCity.value,
-        flightCode: form.flightCode.value,
-        status: form.status.value,
-        description: form.description.value,
-        hasEntertainment: form.hasEntertainment.value,
-        departureTime: form.departureTime.value,
-        arrivalTime: form.arrivalTime.value,
-        aircraftType: form.aircraftType.value,
-        businessCapacity: form.businessCapacity.value,
-        economyCabinBaggage: form.economyCabinBaggage.value,
-        businessCabinBaggage: form.businessCabinBaggage.value,
-        economyBaggage: form.economyBaggage.value,
-        businessBaggage: form.businessBaggage.value,
-        economyCapacity: form.economyCapacity.value,
-        infant_price: form.infant_price.value,
-        child_price: form.child_price.value,
-        economyPrice: form.economyPrice.value,
-        businessPrice: form.businessPrice.value,
-        airline: { id: parseInt(form.airline.value) },
-      });
-      setIsRequest(true);
-    }
+    // if (validateForm(e)) {
+      // addFlight({
+      //   departureCity: form.departureCity.value,
+      //   arrivalCity: form.arrivalCity.value,
+      //   flightCode: form.flightCode.value,
+      //   status: form.status.value,
+      //   description: form.description.value,
+      //   hasEntertainment: form.hasEntertainment.value,
+      //   departureTime: form.departureTime.value,
+      //   arrivalTime: form.arrivalTime.value,
+      //   aircraftType: form.aircraftType.value,
+      //   businessCapacity: form.businessCapacity.value,
+      //   economyCabinBaggage: form.economyCabinBaggage.value,
+      //   businessCabinBaggage: form.businessCabinBaggage.value,
+      //   economyBaggage: form.economyBaggage.value,
+      //   businessBaggage: form.businessBaggage.value,
+      //   economyCapacity: form.economyCapacity.value,
+      //   infant_price: form.infant_price.value,
+      //   child_price: form.child_price.value,
+      //   economyPrice: form.economyPrice.value,
+      //   businessPrice: form.businessPrice.value,
+      //   airline: { id: parseInt(form.airline.value) },
+      // });
+      // setIsRequest(true);
+    // }
   };
 
   return (
@@ -429,8 +429,7 @@ const AddNewFlight = (props) => {
                           <label>
                             <input
                               className="form-control"
-                              type="checkbox"
-                              defaultChecked={true}
+                              type="checkbox"                              
                               name="hasEntertainment"
                             />
                             Inflight Entertainment

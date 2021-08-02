@@ -4,10 +4,13 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { importAll } from "../../utils/JqueryImport";
 import { Link } from "react-router-dom";
+import DataTable from "react-data-table-component";
 
 import { retrieveAirline } from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const ListFlight = (props) => {
   const dispatch = useDispatch();
@@ -17,6 +20,55 @@ const ListFlight = (props) => {
   const flights = useSelector((state) => state.flights);
 
   const id = 2;
+
+  const header = [
+    {
+      name: 'FLIGHT',
+      selector: 'flightCode',
+      sortable: true,
+    },
+    {
+      name: 'FROM',
+      selector: 'departureCity',
+      sortable: true,
+    },
+    {
+      name: 'TO',
+      selector: 'arrivalCity',
+      sortable: true,
+    },
+    {
+      name: 'DEPART TIME',
+      selector: 'departureTime',
+      sortable: true,
+    },
+    {
+      name: 'ARRIVE TIME',
+      selector: 'arrivalTime',
+      sortable: true,
+    },
+    {
+      name: 'AIRCRAFT',
+      selector: 'aircraftType',
+      sortable: true,
+    },
+    {
+      name: 'STATUS',
+      selector: 'status',
+      sortable: true,
+    },
+    {
+      name: 'ACTIONS',
+      // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
+      cell: flight => <>
+        <Link className="list-btn-sm mr-1" to={`/edit-flight?id=${flight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+
+        <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
+
+    }
+  ];
+
+
 
   const getAirline = (id) => {
     dispatch(retrieveAirline(id));
@@ -50,11 +102,12 @@ const ListFlight = (props) => {
               <div className="clear"></div>
             </div>
           </div>
-          <div className="content-wrapper">
+          <div className="content-wrapper ext-width">
             <div className="tables" >
               <div className="typography-heading">Scheduled Flights List</div>
               <div className="shortcodes">
-                <table className="table-a light">
+                <DataTable className="table-a" columns={header} data={airline?.airline?.flights} pagination paginationPerPage={10} />
+                {/* <table className="table-a light">
                   <thead>
                     <tr>
                       <th>#</th>
@@ -87,19 +140,12 @@ const ListFlight = (props) => {
 
                         <td>{item.status}</td>
                         <td>
-                          {/* <a
-                            href="/edit-flight/{item.}"
-                            className="header-viewed-btn"
-                            style={{
-                              padding: "5px 5px 0px 10px",
-                              color: "#ff7200",
-                            }}
-                          > */}
-                            <Link  style={{
-                              padding: "5px 5px 0px 10px",
-                              color: "#ff7200",
-                            }} className="header-viewed-btn" to={`/edit-flight?id=${ item.id }`}>Edit</Link>
-                          {/* </a> */}
+                          
+                          <Link style={{
+                            padding: "5px 5px 0px 10px",
+                            color: "#ff7200",
+                          }} className="header-viewed-btn" to={`/edit-flight?id=${item.id}`}>Edit</Link>
+                          
                           <a
                             href="#"
                             className="header-viewed-btn"
@@ -112,10 +158,10 @@ const ListFlight = (props) => {
                           </a>
                         </td>
                       </tr>
-                    ) )}
+                    ))}
                   </tbody>
                   <tfoot></tfoot>
-                </table>
+                </table> */}
               </div>
               <div className="clear"></div>
             </div>

@@ -19,6 +19,10 @@ class userApi {
     getUser(id) {
         return httpAuth.get(`/user/${id}`);
     }
+    
+    updateUser(data){
+        return httpAuth.put(`/user`, data);
+    }
 }
 
 export default new userApi();

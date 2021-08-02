@@ -2,13 +2,13 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Common from '../utils/Common';
 
-const PrivateRoute = ({component: Component, ...rest}) => {
+const PrivateRoute = ({component: Component, restricted, ...rest}) => {
     return (
 
         // Show the component only when the user is logged in
         // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
-            Common.getUser() ?
+            (Common.getUser() && restricted) ?
                 <Component {...props} />
             : <Redirect to="/" />
         )} />
