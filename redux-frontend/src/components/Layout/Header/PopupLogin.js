@@ -82,7 +82,7 @@ function PopupLogin(props) {
         return () => {
             mount = true;
         }
-    },[]);
+    });
 
     const closePopup = () => {
         $('.autorize-popup').animate({top: '-300px'}, 300, function(){

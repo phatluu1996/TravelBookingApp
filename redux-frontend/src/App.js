@@ -42,13 +42,13 @@ const App = () => {
           <PrivateRoute restricted={false} component={Airline} path="/airline" />
           <PublicRoute restricted={false} component={ListFlight} path="/list-flight"/>
           <PublicRoute restricted={false} component={Register} path="/register" />
-          <PublicRoute restricted={false} component={UserProfile} path="/user" />
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
           <PublicRoute restricted={false} component={FlightBookingPage} path="/flight-booking" />
           <PublicRoute restricted={false} component={HotelSearchPage} path="/hotel-list" />
           <PublicRoute restricted={false} component={HotelDetailPage} path="/hotel-detail" />
 
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
+          <PrivateRoute component={UserProfile} path="/user" exact />
         </Switch>
       </BrowserRouter>
     );
