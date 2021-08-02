@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { retrieveProvince } from '../../actions/actionLocation';
+import { updateUser } from '../../actions/actionUser';
 import { importAll } from "../../utils/JqueryImport";
 
 const UpdateUser = (props) => {
@@ -97,9 +98,37 @@ const UpdateUser = (props) => {
         );
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        var form = e.target;
+        if(validateForm){
+            let data = dataUser;
+
+            data.firstName = form.firstName.value;
+            data.lastName = form.lastName.value;
+            data.gender = isMale;
+            data.dateOfBirth = form.birthday.value;
+            data.email = form.email.value;
+            data.location.street = form.address.value;
+            data.location.province.id = parseInt(selectProvince.id);
+            data.location.district.id = parseInt(selectDistrict.id);
+            data.location.ward.id = parseInt(selectWard.id);
+            data.location.postalCode = form.postalCode.value;
+
+            console.log(data);
+
+            props.updateUser(data);
+            setIsRequest(true);
+        }
+    }
+
+    const validateForm = () => {
+        return true;
+    }
+
     return (
         <div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="booking-form">
                     <div>
                         <div className="booking-form-i">
@@ -131,6 +160,7 @@ const UpdateUser = (props) => {
                                         type="text"
                                         className="date-inpt"
                                         placeholder="mm/dd/yyyy"
+                                        name="birthday"
                                         defaultValue={dataUser ? dataUser.dateOfBirth : ""}
                                     />
                                     <span className="date-icon"></span>
@@ -172,7 +202,7 @@ const UpdateUser = (props) => {
                                     <select
                                         onChange={onChangeProvince}
                                         className="custom-select"
-                                        name="seatClass"
+                                        name="province"
                                         id="provinces"
                                         defaultValue={dataUser?.location.province.id}
                                     >
@@ -193,7 +223,7 @@ const UpdateUser = (props) => {
                                     <select
                                         onChange={onChangeDistrict}
                                         className="custom-select"
-                                        name="seatClass"
+                                        name="district"
                                         id="districts"
                                         defaultValue={dataUser ? dataUser.location.district.id : ""}
                                     >
@@ -213,7 +243,7 @@ const UpdateUser = (props) => {
                                 <div className="select-wrapper">
                                     <select
                                         className="custom-select"
-                                        name="seatClass"
+                                        name="ward"
                                         id="wards"
                                         defaultValue={dataUser ? dataUser.location.ward.id : ""}
                                         onChange={onChangeWard}
@@ -235,7 +265,7 @@ const UpdateUser = (props) => {
                     <div>
                         <div className="booking-form-i">
                             <label>Postal Code:</label>
-                            <div className="input"><input type="text" defaultValue={dataUser ? dataUser.location.postalCode : ""} /></div>
+                            <div className="input"><input type="text" name="postalCode" defaultValue={dataUser ? dataUser.location.postalCode : ""} /></div>
                         </div>
                         <div className="clear"></div>
                     </div>
@@ -251,6 +281,7 @@ const UpdateUser = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         provinces: state.province,
+        dataUpdate: state.user
     };
 };
 
@@ -259,6 +290,9 @@ const mapDispatchToProps = (dispatch) => {
         getProvince: () => {
             dispatch(retrieveProvince());
         },
+        updateUser: (id,data) =>{
+            dispatch(updateUser(id,data));
+        }
     };
 };
 

@@ -52,6 +52,15 @@ public class Location {
         this.ward = ward;
         this.retired = retired;
     }
+    public Location(Location location) {
+        this.id = location.getId();
+        this.street = location.getStreet();
+        this.postalCode = location.getPostalCode();
+        this.province = location.getProvince();
+        this.district = location.getDistrict();
+        this.ward = location.getWard();
+        this.retired = location.isRetired();
+    }
 
     public Location() {
     }

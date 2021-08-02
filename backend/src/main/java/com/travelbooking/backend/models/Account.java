@@ -1,5 +1,7 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class Account {
     @Column(name = "user_name", length = 50)
     private String userName;
     @Column(name = "password", length = 255)
+    @JsonIgnoreProperties("password")
     private String password;
     @Column(name = "role", length = 20)
     private String role;
@@ -24,6 +27,14 @@ public class Account {
     private String thumbnail;
 
     public Account() {
+    }
+
+    public Account(Account account) {
+        this.id = account.getId();
+        this.userName = account.getUserName();
+        this.password = account.getPassword();
+        this.role = account.getRole();
+        this.retired = account.isRetired();
     }
 
     public Account(Long id, String userName, String password, String role, boolean retired) {

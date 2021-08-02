@@ -14,6 +14,10 @@ export const GET_USER_REQUEST = "GET_USER_REQUEST";
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_ERROR = "GET_USER_ERROR";
 
+export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_ERROR = "UPDATE_USER_ERROR";
+
 export const signin = (username, password) => async dispatch => {
     try {
         dispatch({ type: LOGIN_USER_REQUEST });
@@ -77,6 +81,24 @@ export const getUser = (id) => async dispatch =>{
     } catch (error) {
         dispatch({
             type: GET_USER_ERROR,
+            message: error
+        });
+    }
+}
+
+export const updateUser = (id, data) => async dispatch =>{
+    try {
+        dispatch({ type: UPDATE_USER_REQUEST });
+
+        const response = await userApi.updateUser(id, data);
+        const responseBody = await response.data;        
+        dispatch({
+            type: UPDATE_USER_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: UPDATE_USER_ERROR,
             message: error
         });
     }
