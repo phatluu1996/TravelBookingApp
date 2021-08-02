@@ -798,9 +798,7 @@ const AddNewFlight = (props) => {
                       />
                       <h2>Review and create new flight</h2>
                       <p>
-                        Voluptatem quia voluptas sit aspernatur aut odit aut
-                        fugit, sed quia consequuntur magni dolores eos qui
-                        voluptatem sequi nesciunt.{" "}
+                        **Tips: The aim with any revenue management strategy is to sell the right product or service to the right customer, in the right moment, via the right distribution channel, for the right price.{" "}
                       </p>
                       <button className="booking-complete-btn" type="submit">
                         Add new flight to schedule

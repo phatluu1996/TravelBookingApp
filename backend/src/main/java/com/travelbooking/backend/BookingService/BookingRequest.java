@@ -5,8 +5,8 @@ import java.util.Date;
 public class BookingRequest {
     private Long userId;
     private Long flightId;
-    private Long returnflightId;
-    private Date dateBooking1;
+    private Long returnFlightId;
+    private Date dateBooking;
     private Date dateReturnBooking;
     private String firstname;
     private String lastname;
@@ -40,20 +40,20 @@ public class BookingRequest {
         this.flightId = flightId;
     }
 
-    public Long getReturnflightId() {
-        return returnflightId;
+    public Long getReturnFlightId() {
+        return returnFlightId;
     }
 
-    public void setReturnflightId(Long returnflightId) {
-        this.returnflightId = returnflightId;
+    public void setReturnFlightId(Long returnFlightId) {
+        this.returnFlightId = returnFlightId;
     }
 
-    public Date getDateBooking1() {
-        return dateBooking1;
+    public Date getDateBooking() {
+        return dateBooking;
     }
 
-    public void setDateBooking1(Date dateBooking1) {
-        this.dateBooking1 = dateBooking1;
+    public void setDateBooking(Date dateBooking) {
+        this.dateBooking = dateBooking;
     }
 
     public Date getDateReturnBooking() {

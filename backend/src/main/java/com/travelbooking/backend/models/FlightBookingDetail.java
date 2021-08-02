@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "flight_booking_detail")
@@ -44,10 +45,14 @@ public class FlightBookingDetail {
     @Column(name = "price_type", nullable = true) //0: Economy Type, 1: Business Type
     private Integer priceType = 0;
 
+    @Column(name = "date_of_departure")
+    @Temporal(TemporalType.DATE)
+    private Date dateOfDeparture;
+
     public FlightBookingDetail() {
     }
 
-    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, String seatNumber, Float price, int packageAllowance, String specialRequest, boolean retired, Integer priceType) {
+    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, Float price, int packageAllowance, String specialRequest, boolean retired, Integer priceType, Date dateOfDeparture) {
         this.id = id;
         this.flight = flight;
         this.flightBooking = flightBooking;
@@ -58,6 +63,15 @@ public class FlightBookingDetail {
         this.specialRequest = specialRequest;
         this.retired = retired;
         this.priceType = priceType;
+        this.dateOfDeparture = dateOfDeparture;
+    }
+
+    public Date getDateOfDeparture() {
+        return dateOfDeparture;
+    }
+
+    public void setDateOfDeparture(Date dateOfDeparture) {
+        this.dateOfDeparture = dateOfDeparture;
     }
 
     public boolean isRetired() {

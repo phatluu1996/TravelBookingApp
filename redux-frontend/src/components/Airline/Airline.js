@@ -80,9 +80,9 @@ const Airline = (props) => {
               <div className="clear"></div>
             </div>
           </div>
-          <div className="content-wrapper" >
+          <div className="content-wrapper" style={{ paddingBottom:'40px' }}>
             <div className="shortcodes-block" >
-              <div className="p-item-page" style={{ paddingBottom:'250px' }}>
+              <div className="p-item-page" >
                 <div className="p-item-page-l">
                   <div className="p-item-page-lb">
                     <div className="p-item-padding">
@@ -91,7 +91,7 @@ const Airline = (props) => {
                           <img
                             alt=""
                             src="img/p-slider-01.jpg"
-                            style={{ width: "45%" }}
+                            style={{ width: "40%" }}
                           />
                         </div>
                       </div>
@@ -226,14 +226,7 @@ const Airline = (props) => {
                       </div>
                       <div className="clear"></div>
                     </div>
-                    <h3>Description</h3>
-                    <div className="p-item-more">
-                      Cursus. Morbi ut mi. Nullam enim leo, egestas id,
-                      condimentum at, laoreet mattis, massa. Sed eleifend
-                      nonummy diam. Praesent mauris ante, elementum et,
-                      bibendrem ipsum dolor sit amet, consectetuer adipiscing
-                      elit. Nam cursus. Morbi ut mi. Nullam enim leo.
-                    </div>
+                   
                     <div className="p-item-social">
                       <a className="team-fb" href="#"></a>
                       <a className="team-tw" href="#"></a>
@@ -246,7 +239,22 @@ const Airline = (props) => {
                 <div className="clear"></div>
               </div>
             </div>
+            <h3>For some information this year</h3>
+                    <div className="p-item-more">
+                    The coronavirus epidemic has made a huge impact on the travel industry. 
+                    Almost all governments around the world have ordered their borders to close and airlines to stop operating. 
+                    This has resulted in many important local and international events, such as the world-famous travel expo, 
+                    ITB Berlin and the Olympics in Japan to either get postponed or cancelled because of coronavirus fears. 
+                    With more and more people losing their jobs and facing financial insecurity, it’s not surprising to see a 
+                    large number of business and personal trips that people had scheduled to take in 2020 or even 2021 get cancelled.
+                  <br/>
+                    Most tour operators and travel agencies are experiencing a steep decline in revenue. The knock-on effect is the 
+                    result of airlines being forced to ground flights, which also affects the hotels and restaurants negatively. 
+                    This means significant revenue loss for the travel, tourism, hotel, hospitality and airline industry. 
+                    Some travel companies have been left with no choice but to wait it out, despite struggling to stay open.
+                    </div>
           </div>
+          
         </div>
         <div className="about-content">
           <div className="content-wrapper">
@@ -326,6 +334,7 @@ const Airline = (props) => {
               <div className="clear"></div>
             </div>
           </div>
+         
         </div>
 
         <div className="about-us-devider fly-in"></div>
