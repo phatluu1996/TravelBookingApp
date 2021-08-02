@@ -1,7 +1,5 @@
 package com.travelbooking.backend.BookingService;
 
-import com.travelbooking.backend.BookingService.BookingRequest;
-import com.travelbooking.backend.BookingService.FlightBookingService;
 import com.travelbooking.backend.config.PdfGenerator;
 import com.travelbooking.backend.config.SendEmailItinerary;
 import com.travelbooking.backend.models.*;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
@@ -47,14 +46,14 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
 
     @Override
-    public FlightBooking bookFlight(BookingRequest bookingRequest)  {
+    public FlightBooking bookFlight(BookingRequest bookingRequest) throws MessagingException {
         // make payment here
         // if the payment is successful proceed..
-        Long flightId1=bookingRequest.getFlightId1();
-        Optional<Flight> flightOptional1=flightRepository.findById(flightId1);
-        Flight flight1=flightOptional1.get();
+        Long flightId=bookingRequest.getFlightId();
+        Optional<Flight> flightOptional=flightRepository.findById(flightId);
+        Flight flight=flightOptional.get();
 
-        Passenger passenger=new Passenger();
+        Passenger passenger = new Passenger();
         passenger.setFirstname(bookingRequest.getFirstname());
         passenger.setLastname(bookingRequest.getLastname());
         passenger.setCardIdNumber(bookingRequest.getCardId());
@@ -73,47 +72,52 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         fltBooking.setTotalPassengers(bookingRequest.getTotalPassenger());
         fltBooking.setTotalPrice(bookingRequest.getTotalPrice());
         fltBooking.setStatus(1);
+        fltBooking.setPaymentMethod(bookingRequest.getPaymentMethod());
 
         FlightBookingDetail detail=new FlightBookingDetail();
-        detail.setFlight(flight1);
+        detail.setFlight(flight);
         detail.setPassenger(passenger);
         detail.setFlightBooking(fltBooking);
         String randomTicket = randomNumber(12);
         detail.setTicketNumber(randomTicket);
         detail.setPriceType(bookingRequest.getType());
-        if (detail.getPriceType() == 0) {
-            detail.setPrice(flight1.getEconomyPrice());
+        if (bookingRequest.getType() == 0) {
+            detail.setPrice(flight.getEconomyPrice());
         } else {
-            detail.setPrice(flight1.getBusinessPrice());
+            detail.setPrice(flight.getBusinessPrice());
         }
-        flightBookingDetailRepository.save(detail);
-//        final FlightBooking savedBooking = FlightBookingRepository.save(fltBooking);
+        FlightBookingDetail bkgDetail = flightBookingDetailRepository.save(detail);
+        fltBooking.setFlightBookingDetails((List<FlightBookingDetail>) bkgDetail);
 
-        if (bookingRequest.getFlightId2()!=0){
-            Long flightId2=bookingRequest.getFlightId2();
-            Optional<Flight> flightOptional2=flightRepository.findById(flightId2);
-            Flight flight2=flightOptional2.get();
-            FlightBookingDetail detail2 = new FlightBookingDetail();
-            detail2.setFlight(flight2);
-            detail2.setPassenger(passenger);
-            detail2.setFlightBooking(fltBooking);
-            detail2.setTicketNumber(String.valueOf(parseInt(randomTicket)+2));
-            detail2.setPriceType(bookingRequest.getType());
-            if (detail2.getPriceType() == 0) {
-                detail2.setPrice(flight2.getEconomyPrice());
+        if (bookingRequest.getReturnflightId() != 0){
+            Long returnflightId=bookingRequest.getReturnflightId();
+            Optional<Flight> returnFlightOptional=flightRepository.findById(returnflightId);
+            Flight returnFlight=returnFlightOptional.get();
+            FlightBookingDetail returnDetail = new FlightBookingDetail();
+            returnDetail.setFlight(returnFlight);
+            returnDetail.setPassenger(passenger);
+            returnDetail.setFlightBooking(fltBooking);
+            returnDetail.setTicketNumber(String.valueOf(parseInt(randomTicket)+2));
+            returnDetail.setPriceType(bookingRequest.getReturnType());
+            if (returnDetail.getPriceType() == 0) {
+                returnDetail.setPrice(returnFlight.getEconomyPrice());
             } else {
-                detail2.setPrice(flight2.getBusinessPrice());
+                returnDetail.setPrice(returnFlight.getBusinessPrice());
             }
-            flightBookingDetailRepository.save(detail);
+            FlightBookingDetail bkgDetail2 = flightBookingDetailRepository.save(returnDetail);
+            fltBooking.setFlightBookingDetails((List<FlightBookingDetail>) bkgDetail2);
+
         }
 
+        final FlightBooking savedBooking = flightBookingRepository.save(fltBooking);
 
-        String filePath = ITINERARY_DIR + fltBooking.getId()
+
+        String filePath = ITINERARY_DIR +savedBooking.getId()
                 + ".pdf";
-        pdfGenerator.generateItinerary(fltBooking,filePath);
-//        emailUtil.sendItinerary(user.getEmail(),filePath);
+        pdfGenerator.generateItinerary(savedBooking,filePath);
+        emailUtil.sendItinerary(user.getEmail(),filePath);
 
-        return fltBooking;
+        return savedBooking;
 
     }
 

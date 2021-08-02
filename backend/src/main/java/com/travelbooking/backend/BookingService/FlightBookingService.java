@@ -2,7 +2,8 @@ package com.travelbooking.backend.BookingService;
 
 import com.travelbooking.backend.models.FlightBooking;
 
-public interface FlightBookingService {
-    public FlightBooking bookFlight(BookingRequest bookingRequest);
-}
+import javax.mail.MessagingException;
 
+public interface FlightBookingService {
+    public FlightBooking bookFlight(BookingRequest bookingRequest) throws MessagingException;
+}
