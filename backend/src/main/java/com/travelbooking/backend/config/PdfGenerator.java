@@ -7,78 +7,87 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.travelbooking.backend.models.FlightBooking;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import org.thymeleaf.TemplateEngine;
 
 @Component
 public class PdfGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PdfGenerator.class);
+//    @Autowired
+//    ServletContext servletContext;
+//
+//    private final TemplateEngine templateEngine;
+//
+//    public PdfGenerator(TemplateEngine templateEngine) {
+//        this.templateEngine = templateEngine;
+//    }
 
-    public void generateItinerary(FlightBooking booking, String filePath){
-        Document document=new Document();
-        try {
-            PdfWriter.getInstance(document, new FileOutputStream(filePath));
-            document.open();
-            document.addTitle("Flight ticket");
-            document.add(generateTable(booking));
-            document.close();
-
-        } catch (FileNotFoundException | DocumentException ex){
-            ex.printStackTrace();
-        }
-    }
-    public PdfPTable generateTable(FlightBooking booking){
-        PdfPTable table=new PdfPTable(2);
-
-        PdfPCell cell = new PdfPCell(new Phrase("Flight Itinerary"));
-
-        cell.setColspan(2);
-        table.addCell(cell);
-
-        cell = new PdfPCell(new Phrase("Flight Details"));
-        cell.setColspan(2);
-        table.addCell(cell);
-
-        table.addCell("Airlines ");
-        table.addCell("Airlines ");
-
-//        table.addCell(booking.getFlight().getOperatingAirlines());
+//    public void generateItinerary(FlightBooking booking, String filePath){
+//        Document document=new Document();
+//        try {
+//            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+//            document.open();
+//            document.addTitle("Flight ticket");
+//            document.add(generateTable(booking));
+//            document.close();
+//
+//        } catch (FileNotFoundException | DocumentException ex){
+//            ex.printStackTrace();
+//        }
+//    }
+//    public PdfPTable generateTable(FlightBooking booking){
+//        PdfPTable table=new PdfPTable(2);
+////
+//        PdfPCell cell = new PdfPCell(new Phrase("Flight Itinerary"));
+//        cell.setBackgroundColor(Color.lightGray);
+//        cell.setPadding(5);
+//        cell.setColspan(2);
+//        table.addCell(cell);
+//
+//        cell = new PdfPCell(new Phrase("Flight Details"));
+//        cell.setColspan(2);
+//        table.addCell(cell);
+//
+//        table.addCell("Airlines ");
+//        table.addCell(" ");
+//
+//        table.addCell("");
 //
 //        table.addCell("Departure City");
-//        table.addCell(booking.getFlightBookingDetails().getFlight(id).getDepartureCity());
+//        table.addCell("");
 //
 //        table.addCell("Arrival City");
-//        table.addCell(booking.getFlight().getArrivalCity());
+//        table.addCell("");
 //
 //        table.addCell("Flight Number");
-//        table.addCell(booking.getFlight().getFlightNumber());
+//        table.addCell("");
 //
 //        table.addCell("Departure Date");
-//        table.addCell(booking.getFlight().getDepartureCity());
+//        table.addCell("");
 //
 //        table.addCell("Departure Time");
-//        table.addCell(booking.getFlight().getDepartureTime());
+//        table.addCell("");
 //
 //        cell = new PdfPCell(new Phrase("Passenger Details"));
 //        cell.setColspan(2);
 //        table.addCell(cell);
 //
 //        table.addCell("First Name");
-//        table.addCell(booking.getPassenger().getFirstName());
+//        table.addCell("");
 //
 //        table.addCell("Last Name");
-//        table.addCell(booking.getPassenger().getLastName());
+//        table.addCell("");
 //
 //        table.addCell("Email");
-//        table.addCell(booking.getPassenger().getEmail());
+//        table.addCell("");
 //
 //        table.addCell("Phone");
-//        table.addCell(booking.getPassenger().getPhone());
+//        table.addCell("");
 
-        return table;
-    }
+//        return table;
+//    }
 }

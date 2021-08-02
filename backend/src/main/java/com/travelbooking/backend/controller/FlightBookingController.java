@@ -50,7 +50,7 @@ public class FlightBookingController {
 
     //http://localhost:8080/api/book-flight
     @PostMapping ( "/book-flight")
-    public ResponseEntity<FlightBooking> bookFlight(@RequestBody BookingRequest bookingRequest) throws MessagingException {
+    public ResponseEntity<FlightBooking> bookFlight(@RequestBody BookingRequest bookingRequest) throws Exception {
         FlightBooking booking= flightBookingService.bookFlight(bookingRequest);
         return ResponseEntity.ok().body(booking);
     }

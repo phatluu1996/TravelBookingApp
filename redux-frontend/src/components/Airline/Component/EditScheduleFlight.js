@@ -809,11 +809,9 @@ const EditScheduleFlight = (props) => {
 
                     <div className="booking-complete">
                       
-                      <h2>Review and create new flight</h2>
-                      <p>
-                        Voluptatem quia voluptas sit aspernatur aut odit aut
-                        fugit, sed quia consequuntur magni dolores eos qui
-                        voluptatem sequi nesciunt.{" "}
+                      <h2>Review and update flight</h2>
+                      <p> **Tips: 
+                      An airline can charge higher prices at times of high demand, but may charge lower prices at a time when demand is low, in an effort to fill seats that might otherwise be left vacant.{" "}
                       </p>
                       <button className="booking-complete-btn" type="submit">
                         Confirm Data Edited!
