@@ -106,62 +106,7 @@ const ListFlight = (props) => {
             <div className="tables" >
               <div className="typography-heading">Scheduled Flights List</div>
               <div className="shortcodes">
-                <DataTable className="table-a" columns={header} data={airline?.airline?.flights} pagination paginationPerPage={10} />
-                {/* <table className="table-a light">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Flight</th>
-                      <th>From</th>
-                      <th>To</th>
-                      <th>Schedule Time</th>
-                      <th>Arrival Time</th>
-                      <th>Business</th>
-                      <th>Economic</th>
-                      <th>Aircraft</th>
-                      <th>Status</th>
-                      <th>#</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {airline?.airline?.flights?.map((item, i) => (
-                      <tr key={item.id}>
-                        <td>{i + 1}</td>
-                        <td>{item.flightCode}</td>
-                        <td>{item.departureCity}</td>
-                        <td>{item.arrivalCity}</td>
-                        <td>{item.departureTime}</td>
-                        <td>{item.arrivalTime}</td>
-                        <td>{item.businessCapacity}</td>
-                        <td>{item.economyCapacity}</td>
-
-                        <td>{item.aircraftType}</td>
-
-                        <td>{item.status}</td>
-                        <td>
-                          
-                          <Link style={{
-                            padding: "5px 5px 0px 10px",
-                            color: "#ff7200",
-                          }} className="header-viewed-btn" to={`/edit-flight?id=${item.id}`}>Edit</Link>
-                          
-                          <a
-                            href="#"
-                            className="header-viewed-btn"
-                            style={{
-                              padding: "5px 5px 0px 10px",
-                              color: "#ff7200",
-                            }}
-                          >
-                            Delete
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot></tfoot>
-                </table> */}
+                <DataTable className="table-a" columns={header} data={airline?.airline?.flights} pagination paginationPerPage={10} />                
               </div>
               <div className="clear"></div>
             </div>

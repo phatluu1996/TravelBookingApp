@@ -21,7 +21,7 @@ const HotelSearchPage = (props) => {
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
   const [itemsList, setItemsList] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(4);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("price");
@@ -256,17 +256,28 @@ const HotelSearchPage = (props) => {
     let mount = false;
     if (props.provinces.data) {
       var _province = props.provinces.data.find(item => item.id == queryParam.get("province"));
-      var _district = _province.districts.find(item => item.id == queryParam.get("district"));
-      var _ward = _district.wards.find(item => item.id == queryParam.get("ward"));
-      document.querySelector("#provinces").value = queryParam.get("province");
-      setSelectProvince(_province);
-      document.querySelector("#districts").value = queryParam.get("district");
-      setSelectDistrict(_district)
-      document .querySelector("#wards").value = queryParam.get("ward");
-      setSelectWard(_ward);
-      document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
-      document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
-      document .querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+      var _district = _province ? _province.districts.find(item => item.id == queryParam.get("district")) : null;
+      var _ward = _district ? _district.wards.find(item => item.id == queryParam.get("ward")) : null;
+
+      if (_province) {
+        document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+        document.querySelector("#provinces").value = queryParam.get("province");
+        setSelectProvince(_province);
+      }
+
+
+      if (_district) {
+        document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+        document.querySelector("#districts").value = queryParam.get("district");
+        setSelectDistrict(_district)
+      }
+
+
+      if (_ward) {
+        document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+        document.querySelector("#wards").value = queryParam.get("ward");
+        setSelectWard(_ward);
+      }
     }
 
     return () => {
@@ -304,13 +315,9 @@ const HotelSearchPage = (props) => {
     );
     setPage(1);
   };
-
-  const getDistrictsList = () => {
-    return props.provinces?.data?.find(item => item.id == queryParam.get("province")).districts;
-  }
-
-  const getWardsList = () => {
-    return getDistrictsList()?.find(item => item.id == queryParam.get("district")).wards;
+  
+  const totalPages = () => {
+    return Math.ceil(props?.hotels?.data?.length / itemsPerPage);
   }
 
   return (
@@ -336,7 +343,7 @@ const HotelSearchPage = (props) => {
                 </div>
 
                 <div className="side-block fly-in">
-                  <form className="side-block-search" onSubmit={handleSubmit}>
+                  <form className="side-block-search" onSubmit={handleSubmit} autoComplete="off">
                     <div className="page-search-p">
                       <div className="srch-tab-line">
                         <div className="rsch-tab-line no-margin-bottom">
@@ -712,11 +719,33 @@ const HotelSearchPage = (props) => {
                     </div>
 
                     <div className="clear"></div>
-                    <Pagination
+                    {/* <Pagination
                       itemsPerPage={itemsPerPage}
                       listItem={props.hotels?.data?.length}
                       setPageNum={setPage}
-                    />
+                    /> */}
+                    {props.hotels.data && (<div className="pagination">                      
+                      {
+                        page == 1 ? (<>
+                          <a className="active">1</a>
+                          {totalPages() >= 2 && <a onClick={(e) => setPage(2)}>2</a>}
+                          {totalPages() >= 3 && <a onClick={(e) => setPage(3)}>3</a>}
+                          <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
+                          : page == totalPages() ? (<>
+                            <a onClick={(e) => setPage(page - 1)}>{"<"}</a>
+                            {totalPages() >= 3 && <a onClick={(e) => setPage(totalPages() - 2)}>{totalPages() - 2}</a>}
+                            {totalPages() >= 2 && <a onClick={(e) => setPage(totalPages() - 1)}>{totalPages() - 1}</a>}
+                            <a className="active">{totalPages()}</a></>)
+                            : (<>
+                              <a onClick={(e) => setPage(page - 1)}>{"<"}</a>
+                              <a onClick={(e) => setPage(page - 1)}>{page - 1}</a>
+                              <a className="active">{page}</a>
+                              <a onClick={(e) => setPage(page + 1)}>{page + 1}</a>
+                              <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
+                      }
+                      
+                      <div className="clear"></div>
+                    </div>)}
                   </div>
                 </div>
                 <br className="clear" />
