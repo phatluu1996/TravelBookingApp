@@ -75,7 +75,7 @@ public class AuthController {
             headerName = hotelRepository.getByAccountId(userDetails.getId()).getHotelName();
         }else {
             User tpUser = userRepository.getByAccountId(userDetails.getId());
-            headerName = tpUser.getFirstName() + " " + tpUser.getLastName();
+            headerName = tpUser.getFirstName();
         }
 
         return ResponseEntity.ok(new JwtResponse(jwt,

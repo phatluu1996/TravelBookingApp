@@ -26,13 +26,12 @@ public class Location {
 
     @ManyToOne
     @JoinColumn(name = "province_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("districts")
     private Province province;
 
 
     @ManyToOne
     @JoinColumn(name = "district_id", referencedColumnName = "id")
-    @JsonIgnoreProperties({"wards","province"})
+    @JsonIgnoreProperties({"province"})
     private District district;
 
 
