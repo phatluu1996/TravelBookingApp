@@ -1,5 +1,6 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class User {
     private String lastName;
     @Column(name = "gender", length = 20)
     private String gender;
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name = "birth_day", length = 20)
     private Date dateOfBirth;
     @Column(name = "email", length = 255)

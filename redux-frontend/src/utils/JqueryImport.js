@@ -2312,7 +2312,7 @@ export const customOtherTags = () => {
 
 
     //TODO fix
-    $('.date-inpt').datepicker();
+    $('.date-inpt').datepicker({ dateFormat: 'dd/mm/yy' }).val();
     $('.custom-select').customSelect();
 
     //     $('.owl-slider').owlCarousel({
