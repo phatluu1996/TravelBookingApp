@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class BookingRequest {
     private Long userId;
-    private Long flightId1;
-    private Long flightId2;
+    private Long flightId;
+    private Long returnflightId;
     private Date dateBooking1;
-    private Date dateBooking2;
+    private Date dateReturnBooking;
     private String firstname;
     private String lastname;
     private Date birthday;
@@ -16,46 +16,12 @@ public class BookingRequest {
     private int cardType;
     private Date cardExpired;
     private Integer type;  //0: Economy Type, 1: Business Type
+    private Integer returnType; //0: Economy Type, 1: Business Type
     private String paymentMethod;
     private Float totalPrice;
     private int totalPassenger;
 
     public BookingRequest() {
-    }
-
-    public BookingRequest(Long userId, Long flightId1, Long flightId2, Date dateBooking1, Date dateBooking2, String firstname, String lastname, Date birthday, Boolean gender, String cardId, int cardType, Date cardExpired, Integer type, String paymentMethod, Float totalPrice, int totalPassenger) {
-        this.userId = userId;
-        this.flightId1 = flightId1;
-        this.flightId2 = flightId2;
-        this.dateBooking1 = dateBooking1;
-        this.dateBooking2 = dateBooking2;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.cardId = cardId;
-        this.cardType = cardType;
-        this.cardExpired = cardExpired;
-        this.type = type;
-        this.paymentMethod = paymentMethod;
-        this.totalPrice = totalPrice;
-        this.totalPassenger = totalPassenger;
-    }
-
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public int getTotalPassenger() {
-        return totalPassenger;
-    }
-
-    public void setTotalPassenger(int totalPassenger) {
-        this.totalPassenger = totalPassenger;
     }
 
     public Long getUserId() {
@@ -66,28 +32,20 @@ public class BookingRequest {
         this.userId = userId;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public Long getFlightId() {
+        return flightId;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
     }
 
-    public Long getFlightId1() {
-        return flightId1;
+    public Long getReturnflightId() {
+        return returnflightId;
     }
 
-    public void setFlightId1(Long flightId1) {
-        this.flightId1 = flightId1;
-    }
-
-    public Long getFlightId2() {
-        return flightId2;
-    }
-
-    public void setFlightId2(Long flightId2) {
-        this.flightId2 = flightId2;
+    public void setReturnflightId(Long returnflightId) {
+        this.returnflightId = returnflightId;
     }
 
     public Date getDateBooking1() {
@@ -98,12 +56,12 @@ public class BookingRequest {
         this.dateBooking1 = dateBooking1;
     }
 
-    public Date getDateBooking2() {
-        return dateBooking2;
+    public Date getDateReturnBooking() {
+        return dateReturnBooking;
     }
 
-    public void setDateBooking2(Date dateBooking2) {
-        this.dateBooking2 = dateBooking2;
+    public void setDateReturnBooking(Date dateReturnBooking) {
+        this.dateReturnBooking = dateReturnBooking;
     }
 
     public String getFirstname() {
@@ -168,5 +126,37 @@ public class BookingRequest {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(Integer returnType) {
+        this.returnType = returnType;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalPassenger() {
+        return totalPassenger;
+    }
+
+    public void setTotalPassenger(int totalPassenger) {
+        this.totalPassenger = totalPassenger;
     }
 }
