@@ -15,6 +15,7 @@ import java.util.Collection;
 public interface AirlineRepository extends JpaRepository<Airline, Long>, JpaSpecificationExecutor {
     Boolean existsByEmail(String email);
     Airline getByAccountId(Long id);
+    Boolean existsByAccount_Id(Long id);
 
     @Query("SELECT a.flights from Airline as a where a.id = :airlineId")
     Page<Flight> listFlightByAirline(@Param("airlineId") Long airlineId, Pageable pageable);
