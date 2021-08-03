@@ -1,21 +1,24 @@
 export default class Common {
     static getUser = () => {
-        return sessionStorage.getItem('user');
+        return sessionStorage.getItem('user') || null;
     }
     
     // return the token from the session storage
     static getToken = () => {
-        return sessionStorage.getItem('userToken');
+        return sessionStorage.getItem('userToken') || null;
     }
 
     static getUserFullName = () => {
-        return sessionStorage.getItem('userName');
+        return sessionStorage.getItem('userName') || null;
     }
     
     // remove the token and user from the session storage
     static removeUserSession = () => {
         sessionStorage.removeItem('userToken');
         sessionStorage.removeItem('user');
+        sessionStorage.removeItem('userName');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('userRole');
     }
 
     static getUserId = () => {

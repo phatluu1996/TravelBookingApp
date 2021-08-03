@@ -16,8 +16,11 @@ const http = axios.create({
 });
 
 class userApi {
-    getUser(id) {
-        return httpAuth.get(`/user/${id}`);
+    getUser(id, token) {
+        return httpAuth.get(`/user/${id}`,{
+            "Content-type": "application/json",
+            "Authorization":"Bearer " + token
+        });
     }
     
     updateUser(data){

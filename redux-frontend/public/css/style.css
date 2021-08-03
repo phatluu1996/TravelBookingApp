@@ -176,7 +176,7 @@ input,select,button,textarea {outline:none;}
 .search-asvanced {display:none;padding-top:17px;}
 
 .overlay {display:none;width:100%;height:100%;background:rgba(20,29,30,0.19);position:fixed;left:0px;top:0px;z-index:9999;}
-.autorize-popup {z-index:9999;width:444px;height:325px;background:#fff;position:fixed;left:50%;top:-300px;margin-top:-128px;margin-left:-222px;}
+.autorize-popup {z-index:9999;width:444px;height:400px;background:#fff;position:fixed;left:50%;top:-300px;margin-top:-128px;margin-left:-222px;}
 .autorize-tab-a {display:block;float:left;width:82px;height:27px;text-align:center;text-decoration:none;font-family: 'Raleway';font-weight:600;font-size:13px;text-transform:uppercase;color:#fff;background:#141d1e;padding-top:12px;}
 .autorize-tab-b {display:block;float:left;width:303px;height:27px;text-decoration:none;font-family: 'Raleway';font-weight:600;font-size:13px;text-transform:uppercase;color:#fff;background:#141d1e;padding-top:12px;padding-left:20px;}
 .autorize-tabs a.current {color:#292828;background:#fff;cursor:default;} 
@@ -3446,11 +3446,31 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
   margin-top: 20px;
 }
 
+.mt-1{
+  margin-top: 10px;
+}
+
+
 .mr-1{
   margin-right: 5px;
 }
 
-.list-btn-sm {display: inline-flex;font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:10px 10px 10px 10px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}                                   
-.list-btn-sm:hover {color:#ff7200; border: 1px solid;} 
-.list-btn-sm:hover .list-btn-sm-icon{color:#ff7200}
 
+.list-btn-sm {display: inline-flex;font-family: 'Montserrat'; font-weight:normal; background: #fff; padding:10px 10px 10px 10px; border-radius: 3px; border:1px solid #e5e5e5; text-decoration: none; color:#838383; font-size: 10px; text-transform: uppercase;}                                   
+.list-btn-sm:hover {color:#ff7200; border: 1px solid; cursor: pointer;} 
+.list-btn-sm:hover .list-btn-sm-icon{color:#ff7200}
+.list-btn-sm:hover .list-btn-sm-icon.team-fb{background-position: left -13px;}
+.list-btn-sm:hover .list-btn-sm-icon.team-gp{background-position: left -13px;}
+.scroll-top {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */  
+  cursor: pointer; /* Add a mouse pointer on hover */
+  border-radius: 4px; /* Rounded corners */  
+}
+
+.text-center {
+  text-align: center;
+}

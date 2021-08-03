@@ -2018,14 +2018,26 @@ export const customOtherTags = () => {
         }
     });
 
+    
+
     $('.header-lang').on({
-        mouseenter: function () {
-            $('.langs-drop').fadeIn();
+        click: function () {
+            if($('.langs-drop')[0].style.display === "none"){
+                $('.langs-drop').fadeIn();
+            }else{
+                $('.langs-drop').hide();
+            }            
         },
-        mouseleave: function () {
-            $('.langs-drop').hide();
-        }
+        // mouseout: function () {
+        //     $('.langs-drop').hide();
+        // }
     });
+
+    // document.onclick = function(){
+    //     if($('.langs-drop')[0].style.display !== "none"){
+    //         $('.langs-drop').hide();
+    //     }
+    // }
 
     $('.header-viewed').on({
         mouseenter: function () {
@@ -2044,6 +2056,15 @@ export const customOtherTags = () => {
             $('.curency-drop').hide();
         }
     });
+
+    $('.header-account').on({
+		mouseenter: function() {
+			$('.account-drop').fadeIn();
+		},
+		mouseleave: function() {
+			$('.account-drop').hide();
+		}
+	});
 
     $('.flight-line .flight-line-b b').on('click', function () {
         if ($(this).is('.open')) {
@@ -2072,17 +2093,17 @@ export const customOtherTags = () => {
         return false;
     });
 
-    $('.srch-lbl').on('click', function () {
-        if ($(this).is('.open')) {
-            $(this).closest('.search-tab-content').find('.search-asvanced').hide();
-            $(this).text('Advanced Search options').removeClass('open');
-        } else {
+    // $('.srch-lbl').on('click', function () {
+    //     if ($(this).is('.open')) {
+    //         $(this).closest('.search-tab-content').find('.search-asvanced').hide();
+    //         $(this).text('Advanced Search options').removeClass('open');
+    //     } else {
 
-            $(this).closest('.search-tab-content').find('.search-asvanced').fadeIn();
-            $(this).text('close search options').addClass('open');
+    //         $(this).closest('.search-tab-content').find('.search-asvanced').fadeIn();
+    //         $(this).text('close search options').addClass('open');
 
-        }
-    });
+    //     }
+    // });
 
     $('.search-tab').on('click', function () {
         var $index = $(this).index();
@@ -2237,11 +2258,11 @@ export const customOtherTags = () => {
                 //         position: place
                 //     });
 
-                    $('.tab-map').css('opacity', '1');
-                    $('#preloader').hide();
-                    $('.map-contacts').each(function (index) {
-                        $(this).delay(141 * index).fadeIn();
-                    });
+                $('.tab-map').css('opacity', '1');
+                $('#preloader').hide();
+                $('.map-contacts').each(function (index) {
+                    $(this).delay(141 * index).fadeIn();
+                });
 
                 // });
                 // google.maps.event.trigger(map, 'resize');
@@ -2348,6 +2369,28 @@ export const customOtherTags = () => {
             $('.menu-btn').removeClass('open');
         }
     });
+
+    var myTopBtn = document.getElementById("scroll-top");
+
+    myTopBtn.onclick = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    var windowScroll = () => {
+        if (myTopBtn) {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                myTopBtn.style.display = "block";
+            } else {
+                myTopBtn.style.display = "none";
+            }
+        }
+    }
+
+    window.onscroll = function () { windowScroll() };
+
+
+
+
 }
 
 const init_validation = (target) => {
@@ -2374,7 +2417,7 @@ const init_validation = (target) => {
     if (target) { return validate(target); }
 
     formStyler();
-    
+
     // Custom Input
     (function ($) {
         $(function () {
@@ -2481,13 +2524,6 @@ export const customCheckBoxInput = () => {
     $('.checkbox input').styler({
         selectSearch: true
     });
-}
-
-export const importAll = () => {
-    customAppear();
-    customSelectInput();
-    customSliderInit();
-    customOtherTags();
 }
 
 export const formStyler = () => {
@@ -3006,3 +3042,9 @@ export const formStyler = () => {
     })(jQuery);
 }
 
+export const importAll = () => {
+    customAppear();
+    customSelectInput();
+    customSliderInit();
+    customOtherTags();
+}

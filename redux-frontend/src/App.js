@@ -22,21 +22,9 @@ import Common from './utils/Common';
 import HotelBookingPage from './components/Hotel/HotelBookingPage';
 import HotelBookingCompletePage from './components/Hotel/HotelBookingCompletePage';
 import FlightBookingCompletePage from './components/Flight/FlightBookingCompletePage';
-// import FlightBookingPage from './components/Flight/FlightBookingPage';
 
 
 const App = () => {
-
-    useEffect(() => {
-      let mount = false;
-
-      console.log("Render !");
-      
-      return () => {
-        mount = true;
-      }
-    },[])
-
     return (
       <BrowserRouter>
         <Switch>
@@ -47,19 +35,19 @@ const App = () => {
           <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
 
-          <PublicRoute restricted={true} component={Register} path="/register" />
+          <PublicRoute restricted={false} component={Register} path="/register" />
 
-          <PublicRoute restricted={true} component={FlightSearchPage} path="/flight-list" />
-          <PublicRoute restricted={true} component={FlightBookingPage} path="/flight-booking" />
-          <PublicRoute restricted={true} component={FlightBookingCompletePage} path="/flight-booking-complete" />
+          <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
+          <PublicRoute restricted={false} component={FlightBookingPage} path="/flight-booking" />
+          <PublicRoute restricted={false} component={FlightBookingCompletePage} path="/flight-booking-complete" />
 
-          <PublicRoute restricted={true} component={HotelSearchPage} path="/hotel-list" />
-          <PublicRoute restricted={true} component={HotelDetailPage} path="/hotel-detail" />
-          <PublicRoute restricted={true} component={HotelBookingPage} path="/hotel-booking" />
-          <PublicRoute restricted={true} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
+          <PublicRoute restricted={false} component={HotelSearchPage} path="/hotel-list" />
+          <PublicRoute restricted={false} component={HotelDetailPage} path="/hotel-detail" />
+          <PublicRoute restricted={false} component={HotelBookingPage} path="/hotel-booking" />
+          <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
-          <PublicRoute component={Dashboard} path="/dashboard" exact />
-          <PrivateRoute component={UserProfile} restricted={Common.getRole() === "ROLE_USER"} path="/user" exact />
+          <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
+          <PrivateRoute restricted={true} component={UserProfile} path="/user"/>
         </Switch>
       </BrowserRouter>
     );

@@ -6,9 +6,9 @@ import { importAll } from "../../utils/JqueryImport";
 
 const UpdateUser = (props) => {
     const dataUser = props.dataUser.data;
-    const [selectProvince, setSelectProvince] = useState(dataUser.location.province);
-    const [selectDistrict, setSelectDistrict] = useState(dataUser.location.district);
-    const [selectWard, setSelectWard] = useState(dataUser.location.ward);
+    const [selectProvince, setSelectProvince] = useState(dataUser?.location?.province);
+    const [selectDistrict, setSelectDistrict] = useState(dataUser?.location?.district);
+    const [selectWard, setSelectWard] = useState(dataUser?.location?.ward);
     const [allDistrict, setAllDistrict] = useState(null);
     const [allWard, setAllWard] = useState(null);
     const [statusSignup, setStatuSignup] = useState(false);
@@ -26,10 +26,6 @@ const UpdateUser = (props) => {
         errLogic: ''
     });
 
-    const handleChange = (e) => {
-
-    }
-
     const handleGenderClick = (e) => {
         e.preventDefault();
         if (e.currentTarget.innerHTML === "F") {
@@ -40,21 +36,29 @@ const UpdateUser = (props) => {
     useEffect(() => {
         let mount = false;
         importAll();
-        props.getProvince();
+        if(!props.provinces.data){
+            props.getProvince();
+        }
 
+        setSelectProvince(dataUser?.location?.province);
+        setSelectDistrict(dataUser?.location?.district);
+        setSelectWard(dataUser?.location?.ward);
+        
         document
             .querySelector("#provinces")
-            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location.province.name;
+            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.province?.name;
         document
             .querySelector("#districts")
-            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location.district.name;
+            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.district?.name;
         document
             .querySelector("#wards")
-            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location.ward.name;
+            .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.ward?.name;
+        
         return () => {
             mount = true;
         }
     }, []);
+
 
     const onChangeProvince = (e) => {
         document
@@ -133,12 +137,12 @@ const UpdateUser = (props) => {
                     <div>
                         <div className="booking-form-i">
                             <label className="custom-lbl">First Name:</label>
-                            <div className={`input ${validateError.firstName ? 'is-invalid' : ''}`} ><input type="text" name="firstName" defaultValue={dataUser ? dataUser.firstName : ""} /></div>
+                            <div className={`input ${validateError.firstName ? 'is-invalid' : ''}`} ><input type="text" name="firstName" defaultValue={dataUser?.firstName} /></div>
                             <div className="booking-error-input">{validateError.firstName}</div>
                         </div>
                         <div className="booking-form-i">
                             <label className="custom-lbl">Last Name:</label>
-                            <div className={`input ${validateError.lastName ? 'is-invalid' : ''}`}><input type="text" name="lastName" defaultValue={dataUser ? dataUser.lastName : ""} /></div>
+                            <div className={`input ${validateError.lastName ? 'is-invalid' : ''}`}><input type="text" name="lastName" defaultValue={dataUser?.lastName} /></div>
                             <div className="booking-error-input">{validateError.lastName}</div>
                         </div>
                         <div className="clear"></div>
@@ -161,7 +165,7 @@ const UpdateUser = (props) => {
                                         className="date-inpt"
                                         placeholder="mm/dd/yyyy"
                                         name="birthday"
-                                        defaultValue={dataUser ? dataUser.dateOfBirth : ""}
+                                        defaultValue={dataUser?.dateOfBirth}
                                     />
                                     <span className="date-icon"></span>
                                 </div>
@@ -170,7 +174,7 @@ const UpdateUser = (props) => {
                         </div>
                         <div className="booking-form-i">
                             <label>Phone number:</label>
-                            <div className="input"><input type="text" defaultValue={dataUser ? dataUser.phoneNumber : ""} /></div>
+                            <div className="input"><input type="text" defaultValue={dataUser?.phoneNumber} /></div>
                         </div>
                         <div className="clear"></div>
                     </div>
@@ -179,7 +183,7 @@ const UpdateUser = (props) => {
                         <div className="booking-form-i booking-form-i-custom" style={{ marginBottom: 0 }}>
                             <label className="custom-lbl">Email:</label>
                             <div className="booking-error-input">{validateError.email}</div>
-                            <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="email" onChange={handleChange} defaultValue={dataUser ? dataUser.email : ""} /></div>
+                            <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="email"  defaultValue={dataUser?.email} /></div>
                             <div className="booking-error-input">{validateError.email}</div>
                         </div>
                         <div style={{ color: 'grey', marginBottom: '10px' }}><i>*Please enter Address to booking flight or hotel.</i></div>
@@ -189,7 +193,7 @@ const UpdateUser = (props) => {
                         <div className="booking-form-i booking-form-i-custom" style={{ marginBottom: '10px' }}>
                             <label className="custom-lbl">Address:</label>
                             <div className="booking-error-input">{validateError.email}</div>
-                            <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="address" onChange={handleChange} defaultValue={dataUser ? dataUser.location.street : ""} /></div>
+                            <div className={`input ${validateError.email ? 'is-invalid' : ''}`}><input type="text" name="address"  defaultValue={dataUser?.location?.street} /></div>
                             <div className="booking-error-input">{validateError.email}</div>
                         </div>
                         <div className="clear"></div>
@@ -204,7 +208,7 @@ const UpdateUser = (props) => {
                                         className="custom-select"
                                         name="province"
                                         id="provinces"
-                                        defaultValue={dataUser?.location.province.id}
+                                        defaultValue={dataUser?.location?.province?.id}
                                     >
                                         <option key={0} value={0}>
                                             --
@@ -225,7 +229,7 @@ const UpdateUser = (props) => {
                                         className="custom-select"
                                         name="district"
                                         id="districts"
-                                        defaultValue={dataUser ? dataUser.location.district.id : ""}
+                                        defaultValue={dataUser?.location?.district?.id}
                                     >
                                         <option key={0} value={0}>
                                             --
@@ -245,7 +249,7 @@ const UpdateUser = (props) => {
                                         className="custom-select"
                                         name="ward"
                                         id="wards"
-                                        defaultValue={dataUser ? dataUser.location.ward.id : ""}
+                                        defaultValue={dataUser?.location?.ward?.id}
                                         onChange={onChangeWard}
                                     >
                                         <option key={0} value={0}>
@@ -265,7 +269,7 @@ const UpdateUser = (props) => {
                     <div>
                         <div className="booking-form-i">
                             <label>Postal Code:</label>
-                            <div className="input"><input type="text" name="postalCode" defaultValue={dataUser ? dataUser.location.postalCode : ""} /></div>
+                            <div className="input"><input type="text" name="postalCode" defaultValue={dataUser?.location?.postalCode} /></div>
                         </div>
                         <div className="clear"></div>
                     </div>
