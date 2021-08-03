@@ -41,10 +41,10 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <PublicRoute restricted={true} component={Home} path="/" exact />
-          <PublicRoute restricted={true} component={CreateNewFlight} path="/create-flight" />
-          <PublicRoute restricted={true} component={EditFlight} path="/edit-flight" />
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
           <PrivateRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
-          <PublicRoute restricted={true} component={ListFlight} path="/list-flight"/>
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
 
           <PublicRoute restricted={true} component={Register} path="/register" />
