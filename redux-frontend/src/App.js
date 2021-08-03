@@ -22,6 +22,7 @@ import Common from './utils/Common';
 import HotelBookingPage from './components/Hotel/HotelBookingPage';
 import HotelBookingCompletePage from './components/Hotel/HotelBookingCompletePage';
 import FlightBookingCompletePage from './components/Flight/FlightBookingCompletePage';
+import HotelProfile from './components/Hotel/HotelProfile';
 // import FlightBookingPage from './components/Flight/FlightBookingPage';
 
 
@@ -60,6 +61,12 @@ const App = () => {
 
           <PublicRoute component={Dashboard} path="/dashboard" exact />
           <PrivateRoute component={UserProfile} restricted={Common.getRole() === "ROLE_USER"} path="/user" exact />
+          
+
+          <PrivateRoute component={Dashboard} path="/dashboard" exact />
+          <PrivateRoute component={UserProfile} path="/user" exact />
+          
+          <PublicRoute component={HotelProfile} path="/hotel" exact />
         </Switch>
       </BrowserRouter>
     );

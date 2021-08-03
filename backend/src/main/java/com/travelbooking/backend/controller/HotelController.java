@@ -1,11 +1,14 @@
 package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.Flight;
+import com.travelbooking.backend.models.Location;
 import com.travelbooking.backend.models.Room;
+import com.travelbooking.backend.repository.LocationRepository;
 import com.travelbooking.backend.repository.RoomRepository;
 import com.travelbooking.backend.specification.FlightSpecification;
 import com.travelbooking.backend.specification.HotelSpecification;
 import com.travelbooking.backend.specification.RoomSpecification;
+import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +41,8 @@ public class HotelController {
     private HotelRepository hotelRepository;
     @Autowired
     private RoomRepository roomRepository;
-
+    @Autowired
+    private LocationRepository locationRepository;
     //http://localhost:8080/api/findHotels
     @GetMapping("/findHotels")
     public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
@@ -49,10 +53,14 @@ public class HotelController {
                                         @RequestParam (required = false, name = "checkInDate") Date checkInDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
                                             ) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
         Specification<Hotel> spec = HotelSpecification.createSpecification(province,district,ward,Boolean.FALSE,numberAdult,numberChildren,numRoom,checkInDate);
-//        Pageable paging = PageRequest.of(page, 9, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
+        return hotelRepository.findAll(spec);
+    }
+    //http://localhost:8080/api/findHotel
+    @GetMapping("/findHotel")
+    public Collection<Hotel> getHotelsById(@RequestParam(required = false, name = "id") Integer id
+    ) throws ParseException {
+        Specification<Hotel> spec = HotelSpecification.createSpecificationSpecial(id,Boolean.FALSE);
         return hotelRepository.findAll(spec);
     }
     //http://localhost:8080/api/hotel
@@ -81,15 +89,19 @@ public class HotelController {
 
         //http://localhost:8080/api/hotel
         @PostMapping("/hotel")
-        public ResponseEntity<Hotel> addHotel(@RequestBody Hotel airline) {
-            Hotel result = hotelRepository.save(airline);
+        public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
+            Hotel result = hotelRepository.save(hotel);
             return ResponseEntity.ok().body(result);
         }
         //http://localhost:8080/api/hotel/{id}
         @PutMapping("/hotel/{id}")          
         public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
+
             hotel.setId(id);;
+            Location location = hotel.getLocation();
+            locationRepository.save(location);
             Hotel result = hotelRepository.save(hotel);
+
             return ResponseEntity.ok().body(result);
         }
         //http://localhost:8080/api/hotel/{id}
