@@ -8,21 +8,24 @@ import UpdateUser from './UpdateUser';
 import { importAll } from "../../utils/JqueryImport";
 import { connect, useSelector } from 'react-redux';
 import { getUser } from '../../actions/actionUser';
-import Common from '../../utils/Common';
+import { retrieveProvince } from '../../actions/actionLocation';
 
 const UserProfile = (props) => {
         
     useEffect(()=>{
-        importAll();        
-        props.getUser(sessionStorage.getItem("userId"), Common.getToken());
+        // importAll(); 
+        props.getUser(sessionStorage.getItem("userId"), sessionStorage.getItem('userToken'));
+        if(!props.province.data){
+            props.getProvince();
+        }
     },[]);
 
     const getAddress = () => {
         if(!props.user.data?.location) return "";
-        const province = props.user.data?.location.province.name;
-        const district = props.user.data?.location.district.name;
-        const ward = props.user.data?.location.ward.name;
-        return ward+" ,"+district+" ,"+province;
+        const province = props.user.data?.location.province;
+        const district = props.user.data?.location.district;
+        const ward = props.user.data?.location.ward;
+        return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
     }
     // const checkGender = ()=> {
     //     if(user.data){
@@ -132,7 +135,7 @@ const UserProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
-                                                                {props.user.data?.gender && <UpdateUser dataUser={props.user} gender={props.user.data.gender}/>}
+                                                                {props.user.data?.gender && props.province.data && <UpdateUser dataUser={props.user} province={props.province} gender={props.user.data.gender}/>}
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
@@ -165,6 +168,7 @@ const UserProfile = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         user: state.user,
+        province: state.province
     };
 };
 
@@ -173,6 +177,9 @@ const mapDispatchToProps = (dispatch) => {
         getUser: (id) => {
             dispatch(getUser(id));
         },
+        getProvince : () => {
+            dispatch(retrieveProvince());
+        }
     };
 };
 

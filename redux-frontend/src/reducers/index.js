@@ -15,7 +15,7 @@ const reducers = combineReducers({
 	airline: reducerAirline,
 	flights : reducerFlightByAirline,
 	province: reducerProvince,
-	hotels:reducerHotel,
+	hotels : reducerHotel,
 	bookFlight: reducerBookingFlight
 });
 

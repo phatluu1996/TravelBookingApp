@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
 import { retrieveAirline } from "../../actions/actionAirline";
-import Common from "../../utils/Common";
+import {getUserId} from "../../utils/Common";
 
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +20,7 @@ const ListFlight = (props) => {
 
   const flights = useSelector((state) => state.flights);
 
-  const id = parseInt(Common.getUserId());
+  const id = parseInt(getUserId());
 
   const header = [
     {
