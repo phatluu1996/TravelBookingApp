@@ -20,7 +20,6 @@ const FlightSearchPage = (props) => {
     const [queryFilter, setQueryFilter] = useState();
     const [seatClassType, setSeatClassType] = useState("ECONOMY");
     const [isListView, setIsListView] = useState(true);
-    const [includePriceRange, setIncludePriceRange] = useState(false);
     const province = {
         properties: [
             {
@@ -205,7 +204,7 @@ const FlightSearchPage = (props) => {
         var minPrice = 0;
         var maxPrice = 3000;
 
-        if (includePriceRange) {
+        if (document.getElementById("includePriceRange").checked) {
             minPrice = getAmount(form.priceFrom.value);
             maxPrice = getAmount(form.priceTo.value);
         }
@@ -237,10 +236,19 @@ const FlightSearchPage = (props) => {
     const setPage = (e) => {
         var index = e.target.value;
         if(!index){
-            index = e.currentTarget.text;
+            index = e.currentTarget.text;            
             window.scrollTo(0, 0);
             document.getElementById("page").value = index;
         }
+        var filter = { ...queryFilter };
+        filter.page = parseInt(index);
+        setQueryFilter(filter);
+        props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
+        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+    }
+
+    const setNextPage = (index) => {
+        window.scrollTo(0, 0);
         var filter = { ...queryFilter };
         filter.page = parseInt(index);
         setQueryFilter(filter);
@@ -300,6 +308,7 @@ const FlightSearchPage = (props) => {
         return price;
     }
 
+
     return (<>
         <Header></Header>
         <div className="main-cont">
@@ -312,7 +321,7 @@ const FlightSearchPage = (props) => {
                         </div>
                         <div className="clear"></div>
                     </div>
-                    <form className="two-colls" onSubmit={handleSubmit}>
+                    <form className="two-colls" onSubmit={handleSubmit} autoComplete="off">
                         <div className="two-colls-left">
 
                             <div className="srch-results-lbl fly-in">
@@ -397,7 +406,7 @@ const FlightSearchPage = (props) => {
                                     <div className="page-search-p">
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
-                                                <input type='checkbox' onChange={(e) => setIncludePriceRange(!includePriceRange)} title="Apply price range into search criteria" />
+                                                <input type='checkbox' id="includePriceRange" title="Apply price range into search criteria" />
                                             </div>
                                             <div className="clear"></div>
                                         </div>
@@ -540,7 +549,6 @@ const FlightSearchPage = (props) => {
                                                 <option value="arrivalTime">Arrive Time</option>
                                             </select>
                                         </div>
-                                        <label>Direction:</label>
                                         <div className="search-select">
                                             <select id="sortDir" defaultValue={queryFilter?.sortDir} onChange={onChangeSortDir}>
                                                 <option value="asc">ASC</option>
@@ -553,7 +561,6 @@ const FlightSearchPage = (props) => {
                                                 {[...Array(props?.flights?.data?.totalPages)].map((item, index) => (<option key={index + 1} value={index + 1}>{index + 1}</option>))}
                                             </select>
                                         </div>
-                                        <label >Page:</label>
                                         <a title={isListView ? "Grid View" : "List View"} className={isListView ? "show-list chosen" : "show-list"} onClick={(e) => setIsListView(!isListView)}></a>
                                         <div className="clear"></div>
                                     </div>
@@ -676,23 +683,26 @@ const FlightSearchPage = (props) => {
 
                                     <div className="clear"></div>
 
-                                    {props.flights.data && (<div className="pagination">
-                                        <a >{"<"}</a>
+                                    {props.flights.data && props?.flights?.data?.totalPages > 0 && (<div className="pagination">
                                         {
                                             props?.flights?.data?.first ? (<>
                                                 <a className="active">1</a>
                                                 {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}
+                                                {props?.flights?.data?.totalPages >= 2 && (<a onClick={(e) => setNextPage(props?.flights?.data?.number + 2)}>{">"}</a>)}</>)
                                                 : props?.flights?.data?.last ? (<>
+                                                    <a onClick={(e) => setNextPage(props?.flights?.data?.number)}>{"<"}</a>
                                                     {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages-2}</a>}
                                                     {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages-1}</a>}
                                                     <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                     : (<>
+                                                        <a onClick={(e) => setNextPage(props?.flights?.data?.number)}>{"<"}</a>
                                                         <a onClick={setPage}>{props?.flights?.data?.number}</a>
                                                         <a className="active">{props?.flights?.data?.number+1}</a>
-                                                        <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                                        <a onClick={setPage}>{props?.flights?.data?.number + 2}</a>
+                                                        <a onClick={(e) => setNextPage(props?.flights?.data?.number + 2)}>{">"}</a></>)
                                         }
-                                        <a >{">"}</a>
+                                        
                                         <div className="clear"></div>
                                     </div>)}
                                 </div>

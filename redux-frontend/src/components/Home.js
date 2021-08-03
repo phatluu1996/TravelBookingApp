@@ -211,7 +211,7 @@ const Home = (props) => {
 
         // history.push()
         history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : ""
-            }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
+            }&district=${selectDistrict != null ? selectDistrict.id : ""}&ward=${selectWard != null ? selectWard.id : ""
             }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
             }&checkInDate=${form.checkInDate.value === ""
                 ? getNextDate(today)
