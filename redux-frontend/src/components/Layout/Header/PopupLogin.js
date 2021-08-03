@@ -1,16 +1,22 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
-import {getUser, setUserSession, getToken} from '../../../utils/Common';
+import { getUser, setUserSession, getToken } from '../../../utils/Common';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { CLIENT_ID, APP_ID } from '../../../config/api';
+
 
 
 function PopupLogin(props) {
     const history = useHistory();
     const [errLogin, setErrLogin] = useState(false);
     const [isRequest, setIsRequest] = useState(false);
+    const [token, setToken] = useState("");
+
 
     const [error, setError] = useState({
         username: '',
@@ -66,6 +72,28 @@ function PopupLogin(props) {
         }
     }
 
+    const handleLoginGoogleSuccess = (res) => {
+        console.log('Login Success', res.profileObj)
+        closePopup();
+    }
+
+    const handleLoginGoogleFail = (res) => {
+        console.log('Login Fail', res);
+        closePopup();
+    }
+
+    const handleLoginFb = (res) => {
+        console.log('Login Info', res);
+        setToken(res.accessToken);
+        console.log(window);
+       
+        closePopup();
+    }
+
+    const signoutFB = () => {
+        window.FB.logout(token);
+    }
+
     useEffect(() => {
         var mount = false;
         if (props.user.form === 'login') {
@@ -90,8 +118,8 @@ function PopupLogin(props) {
     });
 
     const closePopup = () => {
-        $('.autorize-popup').animate({top: '-300px'}, 300, function(){
-            $('.overlay').fadeOut();	
+        $('.autorize-popup').animate({ top: '-300px' }, 300, function () {
+            $('.overlay').fadeOut();
         });
     }
 
@@ -120,22 +148,40 @@ function PopupLogin(props) {
                         <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                     </div>
                     <div>
-                    {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
+                        {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
                             Login Fail! Wrong user name or password.</div>}
                     </div>
 
                     <div className="autorize-bottom">
                         <button className="authorize-btn" type="submit">Login</button>
                         <Link to="/" className="authorize-forget-pass">Forgot your password?</Link>
-                        <div className="clear"></div>                        
+                        <div className="clear"></div>
                     </div>
                     <div className="text-center mt-2">
-                    <h6 className="autorize-lbl">OR SIGN UP AND SIGN IN WITH: </h6>
+                        <h6 className="autorize-lbl">OR SIGN UP AND SIGN IN WITH: </h6>
                     </div>
                     <div className="autorize-bottom text-center mt-1">
-                        <button className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
-                        <button className="list-btn-sm" type="submit"><a className="team-gp list-btn-sm-icon" ></a></button>
-                        <div className="clear"></div>                        
+                        {/* <button className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
+                        <button className="list-btn-sm" type="submit"><a className="team-gp list-btn-sm-icon" ></a></button> */}
+                        {/* <button className="list-btn-sm mr-1" onClick={signoutFB} type="submit">LOG OUT</button> */}
+                        <FacebookLogin
+                            appId={APP_ID}                            
+                            callback={handleLoginFb}                                  
+                            fields="name,email,picture"                      
+                            render={renderProps => (
+                                <button onClick={renderProps.onClick} className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
+                            )}
+                        />                        
+                        <GoogleLogin
+                            render={renderProps => (
+                                <button className="list-btn-sm mr-1" onClick={renderProps.onClick} disabled={renderProps.disabled} type="submit"><a className="team-gp list-btn-sm-icon" ></a></button>
+                            )}
+                            clientId={CLIENT_ID}
+                            cookiePolicy={'single_host_origin'}
+                            onSuccess={handleLoginGoogleSuccess}
+                            onFailure={handleLoginGoogleFail}
+                        />
+                        <div className="clear"></div>
                     </div>
                 </div>
             </form>

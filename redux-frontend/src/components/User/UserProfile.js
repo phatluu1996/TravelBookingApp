@@ -104,9 +104,9 @@ const UserProfile = (props) => {
                                                 <div className="cat-list-item fly-in">
                                                     <div className="payment-wrapper">
                                                         <div className="payment-tabs">
-                                                            <a href="#" className="active">BOOKING HISTORY<span></span></a>
-                                                            <a href="#">UPDATE PROFILE<span></span></a>
-                                                            <a href="#">CHANGE PASSWORD<span></span></a>
+                                                            <a  className="active">BOOKING HISTORY<span></span></a>
+                                                            <a>UPDATE PROFILE<span></span></a>
+                                                            <a>CHANGE PASSWORD<span></span></a>
                                                         </div>
                                                         <div className="clear"></div>
                                                         <div className="payment-tabs-content">
@@ -116,8 +116,8 @@ const UserProfile = (props) => {
                                                                     <div className="tabs-type-a tabs-block">
                                                                         <nav className="tabs-nav">
                                                                             <ul>
-                                                                                <li><a className="active" href="#">FLIGHT</a></li>
-                                                                                <li><a href="#">HOTEL</a></li>
+                                                                                <li><a className="active">FLIGHT</a></li>
+                                                                                <li><a>HOTEL</a></li>
                                                                             </ul>
                                                                             <div className="clear"></div>
                                                                         </nav>

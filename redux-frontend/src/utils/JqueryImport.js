@@ -2021,13 +2021,19 @@ export const customOtherTags = () => {
     
 
     $('.header-lang').on({
-        click: function () {
-            if($('.langs-drop')[0].style.display === "none"){
-                $('.langs-drop').fadeIn();
-            }else{
-                $('.langs-drop').hide();
-            }            
+        mouseenter: function () {
+            $(this).find('.langs-drop').fadeIn(300);
         },
+        mouseleave: function () {
+            $(this).find('.langs-drop').fadeOut(300);
+        }
+        // click: function () {
+        //     if($('.langs-drop')[0].style.display !== "block"){
+        //         $('.langs-drop').hide();                
+        //     }else{
+        //         $('.langs-drop').show();
+        //     }            
+        // },
         // mouseout: function () {
         //     $('.langs-drop').hide();
         // }
