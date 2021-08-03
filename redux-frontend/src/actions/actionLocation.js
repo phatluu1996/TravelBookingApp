@@ -26,3 +26,23 @@ export const retrieveProvince = () => async (dispatch) => {
         });
     }
 };
+
+export const updateLocation = (id,data) => async (dispatch) => {
+    try {
+        dispatch({ type: FETCH_PROVINCE_REQUEST });
+        const url = `${ROOT_URL}/api/location/${id}`;
+        console.log(url);
+        const response = await axios.put(url,data)
+        const responseBody = await response.data;
+        dispatch({
+            type: FETCH_PROVINCE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: FETCH_PROVINCE_ERROR,
+            message: error
+        });
+    }
+};

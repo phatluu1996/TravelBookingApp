@@ -23,15 +23,15 @@ public final class HotelSpecification {
                                                            Date check_in_date){
         return Specification.where(
                 allCheck(province,district,ward,number_adult,number_children,check_in_date,numRoom)
-//                        .and(districtCheck(district))
-//                        .and(wardCheck(ward))
-                        .and(isRetired(retired))
-//                                .and(checkNumAdult(number_adult))
-//                                       .and(checkNumChildren(number_children))
-//                                               .and(checkAvailableDate(check_in_date))
-//                                                    .and(roomStatusCheck(numRoom))
-//                                                        .and(ratingCheck(rating))
-        );
+
+                        .and(isRetired(retired)));
+    }
+    public static Specification<Hotel> createSpecificationSpecial(Integer id, Boolean retired){
+        return Specification.where(isRetired(retired).and(userIdCheck(id)));
+    }
+
+    public static Specification<Hotel> userIdCheck(Integer id){
+        return (hotel,cq,cb) -> cb.lessThanOrEqualTo(hotel.get("account"),id);
     }
 
 
