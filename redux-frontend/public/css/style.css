@@ -2798,6 +2798,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .datepicker-popup {margin-top:15px; margin-left:-8px;}
 .form-element-popup-container-spacer {display:none;}
 
+.form-calendar-booking-flight {float:right; margin-right:2px;}
 @media screen and (max-width:1130px) {    
   .mp-popular-row .offer-slider-i {width:31.1%; margin-right:3.3%;}
   .mp-popular-row .offer-slider-i:last-child {margin-right: 0px; float: right;}
@@ -2882,6 +2883,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
   .chk-departure b br,.chk-arrival b br {display: none;}
   .booking-form .booking-form-i {width: 100%; float: none;}
   .form-calendar {float: left; margin-left: 5px;}
+  .form-calendar-booking-flight {float: left; margin-left: 5px;}
   .flight-image img {width:100%;}
   .tab-calendar-colls table tbody td {height:55px;}
   .flight-d-left {width: auto; border: 0px ; float: none; display: block; margin: 0px 0px 20px 0px; padding: 0px ;}
@@ -3316,6 +3318,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
   .tab-calendar-colls table tbody td {height:40px;} 
   .accordeon-a span {float: right; width:89%;}  
   .mp-slider-lbl {font-size:29px; padding-top:150px;}
+  .form-calendar-booking-flight {float: none; width: 100%; margin: 0px;}
 }
 @media screen and (max-width:401px) {
   .alt-time {margin-top: 10px;}

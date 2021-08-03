@@ -55,6 +55,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         Optional<Flight> flightOptional=flightRepository.findById(flightId);
         Flight flight=flightOptional.get();
 
+        //Add Passenger
         Passenger passenger = new Passenger();
         passenger.setFirstname(bookingRequest.getFirstname());
         passenger.setLastname(bookingRequest.getLastname());
@@ -63,8 +64,10 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         passenger.setBirthday(bookingRequest.getBirthday());
         passenger.setGender(bookingRequest.getGender());
         passenger.setCardType(bookingRequest.getCardType());
+        passenger.setHasInfant(bookingRequest.isHasInfant());
         passengerRepository.save(passenger);
 
+        // Add Booking
         Optional<User> userOptional = userRepository.findById(bookingRequest.getUserId());
         User user = userOptional.get();
         FlightBooking fltBooking = new FlightBooking();
@@ -76,6 +79,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         fltBooking.setStatus(1);
         fltBooking.setPaymentMethod(bookingRequest.getPaymentMethod());
 
+        //Add Booking Detail
         FlightBookingDetail detail=new FlightBookingDetail();
         detail.setFlight(flight);
         detail.setPassenger(passenger);
@@ -93,6 +97,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         ArrayList<FlightBookingDetail> detailList = new ArrayList<>();
         detailList.add(bkgDetail);
 
+        // If has Return flight
         if (bookingRequest.getReturnFlightId() != 0){
             Long returnFlightId=bookingRequest.getReturnFlightId();
             Optional<Flight> returnFlightOptional=flightRepository.findById(returnFlightId);
@@ -116,10 +121,10 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
         final FlightBooking savedBooking = flightBookingRepository.save(fltBooking);
 
-        Map<Object, Object > data = new HashMap<>();
-        data.put("booking", savedBooking);
-        data.put("detailFlight", bkgDetail);
-        pdfGenaratorUtil.createPdf("itinerary",data);
+//        Map<Object, Object > data = new HashMap<>();
+//        data.put("booking", savedBooking);
+//        data.put("detailFlight", bkgDetail);
+//        pdfGenaratorUtil.createPdf("itinerary",data);
 //        String filePath = ITINERARY_DIR +savedBooking.getId()
 //                + ".pdf";
 //        pdfGenerator.generateItinerary(savedBooking,filePath);

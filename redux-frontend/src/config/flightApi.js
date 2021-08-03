@@ -3,7 +3,8 @@ import axios from "axios";
 const http = axios.create({
     baseURL: "http://localhost:8080/api",
     headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        "Authorization":"Bearer "+sessionStorage.getItem("userToken")
     }
 });
 
@@ -32,9 +33,6 @@ class flightApi {
         return http.post(`/flight/${id}`);
     }
 
-    listFlightsByAirline(id, page, sortBy, sortDir) {
-        return http.get(`/airline/listFlights?id=${id}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`);
-    }
 }
 
 export default new flightApi();

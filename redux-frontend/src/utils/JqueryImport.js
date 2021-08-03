@@ -2313,6 +2313,9 @@ export const customOtherTags = () => {
 
     //TODO fix
     $('.date-inpt').datepicker({ dateFormat: 'dd/mm/yy' }).val();
+    $('.date-booking-inpt').datepicker({ dateFormat: 'yy-mm-dd',maxDate:'0' });
+    $('.date-card-expired-inpt').datepicker({ dateFormat: 'yy-mm-dd',minDate: '0' });
+
     $('.custom-select').customSelect();
 
     //     $('.owl-slider').owlCarousel({
