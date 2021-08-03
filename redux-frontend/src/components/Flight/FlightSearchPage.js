@@ -156,9 +156,9 @@ const FlightSearchPage = (props) => {
     }
 
     useEffect(() => {
-        let mount = false;
-        window.scrollTo(0, 0);
+        let mount = false;        
         importAll();
+        document.getElementById("scroll-top").click();
 
         if (!queryParam.get("from") && !queryParam.get("to") && !queryParam.get("departureDate") && !queryParam.get("returnDate") && !queryParam.get("seatClass") && !queryParam.get("adult") && !queryParam.get("child") && !queryParam.get("infant") && !queryParam.get("page") && !queryParam.get("sortDir") && !queryParam.get("sortBy") && !queryParam.get("priceFrom") && !queryParam.get("priceTo")) {
             document.location.href = "/";
@@ -237,10 +237,19 @@ const FlightSearchPage = (props) => {
     const setPage = (e) => {
         var index = e.target.value;
         if(!index){
-            index = e.currentTarget.text;
-            window.scrollTo(0, 0);
+            index = e.currentTarget.text;            
+            document.getElementById("scroll-top").click();
             document.getElementById("page").value = index;
         }
+        var filter = { ...queryFilter };
+        filter.page = parseInt(index);
+        setQueryFilter(filter);
+        props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
+        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+    }
+
+    const setNextPage = (index) => {
+        document.getElementById("scroll-top").click();
         var filter = { ...queryFilter };
         filter.page = parseInt(index);
         setQueryFilter(filter);

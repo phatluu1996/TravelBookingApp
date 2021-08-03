@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
 import Common from '../../../utils/Common';
 import $ from 'jquery';
+import { Link, useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function PopupLogin(props) {
-
+    const history = useHistory();
     const [errLogin, setErrLogin] = useState(false);
     const [isRequest, setIsRequest] = useState(false);
 
@@ -54,11 +56,12 @@ function PopupLogin(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         var form = e.target;
         if (validateForm(e)) {
             props.doSignin(form.username.value, form.password.value);
             setIsRequest(true);
-
+            history.push("/")
         }
     }
 
@@ -101,9 +104,9 @@ function PopupLogin(props) {
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            <form className="autorize-tab-content" onSubmit={handleSubmit}>
+            <form className="autorize-tab-content" onSubmit={handleSubmit} autoComplete="false">
                 <div className="autorize-padding" style={{ marginTop: '20px' }}>
-                    <h6 className="autorize-lbl">Welocome! Login in to Your Accont</h6>
+                    <h6 className="autorize-lbl text-center">WELCOME! SIGN IN YOUR ACCOUNT</h6>
                     <div>
                         <div className="autorize-input-lbl">Username:</div>
                         <div className="validate-error">{error.username}</div>
@@ -115,14 +118,24 @@ function PopupLogin(props) {
                         <div className="validate-error">{error.password}</div>
                         <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                     </div>
-
-                    <footer className="autorize-bottom">
-                        <button className="authorize-btn" type="submit">Login</button>
-                        <a href="#" className="authorize-forget-pass">Forgot your password?</a>
-                        <div className="clear"></div>
-                        {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
+                    <div>
+                    {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
                             Login Fail! Wrong user name or password.</div>}
-                    </footer>
+                    </div>
+
+                    <div className="autorize-bottom">
+                        <button className="authorize-btn" type="submit">Login</button>
+                        <Link to="/" className="authorize-forget-pass">Forgot your password?</Link>
+                        <div className="clear"></div>                        
+                    </div>
+                    <div className="text-center mt-2">
+                    <h6 className="autorize-lbl">OR SIGN UP AND SIGN IN WITH: </h6>
+                    </div>
+                    <div className="autorize-bottom text-center mt-1">
+                        <button className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
+                        <button className="list-btn-sm" type="submit"><a className="team-gp list-btn-sm-icon" ></a></button>
+                        <div className="clear"></div>                        
+                    </div>
                 </div>
             </form>
         </div>

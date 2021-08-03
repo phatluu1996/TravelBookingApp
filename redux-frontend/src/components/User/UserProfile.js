@@ -11,30 +11,30 @@ import { getUser } from '../../actions/actionUser';
 import Common from '../../utils/Common';
 
 const UserProfile = (props) => {
-    const user = useSelector((state) => state.user);
-    
+        
     useEffect(()=>{
-        importAll();
-        props.getUser(sessionStorage.getItem("userId"));
+        importAll();        
+        props.getUser(sessionStorage.getItem("userId"), Common.getToken());
     },[]);
 
     const getAddress = () => {
-        const province = user.data.location.province.name;
-        const district = user.data.location.district.name;
-        const ward = user.data.location.ward.name;
+        if(!props.user.data?.location) return "";
+        const province = props.user.data?.location.province.name;
+        const district = props.user.data?.location.district.name;
+        const ward = props.user.data?.location.ward.name;
         return ward+" ,"+district+" ,"+province;
     }
-    const checkGender = ()=> {
-        if(user.data){
-            if(user.data.gender === "Female"){
-                return "Mrs.";
-            }else if(user.data.gender === "Male"){
-                return "Mr.";
-            }else return "";
-        }else{
-            return "";
-        }
-    }
+    // const checkGender = ()=> {
+    //     if(user.data){
+    //         if(user.data.gender === "Female"){
+    //             return "Mrs.";
+    //         }else if(user.data.gender === "Male"){
+    //             return "Mr.";
+    //         }else return "";
+    //     }else{
+    //         return "";
+    //     }
+    // }
 
     return (
         <>
@@ -56,8 +56,7 @@ const UserProfile = (props) => {
                                                         <div className="checkout-headrb">
                                                             <div className="checkout-headrp">
                                                                 <div className="chk-left" style={{marginTop:'25px'}}>
-                                                                    <div>{checkGender()}</div>
-                                                                    <div className="chk-lbl-a">{user.data?user.data.lastName:""} {user.data?user.data.firstName:""}</div>
+                                                                    <div className="chk-lbl-a"><h3>{props.user.data? props.user.data.lastName:""} {props.user.data ? props.user.data.firstName:""}</h3></div>
                                                                 </div>
                                                                 <div className="clear"></div>
                                                             </div>
@@ -70,22 +69,22 @@ const UserProfile = (props) => {
                                                     <div className="chk-detais-row">
                                                         <div className="chk-line">
                                                             <span className="chk-l">Birth day:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.dateOfBirth:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.dateOfBirth}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Address:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.location.street:""}<br/>{user.data?getAddress():""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.location?.street}<br/>{props.user.data ? getAddress():""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Phone:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.phoneNumber:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.phoneNumber}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Email</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.email:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.email}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -133,7 +132,7 @@ const UserProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
-                                                                {user.data && <UpdateUser dataUser={user} gender={user?.data.gender}/>}
+                                                                {props.user.data?.gender && <UpdateUser dataUser={props.user} gender={props.user.data.gender}/>}
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">

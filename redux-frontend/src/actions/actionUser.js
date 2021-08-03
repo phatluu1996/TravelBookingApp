@@ -10,6 +10,10 @@ export const SIGNUP_USER_REQUEST = "SIGNUP_USER_REQUEST";
 export const SIGNUP_USER_SUCCESS = "SIGNUP_USER_SUCCESS";
 export const SIGNUP_USER_ERROR = "SIGNUP_USER_ERROR";
 
+export const SIGNOUT_USER_REQUEST = "SIGNOUT_USER_REQUEST";
+export const SIGNOUT_USER_SUCCESS = "SIGNOUT_USER_SUCCESS";
+export const SIGNOUT_USER_ERROR = "SIGNOUT_USER_ERROR";
+
 export const GET_USER_REQUEST = "GET_USER_REQUEST";
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_ERROR = "GET_USER_ERROR";
@@ -41,6 +45,20 @@ export const signin = (username, password) => async dispatch => {
     }
 }
 
+export const signout = () => async dispatch =>{
+    try {
+        dispatch({ type: SIGNOUT_USER_REQUEST });       
+        dispatch({
+            type: SIGNOUT_USER_SUCCESS            
+        });        
+    } catch (error) {
+        dispatch({
+            type: SIGNOUT_USER_ERROR,
+            message: error
+        });
+    } 
+}
+
 export const signup = (firstname, lastname, username, email, password) => async dispatch =>{
     try {
         dispatch({ type: SIGNUP_USER_REQUEST });
@@ -68,11 +86,11 @@ export const signup = (firstname, lastname, username, email, password) => async 
     }
 }
 
-export const getUser = (id) => async dispatch =>{
+export const getUser = (id, token) => async dispatch =>{
     try {
         dispatch({ type: GET_USER_REQUEST });
 
-        const response = await userApi.getUser(id);
+        const response = await userApi.getUser(id, token);
         const responseBody = await response.data;        
         dispatch({
             type: GET_USER_SUCCESS,
