@@ -4,9 +4,15 @@ import Common from '../utils/Common';
 
 const PublicRoute = ({component: Component, restricted, ...rest}) => {
     return (
+        // <Route {...rest} render={props => (
+        //     restricted ? <Component {...props} />
+        //        : <Redirect to="/" />
+        // )} />
+
         <Route {...rest} render={props => (
-            restricted ? <Component {...props} />
-               : <Redirect to="/" />
+            sessionStorage.getItem("user") && restricted ?
+                <Redirect to="/" />
+            : <Component {...props} />
         )} />
     );
 };

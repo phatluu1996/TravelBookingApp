@@ -291,6 +291,7 @@ const Home = (props) => {
                                     <form
                                         onSubmit={handleSubmitHotel}
                                         className=" search-tab-content"
+                                        autoComplete="false"
                                     >
                                         <div className="page-search-p">
                                             <div className="search-large-i">
@@ -446,7 +447,7 @@ const Home = (props) => {
                                         </footer>
                                     </form>
 
-                                    <form onSubmit={handleSubmit} className="search-tab-content">
+                                    <form onSubmit={handleSubmit} className="search-tab-content" autoComplete="false">
                                         <div className="page-search-p">
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line">

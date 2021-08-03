@@ -16,7 +16,7 @@ const http = axios.create({
 });
 
 class userApi {
-    getUser(id) {
+    getUser(id, token) {
         return httpAuth.get(`/user/${id}`);
     }
     

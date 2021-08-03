@@ -20,8 +20,17 @@ public class BookingRequest {
     private String paymentMethod;
     private Float totalPrice;
     private int totalPassenger;
+    private boolean hasInfant;
 
     public BookingRequest() {
+    }
+
+    public boolean isHasInfant() {
+        return hasInfant;
+    }
+
+    public void setHasInfant(boolean hasInfant) {
+        this.hasInfant = hasInfant;
     }
 
     public Long getUserId() {

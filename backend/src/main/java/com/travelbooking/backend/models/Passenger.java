@@ -35,10 +35,13 @@ public class Passenger {
     @Column(name = "retired", nullable = true)
     private boolean retired;
 
+    @Column(name = "has_infant", nullable = true)
+    private boolean hasInfant;
+
     public Passenger() {
     }
 
-    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, int cardType, Date cardExpired, boolean retired) {
+    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, int cardType, Date cardExpired, boolean retired, boolean hasInfant) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -48,6 +51,19 @@ public class Passenger {
         this.cardType = cardType;
         this.cardExpired = cardExpired;
         this.retired = retired;
+        this.hasInfant = hasInfant;
+    }
+
+    public int getCardType() {
+        return cardType;
+    }
+
+    public boolean isHasInfant() {
+        return hasInfant;
+    }
+
+    public void setHasInfant(boolean hasInfant) {
+        this.hasInfant = hasInfant;
     }
 
     public boolean isRetired() {

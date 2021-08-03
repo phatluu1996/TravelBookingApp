@@ -1,11 +1,25 @@
 import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
-import { Link } from 'react-router-dom';
-import Common from "../../utils/Common";
+import { Link, useHistory } from 'react-router-dom';
+import {removeUserSession} from "../../utils/Common";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { signout } from "../../actions/actionUser";
+import { connect } from "react-redux";
+import { getUser, getUserFullName } from "../../utils/Common";
 
-const Header = () => {
+const Header = (props) => {
+    const history = useHistory();
     const [user, setUser] = useState(null)
+    
+    const signout = () => {        
+        setUser(null);
+        props.doSignout();
+        removeUserSession();
+        history.push("/");
+    }
+
     return (
         <>
             <PopupLogin onSubmitUser={setUser} />
@@ -15,24 +29,25 @@ const Header = () => {
                     <div className="wrapper-padding">
                         <div className="header-phone">
                             <span>0 - 888 - 555 - 555</span>
+                        </div>                        
+                        
+                        <div className="header-account"  style={{display : getUser() ? "none" : "block"}}>
+                            <a>Login</a>
                         </div>
-                        {!Common.getUser() && (
-                                <>
-                                    <div className="header-account">
-                                        <a>Login</a>
-                                    </div>
-                                    <div className="header-signup">
-                                        <Link to="/register">Register</Link>
-                                    </div>
-                                </>
-                            )}
-                        {Common.getUser() && (
-                                <div className="header-signup">
-                                    <Link to="/user" style={{ color: "#ff7200" }}>
-                                        {Common.getUserFullName()}
-                                    </Link>
-                                </div>
-                            )}
+                        <div className="header-signup"  style={{display : getUser() ? "none" : "block"}}>
+                            <Link to="/register">Register</Link>
+                        </div>
+ 
+                        <div className="header-lang header-signup" style={{display : !getUser() ? "none" : "block", backgroundColor : "#ff7200"}}>
+                            <a>
+                                {getUserFullName()}
+                            </a>
+                            <div className="langs-drop">
+                                <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>
+                                <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>
+                            </div>
+                        </div>
+           
                         <div className="header-curency">
                             <a >USD</a>
                             <div className="curency-drop">
@@ -154,27 +169,27 @@ const Header = () => {
                                         <Link to="/" >Home</Link>
                                     </li>
                                     <li>
-                                        <Link>Hotels</Link>
-                                        <ul>                                            
+                                        <a>Hotels</a>
+                                        <ul>
                                             <li>
                                                 <Link to="/hotel-detail">Hotel item page</Link>
-                                            </li>  
+                                            </li>
                                             <li>
                                                 <Link to="/hotel-booking">Hotel Booking Page</Link>
-                                            </li>     
+                                            </li>
                                             <li>
                                                 <Link to="/hotel-booking-complete">Hotel Booking Finish</Link>
-                                            </li>                                        
+                                            </li>
                                         </ul>
                                     </li>
                                     <li>
                                         <a >Flights</a>
                                         <ul>
                                             <li>
-                                                <Link href="/flight-booking">Flights Booking Page</Link>
+                                                <Link to="/flight-booking">Flights Booking Page</Link>
                                             </li>
                                             <li>
-                                                <Link href="/flight-booking-complete">Flight Booking Finish</Link>
+                                                <Link to="/flight-booking-complete">Flight Booking Finish</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -201,9 +216,24 @@ const Header = () => {
                         <div className="clear"></div>
                     </div>
                 </div>
+                <button className="scroll-top list-btn-sm" id="scroll-top" title="Go to top"><FontAwesomeIcon className="list-btn-sm-icon" icon={faArrowUp}></FontAwesomeIcon></button>
             </header>
         </>
     );
 };
 
-export default Header;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        user: state.user,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        doSignout: () => {
+            dispatch(signout());
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

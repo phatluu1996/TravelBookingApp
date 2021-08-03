@@ -7,8 +7,15 @@ const PrivateRoute = ({component: Component, restricted, ...rest}) => {
 
         // Show the component only when the user is logged in
         // Otherwise, redirect the user to /signin page
+        // <Route {...rest} render={props => (
+        //     (Common.getUser() && restricted) ?
+        //         <Component {...props} />
+        //     : <Redirect to="/" />
+        // )} />
+        // Show the component only when the user is logged in
+        // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
-            (Common.getUser() && restricted) ?
+            sessionStorage.getItem("user") && restricted ?
                 <Component {...props} />
             : <Redirect to="/" />
         )} />

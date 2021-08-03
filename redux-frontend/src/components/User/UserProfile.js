@@ -8,33 +8,36 @@ import UpdateUser from './UpdateUser';
 import { importAll } from "../../utils/JqueryImport";
 import { connect, useSelector } from 'react-redux';
 import { getUser } from '../../actions/actionUser';
-import Common from '../../utils/Common';
+import { retrieveProvince } from '../../actions/actionLocation';
 
 const UserProfile = (props) => {
-    const user = useSelector((state) => state.user);
-    
+        
     useEffect(()=>{
-        importAll();
-        props.getUser(sessionStorage.getItem("userId"));
+        // importAll(); 
+        props.getUser(sessionStorage.getItem("userId"), sessionStorage.getItem('userToken'));
+        if(!props.province.data){
+            props.getProvince();
+        }
     },[]);
 
     const getAddress = () => {
-        const province = user.data.location.province.name;
-        const district = user.data.location.district.name;
-        const ward = user.data.location.ward.name;
-        return ward+" ,"+district+" ,"+province;
+        if(!props.user.data?.location) return "";
+        const province = props.user.data?.location.province;
+        const district = props.user.data?.location.district;
+        const ward = props.user.data?.location.ward;
+        return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
     }
-    const checkGender = ()=> {
-        if(user.data){
-            if(user.data.gender === "Female"){
-                return "Mrs.";
-            }else if(user.data.gender === "Male"){
-                return "Mr.";
-            }else return "";
-        }else{
-            return "";
-        }
-    }
+    // const checkGender = ()=> {
+    //     if(user.data){
+    //         if(user.data.gender === "Female"){
+    //             return "Mrs.";
+    //         }else if(user.data.gender === "Male"){
+    //             return "Mr.";
+    //         }else return "";
+    //     }else{
+    //         return "";
+    //     }
+    // }
 
     return (
         <>
@@ -56,8 +59,7 @@ const UserProfile = (props) => {
                                                         <div className="checkout-headrb">
                                                             <div className="checkout-headrp">
                                                                 <div className="chk-left" style={{marginTop:'25px'}}>
-                                                                    <div>{checkGender()}</div>
-                                                                    <div className="chk-lbl-a">{user.data?user.data.lastName:""} {user.data?user.data.firstName:""}</div>
+                                                                    <div className="chk-lbl-a"><h3>{props.user.data? props.user.data.lastName:""} {props.user.data ? props.user.data.firstName:""}</h3></div>
                                                                 </div>
                                                                 <div className="clear"></div>
                                                             </div>
@@ -70,22 +72,22 @@ const UserProfile = (props) => {
                                                     <div className="chk-detais-row">
                                                         <div className="chk-line">
                                                             <span className="chk-l">Birth day:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.dateOfBirth:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.dateOfBirth}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Address:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.location.street:""}<br/>{user.data?getAddress():""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.location?.street}<br/>{props.user.data ? getAddress():""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Phone:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.phoneNumber:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.phoneNumber}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Email</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{user.data?user.data.email:""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.email}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -133,7 +135,7 @@ const UserProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
-                                                                {user.data && <UpdateUser dataUser={user} gender={user?.data.gender}/>}
+                                                                {props.user.data?.gender && props.province.data && <UpdateUser dataUser={props.user} province={props.province} gender={props.user.data.gender}/>}
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
@@ -166,6 +168,7 @@ const UserProfile = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         user: state.user,
+        province: state.province
     };
 };
 
@@ -174,6 +177,9 @@ const mapDispatchToProps = (dispatch) => {
         getUser: (id) => {
             dispatch(getUser(id));
         },
+        getProvince : () => {
+            dispatch(retrieveProvince());
+        }
     };
 };
 
