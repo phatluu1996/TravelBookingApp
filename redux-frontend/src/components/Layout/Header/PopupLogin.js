@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { signin } from '../../../actions/actionUser';
-import Common from '../../../utils/Common';
+import {getUser, setUserSession, getToken} from '../../../utils/Common';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function PopupLogin(props) {
     const history = useHistory();
@@ -72,13 +73,13 @@ function PopupLogin(props) {
                 setErrLogin(true);
             }
             if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-                Common.setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header, props.user.data.id, props.user.data.roles[0]);
+                setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header, props.user.data.id, props.user.data.roles[0]);
                 // document.location.href = "/";
                 props.onSubmitUser(props.user.data);
                 //TODO
                 closePopup();
             }
-            if (!props.user.data && Common.getUser() && Common.getToken()) {
+            if (!props.user.data && getUser() && getToken()) {
                 document.location.href = "/";
             }
         }

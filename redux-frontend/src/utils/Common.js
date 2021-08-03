@@ -1,19 +1,18 @@
-export default class Common {
-    static getUser = () => {
-        return sessionStorage.getItem('user') || null;
+    export const getUser = () => {
+        return sessionStorage.getItem('user');
     }
     
     // return the token from the session storage
-    static getToken = () => {
-        return sessionStorage.getItem('userToken') || null;
+    export const getToken = () => {
+        return sessionStorage.getItem('userToken');
     }
 
-    static getUserFullName = () => {
-        return sessionStorage.getItem('userName') || null;
+    export const getUserFullName = () => {
+        return sessionStorage.getItem('userName');
     }
     
     // remove the token and user from the session storage
-    static removeUserSession = () => {
+    export const removeUserSession = () => {
         sessionStorage.removeItem('userToken');
         sessionStorage.removeItem('user');
         sessionStorage.removeItem('userName');
@@ -21,22 +20,19 @@ export default class Common {
         sessionStorage.removeItem('userRole');
     }
 
-    static getUserId = () => {
+    export const getUserId = () => {
         return sessionStorage.getItem('userId');
     }
 
-    static getRole = () => {
+    export const getRole = () => {
         return sessionStorage.getItem('userRole');
     }
     
     // set the token and user from the session storage
-    static setUserSession = (token, user, name, userIndex, role) => {
+    export const setUserSession = (token, user, name, userIndex, role) => {
         sessionStorage.setItem('userToken', token);
         sessionStorage.setItem('user', user);
         sessionStorage.setItem('userName', name);
         sessionStorage.setItem('userId', userIndex);
         sessionStorage.setItem('userRole', role);
     }
-
-    
-}

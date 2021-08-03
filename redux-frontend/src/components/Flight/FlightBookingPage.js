@@ -6,7 +6,7 @@ import Footer from "../Layout/Footer";
 import $ from "jquery";
 import { importAll } from "../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
-import Common from "../../utils/Common";
+import {getUserId} from "../../utils/Common";
 import { bookFlight } from "../../actions/actionBookingFlight";
 
 const cardType = {
@@ -39,7 +39,7 @@ const FlightBookingPage = (props) => {
     dispatch(bookFlight(data));
   };
 
-  const userId = parseInt(Common.getUserId());
+  const userId = parseInt(getUserId());
 //   const flightId = 0;
   const returnFlightId = 0;
   const dateBooking = "";

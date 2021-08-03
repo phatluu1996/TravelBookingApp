@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { retrieveProvince } from '../../actions/actionLocation';
 import { updateUser } from '../../actions/actionUser';
 import { importAll } from "../../utils/JqueryImport";
 
@@ -35,24 +34,27 @@ const UpdateUser = (props) => {
 
     useEffect(() => {
         let mount = false;
-        importAll();
-        if(!props.provinces.data){
-            props.getProvince();
-        }
+        importAll();        
 
-        setSelectProvince(dataUser?.location?.province);
-        setSelectDistrict(dataUser?.location?.district);
-        setSelectWard(dataUser?.location?.ward);
+        // setSelectProvince(dataUser?.location?.province);
+        // setSelectDistrict(dataUser?.location?.district);
+        // setSelectWard(dataUser?.location?.ward);
         
         document
             .querySelector("#provinces")
             .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.province?.name;
         document
+            .querySelector("#provinces").value = dataUser?.location?.province?.id;
+        document
             .querySelector("#districts")
             .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.district?.name;
         document
+            .querySelector("#districts").value = dataUser?.location?.district?.id;
+        document
             .querySelector("#wards")
             .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.ward?.name;
+        document
+            .querySelector("#wards").value = dataUser?.location?.ward?.id;
         
         return () => {
             mount = true;
@@ -73,7 +75,7 @@ const UpdateUser = (props) => {
             setSelectWard(null);
         } else {
             setSelectProvince(
-                props.provinces.data.find(
+                props.province.data.find(
                     (item) => item.id === parseInt(e.currentTarget.value)
                 )
             );
@@ -208,12 +210,12 @@ const UpdateUser = (props) => {
                                         className="custom-select"
                                         name="province"
                                         id="provinces"
-                                        defaultValue={dataUser?.location?.province?.id}
+                                        // defaultValue={dataUser?.location?.province?.id}
                                     >
                                         <option key={0} value={0}>
                                             --
                                         </option>
-                                        {props.provinces?.data?.map((item) => (
+                                        {props.province?.data?.map((item) => (
                                             <option key={item.id} value={item.id}>
                                                 {item.name}
                                             </option>
@@ -284,16 +286,12 @@ const UpdateUser = (props) => {
 };
 const mapStateToProps = (state, ownProps) => {
     return {
-        provinces: state.province,
         dataUpdate: state.user
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getProvince: () => {
-            dispatch(retrieveProvince());
-        },
         updateUser: (id,data) =>{
             dispatch(updateUser(id,data));
         }

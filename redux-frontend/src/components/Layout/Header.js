@@ -2,11 +2,12 @@ import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link, useHistory } from 'react-router-dom';
-import Common from "../../utils/Common";
+import {removeUserSession} from "../../utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { signout } from "../../actions/actionUser";
 import { connect } from "react-redux";
+import { getUser, getUserFullName } from "../../utils/Common";
 
 const Header = (props) => {
     const history = useHistory();
@@ -15,7 +16,7 @@ const Header = (props) => {
     const signout = () => {        
         setUser(null);
         props.doSignout();
-        Common.removeUserSession();
+        removeUserSession();
         history.push("/");
     }
 
@@ -30,16 +31,16 @@ const Header = (props) => {
                             <span>0 - 888 - 555 - 555</span>
                         </div>                        
                         
-                        <div className="header-account"  style={{display : Common.getUser() ? "none" : "block"}}>
+                        <div className="header-account"  style={{display : getUser() ? "none" : "block"}}>
                             <a>Login</a>
                         </div>
-                        <div className="header-signup"  style={{display : Common.getUser() ? "none" : "block"}}>
+                        <div className="header-signup"  style={{display : getUser() ? "none" : "block"}}>
                             <Link to="/register">Register</Link>
                         </div>
  
-                        <div className="header-lang header-signup" style={{display : !Common.getUser() ? "none" : "block", backgroundColor : "#ff7200"}}>
+                        <div className="header-lang header-signup" style={{display : !getUser() ? "none" : "block", backgroundColor : "#ff7200"}}>
                             <a>
-                                {Common.getUserFullName()}
+                                {getUserFullName()}
                             </a>
                             <div className="langs-drop">
                                 <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>

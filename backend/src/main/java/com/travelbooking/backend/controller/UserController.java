@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     AccountRepository accountRepository;
 
-//    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
         if(userRepository.existsByAccount_Id(id)){

@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import HotelSearchPage from './components/Hotel/HotelSearchPage';
 import EditFlight from './components/Airline/EditFlight';
 import HotelDetailPage from './components/Hotel/HotelDetailPage';
-import Common from './utils/Common';
+import {getRole} from './utils/Common';
 import HotelBookingPage from './components/Hotel/HotelBookingPage';
 import HotelBookingCompletePage from './components/Hotel/HotelBookingCompletePage';
 import FlightBookingCompletePage from './components/Flight/FlightBookingCompletePage';
@@ -28,11 +28,11 @@ const App = () => {
     return (
       <BrowserRouter>
         <Switch>
-          <PublicRoute restricted={true} component={Home} path="/" exact />
-          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
-          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
-          <PrivateRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
-          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
+          <PublicRoute restricted={false} component={Home} path="/" exact />
+          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
+          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
+          <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
+          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
 
           <PublicRoute restricted={false} component={Register} path="/register" />
@@ -47,7 +47,7 @@ const App = () => {
           <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
           <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
-          <PrivateRoute restricted={true} component={UserProfile} path="/user"/>
+          <PrivateRoute restricted={getRole() === "ROLE_USER"} component={UserProfile} path="/user"/>
         </Switch>
       </BrowserRouter>
     );
