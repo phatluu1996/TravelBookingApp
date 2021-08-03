@@ -28,11 +28,11 @@ const App = () => {
     return (
       <BrowserRouter>
         <Switch>
-          <PublicRoute restricted={false} component={Home} path="/" exact />
-          <PublicRoute restricted={false} component={CreateNewFlight} path="/create-flight" />
-          <PublicRoute restricted={false} component={EditFlight} path="/edit-flight" />
-          <PrivateRoute restricted={true} component={Airline} path="/airline" />
-          <PublicRoute restricted={false} component={ListFlight} path="/list-flight"/>
+          <PublicRoute restricted={true} component={Home} path="/" exact />
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
+          <PrivateRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
+          <PublicRoute restricted={Common.getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
 
           <PublicRoute restricted={false} component={Register} path="/register" />

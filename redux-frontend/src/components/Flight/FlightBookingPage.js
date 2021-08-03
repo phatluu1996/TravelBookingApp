@@ -33,7 +33,7 @@ const FlightBookingPage = (props) => {
   const [type, setType] = useState(0);
   const [totalPrice,setTotalPrice] = useState(0)
   const [hasInfant, setHasInfant] = useState("true");
-//   const booking = useSelector((state) => state.bookFlight);
+  const booking = useSelector((state) => state.bookFlight);
 
   const bookFlt = (data) => {
     dispatch(bookFlight(data));
@@ -168,10 +168,14 @@ const FlightBookingPage = (props) => {
         hasInfant: "false",
       };
       bookFlt(data);
-    }
+         
+    history.push({pathname:'/flight-booking-complete'});
+};
+    
   };
   useEffect(() => {
     let mount = false;
+    window.scrollTo(0, 0);
     importAll();
     const flight = location.state.selectedFlight;
     const dateDeparture = location.state.dateBook;

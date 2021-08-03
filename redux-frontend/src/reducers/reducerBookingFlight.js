@@ -3,7 +3,6 @@ import {
   } from "../actions/actionBookingFlight";
   
   const initialState = {
-    form: null,
     requesting: false,
     success: false,
     message: null,
@@ -24,7 +23,7 @@ import {
           requesting: false,
           success: true,
           data: action.payload,
-          form: 'bookingFlight'
+          
         };
         return state;
   
@@ -33,7 +32,6 @@ import {
           ...state,
           requesting: false,
           message: action.message,
-          form: 'bookingFlight'
         };
         return state;
 
