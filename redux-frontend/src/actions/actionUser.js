@@ -22,6 +22,10 @@ export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_ERROR = "UPDATE_USER_ERROR";
 
+export const CHANGE_PASSWORD_REQUEST = "CHANGE_PASSWORD_REQUEST";
+export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
+export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
+
 export const signin = (username, password) => async dispatch => {
     try {
         dispatch({ type: LOGIN_USER_REQUEST });
@@ -90,14 +94,15 @@ export const getUser = (id, token) => async dispatch =>{
     try {
         dispatch({ type: GET_USER_REQUEST });
 
-        const response = await userApi.getUser(id, token);
-        // const url = `${ROOT_URL}/api/user/${id}`;
-        // const config = {
-        //     "Content-type": "application/json",
-        //     "Authorization":"Bearer " + token
-        // }        
-        // const response = await axios.get(url, config);
-
+        // const response = await userApi.getUser(id, token);
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/user/${id}`);
         const responseBody = await response.data;        
 
         dispatch({
@@ -112,11 +117,17 @@ export const getUser = (id, token) => async dispatch =>{
     }
 }
 
-export const updateUser = (id, data) => async dispatch =>{
+export const updateUser = (data) => async dispatch =>{
     try {
         dispatch({ type: UPDATE_USER_REQUEST });
-
-        const response = await userApi.updateUser(id, data);
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.put(`/user`,data);
         const responseBody = await response.data;        
         dispatch({
             type: UPDATE_USER_SUCCESS,
@@ -125,6 +136,30 @@ export const updateUser = (id, data) => async dispatch =>{
     } catch (error) {
         dispatch({
             type: UPDATE_USER_ERROR,
+            message: error
+        });
+    }
+}
+
+export const changePassword = (data) => async dispatch =>{
+    try {
+        dispatch({ type: CHANGE_PASSWORD_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.put(`/changePassword`,data);
+        const responseBody = await response.data;        
+        dispatch({
+            type: CHANGE_PASSWORD_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: CHANGE_PASSWORD_ERROR,
             message: error
         });
     }

@@ -102,7 +102,6 @@ function PopupLogin(props) {
             }
             if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
                 setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header, props.user.data.id, props.user.data.roles[0]);
-                // document.location.href = "/";
                 props.onSubmitUser(props.user.data);
                 //TODO
                 closePopup();
@@ -137,14 +136,14 @@ function PopupLogin(props) {
                 <div className="autorize-padding" style={{ marginTop: '20px' }}>
                     <h6 className="autorize-lbl text-center">WELCOME! SIGN IN YOUR ACCOUNT</h6>
                     <div>
-                        <div className="autorize-input-lbl">Username:</div>
-                        <div className="validate-error">{error.username}</div>
+                        <div className="autorize-input-lbl" style={{marginTop:'15px'}}>Username:</div>
+                        <div className="validate-error" style={{marginTop:'15px'}}>{error.username}</div>
                         <input type="text" name="username" onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
                     </div>
 
                     <div>
-                        <div className="autorize-input-lbl">Password:</div>
-                        <div className="validate-error">{error.password}</div>
+                        <div className="autorize-input-lbl" style={{marginTop:'15px'}}>Password:</div>
+                        <div className="validate-error" style={{marginTop:'15px'}}>{error.password}</div>
                         <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                     </div>
                     <div>

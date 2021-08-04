@@ -22,6 +22,7 @@ import {getRole} from './utils/Common';
 import HotelBookingPage from './components/Hotel/HotelBookingPage';
 import HotelBookingCompletePage from './components/Hotel/HotelBookingCompletePage';
 import FlightBookingCompletePage from './components/Flight/FlightBookingCompletePage';
+import AdminDashboard from './components/Admin/AdminDashboard';
 import HotelProfile from './components/Hotel/HotelProfile';
 // import FlightBookingPage from './components/Flight/FlightBookingPage';
 
@@ -36,8 +37,8 @@ const App = () => {
           <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
           <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
-
-          <PublicRoute restricted={false} component={Register} path="/register" />
+          <PublicRoute restricted={true} component={AdminDashboard} path="/admin-dashboard" />
+          <PublicRoute restricted={true} component={Register} path="/register" />
 
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
           <PublicRoute restricted={false} component={FlightBookingPage} path="/flight-booking" />
