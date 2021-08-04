@@ -743,7 +743,6 @@ const HotelSearchPage = (props) => {
                               <a onClick={(e) => setPage(page + 1)}>{page + 1}</a>
                               <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
                       }
-                      
                       <div className="clear"></div>
                     </div>)}
                   </div>

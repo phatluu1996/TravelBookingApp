@@ -49,7 +49,9 @@ const App = () => {
           <PublicRoute restricted={false} component={HotelBookingPage} path="/hotel-booking" />
           <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
-          <PublicRoute component={HotelProfile} path="/hotel" exact />
+
+          <PublicRoute component={HotelProfile} path="/hotel-profile" exact />
+
           <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
           <PrivateRoute restricted={getRole() === "ROLE_USER"} component={UserProfile} path="/user"/>
         </Switch>

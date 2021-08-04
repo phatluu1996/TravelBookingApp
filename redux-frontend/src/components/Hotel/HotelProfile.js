@@ -3,8 +3,6 @@ import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import ChangePassword from '../User/ChangePassword';
 import FlightBookingHistory from '../User/FlightBookingHistory';
-import listRoom from '../Room/ListRoom';
-import UpdateUser from '../User/UpdateUser';
 import { importAll } from "../../utils/JqueryImport";
 import { connect, useSelector } from 'react-redux';
 
@@ -13,6 +11,7 @@ import {fetchHotelByAccountId} from '../../actions/actionHotel'
 import { retrieveProvince } from '../../actions/actionLocation';
 
 import Common from '../../utils/Common';
+import AddNewRoom from '../Room/AddNewRoom';
 import ListRoom from '../Room/ListRoom';
 import UpdateHotel from './UpdateHotel';
 
@@ -120,8 +119,8 @@ const HotelProfile = (props) => {
                                                              {/* <a href="#">UPDATE PROFILE<span></span></a> */}
                                                             <a href="#">UPDATE HOTEL PROFILE<span></span></a>
                                                             {/* <a href="#">CHANGE PASSWORD<span></span></a> */}
-                                                            <a href="#">LIST ROOM<span></span></a>
-                                                            <a href="#">CREATE ROOM<span></span></a>
+                                                            <a href="#">ROOM MANAGE<span></span></a>
+                                                            {/* <a href="#">CREATE ROOM<span></span></a> */}
                                                         </div>
                                                         <div className="clear"></div>
                                                         <div className="payment-tabs-content">
@@ -161,7 +160,26 @@ const HotelProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div> */}
                                                             <div className="payment-tab">
-                                                                <ListRoom />
+                                                                <div className="booking-form">
+                                                                    <div className="tabs-type-a tabs-block">
+                                                                        <nav className="tabs-nav">
+                                                                            <ul>
+                                                                                <li><a className="active" href="#">Room List</a></li>
+                                                                                <li><a href="#">Create Room</a></li>
+                                                                                <li><a href="#">View Room</a></li>
+                                                                            </ul>
+                                                                            <div className="clear"></div>
+                                                                        </nav>
+                                                                        <div className="tabs-content">
+                                                                            <div className="tabs-content-i">
+                                                                                {/* <ListRoom dataRoom={props?.hotel?.data?.rooms} /> */}
+                                                                            </div>
+                                                                            <div className="tabs-content-i">
+                                                                                {/* <AddNewRoom /> */}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div className="clear"></div>
                                                             </div>
                                                         </div>
