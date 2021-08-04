@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link, useHistory } from 'react-router-dom';
-import {removeUserSession} from "../../utils/Common";
+import { removeUserSession } from "../../utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { signout } from "../../actions/actionUser";
@@ -12,11 +12,19 @@ import { getUser, getUserFullName } from "../../utils/Common";
 const Header = (props) => {
     const history = useHistory();
     const [user, setUser] = useState(null)
-    
-    const signout = () => {        
+
+    const signout = () => {
         setUser(null);
         props.doSignout();
         removeUserSession();
+        const auth2 = window.gapi.auth2.getAuthInstance()
+        if (auth2 != null) {//If signin with google
+            auth2.signOut().then(
+                auth2.disconnect().then(res => {
+                    setUser(null);
+                })
+            )
+        }
         history.push("/");
     }
 
@@ -29,16 +37,16 @@ const Header = (props) => {
                     <div className="wrapper-padding">
                         <div className="header-phone">
                             <span>0 - 888 - 555 - 555</span>
-                        </div>                        
-                        
-                        <div className="header-account"  style={{display : getUser() ? "none" : "block"}}>
+                        </div>
+
+                        <div className="header-account" style={{ display: getUser() ? "none" : "block" }}>
                             <a>Login</a>
                         </div>
-                        <div className="header-signup"  style={{display : getUser() ? "none" : "block"}}>
+                        <div className="header-signup" style={{ display: getUser() ? "none" : "block" }}>
                             <Link to="/register">Register</Link>
                         </div>
- 
-                        <div className="header-lang header-signup" style={{display : !getUser() ? "none" : "block", backgroundColor : "#ff7200"}}>
+
+                        <div className="header-lang header-signup" style={{ display: !getUser() ? "none" : "block", backgroundColor: "#ff7200" }}>
                             <a>
                                 {getUserFullName()}
                             </a>
@@ -47,7 +55,7 @@ const Header = (props) => {
                                 <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>
                             </div>
                         </div>
-           
+
                         <div className="header-curency">
                             <a >USD</a>
                             <div className="curency-drop">

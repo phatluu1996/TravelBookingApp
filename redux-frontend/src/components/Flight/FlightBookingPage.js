@@ -6,8 +6,11 @@ import Footer from "../Layout/Footer";
 import $ from "jquery";
 import { importAll } from "../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
-import {getUserId} from "../../utils/Common";
+import { getUserId } from "../../utils/Common";
 import { bookFlight } from "../../actions/actionBookingFlight";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PP_ID } from "../../config/api";
+import Paypal from "../Paypal";
 
 const cardType = {
   properties: [
@@ -35,13 +38,45 @@ const FlightBookingPage = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [hasInfant, setHasInfant] = useState("true");
   const booking = useSelector((state) => state.bookFlight);
+  const [checkout, setCheckout] = useState(false);
+
 
   const bookFlt = (data) => {
     dispatch(bookFlight(data));
   };
 
+  const createOrder = (data, actions) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            description: "Testing booking function",
+            amount: {
+              currency: "USD",
+              value: totalPrice
+            }
+          },
+        ],
+      })
+      .then((orderID) => {
+        console.log(orderID)
+        return orderID;
+      });
+  }
+
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(function (details) {
+      console.log(`Transaction completed by ${details.payer.name.given_name}!`);
+      setCheckout(true);
+    });
+  }
+
+  const onError = (err) => {
+    console.log(err.toString());
+  }
+
   const userId = parseInt(getUserId());
-//   const flightId = 0;
+  //   const flightId = 0;
   const returnFlightId = 0;
   // let dateOfDeparture;
   const dateOfReturn = "";
@@ -274,17 +309,15 @@ const FlightBookingPage = (props) => {
                               <div className="form-sex">
                                 <label>Male/Female</label>
                                 <div
-                                  className={`form-control sex-type ${
-                                    isMale === "true" ? "chosen" : ""
-                                  }`}
+                                  className={`form-control sex-type ${isMale === "true" ? "chosen" : ""
+                                    }`}
                                   onClick={handleGenderClick}
                                 >
                                   M
                                 </div>
                                 <div
-                                  className={`form-control sex-type ${
-                                    isMale === "false" ? "chosen" : ""
-                                  }`}
+                                  className={`form-control sex-type ${isMale === "false" ? "chosen" : ""
+                                    }`}
                                   onClick={handleGenderClick}
                                 >
                                   F
@@ -420,7 +453,7 @@ const FlightBookingPage = (props) => {
                             <div className="clear"></div>
                             <div className="payment-tabs-content">
                               <div className="payment-tab">
-                                <div className="payment-type">
+                                {/* <div className="payment-type">
                                   <label>Card Type:</label>
                                   <div className="card-type">
                                     <img alt="" src="img/paymentt-01.png" />
@@ -506,24 +539,54 @@ const FlightBookingPage = (props) => {
                                     Im accept the rules{" "}
                                     <a href="#">Terms & Conditions</a>
                                   </label>
+                                </div> */}
+                                <div className="payment-alert">
+                                  <span>
+                                    You will be redirected to PayPal's website
+                                    to securely complete your payment using credit or debit cards.
+                                  </span>
+                                  {/* <div className="payment-alert-close">
+                                    <a>
+                                      <img alt="" src="img/alert-close.png" />
+                                    </a>
+                                  </div> */}
                                 </div>
+
+                                {/* <a className="paypal-btn">proceed to paypall</a> */}
+
+                                <PayPalScriptProvider style={{ maxWidth: "80px" }} options={{ "client-id": PP_ID }} >
+                                  <PayPalButtons
+                                    style={{ height: 25 }}
+                                    fundingSource={"card"}
+                                    createOrder={createOrder}
+                                    onApprove={onApprove}
+                                    onError={onError} />
+                                </PayPalScriptProvider>
                               </div>
 
                               <div className="payment-tab">
                                 <div className="payment-alert">
                                   <span>
                                     You will be redirected to PayPal's website
-                                    to securely complete your payment.
+                                    to securely complete your payment using paypal account.
                                   </span>
-                                  <div className="payment-alert-close">
-                                    <a href="#">
+                                  {/* <div className="payment-alert-close">
+                                    <a>
                                       <img alt="" src="img/alert-close.png" />
                                     </a>
-                                  </div>
+                                  </div> */}
                                 </div>
-                                <a href="#" className="paypal-btn">
-                                  proceed to paypall
-                                </a>
+
+                                {/* <a className="paypal-btn">proceed to paypall</a> */}
+
+                                <PayPalScriptProvider style={{ maxWidth: "80px" }} options={{ "client-id": PP_ID }} >
+                                  <PayPalButtons
+                                    style={{ height: 25 }}
+                                    fundingSource={"paypal"}
+                                    createOrder={createOrder}
+                                    onApprove={onApprove}
+                                    onError={onError} />
+                                </PayPalScriptProvider>
                               </div>
                             </div>
                           </div>
@@ -536,7 +599,8 @@ const FlightBookingPage = (props) => {
                             </p>
                             <button
                               type="submit"
-                              className="booking-complete-btn"
+                              className={checkout ? "booking-complete-btn" : "booking-complete-btn disable"}
+                              disabled={checkout ? "" : "disable"}
                             >
                               COMPLETE BOOKING
                             </button>

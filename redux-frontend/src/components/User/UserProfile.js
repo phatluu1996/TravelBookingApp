@@ -123,7 +123,7 @@ const UserProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
-                                                                {props.user.data?.gender && props.province.data && <UpdateUser dataUser={props.user} province={props.province} gender={props.user.data.gender}/>}
+                                                                {props.user.data?.email && props.province.data && <UpdateUser dataUser={props.user} province={props.province} gender={props.user.data.gender}/>}
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">

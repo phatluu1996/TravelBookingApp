@@ -75,7 +75,7 @@ public class AuthController {
             headerName = hotelRepository.getByAccountId(userDetails.getId()).getHotelName();
         }else {
             User tpUser = userRepository.getByAccountId(userDetails.getId());
-            headerName = tpUser.getFirstName();
+            headerName = tpUser.getLastName() + " " + tpUser.getFirstName();
         }
 
         return ResponseEntity.ok(new JwtResponse(jwt,
@@ -174,5 +174,44 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!", true));
+    }
+
+    @PostMapping("/ggsignin")
+    public ResponseEntity<?> googleSignin(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (!accountRepository.existsByUserName(signUpRequest.getEmail())) {
+            Account account = new Account(signUpRequest.getEmail(),
+                    encoder.encode(signUpRequest.getEmail())
+            );
+            account.setRole("USER");
+            User user = new User();
+            user.setFirstName(signUpRequest.getUserFirstName());
+            user.setLastName(signUpRequest.getUserLastName());
+            user.setEmail(signUpRequest.getEmail());
+            user.setAccount(account);
+            accountRepository.save(account);
+            userRepository.save(user);
+
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getEmail()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        User tpUser = userRepository.getByAccountId(userDetails.getId());
+        String headerName = tpUser.getLastName() + " " + tpUser.getFirstName();
+
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                headerName,
+                roles));
     }
 }

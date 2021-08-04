@@ -90,19 +90,39 @@ export const signup = (firstname, lastname, username, email, password) => async 
     }
 }
 
+export const googleSignin = (firstname, lastname, username, email, password) => async dispatch =>{
+    try {
+        dispatch({ type: LOGIN_USER_REQUEST });
+
+        const url = `${ROOT_URL}/api/auth/ggsignin`;   // User login api
+        const body = {
+            userFirstName: firstname,
+            userLastName: lastname,
+            username : username,
+            email: email,
+            password : password,
+            role: 'USER'
+        }
+        const response = await axios.post(url, body)
+        const responseBody = await response.data;        
+        dispatch({
+            type: LOGIN_USER_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: LOGIN_USER_ERROR,
+            message: error
+        });
+    }
+}
+
 export const getUser = (id, token) => async dispatch =>{
     try {
         dispatch({ type: GET_USER_REQUEST });
 
-        // const response = await userApi.getUser(id, token);
-        const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
-            headers: {
-                "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
-            }
-        });
-        const response = await httpAuth.get(`/user/${id}`);
+        const response = await userApi.getUser(id, token);
+        
         const responseBody = await response.data;        
 
         dispatch({

@@ -1,12 +1,13 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { signin } from '../../../actions/actionUser';
-import { getUser, setUserSession, getToken } from '../../../utils/Common';
+import { signin, googleSignin } from '../../../actions/actionUser';
+import { getUser, setUserSession, getToken, removeUserSession } from '../../../utils/Common';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import GoogleLogin from 'react-google-login';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import GoogleLogin, { useGoogleLogout } from 'react-google-login';
+import { GoogleLogout } from 'react-google-login';
+
 import { CLIENT_ID, APP_ID } from '../../../config/api';
 
 
@@ -15,7 +16,6 @@ function PopupLogin(props) {
     const history = useHistory();
     const [errLogin, setErrLogin] = useState(false);
     const [isRequest, setIsRequest] = useState(false);
-    const [token, setToken] = useState("");
 
 
     const [error, setError] = useState({
@@ -73,7 +73,23 @@ function PopupLogin(props) {
     }
 
     const handleLoginGoogleSuccess = (res) => {
-        console.log('Login Success', res.profileObj)
+       var user = res.profileObj;
+        props.doGoogleSignin(user.givenName, user.familyName, user.email, user.email, user.email);
+        setIsRequest(true);
+        history.push("/")
+        closePopup();
+    }
+
+    const handleLogoutGoogleSuccess = (res) => {
+        const auth2 = window.gapi.auth2.getAuthInstance()
+        if (auth2 != null) {
+            auth2.signOut().then(
+                auth2.disconnect().then(res=>{
+                    removeUserSession();
+                    props.onSubmitUser(null);
+                })                
+            )
+        }
         closePopup();
     }
 
@@ -82,17 +98,6 @@ function PopupLogin(props) {
         closePopup();
     }
 
-    const handleLoginFb = (res) => {
-        console.log('Login Info', res);
-        setToken(res.accessToken);
-        console.log(window);
-       
-        closePopup();
-    }
-
-    const signoutFB = () => {
-        window.FB.logout(token);
-    }
 
     useEffect(() => {
         var mount = false;
@@ -162,15 +167,8 @@ function PopupLogin(props) {
                     <div className="autorize-bottom text-center mt-1">
                         {/* <button className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
                         <button className="list-btn-sm" type="submit"><a className="team-gp list-btn-sm-icon" ></a></button> */}
-                        {/* <button className="list-btn-sm mr-1" onClick={signoutFB} type="submit">LOG OUT</button> */}
-                        <FacebookLogin
-                            appId={APP_ID}                            
-                            callback={handleLoginFb}                                  
-                            fields="name,email,picture"                      
-                            render={renderProps => (
-                                <button onClick={renderProps.onClick} className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
-                            )}
-                        />                        
+
+
                         <GoogleLogin
                             render={renderProps => (
                                 <button className="list-btn-sm mr-1" onClick={renderProps.onClick} disabled={renderProps.disabled} type="submit"><a className="team-gp list-btn-sm-icon" ></a></button>
@@ -180,7 +178,8 @@ function PopupLogin(props) {
                             onSuccess={handleLoginGoogleSuccess}
                             onFailure={handleLoginGoogleFail}
                         />
-                        <div className="clear"></div>
+                        {/* <button className="list-btn-sm" type="submit" onClick={handleLogoutGoogleSuccess}><a className="team-gp list-btn-sm-icon" ></a></button> */}
+
                     </div>
                 </div>
             </form>
@@ -199,6 +198,9 @@ const mapDispatchToProps = (dispatch) => {
         doSignin: (username, password) => {
             dispatch(signin(username, password));
         },
+        doGoogleSignin: (firstname, lastname, username, email, password) => {
+            dispatch(googleSignin(firstname, lastname, username, email, password));
+        }
 
     };
 };
