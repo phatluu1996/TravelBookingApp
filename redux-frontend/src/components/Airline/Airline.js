@@ -7,7 +7,7 @@ import { retrieveAirline, updateAirline } from "../../actions/actionAirline";
 
 import { useSelector, useDispatch } from "react-redux";
 import UpdateAirline from "./Component/UpdateAirline";
-import { getUserId } from "../../utils/Common";
+import { getUserId } from "../../utils";
 
 const Airline = (props) => {
   // let query = useQuery();

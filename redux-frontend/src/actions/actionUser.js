@@ -121,8 +121,15 @@ export const getUser = (id, token) => async dispatch =>{
     try {
         dispatch({ type: GET_USER_REQUEST });
 
-        const response = await userApi.getUser(id, token);
-        
+        // const response = await userApi.getUser(id, token);
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/user/${id}`);
         const responseBody = await response.data;        
 
         dispatch({

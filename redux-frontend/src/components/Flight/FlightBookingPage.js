@@ -6,7 +6,7 @@ import Footer from "../Layout/Footer";
 import $ from "jquery";
 import { importAll } from "../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserId } from "../../utils/Common";
+import { getUserId } from "../../utils";
 import { bookFlight } from "../../actions/actionBookingFlight";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";

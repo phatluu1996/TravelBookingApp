@@ -5,15 +5,15 @@ import ChangePassword from './ChangePassword';
 import FlightBookingHistory from './FlightBookingHistory';
 import HotelBookingHistory from './HotelBookingHistory';
 import UpdateUser from './UpdateUser';
-import { importAll } from "../../utils/JqueryImport";
+
 import { connect, useSelector } from 'react-redux';
 import { getUser } from '../../actions/actionUser';
 import { retrieveProvince } from '../../actions/actionLocation';
+import { getToken, getUserId } from '../../utils';
 
-const UserProfile = (props) => {
-        
+const UserProfile = (props) => {        
     useEffect(()=>{ 
-        props.getUser(sessionStorage.getItem("userId"), sessionStorage.getItem('userToken'));
+        props.getUser(getUserId(), getToken());
         if(!props.province.data){
             props.getProvince();
         }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { changePassword } from '../../actions/actionUser';
-import {removeUserSession} from "../../utils/Common";
+import {removeUserSession} from "../../utils";
 
 const ChangePassword = (props) => {
     const account = props.account;

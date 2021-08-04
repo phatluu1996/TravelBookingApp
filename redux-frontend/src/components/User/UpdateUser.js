@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateUser } from '../../actions/actionUser';
 import { importAll } from "../../utils/JqueryImport";
-import {getUser, setUserSession, getToken} from '../../utils/Common';
+import { getUser, getUserId } from '../../utils';
 
 const UpdateUser = (props) => {
     const dataUser = props.dataUser.data;
@@ -177,9 +177,9 @@ const UpdateUser = (props) => {
         }
 
         if( dataUser.firstName === form.firstName.value && dataUser.lastName === form.lastName.value && dataUser.dateOfBirth === form.birthday.value 
-            && dataUser.phoneNumber === form.phoneNumber.value && dataUser.email === form.email.value && dataUser.location.street === form.address.value 
-            && dataUser.location.province.id === selectProvince.id && dataUser.location.district.id === selectDistrict.id && dataUser.location.ward.id === selectWard.id
-            && dataUser.location.postalCode === form.postalCode.value){
+            && dataUser.phoneNumber === form.phoneNumber.value && dataUser.email === form.email.value && dataUser.location?.street === form.address.value 
+            && dataUser.location?.province.id === selectProvince.id && dataUser.location?.district.id === selectDistrict.id && dataUser.location?.ward.id === selectWard.id
+            && dataUser.location?.postalCode === form.postalCode.value){
                 setErrUpdate(true);
                 setResponseMessageUpdate("No data change.");
                 return false;
@@ -261,7 +261,7 @@ const UpdateUser = (props) => {
                             <div className="validate-error">{validateInput.address}</div>
                             <div className="clear"></div>
                             <div className={`input ${validateInput.address ? 'is-invalid' : ''}`}>
-                                <input type="text" name="address" defaultValue={dataUser?.location.street} />
+                                <input type="text" name="address" defaultValue={dataUser?.location?.street} />
                             </div>
                         </div>
                         <div className="clear"></div>
@@ -340,7 +340,7 @@ const UpdateUser = (props) => {
                             <label className="autorize-input-lbl">Postal Code:</label>
                             <div className="validate-error">{validateInput.postalCode}</div>
                             <div className="clear"></div>
-                            <div className="input"><input type="text" name="postalCode" defaultValue={dataUser?.location.postalCode} /></div>
+                            <div className="input"><input type="text" name="postalCode" defaultValue={dataUser?.location?.postalCode} /></div>
                         </div>
                         <div className="clear"></div>
                     </div>

@@ -10,10 +10,9 @@ import { getUser } from '../../actions/actionUser';
 import {fetchHotelByAccountId} from '../../actions/actionHotel'
 import { retrieveProvince } from '../../actions/actionLocation';
 
-import Common from '../../utils/Common';
 import AddNewRoom from '../Room/AddNewRoom';
-import ListRoom from '../Room/ListRoom';
 import UpdateHotel from './UpdateHotel';
+
 
 const HotelProfile = (props) => {
     //  const user = useSelector((state) => state.user);

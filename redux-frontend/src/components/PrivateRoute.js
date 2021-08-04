@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Common from '../utils/Common';
+import Common from '../utils';
 
 const PrivateRoute = ({component: Component, restricted, ...rest}) => {
     return (

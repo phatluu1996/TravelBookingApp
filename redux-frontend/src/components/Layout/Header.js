@@ -2,12 +2,12 @@ import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link, useHistory } from 'react-router-dom';
-import { removeUserSession } from "../../utils/Common";
+import { removeUserSession } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { signout } from "../../actions/actionUser";
 import { connect } from "react-redux";
-import { getUser, getUserFullName } from "../../utils/Common";
+import { getUser, getUserFullName } from "../../utils";
 
 const Header = (props) => {
     const history = useHistory();

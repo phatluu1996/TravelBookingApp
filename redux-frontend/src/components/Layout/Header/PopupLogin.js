@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { signin, googleSignin } from '../../../actions/actionUser';
-import { getUser, setUserSession, getToken, removeUserSession } from '../../../utils/Common';
+import { getUser, setUserSession, getToken, removeUserSession } from '../../../utils';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

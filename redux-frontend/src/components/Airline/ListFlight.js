@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
 import { retrieveAirline } from "../../actions/actionAirline";
-import {getUserId} from "../../utils/Common";
+import {getUserId} from "../../utils";
 
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

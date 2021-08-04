@@ -3,7 +3,7 @@
     }
     
     // return the token from the session storage
-    export const getToken = () => {
+    export var getToken = () => {
         return sessionStorage.getItem('userToken');
     }
 

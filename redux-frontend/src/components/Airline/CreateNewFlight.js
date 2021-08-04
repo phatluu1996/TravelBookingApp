@@ -2,11 +2,11 @@ import { useEffect} from "react";
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
-import Common from '../../utils/Common';
+import Common from '../../utils';
 
 import { importAll } from "../../utils/JqueryImport";
 import { retrieveAirline} from "../../actions/actionAirline";
-import {getUserId} from "../../utils/Common";
+import {getUserId} from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import AddNewFlight from "./Component/AddNewFlight";
 
