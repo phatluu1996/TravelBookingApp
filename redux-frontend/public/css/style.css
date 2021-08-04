@@ -1509,10 +1509,10 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .testimonials-flat .testimonials-holder .bx-prev {background:url(../img/ss-l.png) left top no-repeat;height:21px;width:12px;}
 .testimonials-flat .testimonials-holder .bx-next {background:url(../img/ss-r.png) left top no-repeat;height:21px;width:12px;}
 .testimonials-flat .testimonials-holder .bx-prev:hover,.testimonials-flat .testimonials-holder .bx-next:hover {background-position:left -21px;}
-.inform-block {padding:0px 0px 60px 0px;}
+.inform-block {padding:80px 0px 30px 0px;}
 .flat-adv-btn {display:inline-block;margin-top:17px;font-size:11px;color:#30353a;text-decoration:none;text-transform:uppercase;font-family: 'Montserrat';font-weight:normal;border:2px solid #e6e6e6;border-radius:3px;padding:10px 19px 10px 19px;}
 .flat-adv-btn:hover {color:#ff7200;}
-.pop-destinations {background:#ffffff; padding:92px 20px 61px 20px;}
+.pop-destinations {background:#ffffff; padding:122px 20px 61px 20px;}
 .pop-destinations .offer-slider-i,.offer-slider-c {font-family: 'Raleway'; font-weight:500;}
 .pop-destinations .offer-slider-i {margin-bottom:13px;}
 .pop-destinations .offer-slider-i:nth-child(3n) {margin-right:0px;}
@@ -3472,4 +3472,8 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 
 .text-center {
   text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 40px;
 }

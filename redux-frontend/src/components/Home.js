@@ -20,7 +20,6 @@ import {
 import { retrieveProvince } from "../actions/actionLocation";
 import $ from 'jquery';
 import { importAll } from "../utils/JqueryImport";
-// import { Swiper, SwiperSlide } from "swiper/react";
 import Swiper from 'swiper';
 
 
@@ -143,9 +142,9 @@ const Home = (props) => {
 
     useEffect(() => {
         let mount = false;
-        window.scrollTo(0, 0);   
-        importAll();     
-        props.getProvince();        
+        window.scrollTo(0, 0);
+        importAll();
+        props.getProvince();
         return () => {
             mount = true;
         };
@@ -282,7 +281,7 @@ const Home = (props) => {
                     </div>
                 </div>
 
-                <div className="wrapper-a-holder full-width-search">
+                <div className="wrapper-a-holder full-width-search mb-4">
                     <div className="wrapper-a">
                         <div className="page-search full-width-search search-type-b">
                             <div className="search-type-padding">
@@ -446,7 +445,7 @@ const Home = (props) => {
                                             <div className="clear"></div>
                                         </div>
                                         <footer className="search-footer">
-                                            <button className="srch-btn">Search</button>                                            
+                                            <button className="srch-btn">Search</button>
                                             <div className="clear"></div>
                                         </footer>
                                     </form>
@@ -454,14 +453,14 @@ const Home = (props) => {
                                     <form onSubmit={handleSubmit} className="search-tab-content" autoComplete="false">
                                         <div className="page-search-p">
                                             <div className="search-large-i">
-                                                <div className="srch-tab-line">
+                                                <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-left transformed">
                                                         <label>From</label>
                                                         <div className="select-wrapper">
                                                             <select
                                                                 className="custom-select"
                                                                 name="from"
-                                                                id="departure-city"                                                                                                                                
+                                                                id="departure-city"
                                                             >
                                                                 {province.properties.map((province) => (
                                                                     <option
@@ -504,7 +503,7 @@ const Home = (props) => {
                                             </div>
 
                                             <div className="search-large-i">
-                                                <div className="srch-tab-line">
+                                                <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-3c">
                                                         <label>Departure</label>
                                                         <div className="input-a">
@@ -552,7 +551,7 @@ const Home = (props) => {
                                             </div>
 
                                             <div className="search-large-i">
-                                                <div className="srch-tab-line">
+                                                <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-3c">
                                                         <label>Adult</label>
                                                         <div className="input-a">
@@ -593,790 +592,16 @@ const Home = (props) => {
                                                     <div className="clear"></div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="clear"></div>
-
-                                              {/*<div className="search-asvanced">
-                                               <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <label>Price</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <label>Air company</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="search-large-i">
-                                                    <div className="srch-tab-line no-margin-bottom">
-                                                        <label>Rating</label>
-                                                        <div className="select-wrapper">
-                                                            <select className="custom-select">
-                                                                <option>--</option>
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="clear"></div> 
-                                            </div>*/}
                                         </div>
                                         <footer className="search-footer">
-                                            {/* <button onClick={swapCity} className="btn btn-circle rotate"><FontAwesomeIcon icon={faRetweet} color="#FFFFFF" /></button> */}
                                             <button type="submit" className="srch-btn">
                                                 Search
                                             </button>
-                                            <span className="srch-lbl" onClick={swapProvince}>Swap Province</span>
                                             <div className="clear"></div>
                                         </footer>
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                </div>
-
-                <div className="mp-pop">
-                    <div className="wrapper-padding-a">
-                        <div className="popular-slider">
-                            <header className="fly-in page-lbl">
-                                <b>We are Offering the hottest offers</b>
-                                <p>
-                                    Voluptatem quia voluptas sit aspernatur aut odit aut fugit,
-                                    sed quia consequuntur magni
-                                    <br />
-                                    dolores eos qui.
-                                </p>
-                            </header>
-                            <div className="fly-in offer-slider-c">
-                                <div id="offers" className="owl-slider">
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-01.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Andrassy Thai Hotel</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    Location: Thailand{" "}
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>756$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-02.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Campanile Cracovie</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    location: poland
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>900$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-03.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Park Plaza Westminster</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    Location: Thailand{" "}
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>850$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-04.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Ermin's Hotel</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    location: england
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>630$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-01.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Andrassy Thai Hotel</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    Location: Thailand{" "}
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>756$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-02.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Campanile Cracovie</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    location: poland
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>900$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-03.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Park Plaza Westminster</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    Location: Thailand{" "}
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>850$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="offer-slider-i">
-                                        <a className="offer-slider-img">
-                                            <img alt="" src="img/slide-04.jpg" />
-                                            <span className="offer-slider-overlay">
-                                                <span className="offer-slider-btn">view details</span>
-                                            </span>
-                                        </a>
-                                        <div className="offer-slider-txt">
-                                            <div className="offer-slider-link">
-                                                <a>Ermin's Hotel</a>
-                                            </div>
-                                            <div className="offer-slider-l">
-                                                <div className="offer-slider-location">
-                                                    location: england
-                                                </div>
-                                                <nav className="stars">
-                                                    <ul>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-b.png" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a>
-                                                                <img alt="" src="img/star-a.png" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="clear"></div>
-                                                </nav>
-                                            </div>
-                                            <div className="offer-slider-r">
-                                                <b>630$</b>
-                                                <span>avg/night</span>
-                                            </div>
-                                            <div className="offer-slider-devider"></div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mp-popular">
-                            <header className="fly-in">
-                                <b>Our travel Agency</b>
-                                <p>
-                                    Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-                                    odit aut fugit.
-                                </p>
-                            </header>
-                            <div className="fly-in advantages-row flat">
-                                <div className="flat-adv">
-                                    <div className="flat-adv-a">
-                                        <div className="flat-adv-l">
-                                            <img alt="" src="img/adv-a-01.png" />
-                                        </div>
-                                        <div className="flat-adv-r">
-                                            <div className="flat-adv-rb">
-                                                <div className="flat-adv-b">Awesome design</div>
-                                                <div className="flat-adv-c">
-                                                    Perspiciatis unde omnis iste natus doxes sit
-                                                    voluptatem accusantium doloremque la dantiumeaque
-                                                    ipsa.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flat-adv">
-                                    <div className="flat-adv-a">
-                                        <div className="flat-adv-l">
-                                            <img alt="" src="img/adv-a-02.png" />
-                                        </div>
-                                        <div className="flat-adv-r">
-                                            <div className="flat-adv-rb">
-                                                <div className="flat-adv-b">carefully handcrafted</div>
-                                                <div className="flat-adv-c">
-                                                    Perspiciatis unde omnis iste natus doxes sit
-                                                    voluptatem accusantium doloremque la dantiumeaque
-                                                    ipsa.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flat-adv">
-                                    <div className="flat-adv-a">
-                                        <div className="flat-adv-l">
-                                            <img alt="" src="img/adv-a-03.png" />
-                                        </div>
-                                        <div className="flat-adv-r">
-                                            <div className="flat-adv-rb">
-                                                <div className="flat-adv-b">fully responsive</div>
-                                                <div className="flat-adv-c">
-                                                    Perspiciatis unde omnis iste natus doxes sit
-                                                    voluptatem accusantium doloremque la dantiumeaque
-                                                    ipsa.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flat-adv">
-                                    <div className="flat-adv-a">
-                                        <div className="flat-adv-l">
-                                            <img alt="" src="img/adv-a-04.png" />
-                                        </div>
-                                        <div className="flat-adv-r">
-                                            <div className="flat-adv-rb">
-                                                <div className="flat-adv-b">customer support</div>
-                                                <div className="flat-adv-c">
-                                                    Perspiciatis unde omnis iste natus doxes sit
-                                                    voluptatem accusantium doloremque la dantiumeaque
-                                                    ipsa.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="clear"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="testimonials-flat">
-                    <div className="testimonials-holder fly-in">
-                        <div id="testimonials-slider">
-                            <div className="testimonials-i">
-                                <div className="testimonials-a">
-                                    <img alt="" src="img/testimonials-02.png" />
-                                </div>
-                                <div className="testimonials-b">
-                                    "Qerspeciatis unde omnis iste natus doxes sit voluptatem
-                                    accusantium doloremque laudantium, totam aperiam
-                                    <br />
-                                    eaque ipsa quae ab illo inventore veritatis et quasi
-                                    architecto"
-                                </div>
-                                <div className="testimonials-c">
-                                    <nav>
-                                        <ul>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <div className="testimonials-d">
-                                    Albert Dowson, Company Director
-                                </div>
-                            </div>
-
-                            <div className="testimonials-i">
-                                <div className="testimonials-a">
-                                    <img alt="" src="img/testimonials-02.png" />
-                                </div>
-                                <div className="testimonials-b">
-                                    "Qerspeciatis unde omnis iste natus doxes sit voluptatem
-                                    accusantium doloremque laudantium, totam aperiam
-                                    <br />
-                                    eaque ipsa quae ab illo inventore veritatis et quasi
-                                    architecto"
-                                </div>
-                                <div className="testimonials-c">
-                                    <nav>
-                                        <ul>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                                    <img alt="" src="img/ts-star-a.png" />
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <div className="testimonials-d">
-                                    Albert Dowson, Company Director
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="inform-block">
-                    <div className="wrapper-padding">
-                        <header className="fly-in page-lbl">
-                            <b>helpful information</b>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                                aut fugit.
-                            </p>
-                        </header>
-                        <div className="fly-in advantages-row flat">
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-01.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">how to choose a tour</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-02.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">booking of tickets</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-03.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">weekend getaway</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-04.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">Traveling with family</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1719,6 +944,120 @@ const Home = (props) => {
                     </div>
                     <div className="clear"></div>
                 </div>
+
+                <div className="inform-block">
+                    <div className="wrapper-padding">
+                        <header className="fly-in page-lbl">
+                            <b>helpful information</b>
+                            <p>
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
+                                aut fugit.
+                            </p>
+                        </header>
+                        <div className="fly-in advantages-row flat">
+                            <div className="flat-adv large">
+                                <div className="flat-adv-a">
+                                    <div className="flat-adv-l">
+                                        <img alt="" src="img/info-c-01.png" />
+                                    </div>
+                                    <div className="flat-adv-r">
+                                        <div className="flat-adv-rb">
+                                            <div className="flat-adv-b">how to choose a tour</div>
+                                            <div className="flat-adv-c">
+                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
+                                                accusantium doloremque la dantiumeaque ipsa.
+                                            </div>
+                                            <a className="flat-adv-btn">Read more</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flat-adv large">
+                                <div className="flat-adv-a">
+                                    <div className="flat-adv-l">
+                                        <img alt="" src="img/info-c-02.png" />
+                                    </div>
+                                    <div className="flat-adv-r">
+                                        <div className="flat-adv-rb">
+                                            <div className="flat-adv-b">booking of tickets</div>
+                                            <div className="flat-adv-c">
+                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
+                                                accusantium doloremque la dantiumeaque ipsa.
+                                            </div>
+                                            <a className="flat-adv-btn">Read more</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flat-adv large">
+                                <div className="flat-adv-a">
+                                    <div className="flat-adv-l">
+                                        <img alt="" src="img/info-c-03.png" />
+                                    </div>
+                                    <div className="flat-adv-r">
+                                        <div className="flat-adv-rb">
+                                            <div className="flat-adv-b">weekend getaway</div>
+                                            <div className="flat-adv-c">
+                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
+                                                accusantium doloremque la dantiumeaque ipsa.
+                                            </div>
+                                            <a className="flat-adv-btn">Read more</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flat-adv large">
+                                <div className="flat-adv-a">
+                                    <div className="flat-adv-l">
+                                        <img alt="" src="img/info-c-04.png" />
+                                    </div>
+                                    <div className="flat-adv-r">
+                                        <div className="flat-adv-rb">
+                                            <div className="flat-adv-b">Traveling with family</div>
+                                            <div className="flat-adv-c">
+                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
+                                                accusantium doloremque la dantiumeaque ipsa.
+                                            </div>
+                                            <a className="flat-adv-btn">Read more</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="clear"></div>
+                    </div>
+                </div>
+
+                <div className="travel_experience">
+                    <div className="wrapper-padding">
+                        <header className="fly-in page-lbl">
+                            <b className="offer-slider-lbl">We are Offering the hottest offers</b>
+                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione.</p>
+                        </header>
+                        <div className="t-experience-row fly-in">
+
+                            <div className="t-experience-i">
+                                <div className="t-experience-a"><img alt="" src="img/info-c-01.png" /></div>
+                                <div className="t-experience-b">how to choose a tour</div>
+                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
+                            </div>
+
+                            <div className="t-experience-i">
+                                <div className="t-experience-a"><img alt="" src="img/info-c-02.png" /></div>
+                                <div className="t-experience-b">booking of tickets</div>
+                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
+                            </div>
+
+                            <div className="t-experience-i">
+                                <div className="t-experience-a"><img alt="" src="img/info-c-03.png" /></div>
+                                <div className="t-experience-b">weekend getaway</div>
+                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
 
                 <div className="partners-wrapper">
                     <header className="fly-in page-lbl">
