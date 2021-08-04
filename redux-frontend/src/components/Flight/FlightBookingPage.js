@@ -31,7 +31,8 @@ const FlightBookingPage = (props) => {
   const dispatch = useDispatch();
   const [isMale, setIsMale] = useState("true");
   const [type, setType] = useState(0);
-  const [totalPrice,setTotalPrice] = useState(0)
+  const [dateOfDeparture, setDateOfDeparture] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
   const [hasInfant, setHasInfant] = useState("true");
   const booking = useSelector((state) => state.bookFlight);
 
@@ -42,12 +43,14 @@ const FlightBookingPage = (props) => {
   const userId = parseInt(getUserId());
 //   const flightId = 0;
   const returnFlightId = 0;
-  const dateBooking = "";
-  const returnDateBooking = "";
-//   const type = 0;
+  // let dateOfDeparture;
+  const dateOfReturn = "";
+
   const returnType = 0;
   const paymentMethod = "Credit Card";
-//  const totalPrice = 60;
+  //   const flightId = 0;
+  //   const type = 0;
+  //  const totalPrice = 60;
   const totalPassenger = 1;
   const [error, setError] = useState({
     firstname: "",
@@ -137,22 +140,15 @@ const FlightBookingPage = (props) => {
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();
-    if (location.state.typeClass === "ECONOMY") {
-        setTotalPrice(location.state.selectedFlight.economyPrice);
-        setType(0);
-    }  else {
-        setTotalPrice(location.state.selectedFlight.businessPrice);
-        setType(1);
-    }
-    var date = (location.state.dateBook).split("/").reverse().join("-");
+
     var form = e.target;
     if (validateForm(e)) {
       var data = {
         userId: userId,
         flightId: location.state.selectedFlight.id,
         returnFlightId: returnFlightId,
-        dateBooking: date,
-        returnDateBooking: returnDateBooking,
+        dateBooking: dateOfDeparture,
+        returnDateBooking: dateOfReturn,
         type: type,
         returnType: returnType,
         paymentMethod: paymentMethod,
@@ -168,18 +164,26 @@ const FlightBookingPage = (props) => {
         hasInfant: "false",
       };
       bookFlt(data);
-         
-    history.push({pathname:'/flight-booking-complete'});
-};
-    
+
+      history.push({ pathname: "/flight-booking-complete" });
+    }
   };
   useEffect(() => {
     let mount = false;
     window.scrollTo(0, 0);
     importAll();
-    const flight = location.state.selectedFlight;
-    const dateDeparture = location.state.dateBook;
-    const seatClass = location.state.typeClass;
+    if (location.state.typeClass === "ECONOMY") {
+      setTotalPrice(location.state.selectedFlight.economyPrice);
+      setType(0);
+    } else {
+      setTotalPrice(location.state.selectedFlight.businessPrice);
+      setType(1);
+    }
+    setDateOfDeparture(location.state.dateBook.split("/").reverse().join("-"));
+
+    // const flight = location.state.selectedFlight;
+    // const dateDeparture = location.state.dateBook;
+    // const seatClass = location.state.typeClass;
     return () => {
       mount = true;
     };
@@ -188,8 +192,7 @@ const FlightBookingPage = (props) => {
   //     getSelectedFlight(selectFlightId);
 
   // },[])
- 
-   
+
   return (
     <>
       <Header></Header>

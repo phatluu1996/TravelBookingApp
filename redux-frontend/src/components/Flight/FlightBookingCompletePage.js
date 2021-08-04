@@ -5,10 +5,11 @@ import Header from '../Layout/Header';
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
-function getFormattedDate(date) {
-    let year = date.getFullYear();
-    let month = (1 + date.getMonth()).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
+function getFormattedDate(date) {;
+    var result =new Date(date);
+    let year = result.getFullYear();
+    let month = (1 + result.getMonth()).toString().padStart(2, '0');
+    let day = result.getDate().toString().padStart(2, '0');
   
     return month + '/' + day + '/' + year;
 }
@@ -29,7 +30,7 @@ const FlightBookingCompletePage = (props) => {
     }, [])
     
     return (
-        <>
+        <> 
             <Header></Header>
             <div className="main-cont">
                 <div className="body-wrapper">
@@ -53,7 +54,7 @@ const FlightBookingCompletePage = (props) => {
                                                 <div className="comlete-alert">
                                                     <div className="comlete-alert-a">
                                                         <b>Thank You. Your Booking is Confirmed.</b>
-                                                        <span> *** Please check email for your Ticket Information!</span>
+                                                        <span>Wish you a pleasant journey!</span>
                                                     </div>
                                                 </div>
 
@@ -62,34 +63,37 @@ const FlightBookingCompletePage = (props) => {
                                                     <div className="complete-info-table">
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">First Name</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].passenger.firstname}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.passenger.firstname}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Last Name</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].passenger.lastname}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.passenger.lastname}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Gender</div>
-                                                        <div className="complete-info-r">{booking?.data.flightBookingDetails[0].passenger.gender ? "Male" : "Female"}</div>
+                                                        <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.passenger.gender ? "Male" : "Female"}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Birthday</div>
-                                                            <div className="complete-info-r">{getFormattedDate(booking?.data.flightBookingDetails[0].passenger.birthday)}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[0]?.passenger.birthday)}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Document Id:</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].passenger.cardIdNumber}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.passenger.cardIdNumber}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Expired Date:</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].passenger.cardExpired}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[0]?.passenger.cardExpired)}</div>
                                                             <div className="clear"></div>
                                                         </div>
+                                                        
+                                                        <div className="complete-txt-link"><a href="#">*** Passengers must show valid identification at the airport checkpoint in order to travel..</a></div>
+
                                                     </div>
 
                                                     <div className="complete-devider"></div>
@@ -98,31 +102,30 @@ const FlightBookingCompletePage = (props) => {
                                                         <h2>Flight Detail</h2>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Flight Code</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].flight.flightCode}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.flightCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Airline</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].flight.airline.airlineName}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.airline.airlineName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Date</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].dateOfDeparture}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[0]?.dateOfDeparture)}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Time</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].flight.departureTime}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.departureTime}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Destination</div>
-                                                            <div className="complete-info-r">{booking?.data.flightBookingDetails[0].flight.departureCity} - {booking?.data.flightBookingDetails[0].flight.arrivalCity}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.departureCity} - {booking?.data?.flightBookingDetails[0]?.flight.arrivalCity}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                        <p>Passengers must show valid identification at the airport checkpoint in order to travel.</p>
-                                                        <div className="complete-txt-link"><a href="#">** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
+                                                        <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
                                                     </div>
 
                                                     <div className="complete-devider"></div>
@@ -131,11 +134,17 @@ const FlightBookingCompletePage = (props) => {
                                                         <h2>Ticket Detail</h2>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Reservation Code</div>
-                                                            <div className="complete-info-r">{booking?.data.reservationCode}</div>
+                                                            <div className="complete-info-r">{booking?.data?.reservationCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                        <p>Qoluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. Que porro quisqua. Sed ut perspiciatis unde omnis ste natus error.</p>
-                                                        <div className="complete-txt-link"><a href="#">Your Hotel Info</a></div>
+                                                        <p>
+                                                        1. Mobile Check-in is a convenient way to check-in using your mobile device. Passengers can select their preferred seat, email or print their e-Boarding pass. 
+                                                    Please don’t forget to carry a printout of your boarding card.
+                                                    If you're carrying check-in baggage, please go straight to our bag drop counter.
+                                                        <br/>2. Hand Baggage - One personal item like small laptop bag, ladies’ purse, infant bag etc., only if it fits under the seat in front of you.
+                                                        <br/>3. Additional charges will apply for excess baggage.
+                                                        </p>
+                                                        <div className="complete-txt-link"><a href="#"> *** Please check email for your Ticket Information!</a></div>
                                                     </div>
 
                                                 </div>

@@ -2,9 +2,11 @@ import { useEffect} from "react";
 import React from "react";
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
+import Common from '../../utils/Common';
+
 import { importAll } from "../../utils/JqueryImport";
 import { retrieveAirline} from "../../actions/actionAirline";
-
+import {getUserId} from "../../utils/Common";
 import { useSelector, useDispatch } from "react-redux";
 import AddNewFlight from "./Component/AddNewFlight";
 
@@ -14,8 +16,8 @@ const CreateNewFlight = (props) => {
 
   const airline = useSelector((state) => state.airline);
 
+  const id = parseInt(getUserId())
 
-  const id = 2;
 
   const getAirline = (id) => {
     dispatch(retrieveAirline(id));

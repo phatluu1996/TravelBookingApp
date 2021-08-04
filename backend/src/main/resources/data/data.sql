@@ -12478,7 +12478,8 @@ VALUES
     (N'400 Xô Viết Nghệ Tỉnh',0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',3,10,0,0824728690,0,27,1),
     (N'321 Bạch Đằng',0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',4,10,0,0824728690,0,28,2),
     (N'105 Phạm Văn Hai',0,N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','DarkNight',5,10,0,0824728690,0,29,3),
-    (N'107 Hóc Môn',0,N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','BoomBoom',3.5,10,0,0824728690,0,30,4)
+    (N'107 Hóc Môn',0,N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','BoomBoom',3.5,10,0,0824728690,0,30,4),
+    (N'99 Nguyễn Hửu Cảnh',0,N'Trần Thế Long',N'Giám Đốc','11/6/2019','long@gmail.com','BigStart',3.5,10,0,0824728690,0,7,4)
 --Room
 INSERT INTO [dbo].[room]
 ([available_time]
@@ -12500,7 +12501,10 @@ VALUES
     ('11/7/2021',4,2,40,0,1,0,N'Cao Cấp',3,null),
     ('11/9/2021',2,1,30,0,1,0,N'Bình Thường',4,null),
     ('11/7/2021',4,2,40,0,1,0,N'Cao Cấp',4,null),
-    ('11/7/2021',1,0,40,0,1,0,N'Phòng Nhỏ',4,null)
+    ('11/10/2021',1,0,40,0,1,0,N'Phòng Nhỏ',4,null),
+    ('11/2/2021',4,2,40,0,1,0,N'Cao Cấp',5,null),
+    ('11/12/2021',1,0,40,0,1,0,N'Phòng Nhỏ',5,null),
+    ('11/11/2021',7,4,300,0,1,0,N'Cao Cấp Nhất',5,null)
 -- --FeedBack
 INSERT INTO [dbo].[hotel_feedback]
 ([feedback]
@@ -12516,7 +12520,10 @@ VALUES
     ('Phòng tốt , giá hợp lý',4.5,0,19,3),
     ('Phòng tốt ,dịch vụ tạm dược',3,0,20,4),
     ('Phòng tốt , giá hợp lý',4,0,20,4),
-    ('Phòng tốt , giá hợp lý',4.5,0,17,4)
+    ('Phòng tốt , giá hợp lý',4.5,0,17,4),
+    ('Phòng tốt ,dịch vụ tạm dược',3,0,20,5),
+    ('Phòng tốt , giá hợp lý',4,0,20,5),
+    ('Phòng tốt , giá hợp lý',4.5,0,17,5)
 
 
 

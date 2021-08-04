@@ -23,6 +23,7 @@ import HotelBookingPage from './components/Hotel/HotelBookingPage';
 import HotelBookingCompletePage from './components/Hotel/HotelBookingCompletePage';
 import FlightBookingCompletePage from './components/Flight/FlightBookingCompletePage';
 import AdminDashboard from './components/Admin/AdminDashboard';
+import HotelProfile from './components/Hotel/HotelProfile';
 // import FlightBookingPage from './components/Flight/FlightBookingPage';
 
 
@@ -48,6 +49,7 @@ const App = () => {
           <PublicRoute restricted={false} component={HotelBookingPage} path="/hotel-booking" />
           <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
+          <PublicRoute component={HotelProfile} path="/hotel" exact />
           <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
           <PrivateRoute restricted={getRole() === "ROLE_USER"} component={UserProfile} path="/user"/>
         </Switch>

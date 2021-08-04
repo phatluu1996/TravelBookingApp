@@ -1,32 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
-import ChangePassword from './ChangePassword';
-import FlightBookingHistory from './FlightBookingHistory';
-import HotelBookingHistory from './HotelBookingHistory';
-import UpdateUser from './UpdateUser';
+import ChangePassword from '../User/ChangePassword';
+import FlightBookingHistory from '../User/FlightBookingHistory';
+import listRoom from '../Room/ListRoom';
+import UpdateUser from '../User/UpdateUser';
 import { importAll } from "../../utils/JqueryImport";
 import { connect, useSelector } from 'react-redux';
+
 import { getUser } from '../../actions/actionUser';
+import {fetchHotelByAccountId} from '../../actions/actionHotel'
 import { retrieveProvince } from '../../actions/actionLocation';
 
-const UserProfile = (props) => {
-        
+import Common from '../../utils/Common';
+import ListRoom from '../Room/ListRoom';
+import UpdateHotel from './UpdateHotel';
+
+const HotelProfile = (props) => {
+    //  const user = useSelector((state) => state.user);
+//    const hotel = hotel
+
     useEffect(()=>{
-        // importAll(); 
-        props.getUser(sessionStorage.getItem("userId"), sessionStorage.getItem('userToken'));
+        importAll();
+
+        // props.getUser(sessionStorage.getItem("userId"));
         if(!props.province.data){
             props.getProvince();
         }
+        props.getHotel(sessionStorage.getItem("userId"));
+            
     },[]);
 
     const getAddress = () => {
-        if(!props.user.data?.location) return "";
-        const province = props.user.data?.location.province;
-        const district = props.user.data?.location.district;
-        const ward = props.user.data?.location.ward;
-        return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
+        const province = props.hotel?.data?.location?.province?.name;
+        const district = props.hotel?.data.location?.district?.name;
+        const ward = props.hotel?.data.location?.ward?.name;
+        return ward+" ,"+district+" ,"+province;
     }
+
     // const checkGender = ()=> {
     //     if(user.data){
     //         if(user.data.gender === "Female"){
@@ -59,7 +70,8 @@ const UserProfile = (props) => {
                                                         <div className="checkout-headrb">
                                                             <div className="checkout-headrp">
                                                                 <div className="chk-left" style={{marginTop:'25px'}}>
-                                                                    <div className="chk-lbl-a"><h3>{props.user.data? props.user.data.lastName:""} {props.user.data ? props.user.data.firstName:""}</h3></div>
+                                                                    <div>User Name:</div>
+                                                                    <div className="chk-lbl-a">{props.hotel.data?props.hotel.data.hotelName:""}</div>
                                                                 </div>
                                                                 <div className="clear"></div>
                                                             </div>
@@ -71,23 +83,23 @@ const UserProfile = (props) => {
                                                     <h2>Details</h2>
                                                     <div className="chk-detais-row">
                                                         <div className="chk-line">
-                                                            <span className="chk-l">Birth day:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.dateOfBirth}</span>
+                                                            <span className="chk-l">Contact Name:</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.hotel.data?props.hotel.data.contactName:""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Address:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.location?.street}<br/>{props.user.data ? getAddress():""}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.hotel.data?props.hotel.data.address:""}<br/>{props.hotel.data?getAddress():""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Phone:</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.phoneNumber}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.hotel.data?props.hotel.data.phone:""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="chk-line">
                                                             <span className="chk-l">Email</span>
-                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.user.data?.email}</span>
+                                                            <span className="chk-r" style={{textTransform:'none', textAlign:'right'}}>{props.hotel.data?props.hotel.data.email:""}</span>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -104,20 +116,22 @@ const UserProfile = (props) => {
                                                 <div className="cat-list-item fly-in">
                                                     <div className="payment-wrapper">
                                                         <div className="payment-tabs">
-                                                            <a  className="active">BOOKING HISTORY<span></span></a>
-                                                            <a>UPDATE PROFILE<span></span></a>
-                                                            <a>CHANGE PASSWORD<span></span></a>
+                                                            <a href="#" className="active">BOOKING HISTORY<span></span></a>
+                                                             {/* <a href="#">UPDATE PROFILE<span></span></a> */}
+                                                            <a href="#">UPDATE HOTEL PROFILE<span></span></a>
+                                                            {/* <a href="#">CHANGE PASSWORD<span></span></a> */}
+                                                            <a href="#">LIST ROOM<span></span></a>
+                                                            <a href="#">CREATE ROOM<span></span></a>
                                                         </div>
                                                         <div className="clear"></div>
                                                         <div className="payment-tabs-content">
                                                             <div className="payment-tab">
                                                                 <div className="booking-form">
-                                                                
                                                                     <div className="tabs-type-a tabs-block">
                                                                         <nav className="tabs-nav">
                                                                             <ul>
-                                                                                <li><a className="active">FLIGHT</a></li>
-                                                                                <li><a>HOTEL</a></li>
+                                                                                <li><a className="active" href="#">FLIGHT</a></li>
+                                                                                <li><a href="#">HOTEL</a></li>
                                                                             </ul>
                                                                             <div className="clear"></div>
                                                                         </nav>
@@ -126,7 +140,7 @@ const UserProfile = (props) => {
                                                                                 <FlightBookingHistory />
                                                                             </div>
                                                                             <div className="tabs-content-i">
-                                                                                <HotelBookingHistory />
+                                                                                {/* <HotelBookingHistory /> */}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -134,14 +148,22 @@ const UserProfile = (props) => {
 
                                                                 <div className="clear"></div>
                                                             </div>
+                                                            {/* <div className="payment-tab">
+                                                                {user.data && <UpdateUser dataUser={user} gender={user?.data.gender}/>}
+                                                                <div className="clear"></div>
+                                                            </div> */}
                                                             <div className="payment-tab">
-                                                                {props.user.data?.gender && props.province.data && <UpdateUser dataUser={props.user} province={props.province} gender={props.user.data.gender}/>}
+                                                                {props.hotel.data && props.province.data && <UpdateHotel dataHotel={props.hotel?.data} province={props.province} />}
                                                                 <div className="clear"></div>
                                                             </div>
-                                                            <div className="payment-tab">
+                                                            {/* <div className="payment-tab">
                                                                 <ChangePassword />
+                                                                <div className="clear"></div>
+                                                            </div> */}
+                                                            <div className="payment-tab">
+                                                                <ListRoom />
+                                                                <div className="clear"></div>
                                                             </div>
-
                                                         </div>
                                                     </div>
 
@@ -168,19 +190,23 @@ const UserProfile = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         user: state.user,
-        province: state.province
+        hotel: state.hotels,
+        province: state.province,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getProvince: () => {
+            dispatch(retrieveProvince());
+        },
         getUser: (id) => {
             dispatch(getUser(id));
         },
-        getProvince : () => {
-            dispatch(retrieveProvince());
-        }
+        getHotel: (id) => {
+            dispatch(fetchHotelByAccountId(id));
+        },
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(HotelProfile);

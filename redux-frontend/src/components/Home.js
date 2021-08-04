@@ -232,6 +232,10 @@ const Home = (props) => {
         history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
     };
 
+    const swapProvince = (e) => {
+
+    }
+
     return (
         <>
             <Header></Header>
@@ -457,7 +461,7 @@ const Home = (props) => {
                                                             <select
                                                                 className="custom-select"
                                                                 name="from"
-                                                                id="departure-city"
+                                                                id="departure-city"                                                                                                                                
                                                             >
                                                                 {province.properties.map((province) => (
                                                                     <option
@@ -646,7 +650,7 @@ const Home = (props) => {
                                             <button type="submit" className="srch-btn">
                                                 Search
                                             </button>
-                                            <span className="srch-lbl">Swap City</span>
+                                            <span className="srch-lbl" onClick={swapProvince}>Swap Province</span>
                                             <div className="clear"></div>
                                         </footer>
                                     </form>
