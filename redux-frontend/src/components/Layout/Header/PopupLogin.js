@@ -111,9 +111,9 @@ function PopupLogin(props) {
                 //TODO
                 closePopup();
             }
-            if (!props.user.data && getUser() && getToken()) {
-                document.location.href = "/";
-            }
+            // if (!props.user.data && getUser() && getToken()) {
+            //     document.location.href = "/";
+            // }
         }
 
         return () => {

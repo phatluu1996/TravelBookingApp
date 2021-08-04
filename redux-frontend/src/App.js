@@ -32,10 +32,12 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
-          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
-          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
+
+          {/* Airline , Flight */}
+          <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
+          <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={EditFlight} path="/edit-flight" />
           <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
-          <PublicRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
+          <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight"/>
 
           <PublicRoute restricted={true} component={AdminDashboard} path="/admin-dashboard" />
           <PublicRoute restricted={true} component={Register} path="/register" />
@@ -49,9 +51,7 @@ const App = () => {
           <PublicRoute restricted={false} component={HotelBookingPage} path="/hotel-booking" />
           <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
-
           <PublicRoute component={HotelProfile} path="/hotel-profile" exact />
-
           <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
           <PrivateRoute restricted={getRole() === "ROLE_USER"} component={UserProfile} path="/user"/>
         </Switch>
