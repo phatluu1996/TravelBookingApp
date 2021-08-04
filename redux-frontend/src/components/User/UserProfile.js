@@ -12,8 +12,7 @@ import { retrieveProvince } from '../../actions/actionLocation';
 
 const UserProfile = (props) => {
         
-    useEffect(()=>{
-        // importAll(); 
+    useEffect(()=>{ 
         props.getUser(sessionStorage.getItem("userId"), sessionStorage.getItem('userToken'));
         if(!props.province.data){
             props.getProvince();
@@ -27,17 +26,6 @@ const UserProfile = (props) => {
         const ward = props.user.data?.location.ward;
         return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
     }
-    // const checkGender = ()=> {
-    //     if(user.data){
-    //         if(user.data.gender === "Female"){
-    //             return "Mrs.";
-    //         }else if(user.data.gender === "Male"){
-    //             return "Mr.";
-    //         }else return "";
-    //     }else{
-    //         return "";
-    //     }
-    // }
 
     return (
         <>
@@ -139,9 +127,8 @@ const UserProfile = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                             <div className="payment-tab">
-                                                                <ChangePassword />
+                                                                {props.user.data?.account && <ChangePassword account={props.user.data?.account}/>}
                                                             </div>
-
                                                         </div>
                                                     </div>
 

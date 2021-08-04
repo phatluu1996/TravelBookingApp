@@ -10,6 +10,8 @@ import com.travelbooking.backend.security.payload.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -23,6 +25,8 @@ public class UserController {
     LocationRepository locationRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    PasswordEncoder encoder;
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/{id}")
@@ -40,7 +44,7 @@ public class UserController {
     public ResponseEntity<?> updateUser(@RequestBody User user){
         Account account = new Account(user.getAccount());
         Location location = new Location(user.getLocation());
-        User defaultUser = userRepository.getById(user.getId());
+        User defaultUser = userRepository.getByAccountId(user.getAccount().getId());
 
         if(defaultUser.getId().equals(user.getId())){
             if(defaultUser.getEmail().equals(user.getEmail())){
@@ -54,8 +58,20 @@ public class UserController {
                     locationRepository.save(location);
                     User result = userRepository.save(user);
                     return ResponseEntity.ok().body(result);
-                }else return ResponseEntity.ok().body(new MessageResponse("Email is already in use!", false));
+                }else return ResponseEntity.badRequest().body(new MessageResponse("Email is already in use.", false));
             }
-        }else return ResponseEntity.ok().body(new MessageResponse("User not found!", false));
+        }else return ResponseEntity.badRequest().body(new MessageResponse("User not found!", false));
+    }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody Account account){
+        Account acc = accountRepository.getAccountByUserName(account.getUserName());
+        if(acc != null){
+            if(encoder.matches(account.getPassword(),acc.getPassword())){
+                acc.setPassword(encoder.encode(account.getResetPassword()));
+                Account result = accountRepository.save(acc);
+                return ResponseEntity.ok().body(result);
+            }else return ResponseEntity.badRequest().body(new MessageResponse("Wrong Password.", false));
+        }else return ResponseEntity.badRequest().body(new MessageResponse("Account not found.", false));
     }
 }

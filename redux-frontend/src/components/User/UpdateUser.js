@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { updateUser } from '../../actions/actionUser';
 import { importAll } from "../../utils/JqueryImport";
+import {getUser, setUserSession, getToken} from '../../utils/Common';
 
 const UpdateUser = (props) => {
     const dataUser = props.dataUser.data;
     const [selectProvince, setSelectProvince] = useState(dataUser?.location?.province);
     const [selectDistrict, setSelectDistrict] = useState(dataUser?.location?.district);
     const [selectWard, setSelectWard] = useState(dataUser?.location?.ward);
+    const [errUpdate, setErrUpdate] = useState(false);
+    const [responseMessageUpdate, setResponseMessageUpdate] = useState("");
     const [isRequest, setIsRequest] = useState(false);
     const [gender, setGender] = useState(props.gender);
     const [validateInput, setValidateInput] = useState({
@@ -35,10 +38,6 @@ const UpdateUser = (props) => {
         let mount = false;
         importAll();        
 
-        // setSelectProvince(dataUser?.location?.province);
-        // setSelectDistrict(dataUser?.location?.district);
-        // setSelectWard(dataUser?.location?.ward);
-        
         document
             .querySelector("#provinces")
             .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.province?.name;
@@ -60,6 +59,29 @@ const UpdateUser = (props) => {
         }
     }, []);
 
+    useEffect(()=>{
+        var mount = false;
+        if(props.dataUpdate?.form === 'errUpdateUser'){
+            setErrUpdate(true);
+            setResponseMessageUpdate("Update fail. "+props.dataUpdate?.message.response.data.message);
+        }
+        if (props.dataUpdate?.form === 'successUpdateUser') {
+            if (!props.dataUpdate?.data) {
+                document.location.href = "/";
+            }
+            if (props.dataUpdate?.data && props.dataUpdate?.success) {
+                setErrUpdate(false);
+                setResponseMessageUpdate("Update successfuly!");
+            }else if(props.dataUpdate?.data && !props.dataUpdate?.success){
+                console.log(props.dataUpdate?.message.response.data.message);
+                setResponseMessageUpdate(props.dataUpdate?.data.message);
+            }
+        }
+
+        return () => {
+            mount = true;
+        }
+    });
 
     const onChangeProvince = (e) => {
         document
@@ -114,7 +136,7 @@ const UpdateUser = (props) => {
         e.preventDefault();
         var form = e.target;
         if(validateForm(e)){
-            let data = dataUser;
+            let data = {...dataUser};
 
             data.firstName = form.firstName.value;
             data.lastName = form.lastName.value;
@@ -122,12 +144,10 @@ const UpdateUser = (props) => {
             data.dateOfBirth = form.birthday.value;
             data.email = form.email.value;
             data.location.street = form.address.value;
-            data.location.province.id = parseInt(selectProvince.id);
-            data.location.district.id = parseInt(selectDistrict.id);
-            data.location.ward.id = parseInt(selectWard.id);
+            data.location.province = selectProvince;
+            data.location.district = selectDistrict;
+            data.location.ward = selectWard;
             data.location.postalCode = form.postalCode.value;
-
-            console.log(data);
 
             props.updateUser(data);
             setIsRequest(true);
@@ -136,59 +156,18 @@ const UpdateUser = (props) => {
 
     const validateForm = (e) => {
         var form = e.target;
-        console.log(!selectProvince);
-        const submitErr = { ...validateInput };
+        let submitErr = { ...validateInput };
 
-        if (!form.firstName.value) {
-            submitErr.firstName = "First name is required!";
-        } else {
-            submitErr.firstName = "";
-        }
-        if (!form.lastName.value) {
-            submitErr.lastName = "Last name is required!";
-        } else {
-            submitErr.lastName = "";
-        }
-        if (!form.birthday.value) {
-            submitErr.birthday = "Birthday is required!";
-        } else {
-            submitErr.birthday = "";
-        }
-        if (!form.phoneNumber.value) {
-            submitErr.phoneNumber = "Phone number is required!";
-        } else {
-            submitErr.phoneNumber = "";
-        }
-        if (!form.email.value) {
-            submitErr.email = "Email is required!";
-        } else {
-            submitErr.email = "";
-        }
-        if (!form.address.value) {
-            submitErr.address = "Address is required!";
-        } else {
-            submitErr.address = "";
-        }
-        if (!selectProvince) {
-            submitErr.province = "Province";
-        } else {
-            submitErr.province = "";
-        }
-        if (!selectDistrict) {
-            submitErr.district = "District";
-        } else {
-            submitErr.district = "";
-        }
-        if (!selectWard) {
-            submitErr.ward = "Ward";
-        } else {
-            submitErr.ward = "";
-        }
-        if (!form.postalCode.value) {
-            submitErr.postalCode = "Postal Code is required!";
-        } else {
-            submitErr.postalCode = "";
-        }
+        if (!form.firstName.value) {submitErr.firstName = "First name is required!"} else {submitErr.firstName = "";}
+        if (!form.lastName.value) {submitErr.lastName = "Last name is required!"} else {submitErr.lastName = "";}
+        if (!form.birthday.value) {submitErr.birthday = "Birthday is required!"} else {submitErr.birthday = "";}
+        if (!form.phoneNumber.value) {submitErr.phoneNumber = "Phone number is required!"} else {submitErr.phoneNumber = "";}
+        if (!form.email.value) {submitErr.email = "Email is required!"} else {submitErr.email = "";}
+        if (!form.address.value) {submitErr.address = "Address is required!"} else {submitErr.address = "";}
+        if (!selectProvince) {submitErr.province = "Province";} else {submitErr.province = "";}
+        if (!selectDistrict) {submitErr.district = "District";} else {submitErr.district = "";}
+        if (!selectWard) {submitErr.ward = "Ward";} else {submitErr.ward = "";}
+        if (!form.postalCode.value) {submitErr.postalCode = "Postal Code is required!"} else {submitErr.postalCode = "";}
         
         if(     submitErr.firstName || submitErr.lastName || submitErr.birthday || submitErr.phoneNumber
             ||  submitErr.email || submitErr.address || submitErr.province || submitErr.district 
@@ -197,17 +176,15 @@ const UpdateUser = (props) => {
             return false;
         }
 
-        if( dataUser.firstName === form.firstName.value && dataUser.lastName === form.lastName.value && dataUser.birthday === form.birthday.value 
+        if( dataUser.firstName === form.firstName.value && dataUser.lastName === form.lastName.value && dataUser.dateOfBirth === form.birthday.value 
             && dataUser.phoneNumber === form.phoneNumber.value && dataUser.email === form.email.value && dataUser.location.street === form.address.value 
             && dataUser.location.province.id === selectProvince.id && dataUser.location.district.id === selectDistrict.id && dataUser.location.ward.id === selectWard.id
             && dataUser.location.postalCode === form.postalCode.value){
+                setErrUpdate(true);
+                setResponseMessageUpdate("No data change.");
                 return false;
             }
         return true;
-    }
-
-    const handleChange = (e) =>{
-
     }
 
     return ( 
@@ -273,7 +250,7 @@ const UpdateUser = (props) => {
                             <label className="autorize-input-lbl">Email:</label>
                             <div className="validate-error">{validateInput.email}</div>
                             <div className="clear"></div>
-                            <div className={`input ${validateInput.email ? 'is-invalid' : ''}`}><input type="text" name="email" onChange={handleChange} defaultValue={dataUser?.email} /></div>
+                            <div className={`input ${validateInput.email ? 'is-invalid' : ''}`}><input type="text" name="email" defaultValue={dataUser?.email} /></div>
                         </div>
                         <div style={{ color: 'grey', marginBottom: '10px' }}><i>*Please enter Address to booking flight or hotel.</i></div>
                         <div className="clear"></div>
@@ -284,7 +261,7 @@ const UpdateUser = (props) => {
                             <div className="validate-error">{validateInput.address}</div>
                             <div className="clear"></div>
                             <div className={`input ${validateInput.address ? 'is-invalid' : ''}`}>
-                                <input type="text" name="address" onChange={handleChange} defaultValue={dataUser?.location.street} />
+                                <input type="text" name="address" defaultValue={dataUser?.location.street} />
                             </div>
                         </div>
                         <div className="clear"></div>
@@ -299,7 +276,6 @@ const UpdateUser = (props) => {
                                         className="custom-select"
                                         name="province"
                                         id="provinces"
-                                        // defaultValue={dataUser?.location?.province?.id}
                                     >
                                         <option key={0} value={0}>
                                             --
@@ -372,6 +348,7 @@ const UpdateUser = (props) => {
                 <div className="booking-complete" style={{ float: 'left' }}>
                     <button className="booking-complete-btn" type="submit" style={{ marginTop: '0' }}>Update</button>
                 </div>
+                <div style={{color: errUpdate ? "red" : "green", paddingLeft:'20px',float:'left'}}>{responseMessageUpdate}</div>
                 <div className="clear"></div>
             </form>
         </div>
@@ -385,8 +362,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateUser: (id,data) =>{
-            dispatch(updateUser(id,data));
+        updateUser: (data) =>{
+            dispatch(updateUser(data));
         }
     };
 };
