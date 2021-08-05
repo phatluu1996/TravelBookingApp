@@ -33,7 +33,7 @@ public class AirlineController {
     AccountRepository accountRepository;
 
     //http://localhost:8080/api/airline/{id}
-    @PreAuthorize("hasRole('ROLE_AIRLINE')")
+    @PreAuthorize("hasRole('AIRLINE')")
     @GetMapping("/airline/{id}")
     public ResponseEntity<Airline> getAirline(@PathVariable Long id){
         if(airlineRepository.existsByAccount_Id(id)){
@@ -45,8 +45,8 @@ public class AirlineController {
     }
 
     //http://localhost:8080/api/airline/{id}
-    @PreAuthorize("hasRole('ROLE_AIRLINE')")
-    @PutMapping("/airline")
+    @PreAuthorize("hasRole('AIRLINE')")
+    @PutMapping("/airline/{id}")
     public ResponseEntity<Airline> updateAirline(@RequestBody Airline airline ,@PathVariable Long id){
         Account account = new Account(airline.getAccount());
         Location location = new Location(airline.getLocation());

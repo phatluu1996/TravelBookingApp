@@ -1,5 +1,10 @@
 package com.travelbooking.backend.controller;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.travelbooking.backend.BookingService.BookingRequest;
 import com.travelbooking.backend.BookingService.FlightBookingService;
 import com.travelbooking.backend.models.FlightBooking;
@@ -9,11 +14,15 @@ import com.travelbooking.backend.specification.DBSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.Collection;
 
 @CrossOrigin
@@ -54,5 +63,7 @@ public class FlightBookingController {
         FlightBooking booking= flightBookingService.bookFlight(bookingRequest);
         return ResponseEntity.ok().body(booking);
     }
+
+
 
 }

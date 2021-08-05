@@ -18,7 +18,6 @@ const ListFlight = (props) => {
 
   const airline = useSelector((state) => state.airline);
 
-  const flights = useSelector((state) => state.flights);
 
   const id = parseInt(getUserId());
 
