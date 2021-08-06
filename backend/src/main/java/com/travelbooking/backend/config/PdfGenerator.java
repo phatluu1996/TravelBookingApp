@@ -17,14 +17,14 @@ import org.thymeleaf.TemplateEngine;
 
 @Component
 public class PdfGenerator {
-//    @Autowired
-//    ServletContext servletContext;
-//
-//    private final TemplateEngine templateEngine;
-//
-//    public PdfGenerator(TemplateEngine templateEngine) {
-//        this.templateEngine = templateEngine;
-//    }
+    @Autowired
+    ServletContext servletContext;
+
+    private final TemplateEngine templateEngine;
+
+    public PdfGenerator(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
+    }
 
 //    public void generateItinerary(FlightBooking booking, String filePath){
 //        Document document=new Document();
@@ -87,7 +87,7 @@ public class PdfGenerator {
 //
 //        table.addCell("Phone");
 //        table.addCell("");
-
+//
 //        return table;
 //    }
 }

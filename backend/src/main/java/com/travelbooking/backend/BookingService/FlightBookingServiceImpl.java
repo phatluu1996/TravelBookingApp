@@ -130,21 +130,18 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
         final FlightBooking savedBooking = flightBookingRepository.save(fltBooking);
 
-//        Map<Object, Object > data = new HashMap<>();
-//        data.put("booking", savedBooking);
-//        data.put("detailFlight", bkgDetail);
-//        pdfGenaratorUtil.createPdf("itinerary",data);
-//        String filePath = ITINERARY_DIR +savedBooking.getId()
-//                + ".pdf";
+        mapAndSaveToPDF(savedBooking, bkgDetail, user);
+
 //        pdfGenerator.generateItinerary(savedBooking,filePath);
 //        emailUtil.sendItinerary(user.getEmail(),filePath);
-        String qrcodePath = "src/main/resources/static/images/" + savedBooking.getId() + "-QRCode.png";
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(savedBooking.getReservationCode()+"\n"+
-                flight.getFlightCode()+" "+detail.getDateOfDeparture() + "\n" + passenger.getFirstname()+" "+
-                passenger.getLastname()+" TKT:"+detail.getTicketNumber() , BarcodeFormat.QR_CODE, 300, 300);
-        Path path = FileSystems.getDefault().getPath(qrcodePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+
+//        String qrcodePath = "src/main/resources/static/images/" + savedBooking.getId() + "-QRCode.png";
+//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+//        BitMatrix bitMatrix = qrCodeWriter.encode(savedBooking.getReservationCode()+"\n"+
+//                flight.getFlightCode()+" "+detail.getDateOfDeparture() + "\n" + passenger.getFirstname()+" "+
+//                passenger.getLastname()+" TKT:"+detail.getTicketNumber() , BarcodeFormat.QR_CODE, 300, 300);
+//        Path path = FileSystems.getDefault().getPath(qrcodePath);
+//        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
         return savedBooking;
     }
@@ -164,6 +161,24 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         for(int i = 0; i < len; i++)
             sb.append(CD.charAt(rnd.nextInt(CD.length())));
         return sb.toString();
+    }
+
+    public void mapAndSaveToPDF(FlightBooking flightBooking, FlightBookingDetail flightBookingDetail, User user) throws Exception{
+        Map<String, Object > data = new HashMap<>();
+//        data.put("bookingId", flightBooking.getId());
+//        data.put("createdAt", flightBooking.getCreatedAt());
+//        data.put("passengerFirstname", flightBookingDetail.getPassenger().getFirstname());
+//        data.put("passengerLastname", flightBookingDetail.getPassenger().getLastname());
+//        data.put("passengerBirthday", flightBookingDetail.getPassenger().getBirthday());
+//        data.put("passengerGender", flightBookingDetail.getPassenger().isGender() ? "Male" : "Female");
+//        data.put("totalPrice",flightBookingDetail.getPrice());
+        data.put("flightBooking", flightBooking);
+        data.put("flightDetails", flightBooking.getFlightBookingDetails());
+
+
+        pdfGenaratorUtil.createPdf("itinerary",data, ITINERARY_DIR, emailUtil, user);
+//        String filePath = ITINERARY_DIR + flightBooking.getId()
+//                + ".pdf";
     }
 
 

@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/actionUser';
+import { importAll } from '../../utils/JqueryImport';
 
 function Register(props) {
     const [statusSignup, setStatuSignup] = useState(false);
@@ -146,6 +147,7 @@ function Register(props) {
 
     useEffect(() => {
         var mount = false;
+        importAll();
         if (props.user.form === 'signup') {
             if (props.user.data && isRequest) {
                 if (props.user.data.success) {

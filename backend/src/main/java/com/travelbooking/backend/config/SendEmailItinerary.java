@@ -2,6 +2,7 @@ package com.travelbooking.backend.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -22,14 +23,14 @@ public class SendEmailItinerary  {
     @Autowired
     public JavaMailSender javaMailSender;
 
-    public void sendItinerary(String toAddress, String filePath) throws MessagingException {
+    public void sendItinerary(String toAddress, String filePath,@DefaultValue(value = "") String body) throws MessagingException {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
             messageHelper.setTo(toAddress);
             messageHelper.setSubject(EMAIL_SUBJECT);
-            messageHelper.setText(EMAIL_BODY);
-            messageHelper.addAttachment("Itinerary", new File(filePath));
+            messageHelper.setText(body.equals("") ? EMAIL_BODY : body);
+//            messageHelper.addAttachment("Itinerary", new File(filePath));
             javaMailSender.send(message);
         } catch (MessagingException e) {
             System.out.println("Exception inside sendItinerary" + e);
