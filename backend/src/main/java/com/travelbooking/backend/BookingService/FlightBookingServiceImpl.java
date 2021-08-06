@@ -1,5 +1,10 @@
 package com.travelbooking.backend.BookingService;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.travelbooking.backend.config.PdfGenerator;
 import com.travelbooking.backend.config.PdfGeneratorUtil;
 import com.travelbooking.backend.config.SendEmailItinerary;
@@ -8,9 +13,13 @@ import com.travelbooking.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
-import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -84,7 +93,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         detail.setFlight(flight);
         detail.setPassenger(passenger);
         detail.setFlightBooking(fltBooking);
-        String randomTicket = randomNumber(12);
+        String randomTicket = randomNumber(13);
         detail.setTicketNumber(randomTicket);
         detail.setDateOfDeparture(bookingRequest.getDateBooking());
         detail.setPriceType(bookingRequest.getType());
@@ -129,9 +138,15 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 //                + ".pdf";
 //        pdfGenerator.generateItinerary(savedBooking,filePath);
 //        emailUtil.sendItinerary(user.getEmail(),filePath);
+        String qrcodePath = "src/main/resources/static/images/" + savedBooking.getId() + "-QRCode.png";
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(savedBooking.getReservationCode()+"\n"+
+                flight.getFlightCode()+" "+detail.getDateOfDeparture() + "\n" + passenger.getFirstname()+" "+
+                passenger.getLastname()+" TKT:"+detail.getTicketNumber() , BarcodeFormat.QR_CODE, 300, 300);
+        Path path = FileSystems.getDefault().getPath(qrcodePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
         return savedBooking;
-
     }
 
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -150,6 +165,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             sb.append(CD.charAt(rnd.nextInt(CD.length())));
         return sb.toString();
     }
+
 
 }
 

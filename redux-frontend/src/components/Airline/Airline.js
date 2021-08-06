@@ -237,9 +237,11 @@ const Airline = (props) => {
                 </div>
                 <div className="clear"></div>
               </div>
+              <div className="clear"></div>
             </div>
-            <h3>For some information this year</h3>
-                    <div className="p-item-more">
+            
+                    <div className="p-item-more" style={{marginTop:"10px"}}>
+                    <h3>For some information this year</h3>
                     The coronavirus epidemic has made a huge impact on the travel industry. 
                     Almost all governments around the world have ordered their borders to close and airlines to stop operating. 
                     This has resulted in many important local and international events, such as the world-famous travel expo, 
