@@ -94,6 +94,11 @@ const Header = (props) => {
                                     </ul>
                                 </li>
                                 <li>
+                                    <Link to="/admin-dashboard" >
+                                        admin
+                                    </Link>
+                                </li>
+                                <li>
                                     <a className="has-child" >
                                         Hotels
                                     </a>
@@ -176,6 +181,11 @@ const Header = (props) => {
                                     <li>
                                         <Link to="/" >Home</Link>
                                     </li>
+                                    <li>
+                                    <Link to="/admin-dashboard" >
+                                        admin
+                                    </Link>
+                                </li>
                                     <li>
                                         <a>Hotels</a>
                                         <ul>
