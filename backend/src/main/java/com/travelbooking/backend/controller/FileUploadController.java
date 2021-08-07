@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 
+import com.travelbooking.backend.models.Image;
+import com.travelbooking.backend.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,12 +35,18 @@ public class FileUploadController {
 	@Autowired
 	ServletContext context;
 
+	@Autowired
+	ImageRepository imageRepository;
+
 
 
 	@PostMapping("/upload-file")
 	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file // file hình
 	) throws IOException {
+		Image image = new Image();
+		HashMap<String, String> fileObject = new HashMap<>();
 		try {
+
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";
 			File directory = new File(FILE_DIRECTORY);
 			// Create a folder if not exist
@@ -51,7 +59,12 @@ public class FileUploadController {
 			FileOutputStream fos = new FileOutputStream(myFile);
 			fos.write(file.getBytes());
 			fos.close();
-			HashMap<String, String> fileObject = new HashMap<>();
+
+			image.imageAlt = file.getOriginalFilename();
+			image.imagePath =  getFileUrl(myFile);
+			Image result = imageRepository.save(image);
+
+			fileObject.put("id",result.getId().toString());
 			fileObject.put("fileUrl", getFileUrl(myFile));
 			fileObject.put("fileName", file.getOriginalFilename());
 			fileObject.put("fileExtension", this.getFileExtension(file));
