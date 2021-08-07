@@ -37,8 +37,6 @@ public class FileUploadController {
 
 	@PostMapping("/upload-file")
 	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file // file hình
-//											,@RequestParam("from") String from    // từ đâu ví dụ user,hotel,flight đồ
-//											,@RequestParam("id")Long id         //id của cái đó để update vào bảng image
 	) throws IOException {
 		try {
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";

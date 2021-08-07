@@ -12454,32 +12454,55 @@ INSERT INTO dbo.flight([airline_id],[flight_code],[retired],[status],[descriptio
 
 --Hotel Account
 INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','bachpham'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','hoanguyen'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','ngocle'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i ',0,'HOTEL','phatluu')
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','bachpham'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','hoanguyen'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','ngocle'),
+('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','phatluu')
+--Image
+
+-- INSERT INTO [dbo].[image]
+-- ([alt]
+--     ,[path]
+--     ,[hotel_id]
+--     ,[room_id])
+-- VALUES
+--     ('','http://localhost:8080/storage/jpg/hotel1.jpg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/hotel2.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room1.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room4.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room5.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room2.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room6.jpeg' ,null,null),
+--     ('','http://localhost:8080/storage/jpeg/room3.jpeg' ,null,null)
+
 --Hotel
 INSERT INTO [dbo].[hotel]
-([address]
-    ,[avg_price_at_night]
+([avg_price_at_night]
     ,[contact_name]
     ,[contact_title]
     ,[created_at]
+    ,[description]
     ,[email]
+    ,[entertaiment]
+    ,[free_parking]
+    ,[gym]
+    ,[high_speed_internet]
+    ,[hot_tub]
     ,[hotel_name]
     ,[hotel_rating]
     ,[number_of_room]
     ,[payment_at_the_hotel]
+    ,[pets_allowed]
     ,[phone]
     ,[retired]
+    ,[swimming_pool]
     ,[account_id]
     ,[location_id])
 VALUES
-    (N'400 Xô Viết Nghệ Tỉnh',0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2019','bach@gmail.com','MoonLight',3,10,0,0824728690,0,27,1),
-    (N'321 Bạch Đằng',0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/8/2019','hoa@gmail.com','SunShine',4,10,0,0824728690,0,28,2),
-    (N'105 Phạm Văn Hai',0,N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/7/2019','ngoc@gmail.com','DarkNight',5,10,0,0824728690,0,29,3),
-    (N'107 Hóc Môn',0,N'Lưu Trọng Phát',N'Giám Đốc','11/6/2019','phat@gmail.com','BoomBoom',3.5,10,0,0824728690,0,30,4),
-    (N'99 Nguyễn Hửu Cảnh',0,N'Trần Thế Long',N'Giám Đốc','11/6/2019','long@gmail.com','BigStart',3.5,10,0,0824728690,0,7,4)
+    (0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/9/2020','','hoa@gmail.com',1,1,1,1,1,'The Herriott Hotel & Suite',4.7,10,0,1,'0945877490',0,1,27,1),
+    (0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2020','','bach@gmail.com',1,0,1,0,0,'Raon Danang Beach Hotel',3.5,10,0,1,'0945877490',0,1,28,3),
+    (0,N'Lưu Trọng Phát',N'Giám Đốc','11/9/2020','','phat@gmail.com',1,1,1,0,0,'Cicilia Danang Hotels & Spa',5,10,0,1,'0945877490',0,1,29,5)
+
 --Room
 INSERT INTO [dbo].[room]
 ([available_time]
@@ -12493,18 +12516,35 @@ INSERT INTO [dbo].[room]
     ,[hotel_id]
     ,[booking_room_id])
 VALUES
-    ('11/9/2021',2,1,30,0,1,0,N'Bình Thường',1,null),
-    ('11/9/2021',4,2,40,0,1,0,N'Cao Cấp',1,null),
-    ('11/8/2021',2,1,30,0,1,0,N'Bình Thường',2,null),
-    ('11/8/2021',4,2,40,0,1,0,N'Cao Cấp',2,null),
-    ('11/8/2021',2,1,30,0,1,0,N'Bình Thường',3,null),
-    ('11/7/2021',4,2,40,0,1,0,N'Cao Cấp',3,null),
-    ('11/9/2021',2,1,30,0,1,0,N'Bình Thường',4,null),
-    ('11/7/2021',4,2,40,0,1,0,N'Cao Cấp',4,null),
-    ('11/10/2021',1,0,40,0,1,0,N'Phòng Nhỏ',4,null),
-    ('11/2/2021',4,2,40,0,1,0,N'Cao Cấp',5,null),
-    ('11/12/2021',1,0,40,0,1,0,N'Phòng Nhỏ',5,null),
-    ('11/11/2021',7,4,300,0,1,0,N'Cao Cấp Nhất',5,null)
+    ('11/9/2021',2,1,30,0,101,0,N'Normal',1,null),
+    ('11/7/2021',2,2,40,0,102,0,N'Normal',1,null),
+    ('2/8/2021',2,1,30,0,103,0,N'Normal',1,null),
+    ('11/9/2021',3,2,40,0,201,0,N'Normal',1,null),
+    (null,3,1,30,0,202,0,N'Normal',1,null),
+    (null,3,2,40,0,203,0,N'Normal',1,null),
+    ('11/9/2021',5,2,30,0,301,0,N'VIP',1,null),
+    ('2/8/2021',5,2,40,0,302,0,N'VIP',1,null),
+    (null,3,2,30,0,303,0,N'VIP',1,null),
+    ('11/9/2021',2,1,30,0,101,0,N'Normal',2,null),
+    ('11/7/2021',2,2,40,0,102,0,N'Normal',2,null),
+    ('2/8/2021',2,1,30,0,103,0,N'Normal',2,null),
+    ('11/9/2021',3,2,40,0,201,0,N'Normal',2,null),
+    (null,3,1,30,0,202,0,N'Normal',2,null),
+    (null,3,2,40,0,203,0,N'Normal',2,null),
+    ('11/9/2021',5,2,30,0,301,0,N'VIP',2,null),
+    ('2/8/2021',5,2,40,0,302,0,N'VIP',2,null),
+    (null,3,2,30,0,303,0,N'VIP',2,null),
+    ('11/9/2021',2,1,30,0,101,0,N'Normal',3,null),
+    ('11/7/2021',2,2,40,0,102,0,N'Normal',3,null),
+    ('2/8/2021',2,1,30,0,103,0,N'Normal',3,null),
+    ('11/9/2021',3,2,40,0,201,0,N'Normal',3,null),
+    (null,3,1,30,0,202,0,N'Normal',3,null),
+    (null,3,2,40,0,203,0,N'Normal',3,null),
+    ('11/9/2021',5,2,30,0,301,0,N'VIP',3,null),
+    ('2/8/2021',5,2,40,0,302,0,N'VIP',3,null),
+    (null,3,2,30,0,303,0,N'VIP',3,null)
+
+
 -- --FeedBack
 INSERT INTO [dbo].[hotel_feedback]
 ([feedback]
@@ -12513,20 +12553,46 @@ INSERT INTO [dbo].[hotel_feedback]
     ,[user_id]
     ,[hotel_id])
 VALUES
-    ('Phòng tốt , giá hợp lý',4.5,0,15,1),
+    ('Phòng tốt , giá hợp lý',5,0,15,1),
     ('Phòng tốt , Đầy đủ tiện nghi',5,0,16,1),
-    ('Phòng tốt , giá hợp lý',4.5,0,17,2),
-    ('Phòng tốt , giá hợp lý',4.5,0,18,2),
-    ('Phòng tốt , giá hợp lý',4.5,0,19,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,20,4),
-    ('Phòng tốt , giá hợp lý',4,0,20,4),
-    ('Phòng tốt , giá hợp lý',4.5,0,17,4),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,20,5),
-    ('Phòng tốt , giá hợp lý',4,0,20,5),
-    ('Phòng tốt , giá hợp lý',4.5,0,17,5)
+    ('Phòng tốt , giá hợp lý',4.5,0,15,1),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,17,1),
+    ('Phòng tốt , giá hợp lý',2.5,0,15,1),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,18,1),
+    ('Phòng tốt , giá hợp lý',3.5,0,19,1),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,20,1),
+    ('Phòng tốt , giá hợp lý',5,0,21,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,22,2),
+    ('Phòng tốt , giá hợp lý',4.5,0,23,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,24,2),
+    ('Phòng tốt , giá hợp lý',2.5,0,25,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,26,2),
+    ('Phòng tốt , giá hợp lý',3.5,0,27,1),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,28,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,29,3),
+    ('Phòng tốt ,dịch vụ tạm dược',3,0,30,3),
+    ('Phòng tốt , giá hợp lý',4,0,31,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,32,3),
+    ('Phòng tốt ,dịch vụ tạm dược',3,0,33,3),
+    ('Phòng tốt , giá hợp lý',4,0,34,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,35,3)
 
 
-
+--Image
+INSERT INTO [dbo].[image]
+([alt]
+    ,[path]
+    ,[hotel_id]
+    ,[room_id])
+VALUES
+    ('','http://localhost:8080/storage/jpg/hotel1.jpg',1,null),
+    ('','http://localhost:8080/storage/jpeg/hotel2.jpeg',1,null),
+    ('','http://localhost:8080/storage/jpeg/room1.jpeg' ,null,1),
+    ('','http://localhost:8080/storage/jpeg/room4.jpeg' ,null,2),
+    ('','http://localhost:8080/storage/jpeg/room5.jpeg' ,null,3),
+    ('','http://localhost:8080/storage/jpeg/room2.jpeg' ,null,4),
+    ('','http://localhost:8080/storage/jpeg/room6.jpeg' ,null,5),
+    ('','http://localhost:8080/storage/jpeg/room3.jpeg' ,null,6)
 
 
 

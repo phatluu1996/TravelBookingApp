@@ -26,8 +26,6 @@ public class Hotel {
     private String contactName;
     @Column(name = "contact_title",columnDefinition = "nvarchar(255)")
     private String contactTitle;
-    @Column(name = "address",columnDefinition = "nvarchar(255)")
-    private String address;
 
     @Column(name = "hotel_rating",nullable = true)
     private Float hotelRating;
@@ -35,37 +33,37 @@ public class Hotel {
     @Column(name = "description",columnDefinition = "nvarchar(max)",nullable = true)
     private String description;
 
-    @Column(name = "payment_at_the_hotel",nullable = true)
+    @Column(name = "payment_at_the_hotel")
     private Boolean paymentAtTheHotel;
 
-    @Column(name = "number_of_room",nullable = true)
+    @Column(name = "number_of_room",nullable = false)
     private int  numberOfRoom;
 
     @Column(name = "avg_price_at_night",columnDefinition = "integer default 0")
     private int  avgPriceAtNight;
 
-    @Column(name = "high_speed_internet", nullable = true)
+    @Column(name = "high_speed_internet")
     private boolean  highSpeedInternet;
 
-    @Column(name = "entertaiment", nullable = true)
+    @Column(name = "entertaiment")
     private boolean  entertaiment;
 
-    @Column(name = "freeParking", nullable = true)
+    @Column(name = "freeParking")
     private boolean  freeParking;
 
-    @Column(name = "pets_allowed", nullable = true)
+    @Column(name = "pets_allowed")
     private boolean  petsAllowed;
 
-    @Column(name = "hot_tub", nullable = true)
+    @Column(name = "hot_tub")
     private boolean  hotTub;
 
-    @Column(name = "swimming_pool", nullable = true)
+    @Column(name = "swimming_pool")
     private boolean  swimmingPool;
 
-    @Column(name = "gym", nullable = true)
+    @Column(name = "gym")
     private boolean  gym;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     @CreatedDate
     private Instant createdAt;
 
@@ -91,21 +89,20 @@ public class Hotel {
     private List<Room> rooms;
 
     @OneToMany
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotel")
     private List<Image> images;
 
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, String description, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, boolean highSpeedInternet, boolean entertaiment, boolean freeParking, boolean petsAllowed, boolean hotTub, boolean swimmingPool, boolean gym, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, Float hotelRating, String description, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, boolean highSpeedInternet, boolean entertaiment, boolean freeParking, boolean petsAllowed, boolean hotTub, boolean swimmingPool, boolean gym, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
         this.phone = phone;
         this.contactName = contactName;
         this.contactTitle = contactTitle;
-        this.address = address;
         this.hotelRating = hotelRating;
         this.description = description;
         this.paymentAtTheHotel = paymentAtTheHotel;
@@ -175,13 +172,6 @@ public class Hotel {
         this.contactTitle = contactTitle;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public Float getHotelRating() {
         return hotelRating;
