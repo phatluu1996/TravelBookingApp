@@ -7,7 +7,7 @@ import reducerFlightByAirline from './reducerFlightByAirline';
 import reducerProvince from './reduceLocation';
 import reducerHotel from './reduceHotel';
 import reducerBookingFlight from './reducerBookingFlight';
-
+import reducerAuth from './reduceAuth';
 
 const reducers = combineReducers({
 	flight : reducerFlight,
@@ -16,7 +16,8 @@ const reducers = combineReducers({
 	flights : reducerFlightByAirline,
 	province: reducerProvince,
 	hotels : reducerHotel,
-	bookFlight: reducerBookingFlight
+	bookFlight: reducerBookingFlight,
+	auth: reducerAuth
 });
 
 export default (state, action) => reducers(state, action);

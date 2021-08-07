@@ -2,7 +2,7 @@ import React, {  useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { connect } from 'react-redux';
-import { signup } from '../../actions/actionUser';
+import { signup } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
 
 function Register(props) {
@@ -148,19 +148,19 @@ function Register(props) {
     useEffect(() => {
         var mount = false;
         importAll();
-        if (props.user.form === 'signup') {
-            if (props.user.data && isRequest) {
-                if (props.user.data.success) {
+        if (props.auth.form === 'signup') {
+            if (props.auth.data && isRequest) {
+                if (props.auth.data.success) {
                     setStatuSignup(true);
-                    setMessageSignup(props.user.data.message);
+                    setMessageSignup(props.auth.data.message);
                     document.location.href = "http://localhost:3000/";
                 } else {
                     setStatuSignup(false);
-                    setMessageSignup(props.user.data.message);
+                    setMessageSignup(props.auth.data.message);
                 }
             } else {
                 setStatuSignup(false);
-                setMessageSignup(props.user.message);
+                setMessageSignup(props.auth.message);
             }
         }
 
@@ -250,7 +250,7 @@ function Register(props) {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.user,
+        auth: state.auth,
     };
 };
 

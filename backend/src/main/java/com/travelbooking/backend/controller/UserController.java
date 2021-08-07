@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
@@ -74,4 +76,7 @@ public class UserController {
             }else return ResponseEntity.badRequest().body(new MessageResponse("Wrong Password.", false));
         }else return ResponseEntity.badRequest().body(new MessageResponse("Account not found.", false));
     }
+
+    @GetMapping("/getAllUser")
+    public ResponseEntity <Collection<User>> getUsers (){ return ResponseEntity.ok().body(userRepository.findAll()); }
 }

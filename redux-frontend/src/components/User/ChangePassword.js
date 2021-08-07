@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { changePassword } from '../../actions/actionUser';
+import { changePassword } from '../../actions/actionAuth';
 import {removeUserSession} from "../../utils";
 
 const ChangePassword = (props) => {
@@ -135,7 +135,7 @@ const ChangePassword = (props) => {
 };
 const mapStateToProps = (state, ownProps) => {
     return {
-        changePass: state.user
+        changePass: state.auth
     };
 };
 
