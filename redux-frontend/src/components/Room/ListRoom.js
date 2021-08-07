@@ -1,107 +1,72 @@
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import DataTable from 'react-data-table-component';
+import { faEdit, faEye, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import  Pagination  from '../Hotel/Pagination';
+
 
 
 
 
 const ListRoom = (props) => {
+  const data = props.dataRoom;
+  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [pageNumber,setPageNumber]  = useState(1);
 
-  var data = props.dataRoom;
-  const columns = [
-    {
-      name: 'Id',
-      selector: 'id',
-      sortable: true,
-      // cell: row => <div style={{fontSize: 25}}>{row.title}</div>
-    },
-    {
-      name: 'Room Number',
-      selector: 'roomNumber',
-      sortable: true,
-      center: true,
-      // cell: row => <div style={{fontSize: 25}}>{row.title}</div>
-    },
-    {
-      name: 'Room Type',
-      selector: 'roomType',
-      sortable: true,
-      center: true,
-    },
-    {
-      name: 'Price ',
-      selector: 'price',
-      sortable: true,
-      center: true,
-    },
-    {
-      name: 'Max Adult ',
-      selector: 'maxAdult',
-      sortable: true,
-      center: true,
-    },
-    {
-      name: 'Max Children ',
-      selector: 'maxChildren',
-      sortable: true,
-      center: true,
-    },
-    {
-      cell: () =>   <button
-                        className="booking-complete-btn"
-                        type="submit"
-                        style={{ marginBottom: "20px" ,width:"60px" ,height:"30px" }}
-                    >
-                        Update
-                    </button>,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ];
+  const setPageNum = (number) => setPageNumber(number);
 
-  // const importData = () => {
-  //   data.push(props);
-  // }
-  const conditionalRowStyles = [
-    {
-      when: row => row.calories < 300,
-      style: {
-        backgroundColor: 'green',
-        color: 'white',
-        '&:hover': {
-          cursor: 'pointer',
-        },
-      },
-    },
-    // You can also pass a callback to style for additional customization
-    {
-      when: row => row.retired === false,
-      style: row => ({
-        backgroundColor: row.retired ? 'pink' : 'inerit',
-      }),
-    },
-  ];
-
-
-  // useEffect(() => {
-  //   let mount = false;
-
-  //   return () => {
-  //     mount = true;
-  //   };
-  // }, []);
+  const getPagination = (list = [],page, itemsPerPage) => {
+    if (!Array.isArray(list) || list.length === 0) {
+      return [];
+    }
+    const startIdx = (page - 1) * itemsPerPage;
+    const endIdx = (startIdx + itemsPerPage - 1) + 1;
+   
+    return list.slice(startIdx, endIdx);
+  };
 
   return (
-    <>
-          <DataTable
-            className="table-a"
-            title="Rooms of hotel"
-            columns={columns}
-            data={data}
-            pagination
-            keyField="id"
-            conditionalRowStyles={conditionalRowStyles}
-          />
+    <>  <div>
+      <table className="table-a light">
+        <tr>
+          <th>Id</th>
+          <th>Rum Number</th>
+          <th>Room Type</th>
+          <th>Price</th>
+          <th>Max Adult</th>
+          <th>Max Children</th>
+          <th>Action</th>
+        </tr>
+        {
+          getPagination(data,pageNumber,itemsPerPage)?.map(room => {
+            return (
+              <>
+                <tr>
+                  <td>{room.id}</td>
+                  <td>{room.roomNumber}</td>
+                  <td>{room.roomType}</td>
+                  <td>{room.price}</td>
+                  <td>{room.maxAdult}</td>  
+                  <td>{room.maxChildren}</td>
+                
+                  {/* <div className="blog-widget tags-widget"> */}
+                    {/* <h2>Tags</h2> */}
+                    <div className="tags-row">
+                    <span ></span>
+                      <a href="#"><FontAwesomeIcon className="list-btn-sm-icon" icon={faEye}></FontAwesomeIcon></a>
+                      <a href="#"><FontAwesomeIcon className="list-btn-sm-icon" icon={faSave}></FontAwesomeIcon></a>
+                    </div>
+                    
+                  {/* </div> */}
+                </tr>
+              </>
+            )
+          })
+        }
+        <div className="clear"></div>
+        <Pagination itemsPerPage={itemsPerPage} listItem={props?.dataRoom?.length} setPageNum={setPageNum}/>
+      </table>
+    </div>
       <div className="clear"></div>
     </>
   );

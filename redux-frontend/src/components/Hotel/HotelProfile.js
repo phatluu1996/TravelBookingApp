@@ -9,7 +9,7 @@ import { connect, useSelector } from 'react-redux';
 import { getUser } from '../../actions/actionUser';
 import {fetchHotelByAccountId} from '../../actions/actionHotel'
 import { retrieveProvince } from '../../actions/actionLocation';
-
+import ListRoom from '../Room/ListRoom';
 import AddNewRoom from '../Room/AddNewRoom';
 import UpdateHotel from './UpdateHotel';
 
@@ -165,16 +165,16 @@ const HotelProfile = (props) => {
                                                                             <ul>
                                                                                 <li><a className="active" href="#">Room List</a></li>
                                                                                 <li><a href="#">Create Room</a></li>
-                                                                                <li><a href="#">View Room</a></li>
+                                                                                <li ><a href="#">View Room</a></li>
                                                                             </ul>
                                                                             <div className="clear"></div>
                                                                         </nav>
                                                                         <div className="tabs-content">
                                                                             <div className="tabs-content-i">
-                                                                                {/* <ListRoom dataRoom={props?.hotel?.data?.rooms} /> */}
+                                                                                <ListRoom dataRoom={props?.hotel?.data?.rooms} />
                                                                             </div>
                                                                             <div className="tabs-content-i">
-                                                                                {/* <AddNewRoom /> */}
+                                                                                <AddNewRoom />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -190,6 +190,7 @@ const HotelProfile = (props) => {
 
                                             <div className="clear"></div>
                                         </div>
+                                        
                                     </div>
                                     <br className="clear" />
                                 </div>
