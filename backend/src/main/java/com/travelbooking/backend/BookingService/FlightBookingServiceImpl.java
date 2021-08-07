@@ -1,12 +1,10 @@
 package com.travelbooking.backend.BookingService;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.travelbooking.backend.config.EmailConfiguration;
-import com.travelbooking.backend.config.PdfGenerator;
 import com.travelbooking.backend.config.PdfGeneratorUtil;
 import com.travelbooking.backend.config.SendEmailItinerary;
 import com.travelbooking.backend.models.*;
@@ -14,15 +12,15 @@ import com.travelbooking.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
@@ -50,9 +48,6 @@ public class FlightBookingServiceImpl implements FlightBookingService{
     private FlightBookingRepository flightBookingRepository;
 
     @Autowired
-    private PdfGenerator pdfGenerator;
-
-    @Autowired
     private SendEmailItinerary emailUtil;
 
     @Autowired
@@ -66,90 +61,143 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
     @Override
     public FlightBooking bookFlight(BookingRequest bookingRequest) throws Exception {
-        // make payment here
-        // if the payment is successful proceed..
+        // find Flight
         Long flightId=bookingRequest.getFlightId();
         Optional<Flight> flightOptional=flightRepository.findById(flightId);
         Flight flight=flightOptional.get();
 
-        //Add Passenger
-        Passenger passenger = new Passenger();
-        passenger.setFirstname(bookingRequest.getFirstname());
-        passenger.setLastname(bookingRequest.getLastname());
-        passenger.setCardIdNumber(bookingRequest.getCardId());
-        passenger.setCardExpired(bookingRequest.getCardExpired());
-        passenger.setBirthday(bookingRequest.getBirthday());
-        passenger.setGender(bookingRequest.getGender());
-        passenger.setCardType(bookingRequest.getCardType());
-        passenger.setHasInfant(bookingRequest.isHasInfant());
-        passengerRepository.save(passenger);
 
         // Add Booking
         Optional<User> userOptional = userRepository.findById(bookingRequest.getUserId());
         User user = userOptional.get();
         FlightBooking fltBooking = new FlightBooking();
-        String code = randomString(8);
-        fltBooking.setReservationCode(code);
-        fltBooking.setUser(user);
-        fltBooking.setTotalPassengers(bookingRequest.getTotalPassenger());
+        String randomBookingCode = randomString(8);
+        fltBooking.setBookingCode(randomBookingCode);
         fltBooking.setTotalPrice(bookingRequest.getTotalPrice());
         fltBooking.setStatus(1);
+        fltBooking.setUser(user);
         fltBooking.setPaymentMethod(bookingRequest.getPaymentMethod());
 
-        //Add Booking Detail
-        FlightBookingDetail detail=new FlightBookingDetail();
-        detail.setFlight(flight);
-        detail.setPassenger(passenger);
-        detail.setFlightBooking(fltBooking);
-        String randomTicket = randomNumber(13);
-        detail.setTicketNumber(randomTicket);
-        detail.setDateOfDeparture(bookingRequest.getDateBooking());
-        detail.setPriceType(bookingRequest.getType());
-        if (bookingRequest.getType() == 0) {
-            detail.setPrice(flight.getEconomyPrice());
-        } else {
-            detail.setPrice(flight.getBusinessPrice());
-        }
-        FlightBookingDetail bkgDetail = flightBookingDetailRepository.save(detail);
-        ArrayList<FlightBookingDetail> detailList = new ArrayList<>();
-        detailList.add(bkgDetail);
+        ArrayList<FlightBookingDetail> bookingDetailList = new ArrayList<>();
 
-        // If has Return flight
+        String randomReservationCode = randomString(6);
+
+        //Add Passenger
+        bookingRequest.getPassengers().forEach( psg ->{
+            Passenger passenger = new Passenger();
+            passenger.setFirstname(psg.getFirstname());
+            passenger.setLastname(psg.getLastname());
+            passenger.setBirthday(psg.getBirthday());
+            passenger.setGender(psg.isGender());
+            passenger.setHasInfant(psg.isHasInfant());
+            passenger.setBaggageExtra(psg.getBaggageExtra());
+            String randomTicket = randomNumber(13);
+            passenger.setTicketNumber(randomTicket);
+            Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateBooking());
+            if (age > 18) {
+                Float infantPrice = psg.isHasInfant() ? flight.getInfant_price() : 0;
+                passenger.setPrice(GetPriceByClass(bookingRequest, flight) + infantPrice);
+            } else {
+                passenger.setPrice(flight.getChild_price());
+            }
+            passengerRepository.save(passenger);
+
+            //Add Booking Detail
+            FlightBookingDetail detail=new FlightBookingDetail();
+            detail.setFlight(flight);
+            detail.setPassenger(passenger);
+            detail.setFlightBooking(fltBooking);
+            detail.setAirlineReservationCode(randomReservationCode);
+            detail.setDateOfDeparture(bookingRequest.getDateBooking());
+            detail.setPriceType(bookingRequest.getType());
+            FlightBookingDetail bkgDetail = flightBookingDetailRepository.save(detail);
+            bookingDetailList.add(bkgDetail);
+
+
+        });
+
+        // If booking has Return flight
         if (bookingRequest.getReturnFlightId() != 0){
             Long returnFlightId=bookingRequest.getReturnFlightId();
             Optional<Flight> returnFlightOptional=flightRepository.findById(returnFlightId);
             Flight returnFlight=returnFlightOptional.get();
-            FlightBookingDetail returnDetail = new FlightBookingDetail();
-            returnDetail.setFlight(returnFlight);
-            returnDetail.setPassenger(passenger);
-            returnDetail.setFlightBooking(fltBooking);
-            returnDetail.setDateOfDeparture(bookingRequest.getDateReturnBooking());
-            returnDetail.setTicketNumber(String.valueOf(parseInt(randomTicket)+2));
-            returnDetail.setPriceType(bookingRequest.getReturnType());
-            if (returnDetail.getPriceType() == 0) {
-                returnDetail.setPrice(returnFlight.getEconomyPrice());
+
+            String randomReturnReservationCode;
+            if (flight.getAirline().getId() == returnFlight.getAirline().getId()){
+                randomReturnReservationCode = randomReservationCode;
             } else {
-                returnDetail.setPrice(returnFlight.getBusinessPrice());
+                randomReturnReservationCode = randomString(6);
             }
-            FlightBookingDetail returnBkgDetail = flightBookingDetailRepository.save(returnDetail);
-            detailList.add(returnBkgDetail);
+
+            //Add Passenger detail
+            bookingRequest.getPassengers().forEach( psg ->{
+                Passenger passengerReturnFlight = new Passenger();
+                passengerReturnFlight.setFirstname(psg.getFirstname());
+                passengerReturnFlight.setLastname(psg.getLastname());
+                passengerReturnFlight.setBirthday(psg.getBirthday());
+                passengerReturnFlight.setGender(psg.isGender());
+                passengerReturnFlight.setHasInfant(psg.isHasInfant());
+                passengerReturnFlight.setBaggageExtra(psg.getBaggageExtra());
+                String randomTicket = randomNumber(13);
+                passengerReturnFlight.setTicketNumber(randomTicket);
+                Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateReturnBooking());
+                if (age > 18) {
+                    Float infantPrice = psg.isHasInfant() ? returnFlight.getInfant_price() : 0;
+                    passengerReturnFlight.setPrice(GetPriceByClass(bookingRequest, returnFlight) + infantPrice);
+                } else {
+                    passengerReturnFlight.setPrice(returnFlight.getChild_price());
+                }
+                passengerRepository.save(passengerReturnFlight);
+
+                //Add Booking Return Detail
+                FlightBookingDetail detailReturnFlight=new FlightBookingDetail();
+                detailReturnFlight.setFlight(returnFlight);
+                detailReturnFlight.setPassenger(passengerReturnFlight);
+                detailReturnFlight.setFlightBooking(fltBooking);
+                detailReturnFlight.setAirlineReservationCode(randomReturnReservationCode);
+                detailReturnFlight.setDateOfDeparture(bookingRequest.getDateReturnBooking());
+                detailReturnFlight.setPriceType(bookingRequest.getReturnType());
+                FlightBookingDetail bkgDetailReturn = flightBookingDetailRepository.save(detailReturnFlight);
+                bookingDetailList.add(bkgDetailReturn);
+
+            });
         }
-        fltBooking.setFlightBookingDetails(detailList);;
+        fltBooking.setFlightBookingDetails(bookingDetailList);;
 
         final FlightBooking savedBooking = flightBookingRepository.save(fltBooking);
 
-        mapAndSaveToPDF(savedBooking, bkgDetail, user);
+        String qrcodePath = "src/main/resources/static/images/" + savedBooking.getId() + "-QRCode.png";
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        if (bookingRequest.getReturnFlightId() != 0){
+            Long returnFlightId=bookingRequest.getReturnFlightId();
+            Optional<Flight> returnFlightOptional=flightRepository.findById(returnFlightId);
+            Flight returnFlight=returnFlightOptional.get();
 
-//        pdfGenerator.generateItinerary(savedBooking,filePath);
-//        emailUtil.sendItinerary(user.getEmail(),filePath);
+            BitMatrix bitMatrix_2flight = qrCodeWriter.encode(
+                    "SparrowCode: "+ savedBooking.getBookingCode() + "\n"+
+                            flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
+                            flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
+                            flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()+"\n"+
+                            returnFlight.getFlightCode()+" "+getDateString(bookingRequest.getDateReturnBooking())+ " " +
+                            returnFlight.getDepartureCity()+"-"+returnFlight.getArrivalCity() +" " +
+                            returnFlight.getDepartureTime().getHours() + ":" + returnFlight.getDepartureTime().getMinutes()
+                            , BarcodeFormat.QR_CODE, 300, 300);
+            Path path = FileSystems.getDefault().getPath(qrcodePath);
+            MatrixToImageWriter.writeToPath(bitMatrix_2flight, "PNG", path);
+            flightBookingRepository.save(savedBooking);
+            mapAndSaveToPDF(savedBooking, user, new File(qrcodePath));
+        } else {
+            BitMatrix bitMatrix = qrCodeWriter.encode("SparrowCode: "+savedBooking.getBookingCode()+"\n"+
+                            flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
+                            flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
+                            flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()
+                    , BarcodeFormat.QR_CODE, 300, 300);
+            Path path = FileSystems.getDefault().getPath(qrcodePath);
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
-//        String qrcodePath = "src/main/resources/static/images/" + savedBooking.getId() + "-QRCode.png";
-//        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-//        BitMatrix bitMatrix = qrCodeWriter.encode(savedBooking.getReservationCode()+"\n"+
-//                flight.getFlightCode()+" "+detail.getDateOfDeparture() + "\n" + passenger.getFirstname()+" "+
-//                passenger.getLastname()+" TKT:"+detail.getTicketNumber() , BarcodeFormat.QR_CODE, 300, 300);
-//        Path path = FileSystems.getDefault().getPath(qrcodePath);
-//        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+            flightBookingRepository.save(savedBooking);
+            mapAndSaveToPDF(savedBooking, user, new File(qrcodePath));
+        }
 
         return savedBooking;
     }
@@ -171,7 +219,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         return sb.toString();
     }
 
-    public void mapAndSaveToPDF(FlightBooking flightBooking, FlightBookingDetail flightBookingDetail, User user) throws Exception{
+    public void mapAndSaveToPDF(FlightBooking flightBooking, User user, File qrcode) throws Exception{
         Map<String, Object > data = new HashMap<>();
         data.put("flightBooking", flightBooking);
         data.put("flightDetails", flightBooking.getFlightBookingDetails());
@@ -181,9 +229,31 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);
         String templateHtml = emailService.templateResolve("thankyouemail", emailMap);
-        emailService.sendSimpleMessage(user.getEmail(),null, "Flight Itinerary", templateHtml, "Invoice.pdf", pdfAttachment);
+        emailService.sendSimpleMessage(user.getEmail(),null, "Flight Itinerary", templateHtml, "Invoice.pdf", pdfAttachment, qrcode);
+        qrcode.delete();
+        pdfAttachment.delete();
     }
 
+    public Float GetPriceByClass(BookingRequest bookingRequest, Flight flight){
+        if (bookingRequest.getType() == 1){
+            return flight.getBusinessPrice();
+        }
+        return flight.getEconomyPrice();
+    }
 
+    public String getDateString(Date date) {
+        String pattern = "dd-MM-YYYY";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        return simpleDateFormat.format(date);
+    }
+
+    public Integer getAgeTravel(Date birthday, Date dateOfTravel){
+        DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        int d1 = Integer.parseInt(formatter.format(birthday));
+        int d2 = Integer.parseInt(formatter.format(dateOfTravel));
+        int age = (d2-d1)/10000;
+        return age;
+    }
 }
 
