@@ -1,12 +1,10 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { signin, googleSignin } from '../../../actions/actionUser';
-import { getUser, setUserSession, getToken, removeUserSession } from '../../../utils';
+import { signin, googleSignin } from '../../../actions/actionAuth';
+import { setUserSession, removeUserSession } from '../../../utils';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GoogleLogin, { useGoogleLogout } from 'react-google-login';
-import { GoogleLogout } from 'react-google-login';
 
 import { CLIENT_ID, APP_ID } from '../../../config/api';
 
@@ -101,19 +99,16 @@ function PopupLogin(props) {
 
     useEffect(() => {
         var mount = false;
-        if (props.user.form === 'login') {
-            if (props.user.message && isRequest) {
+        if (props.auth.form === 'login') {
+            if (props.auth.message && isRequest) {
                 setErrLogin(true);
             }
-            if (props.user.data && props.user.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-                setUserSession(props.user.data.accessToken, props.user.data.username, props.user.data.header, props.user.data.id, props.user.data.roles[0]);
-                props.onSubmitUser(props.user.data);
-                //TODO
+            if (props.auth.data && props.auth.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
+                setUserSession(props.auth.data.accessToken, props.auth.data.username, props.auth.data.header, props.auth.data.id, props.auth.data.roles[0]);
+                props.onSubmitUser(props.auth.data);
+
                 closePopup();
             }
-            // if (!props.user.data && getUser() && getToken()) {
-            //     document.location.href = "/";
-            // }
         }
 
         return () => {
@@ -165,8 +160,6 @@ function PopupLogin(props) {
                         <h6 className="autorize-lbl">OR SIGN UP AND SIGN IN WITH: </h6>
                     </div>
                     <div className="autorize-bottom text-center mt-1">
-                        {/* <button className="list-btn-sm mr-1" type="submit"><a className="team-fb list-btn-sm-icon" ></a></button>
-                        <button className="list-btn-sm" type="submit"><a className="team-gp list-btn-sm-icon" ></a></button> */}
 
 
                         <GoogleLogin
@@ -178,8 +171,7 @@ function PopupLogin(props) {
                             onSuccess={handleLoginGoogleSuccess}
                             onFailure={handleLoginGoogleFail}
                         />
-                        {/* <button className="list-btn-sm" type="submit" onClick={handleLogoutGoogleSuccess}><a className="team-gp list-btn-sm-icon" ></a></button> */}
-
+                        
                     </div>
                 </div>
             </form>
@@ -189,7 +181,7 @@ function PopupLogin(props) {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.user,
+        auth: state.auth,
     };
 };
 

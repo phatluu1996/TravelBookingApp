@@ -28,7 +28,7 @@ public class User {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
     @Column(name = "retired")
-    private boolean retired;
+        private boolean retired;
 
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")

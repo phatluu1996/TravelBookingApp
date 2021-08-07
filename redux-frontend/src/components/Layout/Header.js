@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { removeUserSession } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { signout } from "../../actions/actionUser";
+import { signout } from "../../actions/actionAuth";
 import { connect } from "react-redux";
 import { getUser, getUserFullName } from "../../utils";
 
@@ -242,7 +242,7 @@ const Header = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        user: state.user,
+        auth: state.auth,
     };
 };
 
