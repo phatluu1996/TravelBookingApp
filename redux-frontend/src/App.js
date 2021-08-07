@@ -40,7 +40,7 @@ const App = (props) => {
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight" />
 
-        <PublicRoute restricted={true} component={AdminDashboard} path="/admin-dashboard" />
+        <PublicRoute restricted={false} component={AdminDashboard} path="/admin-dashboard" />
         <PublicRoute restricted={true} component={Register} path="/register" />
 
         <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />

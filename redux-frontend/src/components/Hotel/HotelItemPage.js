@@ -11,6 +11,7 @@ const HotelItemPage = () =>{
 
     return (
         <>
+          
         </>
     )
 
@@ -50,4 +51,4 @@ const mapStateToProps = (state, ownProps) => {
       },
     };
   };
-  export default connect(mapStateToProps, mapDispatchToProps)(HotelSearchPage);
+  export default connect(mapStateToProps, mapDispatchToProps)(HotelItemPage);

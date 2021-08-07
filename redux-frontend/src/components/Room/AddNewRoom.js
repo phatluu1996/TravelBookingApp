@@ -195,7 +195,7 @@ const AddNewRoom = (props) => {
                 <div className="booking-form">
                     <div>
                         <div className="booking-form-i">
-                            <label className="custom-lbl">Hotel Name:</label>
+                            <label className="custom-lbl">Room Number:</label>
                             <div
                                 className={`input ${validateError.hotelName ? "is-invalid" : ""
                                     }`}
@@ -211,7 +211,7 @@ const AddNewRoom = (props) => {
                             </div>
                         </div>
                         <div className="booking-form-i">
-                            <label>Phone number:</label>
+                            <label>Price:</label>
                             <div className="input">
                                 <input
                                     type="text"
@@ -225,7 +225,7 @@ const AddNewRoom = (props) => {
                     </div>
                     <div>
                         <div className="booking-form-i booking-form-i-custom ">
-                            <label className="custom-lbl">Email:</label>
+                            <label className="custom-lbl">Room Type:</label>
                             <div
                                 className={`input ${validateError.email ? "is-invalid" : ""}`}
                             >
@@ -241,7 +241,7 @@ const AddNewRoom = (props) => {
                     </div>
                     <div>
                         <div className="booking-form-i">
-                            <label className="custom-lbl">Contact Name:</label>
+                            <label className="custom-lbl">Max Adult:</label>
                             <div
                                 className={`input ${validateError.contactName ? "is-invalid" : ""
                                     }`}
@@ -257,7 +257,7 @@ const AddNewRoom = (props) => {
                             </div>
                         </div>
                         <div className="booking-form-i">
-                            <label className="custom-lbl">Contact Title:</label>
+                            <label className="custom-lbl">Max Children:</label>
                             <div
                                 className={`input ${validateError.contactTitle ? "is-invalid" : ""
                                     }`}

@@ -6,12 +6,15 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useEffect, setState, useState, Component } from "react";
 import { importAll } from '../../utils/JqueryImport';
 
+  
+const HotelDetailPage = (props) => {
+    const location = useLocation();
 
-const HotelDetailPage = () => {
 
     useEffect(() => {
         let mount = false;
-
+        console.log(location.state.hotelId);
+        console.log(location.state.rooms);
         importAll();
 
         return () => {

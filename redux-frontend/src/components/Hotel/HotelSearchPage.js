@@ -315,7 +315,9 @@ const HotelSearchPage = (props) => {
     );
     setPage(1);
   };
-  
+
+
+
   const totalPages = () => {
     return Math.ceil(props?.hotels?.data?.length / itemsPerPage);
   }
@@ -659,8 +661,9 @@ const HotelSearchPage = (props) => {
                         sortDir
                       ).map((hotel) => (
                         <div className="offer-slider-i catalog-i fly-in">
+                          {/* <input hidden='true' name="hotelId" defaultValue={hotel.id} /> */}
                           <a href="#" className="offer-slider-img">
-                            <img alt="" src="img/catalog-09.jpg" />
+                            <img alt="" name="hotelImage" src="img/catalog-09.jpg" />
                             <span className="offer-slider-overlay">
                               <span className="offer-slider-btn">
                                 view details
@@ -670,10 +673,10 @@ const HotelSearchPage = (props) => {
                           </a>
                           <div className="offer-slider-txt">
                             <div className="offer-slider-link">
-                              <a href="#">{hotel.hotelName}</a>
+                              <a href="#" name="hotelName" >{hotel.hotelName}</a>
                             </div>
                             <div className="offer-slider-l">
-                              <div className="offer-slider-location">
+                              <div className="offer-slider-location" name="hotelLocation">
                                 {hotel.location.province.name}
                               </div>
                               <nav className="stars">
@@ -702,7 +705,7 @@ const HotelSearchPage = (props) => {
                               </nav>
                             </div>
                             <div className="offer-slider-r">
-                              <b>{avgPrice(hotel)}$</b>
+                              <b >{avgPrice(hotel)}$</b>
                               <span>avg/night</span>
                             </div>
                             <div className="offer-slider-devider"></div>
@@ -710,7 +713,15 @@ const HotelSearchPage = (props) => {
                             <div className="offer-slider-lead">
                               {/* {hotel.rooms[0].roomType} */}
                             </div>
-                            <a className="cat-list-btn" href="#">
+                            <a onClick={() =>
+                              history.push({
+                                pathname: "/hotel-detail",
+                                state: {
+                                  hotelId: hotel.id,
+                                  rooms: hotel.rooms,
+                                }
+                              })
+                            } className="cat-list-btn" >
                               Book now
                             </a>
                           </div>
@@ -724,7 +735,7 @@ const HotelSearchPage = (props) => {
                       listItem={props.hotels?.data?.length}
                       setPageNum={setPage}
                     /> */}
-                    {props.hotels.data && (<div className="pagination">                      
+                    {props.hotels.data && (<div className="pagination">
                       {
                         page == 1 ? (<>
                           <a className="active">1</a>

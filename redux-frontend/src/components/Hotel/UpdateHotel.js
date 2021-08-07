@@ -402,7 +402,30 @@ const UpdateHotel = (props) => {
                                     </select>
                                 </div>
                             </div>
+                            
                         </div>
+                    </div>
+                    <div style={{ marginBottom: "10px",marginTop:"10px", color: "grey" }}>
+                        <i>*Please add image of hotel</i>
+                    </div>
+                    <div  >
+                        <div
+                            className="booking-form-i booking-form-i-custom"
+                        >
+                            <label className="custom-lbl">Hotel Image:</label>
+                            <div
+                                className={`input ${validateError.address ? "is-invalid" : ""}`}
+                            >
+                                <input
+                                    
+                                    type="file"
+                                    name="images"
+                                    // defaultValue={hotel ? hotel.location.street : ""}
+                                />
+                            </div>
+                            <div className="booking-error-input">{validateError.address}</div>
+                        </div>
+                        <div className="clear"></div>
                     </div>
                 </div>
                 <div className="booking-complete" style={{ float: "left" }}>

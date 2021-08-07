@@ -16,7 +16,7 @@ function getFormattedDate(date) {;
 
 
 const FlightBookingCompletePage = (props) => {
-    const location = useLocation();
+  const location = useLocation();
   const booking = useSelector((state) => state.bookFlight);
 
     useEffect(() => {
