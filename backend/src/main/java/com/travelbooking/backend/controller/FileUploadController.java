@@ -35,8 +35,11 @@ public class FileUploadController {
 
 
 
-	@PostMapping("/upload-file")				// file hình                         // từ đâu ví dụ user,hotel,flight đồ   //id của cái đó để update vào bảng image
-	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file,@RequestParam("from") String from,@RequestParam("id")Long id) throws IOException {
+	@PostMapping("/upload-file")
+	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file // file hình
+//											,@RequestParam("from") String from    // từ đâu ví dụ user,hotel,flight đồ
+//											,@RequestParam("id")Long id         //id của cái đó để update vào bảng image
+	) throws IOException {
 		try {
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";
 			File directory = new File(FILE_DIRECTORY);
@@ -44,7 +47,7 @@ public class FileUploadController {
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
-			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() + from + id).replaceAll("\\s+", "_");
+			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
 			File myFile = new File(convertFileName);
 			myFile.createNewFile();
 			FileOutputStream fos = new FileOutputStream(myFile);

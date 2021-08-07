@@ -5,6 +5,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.travelbooking.backend.config.EmailConfiguration;
 import com.travelbooking.backend.config.PdfGenerator;
 import com.travelbooking.backend.config.PdfGeneratorUtil;
 import com.travelbooking.backend.config.SendEmailItinerary;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 
 import javax.transaction.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -55,6 +57,12 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
     @Autowired
     PdfGeneratorUtil pdfGenaratorUtil;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private EmailConfiguration emailConfiguration;
 
     @Override
     public FlightBooking bookFlight(BookingRequest bookingRequest) throws Exception {
@@ -165,20 +173,15 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
     public void mapAndSaveToPDF(FlightBooking flightBooking, FlightBookingDetail flightBookingDetail, User user) throws Exception{
         Map<String, Object > data = new HashMap<>();
-//        data.put("bookingId", flightBooking.getId());
-//        data.put("createdAt", flightBooking.getCreatedAt());
-//        data.put("passengerFirstname", flightBookingDetail.getPassenger().getFirstname());
-//        data.put("passengerLastname", flightBookingDetail.getPassenger().getLastname());
-//        data.put("passengerBirthday", flightBookingDetail.getPassenger().getBirthday());
-//        data.put("passengerGender", flightBookingDetail.getPassenger().isGender() ? "Male" : "Female");
-//        data.put("totalPrice",flightBookingDetail.getPrice());
         data.put("flightBooking", flightBooking);
         data.put("flightDetails", flightBooking.getFlightBookingDetails());
 
+        File pdfAttachment = pdfGenaratorUtil.createPdf("itinerary",data, ITINERARY_DIR, emailUtil, user);
 
-        pdfGenaratorUtil.createPdf("itinerary",data, ITINERARY_DIR, emailUtil, user);
-//        String filePath = ITINERARY_DIR + flightBooking.getId()
-//                + ".pdf";
+        Map<String, Object > emailMap = new HashMap<>();
+        emailMap.put("user", user);
+        String templateHtml = emailService.templateResolve("thankyouemail", emailMap);
+        emailService.sendSimpleMessage(user.getEmail(),null, "Flight Itinerary", templateHtml, "Invoice.pdf", pdfAttachment);
     }
 
 

@@ -21,7 +21,7 @@ const HotelSearchPage = (props) => {
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
   const [itemsList, setItemsList] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(4);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("price");
@@ -660,7 +660,7 @@ const HotelSearchPage = (props) => {
                         sortBy,
                         sortDir
                       ).map((hotel) => (
-                        <div className="offer-slider-i catalog-i fly-in">
+                        <div  className="offer-slider-i catalog-i fly-in">
                           {/* <input hidden='true' name="hotelId" defaultValue={hotel.id} /> */}
                           <a href="#" className="offer-slider-img">
                             <img alt="" name="hotelImage" src="img/catalog-09.jpg" />
@@ -717,8 +717,7 @@ const HotelSearchPage = (props) => {
                               history.push({
                                 pathname: "/hotel-detail",
                                 state: {
-                                  hotelId: hotel.id,
-                                  rooms: hotel.rooms,
+                                  hotel: hotel
                                 }
                               })
                             } className="cat-list-btn" >

@@ -16,7 +16,6 @@ public class Hotel {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "hotel_name",columnDefinition = "nvarchar(150)")
     private String hotelName;
     @Column(name = "email")
@@ -29,15 +28,42 @@ public class Hotel {
     private String contactTitle;
     @Column(name = "address",columnDefinition = "nvarchar(255)")
     private String address;
+
     @Column(name = "hotel_rating",nullable = true)
     private Float hotelRating;
+
+    @Column(name = "description",columnDefinition = "nvarchar(max)",nullable = true)
+    private String description;
+
     @Column(name = "payment_at_the_hotel",nullable = true)
     private Boolean paymentAtTheHotel;
+
     @Column(name = "number_of_room",nullable = true)
     private int  numberOfRoom;
 
     @Column(name = "avg_price_at_night",columnDefinition = "integer default 0")
     private int  avgPriceAtNight;
+
+    @Column(name = "high_speed_internet", nullable = true)
+    private boolean  highSpeedInternet;
+
+    @Column(name = "entertaiment", nullable = true)
+    private boolean  entertaiment;
+
+    @Column(name = "freeParking", nullable = true)
+    private boolean  freeParking;
+
+    @Column(name = "pets_allowed", nullable = true)
+    private boolean  petsAllowed;
+
+    @Column(name = "hot_tub", nullable = true)
+    private boolean  hotTub;
+
+    @Column(name = "swimming_pool", nullable = true)
+    private boolean  swimmingPool;
+
+    @Column(name = "gym", nullable = true)
+    private boolean  gym;
 
     @Column(name = "created_at", nullable = false)
     @CreatedDate
@@ -72,7 +98,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, String address, Float hotelRating, String description, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, boolean highSpeedInternet, boolean entertaiment, boolean freeParking, boolean petsAllowed, boolean hotTub, boolean swimmingPool, boolean gym, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -81,9 +107,17 @@ public class Hotel {
         this.contactTitle = contactTitle;
         this.address = address;
         this.hotelRating = hotelRating;
+        this.description = description;
         this.paymentAtTheHotel = paymentAtTheHotel;
         this.numberOfRoom = numberOfRoom;
         this.avgPriceAtNight = avgPriceAtNight;
+        this.highSpeedInternet = highSpeedInternet;
+        this.entertaiment = entertaiment;
+        this.freeParking = freeParking;
+        this.petsAllowed = petsAllowed;
+        this.hotTub = hotTub;
+        this.swimmingPool = swimmingPool;
+        this.gym = gym;
         this.createdAt = createdAt;
         this.retired = retired;
         this.location = location;
@@ -157,6 +191,14 @@ public class Hotel {
         this.hotelRating = hotelRating;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Boolean getPaymentAtTheHotel() {
         return paymentAtTheHotel;
     }
@@ -179,6 +221,62 @@ public class Hotel {
 
     public void setAvgPriceAtNight(int avgPriceAtNight) {
         this.avgPriceAtNight = avgPriceAtNight;
+    }
+
+    public boolean isHighSpeedInternet() {
+        return highSpeedInternet;
+    }
+
+    public void setHighSpeedInternet(boolean highSpeedInternet) {
+        this.highSpeedInternet = highSpeedInternet;
+    }
+
+    public boolean isEntertaiment() {
+        return entertaiment;
+    }
+
+    public void setEntertaiment(boolean entertaiment) {
+        this.entertaiment = entertaiment;
+    }
+
+    public boolean isFreeParking() {
+        return freeParking;
+    }
+
+    public void setFreeParking(boolean freeParking) {
+        this.freeParking = freeParking;
+    }
+
+    public boolean isPetsAllowed() {
+        return petsAllowed;
+    }
+
+    public void setPetsAllowed(boolean petsAllowed) {
+        this.petsAllowed = petsAllowed;
+    }
+
+    public boolean isHotTub() {
+        return hotTub;
+    }
+
+    public void setHotTub(boolean hotTub) {
+        this.hotTub = hotTub;
+    }
+
+    public boolean isSwimmingPool() {
+        return swimmingPool;
+    }
+
+    public void setSwimmingPool(boolean swimmingPool) {
+        this.swimmingPool = swimmingPool;
+    }
+
+    public boolean isGym() {
+        return gym;
+    }
+
+    public void setGym(boolean gym) {
+        this.gym = gym;
     }
 
     public Instant getCreatedAt() {

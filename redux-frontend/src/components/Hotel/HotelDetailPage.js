@@ -5,16 +5,94 @@ import { connect } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useEffect, setState, useState, Component } from "react";
 import { importAll } from '../../utils/JqueryImport';
+import DataTable from "react-data-table-component";
 
-  
+
+
 const HotelDetailPage = (props) => {
     const location = useLocation();
+    const customStyles = {
+        
+        rows: {
+          style: {
+            minHeight: '72px', // override the row height
+          }
+        },
+        headCells: {
+          style: {
+            paddingLeft: '8px', // override the cell padding for head cells
+            paddingRight: '8px',
+          },
+        },
+        cells: {
+          style: {
+            paddingTop:'15px',
+            paddingLeft: '8px', // override the cell padding for data cells
+            paddingRight: '8px',
+          },
+        },
+      };
+      
 
+    const header = [
+        {
+            name: '',
+            cell: room => 
+                <div className="cat-list-item">
+                    <div className="cat-list-item-l">
+                        <a href="#"><img alt="" src="img/available-01.jpg" /></a>
+                    </div>
+                    <div className="cat-list-item-r">
+                        <div className="cat-list-item-rb">
+                            <div className="cat-list-item-p">
+                                <div className="cat-list-content">
+                                    <div className="cat-list-content-a">
+                                        <div className="cat-list-content-l">
+                                            <div className="cat-list-content-lb">
+                                                <div className="cat-list-content-lpadding">
+                                                    <div className="offer-slider-link"><a href="#">{room?.roomType}</a></div>
+                                                    <div className="offer-slider-location">Max Adult: {room?.maxAdult} persons</div>
+                                                    <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
+                                                    {/* <div className="cat-icons">
+                                                        <span className="cat-icon-01 active"></span>
+                                                        <span className="cat-icon-02"></span>
+                                                        <span className="cat-icon-03"></span>
+                                                        <span className="cat-icon-04"></span>
+                                                        <span className="cat-icon-05"></span>
+                                                        <span className="cat-icon-06"></span>
+                                                        <div className="clear"></div>
+                                                    </div> */}
+                                                </div>
+                                            </div>
+                                            {/* <br className="clear" /> */}
+                                        </div>
+                                    </div>
+                                    <div className="cat-list-content-r">
+                                        <div className="cat-list-content-p">
+                                            <div className="available-price">{room.price}$</div>
+                                            <div className="available-price-a">avg/night</div>
+                                            <div className="available-price-c">{room?.roomStatus?"Available":"Unavailable"}</div>
+                                            <a href="#" className="available-btn">select</a>
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br className="clear" />
+                    </div>
+                    <div className="clear"></div>
+
+
+                </div>
+        
+        }
+    ]
 
     useEffect(() => {
         let mount = false;
-        console.log(location.state.hotelId);
-        console.log(location.state.rooms);
+        // console.log(location.state.hotelId);
+        // console.log(location.state.rooms);
         importAll();
 
         return () => {
@@ -52,20 +130,20 @@ const HotelDetailPage = (props) => {
                                                             <span className="clear"></span>
                                                         </a>
                                                     </div>
-                                                    <div className="h-tab-i">
+                                                    {/* <div className="h-tab-i">
                                                         <a href="#" className="h-tab-item-02">
                                                             <i></i>
                                                             <span>map</span>
                                                             <span className="clear"></span>
                                                         </a>
-                                                    </div>
-                                                    <div className="h-tab-i">
+                                                    </div> */}
+                                                    {/* <div className="h-tab-i">
                                                         <a href="#" className="h-tab-item-03">
                                                             <i></i>
                                                             <span>calendar</span>
                                                             <span className="clear"></span>
                                                         </a>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className="h-tabs-right">
                                                     <a href="#">
@@ -245,9 +323,9 @@ const HotelDetailPage = (props) => {
                                                         <ul>
                                                             <li><a className="active" href="#">DESCRIPTION</a></li>
                                                             <li><a href="#">AVAILABILITY</a></li>
-                                                            <li><a href="#">Preferences</a></li>
+                                                            {/* <li><a href="#">Preferences</a></li> */}
                                                             <li><a href="#">reviews</a></li>
-                                                            <li><a href="#">THINGS TO DO</a></li>
+                                                            {/* <li><a href="#">THINGS TO DO</a></li> */}
                                                             <li><a href="#" className="tabs-lamp"></a></li>
                                                         </ul>
                                                     </nav>
@@ -289,9 +367,31 @@ const HotelDetailPage = (props) => {
 
                                                                 <div className="clear"></div>
                                                             </div>
-                                                            <div className="facilities">
-                                                                <h2>Facilities of Hotel</h2>
-                                                                <table>
+                                                            {/* <div className="facilities"> */}
+                                                            <h2>Facilities of Hotel</h2>
+                                                            <ul className="preferences-list">
+                                                                <li className="internet">High-speed Internet</li>
+                                                                <li className="conf-room">Conference room</li>
+                                                                <li className="play-place">Play Place</li>
+                                                                <li className="restourant">Restourant</li>
+                                                                <li className="bar">Bar</li>
+                                                                <li className="doorman">Doorman</li>
+                                                                <li className="kitchen">Kitchen</li>
+                                                                <li className="spa">Spa services</li>
+                                                                <li className="bike">Bike Rental</li>
+                                                                <li className="entertaiment">Entertaiment</li>
+                                                                <li className="hot-tub">Hot Tub</li>
+                                                                <li className="pool">Swimming Pool</li>
+                                                                <li className="parking">Free parking</li>
+                                                                <li className="gym">Gym</li>
+                                                                <li className="tv">TV</li>
+                                                                <li className="pets">Pets allowed</li>
+                                                                <li className="handicap">Handicap</li>
+                                                                <li className="secure">Secure </li>
+                                                            </ul>
+                                                            <div className="clear"></div>
+                                                            <div className="preferences-devider"></div>
+                                                            {/* <table>
                                                                     <tr>
                                                                         <td className="facilities-a">Food & Drink</td>
                                                                         <td className="facilities-b">Breakfast in the Room</td>
@@ -308,283 +408,38 @@ const HotelDetailPage = (props) => {
                                                                         <td className="facilities-a">Languages</td>
                                                                         <td className="facilities-b">Italian, French, Spanish, English, Arabic</td>
                                                                     </tr>
-                                                                </table>
-                                                            </div>
+                                                                </table> */}
+                                                            {/* </div> */}
                                                         </div>
                                                     </div>
 
 
                                                     <div className="content-tabs-i">
-                                                        <h2>Your Travel Rates</h2>
+                                                        {/* <h2>Your Travel Rates</h2> */}
                                                         <div className="rates-search">
-                                                            <div className="rates-line">
 
-                                                                <div className="srch-tab-line">
-                                                                    <div className="srch-tab-left">
-                                                                        <label>Check in</label>
-                                                                        <div className="input-a"><input type="text" value="" placeholder="MM/DD/YY" /></div>
-                                                                    </div>
-                                                                    <div className="srch-tab-right">
-                                                                        <label>Check out</label>
-                                                                        <div className="input-a"><input type="text" value="" placeholder="MM/DD/YY" /></div>
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-
-                                                            </div>
-
-                                                            <div className="rates-line-right">
-
-                                                                <div className="srch-tab-line no-margin-bottom">
-                                                                    <div className="srch-tab-3c">
-                                                                        <label>Rooms</label>
-                                                                        <div className="select-wrapper">
-                                                                            <select className="custom-select">
-                                                                                <option>--</option>
-                                                                                <option>1</option>
-                                                                                <option>2</option>
-                                                                                <option>3</option>
-                                                                                <option>4</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="srch-tab-3c">
-                                                                        <label>adult</label>
-                                                                        <div className="select-wrapper">
-                                                                            <select className="custom-select">
-                                                                                <option>--</option>
-                                                                                <option>1</option>
-                                                                                <option>2</option>
-                                                                                <option>3</option>
-                                                                                <option>4</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="srch-tab-3c">
-                                                                        <label>Child</label>
-                                                                        <div className="select-wrapper">
-                                                                            <select className="custom-select">
-                                                                                <option>--</option>
-                                                                                <option>1</option>
-                                                                                <option>2</option>
-                                                                                <option>3</option>
-                                                                                <option>4</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="clear"></div>
-                                                                </div>
-
-
-                                                            </div>
-                                                            <button className="rates-srch"></button>
-
-
-                                                            <div className="clear"></div>
-
-                                                            <div className="rates-devider"></div>
-
-                                                            <h2>Room Type</h2>
+                                                            <h2>List Room Active</h2>
 
                                                             <div className="available-row">
 
-
-                                                                <div className="cat-list-item">
-                                                                    <div className="cat-list-item-l">
-                                                                        <a href="#"><img alt="" src="img/available-01.jpg" /></a>
-                                                                    </div>
-                                                                    <div className="cat-list-item-r">
-                                                                        <div className="cat-list-item-rb">
-                                                                            <div className="cat-list-item-p">
-                                                                                <div className="cat-list-content">
-                                                                                    <div className="cat-list-content-a">
-                                                                                        <div className="cat-list-content-l">
-                                                                                            <div className="cat-list-content-lb">
-                                                                                                <div className="cat-list-content-lpadding">
-                                                                                                    <div className="offer-slider-link"><a href="#">Single Room</a></div>
-                                                                                                    <div className="offer-slider-location">Max Occupancy: 2 persons</div>
-                                                                                                    <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
-                                                                                                    <div className="cat-icons">
-                                                                                                        <span className="cat-icon-01 active"></span>
-                                                                                                        <span className="cat-icon-02"></span>
-                                                                                                        <span className="cat-icon-03"></span>
-                                                                                                        <span className="cat-icon-04"></span>
-                                                                                                        <span className="cat-icon-05"></span>
-                                                                                                        <span className="cat-icon-06"></span>
-                                                                                                        <div className="clear"></div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br className="clear" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="cat-list-content-r">
-                                                                                        <div className="cat-list-content-p">
-                                                                                            <div className="available-price">634$</div>
-                                                                                            <div className="available-price-a">avg/night</div>
-                                                                                            <div className="available-price-c">9 available</div>
-                                                                                            <a href="#" className="available-btn">select</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="clear"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br className="clear" />
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-
-
-                                                                <div className="cat-list-item">
-                                                                    <div className="cat-list-item-l">
-                                                                        <a href="#"><img alt="" src="img/available-02.jpg" /></a>
-                                                                    </div>
-                                                                    <div className="cat-list-item-r">
-                                                                        <div className="cat-list-item-rb">
-                                                                            <div className="cat-list-item-p">
-                                                                                <div className="cat-list-content">
-                                                                                    <div className="cat-list-content-a">
-                                                                                        <div className="cat-list-content-l">
-                                                                                            <div className="cat-list-content-lb">
-                                                                                                <div className="cat-list-content-lpadding">
-                                                                                                    <div className="offer-slider-link"><a href="#">Double Room</a></div>
-                                                                                                    <div className="offer-slider-location">Max Occupancy: 2 persons</div>
-                                                                                                    <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
-                                                                                                    <div className="cat-icons">
-                                                                                                        <span className="cat-icon-01 active"></span>
-                                                                                                        <span className="cat-icon-02"></span>
-                                                                                                        <span className="cat-icon-03"></span>
-                                                                                                        <span className="cat-icon-04"></span>
-                                                                                                        <span className="cat-icon-05"></span>
-                                                                                                        <span className="cat-icon-06"></span>
-                                                                                                        <div className="clear"></div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br className="clear" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="cat-list-content-r">
-                                                                                        <div className="cat-list-content-p">
-                                                                                            <div className="available-price">450$</div>
-                                                                                            <div className="available-price-a">avg/night</div>
-                                                                                            <div className="available-price-c">9 available</div>
-                                                                                            <a href="#" className="available-btn">select</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="clear"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br className="clear" />
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-
-
-                                                                <div className="cat-list-item">
-                                                                    <div className="cat-list-item-l">
-                                                                        <a href="#"><img alt="" src="img/available-03.jpg" /></a>
-                                                                    </div>
-                                                                    <div className="cat-list-item-r">
-                                                                        <div className="cat-list-item-rb">
-                                                                            <div className="cat-list-item-p">
-                                                                                <div className="cat-list-content">
-                                                                                    <div className="cat-list-content-a">
-                                                                                        <div className="cat-list-content-l">
-                                                                                            <div className="cat-list-content-lb">
-                                                                                                <div className="cat-list-content-lpadding">
-                                                                                                    <div className="offer-slider-link"><a href="#">Twin Room</a></div>
-                                                                                                    <div className="offer-slider-location">Max Occupancy: 2 persons</div>
-                                                                                                    <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
-                                                                                                    <div className="cat-icons">
-                                                                                                        <span className="cat-icon-01 active"></span>
-                                                                                                        <span className="cat-icon-02"></span>
-                                                                                                        <span className="cat-icon-03"></span>
-                                                                                                        <span className="cat-icon-04"></span>
-                                                                                                        <span className="cat-icon-05"></span>
-                                                                                                        <span className="cat-icon-06"></span>
-                                                                                                        <div className="clear"></div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br className="clear" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="cat-list-content-r">
-                                                                                        <div className="cat-list-content-p">
-                                                                                            <div className="available-price">380$</div>
-                                                                                            <div className="available-price-a">avg/night</div>
-                                                                                            <div className="available-price-c">9 available</div>
-                                                                                            <a href="#" className="available-btn">select</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="clear"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br className="clear" />
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-
-
-                                                                <div className="cat-list-item">
-                                                                    <div className="cat-list-item-l">
-                                                                        <a href="#"><img alt="" src="img/available-04.jpg" /></a>
-                                                                    </div>
-                                                                    <div className="cat-list-item-r">
-                                                                        <div className="cat-list-item-rb">
-                                                                            <div className="cat-list-item-p">
-                                                                                <div className="cat-list-content">
-                                                                                    <div className="cat-list-content-a">
-                                                                                        <div className="cat-list-content-l">
-                                                                                            <div className="cat-list-content-lb">
-                                                                                                <div className="cat-list-content-lpadding">
-                                                                                                    <div className="offer-slider-link"><a href="#">Family Suite</a></div>
-                                                                                                    <div className="offer-slider-location">Max Occupancy: 2 persons</div>
-                                                                                                    <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
-                                                                                                    <div className="cat-icons">
-                                                                                                        <span className="cat-icon-01 active"></span>
-                                                                                                        <span className="cat-icon-02"></span>
-                                                                                                        <span className="cat-icon-03"></span>
-                                                                                                        <span className="cat-icon-04"></span>
-                                                                                                        <span className="cat-icon-05"></span>
-                                                                                                        <span className="cat-icon-06"></span>
-                                                                                                        <div className="clear"></div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br className="clear" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="cat-list-content-r">
-                                                                                        <div className="cat-list-content-p">
-                                                                                            <div className="available-price">540$</div>
-                                                                                            <div className="available-price-a">avg/night</div>
-                                                                                            <div className="available-price-c">9 available</div>
-                                                                                            <a href="#" className="available-btn">select</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="clear"></div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br className="clear" />
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-
+                                                                <DataTable
+                                                                // striped="false"
+                                                                className=""
+                                                                columns={header}
+                                                                data={location.state.hotel.rooms}
+                                                                // style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}
+                                                                 customStyles={customStyles}
+                                                                pagination 
+                                                                paginationPerPage={10}
+                                                                />
                                                                 <a href="#" className="availabe-more">load more results</a>
                                                             </div>
 
                                                         </div>
                                                     </div>
 
-
-                                                    <div className="content-tabs-i">
+                                                
+                                                    {/* <div className="content-tabs-i">
                                                         <h2>Hotel Facilities</h2>
                                                         <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
                                                         <ul className="preferences-list">
@@ -626,7 +481,7 @@ const HotelDetailPage = (props) => {
                                                             <li className="secure">Secure</li>
                                                         </ul>
                                                         <div className="clear"></div>
-                                                    </div>
+                                                    </div> */}
 
 
                                                     <div className="content-tabs-i">
@@ -996,7 +851,7 @@ const HotelDetailPage = (props) => {
                                                                             <div className="clear"></div>
                                                                         </div>
                                                                     </div>
-                                                                    <label>Evaluation</label>
+                                                                    {/* <label>Evaluation</label>
                                                                     <select className="custom-select">
                                                                         <option>&nbsp;</option>
                                                                         <option>1</option>
@@ -1005,7 +860,7 @@ const HotelDetailPage = (props) => {
                                                                         <option>4</option>
                                                                     </select>
                                                                     <label>When did you travel?</label>
-                                                                    <div className="input-a"><input type="text" value="" /></div>
+                                                                    <div className="input-a"><input type="text" value="" /></div> */}
                                                                     <button className="review-send">Submit Review</button>
                                                                 </div>
                                                             </div>
@@ -1013,7 +868,7 @@ const HotelDetailPage = (props) => {
                                                     </div>
 
 
-                                                    <div className="content-tabs-i">
+                                                    {/* <div className="content-tabs-i">
                                                         <h2>Things to do</h2>
                                                         <p className="small">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
                                                         <div className="todo-devider"></div>
@@ -1184,7 +1039,7 @@ const HotelDetailPage = (props) => {
                                                                                                 <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
                                                                                                 <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
                                                                                                 <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
+                                                                                               <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
                                                                                                 <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
                                                                                             </ul>
                                                                                             <div className="clear"></div>
@@ -1204,10 +1059,10 @@ const HotelDetailPage = (props) => {
 
                                                         </div>
                                                         <a href="#" className="guest-reviews-more">Load more reviews</a>
-                                                    </div>
+                                                    </div> */}
 
 
-                                                    <div className="content-tabs-i">
+                                                    {/* <div className="content-tabs-i">
                                                         <h2>FAQ</h2>
                                                         <p className="small">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
                                                         <div className="todo-devider"></div>
@@ -1283,8 +1138,7 @@ const HotelDetailPage = (props) => {
                                                             </div>
 
                                                         </div>
-                                                    </div>
-
+                                                    </div> */}
                                                 </div>
                                             </div>
 
@@ -1319,14 +1173,14 @@ const HotelDetailPage = (props) => {
                                     </div>
                                     <a href="#" className="wishlist-btn">
                                         <span className="wishlist-btn-l"><i></i></span>
-                                        <span className="wishlist-btn-r">ADD TO wish list</span>
+                                        <span className="wishlist-btn-r">Select Room</span>
                                         <div className="clear"></div>
                                     </a>
-                                    <a href="#" className="book-btn">
+                                    {/* <a href="#" className="book-btn">
                                         <span className="book-btn-l"><i></i></span>
                                         <span className="book-btn-r">ADD TO wish list</span>
                                         <div className="clear"></div>
-                                    </a>
+                                    </a> */}
                                 </div>
 
                                 <div className="h-help">
@@ -1340,7 +1194,7 @@ const HotelDetailPage = (props) => {
                                     <div id="reasons-slider">
 
                                         <div className="reasons-rating-i">
-                                            <div className="reasons-rating-txt">Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium, totam.</div>
+                                            <div className="reasons-rating-txt">huhuhuhu</div>
                                             <div className="reasons-rating-user">
                                                 <div className="reasons-rating-user-l">
                                                     <img alt="" src="img/r-user.png" />
