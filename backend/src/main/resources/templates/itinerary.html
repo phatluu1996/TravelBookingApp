@@ -409,8 +409,8 @@ footer {
                         <td width="20%" class="tableitem" >Flight Ticket</td>
                         <td width="30%" class="tableitem" th:text="${flightDetail.flight.airline.airlineName} + ' ' + ${flightDetail.flight.departureCity} + ' ' + ${flightDetail.flight.arrivalCity}"></td>
                         <td width="10%" class="tableitem" th:text="${flightDetailStat.count}"></td>
-                        <td width="10%" class="tableitem" th:text="${flightDetail.price + ' $'}"></td>
-                        <td width="20%" class="tableitem" th:text="${flightDetail.price}*${flightDetailStat.count} + ' $'"></td>
+                        <td width="10%" class="tableitem" th:text="${flightDetail.passenger.price + ' $'}"></td>
+                        <td width="20%" class="tableitem" th:text="${flightDetail.passenger.price}*${flightDetailStat.count} + ' $'"></td>
                     </tr>
                     <tr>
                         <td width="10%" class="tableitem" th:text="${#lists.size(flightDetails)} + 1"></td>

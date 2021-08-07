@@ -49,7 +49,7 @@ public class EmailService {
         System.out.printf("An email has been sent to " + to);
     }
 
-    public void sendSimpleMessage(String to, @DefaultValue(value = "") String from, String subject, String text, String attachmentName, File attachment) {
+    public void sendSimpleMessage(String to, @DefaultValue(value = "") String from, String subject, String text, String attachmentName, File attachment, File qrcode) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
             messageHelper.setFrom(from == null ? emailFrom : from);
@@ -58,6 +58,7 @@ public class EmailService {
             messageHelper.setText(text, true);
             messageHelper.getEncoding();
             messageHelper.addAttachment(attachmentName, attachment);
+            messageHelper.addAttachment("qrcode.png",qrcode);
         };
         getJavaMailSender().send(messagePreparator);
         System.out.printf("An email has been sent to " + to);

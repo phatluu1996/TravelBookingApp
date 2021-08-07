@@ -1,5 +1,7 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -18,19 +20,11 @@ public class Passenger {
     private String lastname;
 
     @Column(name = "birthday")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
 
     @Column(name = "gender")
     private boolean gender;
-
-    @Column(name = "card_id_number")
-    private String cardIdNumber;
-
-    @Column(name = "card_type")//0: Cmnd, 1: Driver licenses, 2: Passport
-    private int cardType;
-
-    @Column(name = "card_expired")
-    private Date cardExpired;
 
     @Column(name = "retired", nullable = true)
     private boolean retired;
@@ -38,40 +32,41 @@ public class Passenger {
     @Column(name = "has_infant", nullable = true)
     private boolean hasInfant;
 
+    @Column(name = "ticket_number")
+    private String ticketNumber;
+
+    @Column(name = "price")
+    private Float price;
+
+    @Column(name = "baggage_extra", nullable = true)
+    private int baggageExtra = 0;
+
+    @Column(name = "seat_number")
+    private String seatNumber;
+
     public Passenger() {
     }
 
-    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, String cardIdNumber, int cardType, Date cardExpired, boolean retired, boolean hasInfant) {
+    public Passenger(Long id, String firstname, String lastname, Date birthday, boolean gender, boolean retired, boolean hasInfant, String ticketNumber, Float price, int baggageExtra, String seatNumber) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthday = birthday;
         this.gender = gender;
-        this.cardIdNumber = cardIdNumber;
-        this.cardType = cardType;
-        this.cardExpired = cardExpired;
         this.retired = retired;
         this.hasInfant = hasInfant;
+        this.ticketNumber = ticketNumber;
+        this.price = price;
+        this.baggageExtra = baggageExtra;
+        this.seatNumber = seatNumber;
     }
 
-    public int getCardType() {
-        return cardType;
+    public String getSeatNumber() {
+        return seatNumber;
     }
 
-    public boolean isHasInfant() {
-        return hasInfant;
-    }
-
-    public void setHasInfant(boolean hasInfant) {
-        this.hasInfant = hasInfant;
-    }
-
-    public boolean isRetired() {
-        return retired;
-    }
-
-    public void setRetired(boolean retired) {
-        this.retired = retired;
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public Long getId() {
@@ -114,27 +109,43 @@ public class Passenger {
         this.gender = gender;
     }
 
-    public String getCardIdNumber() {
-        return cardIdNumber;
+    public boolean isRetired() {
+        return retired;
     }
 
-    public void setCardIdNumber(String cardIdNumber) {
-        this.cardIdNumber = cardIdNumber;
+    public void setRetired(boolean retired) {
+        this.retired = retired;
     }
 
-    public int getCardType(int cardType) {
-        return this.cardType;
+    public boolean isHasInfant() {
+        return hasInfant;
     }
 
-    public void setCardType(int cardType) {
-        this.cardType = cardType;
+    public void setHasInfant(boolean hasInfant) {
+        this.hasInfant = hasInfant;
     }
 
-    public Date getCardExpired() {
-        return cardExpired;
+    public String getTicketNumber() {
+        return ticketNumber;
     }
 
-    public void setCardExpired(Date cardExpired) {
-        this.cardExpired = cardExpired;
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public int getBaggageExtra() {
+        return baggageExtra;
+    }
+
+    public void setBaggageExtra(int baggageExtra) {
+        this.baggageExtra = baggageExtra;
     }
 }
