@@ -714,12 +714,7 @@ const HotelSearchPage = (props) => {
                               {/* {hotel.rooms[0].roomType} */}
                             </div>
                             <a onClick={() =>
-                              history.push({
-                                pathname: "/hotel-detail",
-                                state: {
-                                  hotel: hotel
-                                }
-                              })
+                              history.push("/hotel-detail?id="+hotel.id)
                             } className="cat-list-btn" >
                               Book now
                             </a>

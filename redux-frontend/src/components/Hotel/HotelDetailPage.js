@@ -6,41 +6,50 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useEffect, setState, useState, Component } from "react";
 import { importAll } from '../../utils/JqueryImport';
 import DataTable from "react-data-table-component";
+import { fetchHotelById } from '../../actions/actionHotel';
 
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const HotelDetailPage = (props) => {
-    const location = useLocation();
+    // const location = useLocation();
+    let queryParam = useQuery();
+    const [currentImage, setCurrentImage] = useState(null);
     const customStyles = {
-        
+
         rows: {
-          style: {
-            minHeight: '72px', // override the row height
-          }
+            style: {
+                minHeight: '72px', // override the row height
+            }
         },
         headCells: {
-          style: {
-            paddingLeft: '8px', // override the cell padding for head cells
-            paddingRight: '8px',
-          },
+            style: {
+                paddingLeft: '8px', // override the cell padding for head cells
+                paddingRight: '8px',
+            },
         },
         cells: {
-          style: {
-            paddingTop:'15px',
-            paddingLeft: '8px', // override the cell padding for data cells
-            paddingRight: '8px',
-          },
+            style: {
+                paddingTop: '15px',
+                paddingLeft: '8px', // override the cell padding for data cells
+                paddingRight: '8px',
+            },
         },
-      };
-      
+    };
+
+    const changeCurrentImgSrc = (e) => {
+            console.log(e)
+    }
 
     const header = [
         {
             name: '',
-            cell: room => 
+            cell: room =>
                 <div className="cat-list-item">
                     <div className="cat-list-item-l">
-                        <a href="#"><img alt="" src="img/available-01.jpg" /></a>
+                        <a href="#"><img alt="" src={room?.images[0]?.imagePath ? room.images[0].imagePath : ""} /></a>
                     </div>
                     <div className="cat-list-item-r">
                         <div className="cat-list-item-rb">
@@ -71,7 +80,7 @@ const HotelDetailPage = (props) => {
                                         <div className="cat-list-content-p">
                                             <div className="available-price">{room.price}$</div>
                                             <div className="available-price-a">avg/night</div>
-                                            <div className="available-price-c">{room?.roomStatus?"Available":"Unavailable"}</div>
+                                            <div className="available-price-c">{room?.roomStatus ? "Available" : "Unavailable"}</div>
                                             <a href="#" className="available-btn">select</a>
                                         </div>
                                     </div>
@@ -85,7 +94,7 @@ const HotelDetailPage = (props) => {
 
 
                 </div>
-        
+
         }
     ]
 
@@ -94,7 +103,7 @@ const HotelDetailPage = (props) => {
         // console.log(location.state.hotelId);
         // console.log(location.state.rooms);
         importAll();
-
+        props.getHotel(queryParam.get("id"));
         return () => {
             mount = true;
         }
@@ -165,36 +174,17 @@ const HotelDetailPage = (props) => {
                                                     </div> */}
                                                     <div className="tab-gallery-preview">
                                                         <div id="gallery">
-
-                                                            <div className="gallery-i active">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-01.jpg" /><span></span></a>
-                                                            </div>
-
-
-                                                            <div className="gallery-i">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-02.jpg" /><span></span></a>
-                                                            </div>
-
-
-                                                            <div className="gallery-i">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-03.jpg" /><span></span></a>
-                                                            </div>
-
-
-                                                            <div className="gallery-i">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-04.jpg" /><span></span></a>
-                                                            </div>
-
-
-                                                            <div className="gallery-i">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-05.jpg" /><span></span></a>
-                                                            </div>
-
-
-                                                            <div className="gallery-i">
-                                                                <a href="img/tab-photo-01.jpg" ><img alt="" src="img/tabgall-prev-06.jpg" /><span></span></a>
-                                                            </div>
-
+                                                            {
+                                                                props.hotel.data?.images?.map((image ,index) =>
+                                                                    <div  key={index} className="gallery-i">
+                                                                        <a  >
+                                                                            <img  onClick={changeCurrentImgSrc}  alt={image.imageAlt} src={image.imagePath} />
+                                                                            {/* <span></span> */}
+                                                                        </a>
+                                                                    </div>
+                                                                    
+                                                                )
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -423,14 +413,14 @@ const HotelDetailPage = (props) => {
                                                             <div className="available-row">
 
                                                                 <DataTable
-                                                                // striped="false"
-                                                                className=""
-                                                                columns={header}
-                                                                data={location.state.hotel.rooms}
-                                                                // style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}
-                                                                 customStyles={customStyles}
-                                                                pagination 
-                                                                paginationPerPage={10}
+                                                                    // striped="false"
+                                                                    className=""
+                                                                    columns={header}
+                                                                    data={props?.hotel?.data?.rooms}
+                                                                    // style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}
+                                                                    customStyles={customStyles}
+                                                                    pagination
+                                                                    paginationPerPage={3}
                                                                 />
                                                                 <a href="#" className="availabe-more">load more results</a>
                                                             </div>
@@ -438,7 +428,7 @@ const HotelDetailPage = (props) => {
                                                         </div>
                                                     </div>
 
-                                                
+
                                                     {/* <div className="content-tabs-i">
                                                         <h2>Hotel Facilities</h2>
                                                         <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
@@ -1426,5 +1416,18 @@ const HotelDetailPage = (props) => {
         </>
     )
 }
+const mapStateToProps = (state, ownProps) => {
+    return {
+        hotel: state.hotels
+    };
+};
 
-export default HotelDetailPage
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getHotel: (id) => dispatch(
+            fetchHotelById(id)
+        )
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HotelDetailPage);
