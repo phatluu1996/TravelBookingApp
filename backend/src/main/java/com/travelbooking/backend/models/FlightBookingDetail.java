@@ -27,14 +27,6 @@ public class FlightBookingDetail {
     @JoinColumn(name = "passenger_id", referencedColumnName = "id")
     private Passenger passenger;
 
-    @Column(name = "ticket_number")
-    private String ticketNumber;
-
-    @Column(name = "price")
-    private Float price;
-
-    @Column(name = "package_allowance", nullable = true)
-    private int packageAllowance = 0;
 
     @Column(name = "special_request", nullable = true)
     private String specialRequest;
@@ -42,44 +34,32 @@ public class FlightBookingDetail {
     @Column(name = "retired", nullable = true)
     private boolean retired;
 
-    @Column(name = "price_type", nullable = true) //0: Economy Type, 1: Business Type
+    @Column(name = "price_type", nullable = true) //0: Economy Type, 1: Business Type, 2: Child Type
     private Integer priceType = 0;
 
     @Column(name = "date_of_departure")
     @Temporal(TemporalType.DATE)
     private Date dateOfDeparture;
 
+    @Column(name = "airline_reservation_code")
+    private String airlineReservationCode;
+
+    @Column(name = "total_passengers", nullable = true)
+    private int totalPassengers;
+
     public FlightBookingDetail() {
     }
 
-    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String ticketNumber, Float price, int packageAllowance, String specialRequest, boolean retired, Integer priceType, Date dateOfDeparture) {
+    public FlightBookingDetail(Long id, Flight flight, FlightBooking flightBooking, Passenger passenger, String specialRequest, boolean retired, Integer priceType, Date dateOfDeparture, String airlineReservationCode) {
         this.id = id;
         this.flight = flight;
         this.flightBooking = flightBooking;
         this.passenger = passenger;
-        this.ticketNumber = ticketNumber;
-        this.price = price;
-        this.packageAllowance = packageAllowance;
         this.specialRequest = specialRequest;
         this.retired = retired;
         this.priceType = priceType;
         this.dateOfDeparture = dateOfDeparture;
-    }
-
-    public Date getDateOfDeparture() {
-        return dateOfDeparture;
-    }
-
-    public void setDateOfDeparture(Date dateOfDeparture) {
-        this.dateOfDeparture = dateOfDeparture;
-    }
-
-    public boolean isRetired() {
-        return retired;
-    }
-
-    public void setRetired(boolean retired) {
-        this.retired = retired;
+        this.airlineReservationCode = airlineReservationCode;
     }
 
     public Long getId() {
@@ -98,6 +78,8 @@ public class FlightBookingDetail {
         this.flight = flight;
     }
 
+
+
     public FlightBooking getFlightBooking() {
         return flightBooking;
     }
@@ -114,30 +96,6 @@ public class FlightBookingDetail {
         this.passenger = passenger;
     }
 
-    public String getTicketNumber() {
-        return ticketNumber;
-    }
-
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public int getPackageAllowance() {
-        return packageAllowance;
-    }
-
-    public void setPackageAllowance(int packageAllowance) {
-        this.packageAllowance = packageAllowance;
-    }
-
     public String getSpecialRequest() {
         return specialRequest;
     }
@@ -146,11 +104,35 @@ public class FlightBookingDetail {
         this.specialRequest = specialRequest;
     }
 
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
+    }
+
     public Integer getPriceType() {
         return priceType;
     }
 
     public void setPriceType(Integer priceType) {
         this.priceType = priceType;
+    }
+
+    public Date getDateOfDeparture() {
+        return dateOfDeparture;
+    }
+
+    public void setDateOfDeparture(Date dateOfDeparture) {
+        this.dateOfDeparture = dateOfDeparture;
+    }
+
+    public String getAirlineReservationCode() {
+        return airlineReservationCode;
+    }
+
+    public void setAirlineReservationCode(String airlineReservationCode) {
+        this.airlineReservationCode = airlineReservationCode;
     }
 }

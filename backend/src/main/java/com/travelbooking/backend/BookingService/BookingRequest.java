@@ -1,36 +1,49 @@
 package com.travelbooking.backend.BookingService;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.travelbooking.backend.models.Passenger;
+
 import java.util.Date;
+import java.util.List;
 
 public class BookingRequest {
     private Long userId;
     private Long flightId;
     private Long returnFlightId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateBooking;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateReturnBooking;
-    private String firstname;
-    private String lastname;
-    private Date birthday;
-    private Boolean gender;
-    private String cardId;
-    private int cardType;
-    private Date cardExpired;
+    private Float totalPrice;
+    private String paymentMethod;
     private Integer type;  //0: Economy Type, 1: Business Type
     private Integer returnType; //0: Economy Type, 1: Business Type
-    private String paymentMethod;
-    private Float totalPrice;
-    private int totalPassenger;
-    private boolean hasInfant;
+
+    private List<Passenger> passengers;
+
+
+//    private String firstname;
+//    private String lastname;
+//    private Date birthday;
+//    private Boolean gender;
+//    private Integer baggageExtra;
+//    private Integer returnBaggageExtra;
+//    private boolean hasInfant;
 
     public BookingRequest() {
     }
 
-    public boolean isHasInfant() {
-        return hasInfant;
-    }
-
-    public void setHasInfant(boolean hasInfant) {
-        this.hasInfant = hasInfant;
+    public BookingRequest(Long userId, Long flightId, Long returnFlightId, Date dateBooking, Date dateReturnBooking, Float totalPrice, String paymentMethod, Integer type, Integer returnType, List<Passenger> passengers) {
+        this.userId = userId;
+        this.flightId = flightId;
+        this.returnFlightId = returnFlightId;
+        this.dateBooking = dateBooking;
+        this.dateReturnBooking = dateReturnBooking;
+        this.totalPrice = totalPrice;
+        this.paymentMethod = paymentMethod;
+        this.type = type;
+        this.returnType = returnType;
+        this.passengers = passengers;
     }
 
     public Long getUserId() {
@@ -73,60 +86,20 @@ public class BookingRequest {
         this.dateReturnBooking = dateReturnBooking;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public Float getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
-    }
-
-    public String getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(String cardId) {
-        this.cardId = cardId;
-    }
-
-    public int getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(int cardType) {
-        this.cardType = cardType;
-    }
-
-    public Date getCardExpired() {
-        return cardExpired;
-    }
-
-    public void setCardExpired(Date cardExpired) {
-        this.cardExpired = cardExpired;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public Integer getType() {
@@ -145,27 +118,11 @@ public class BookingRequest {
         this.returnType = returnType;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public List<Passenger> getPassengers() {
+        return passengers;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public int getTotalPassenger() {
-        return totalPassenger;
-    }
-
-    public void setTotalPassenger(int totalPassenger) {
-        this.totalPassenger = totalPassenger;
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
     }
 }

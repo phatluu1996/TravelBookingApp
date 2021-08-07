@@ -19,14 +19,11 @@ public class FlightBooking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reservation_code")
-    private String reservationCode;
+    @Column(name = "booking_code")
+    private String bookingCode;
 
     @Column(name = "total_price")
     private Float totalPrice;
-
-    @Column(name = "total_passengers", nullable = true)
-    private int totalPassengers;
 
     @Column(name = "status", nullable = true) //1: Confirm 2:Cancel
     private int status;
@@ -60,11 +57,10 @@ public class FlightBooking {
     public FlightBooking() {
     }
 
-    public FlightBooking(Long id, String reservationCode, Float totalPrice, int totalPassengers, int status, String note, Instant createdAt, Instant updatedAt, List<FlightBookingDetail> flightBookingDetails, String paymentMethod, boolean retired, User user) {
+    public FlightBooking(Long id, String bookingCode, Float totalPrice, int status, String note, Instant createdAt, Instant updatedAt, List<FlightBookingDetail> flightBookingDetails, String paymentMethod, boolean retired, User user) {
         this.id = id;
-        this.reservationCode = reservationCode;
+        this.bookingCode = bookingCode;
         this.totalPrice = totalPrice;
-        this.totalPassengers = totalPassengers;
         this.status = status;
         this.note = note;
         this.createdAt = createdAt;
@@ -72,22 +68,6 @@ public class FlightBooking {
         this.flightBookingDetails = flightBookingDetails;
         this.paymentMethod = paymentMethod;
         this.retired = retired;
-        this.user = user;
-    }
-
-    public boolean isRetired() {
-        return retired;
-    }
-
-    public void setRetired(boolean retired) {
-        this.retired = retired;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
         this.user = user;
     }
 
@@ -99,12 +79,12 @@ public class FlightBooking {
         this.id = id;
     }
 
-    public String getReservationCode() {
-        return reservationCode;
+    public String getBookingCode() {
+        return bookingCode;
     }
 
-    public void setReservationCode(String reservationCode) {
-        this.reservationCode = reservationCode;
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
     }
 
     public Float getTotalPrice() {
@@ -113,14 +93,6 @@ public class FlightBooking {
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public int getTotalPassengers() {
-        return totalPassengers;
-    }
-
-    public void setTotalPassengers(int totalPassengers) {
-        this.totalPassengers = totalPassengers;
     }
 
     public int getStatus() {
@@ -170,4 +142,21 @@ public class FlightBooking {
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public void setRetired(boolean retired) {
+        this.retired = retired;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }
