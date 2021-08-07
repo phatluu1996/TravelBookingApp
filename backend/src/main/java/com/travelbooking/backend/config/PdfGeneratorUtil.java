@@ -22,13 +22,8 @@ public class PdfGeneratorUtil {
     @Autowired
     private TemplateEngine templateEngine;
 
-    @Autowired
-    private EmailService emailService;
 
-    @Autowired
-    private EmailConfiguration emailConfiguration;
-
-    public void createPdf(String templateName, Map<String, Object> map,String path, SendEmailItinerary emailUtil, User user) throws Exception {
+    public File createPdf(String templateName, Map<String, Object> map,String path, SendEmailItinerary emailUtil, User user) throws Exception {
 
         Assert.notNull(templateName, "The templateName can not be null");
         Context ctx = new Context();
@@ -59,8 +54,7 @@ public class PdfGeneratorUtil {
             renderer.createPDF(os, false);
             renderer.finishPDF();
             System.out.println("PDF created successfully at " + outputFile.getAbsolutePath());
-//            System.out.printf(processedHtml);
-            emailService.sendSimpleMessage(user.getEmail(),null, "Flight Itinerary", processedHtml);
+            return outputFile;
         }
         finally {
             if (os != null) {

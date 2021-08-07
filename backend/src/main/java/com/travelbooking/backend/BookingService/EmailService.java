@@ -9,14 +9,22 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 
 @Service
 public class EmailService {
     @Autowired
     private EmailConfiguration emailConfiguration;
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     private String emailFrom = "SparrowTravel.com <ea14180c18-589691@inbox.mailtrap.io>";
 
@@ -30,13 +38,6 @@ public class EmailService {
     }
 
     public void sendSimpleMessage(String to, @DefaultValue(value = "") String from, String subject, String text) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setTo(to);
-//        message.setSubject(subject);
-//        message.setText(text);
-//        message.setFrom(from == null ? emailFrom : from);
-//        getJavaMailSender().send(message);
-
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom(from == null ? emailFrom : from);
@@ -46,5 +47,31 @@ public class EmailService {
         };
         getJavaMailSender().send(messagePreparator);
         System.out.printf("An email has been sent to " + to);
+    }
+
+    public void sendSimpleMessage(String to, @DefaultValue(value = "") String from, String subject, String text, String attachmentName, File attachment) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
+            messageHelper.setFrom(from == null ? emailFrom : from);
+            messageHelper.setTo(to);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text, true);
+            messageHelper.getEncoding();
+            messageHelper.addAttachment(attachmentName, attachment);
+        };
+        getJavaMailSender().send(messagePreparator);
+        System.out.printf("An email has been sent to " + to);
+    }
+
+    public String templateResolve(String templateName, Map<String, Object> map){
+        Context ctx = new Context();
+        if (map != null) {
+            for (Map.Entry<String, Object> stringObjectEntry : map.entrySet()) {
+                Map.Entry pair = (Map.Entry) stringObjectEntry;
+                ctx.setVariable(pair.getKey().toString(), pair.getValue());
+            }
+        }
+
+        return templateEngine.process(templateName, ctx);
     }
 }

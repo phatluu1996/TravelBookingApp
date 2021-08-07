@@ -162,16 +162,21 @@ th {
 .list-item td {
 <!--    text-align: right;-->
 }
-.list-item td:nth-child(2) {
-    text-align: left;
-}
+<!--.list-item td:nth-child(2) {-->
+<!--    text-align: left;-->
+<!--}-->
 .total-row th,
 .total-row td {
-    text-align: right;
+    text-align: left;
     font-weight: 700;
     font-size: .75em;
     border: 0 none;
 }
+
+.total-row td.GrandTotal {
+    text-align: right !important;
+}
+
 .table-main {
 
 }
@@ -325,7 +330,7 @@ footer {
 <div id="invoiceholder">
     <div id="invoice" class="effect2">
         <div id="invoice-top">
-            <div class="logo"><img src="../static/images/logo.png" alt="Logo" /></div>
+            <div class="logo"><img src="http://localhost:8080/images/logo.png" alt="Logo" /></div>
             <div class="title">
                 <h1>Invoice #<span class="invoiceVal invoice_num"></span></h1>
                 <p>Invoice Date: <span id="invoice_date">01 Feb 2018</span><br/>
@@ -339,16 +344,16 @@ footer {
                 <div class="col-left">
                     <div class="clientlogo"><img src="https://cdn3.iconfinder.com/data/icons/daily-sales/512/Sale-card-address-512.png" alt="Sup" /></div>
                     <div class="clientinfo">
-                        <h2 id="supplier">TESI S.P.A.</h2>
-                        <p><span id="address">VIA SAVIGLIANO, 48</span><br/><span id="city">RORETO DI CHERASCO</span><br/><span id="country">IT</span> - <span id="zip">12062</span><br/><span id="tax_num">555-555-5555</span><br/></p>
+                        <h2 id="supplier">Sparrow Travel</h2>
+                        <p><span id="address">590 CMT8, Phường 11, Quận 3</span><br/><span id="city">Hồ Chí Minh</span><br/><span id="country">Viet Nam</span> - <span id="zip">70000</span><br/><span id="tax_num">555-555-5555</span><br/></p>
                     </div>
                 </div>
                 <div class="col-right">
                     <table class="table">
                         <tbody>
                         <tr>
-                            <td><span>Invoice Total</span><label id="invoice_total">61.2</label></td>
-                            <td><span>Currency</span><label id="currency">EUR</label></td>
+                            <td><span>Invoice Total</span><label id="invoice_total" th:text="${flightBooking.totalPrice} + '$'"></label></td>
+                            <td><span>Currency</span><label id="currency">USD</label></td>
                         </tr>
                         <tr>
                             <td><span>Payment Term</span><label id="payment_term">60 gg DFFM</label></td>
@@ -374,17 +379,11 @@ footer {
                         <th>To</th>
                     </tr>
                     </thead>
-                    <tr class="list-item" th:each="flightDetail : ${flightDetails}">
+                    <tr th:each="flightDetail : ${flightDetails}">
                         <td class="tableitem" width="10%" th:text="${flightDetailStat.index + 1}"></td>
                         <td class="tableitem" width="50%" th:text="${flightDetail.passenger.lastname} + ' ' + ${flightDetail.passenger.firstname}"></td>
                         <td class="tableitem" width="20%" th:text="${flightDetail.flight.departureCity}"></td>
                         <td class="tableitem" width="20%" th:text="${flightDetail.flight.arrivalCity}"></td>
-                    </tr>
-                    <tr class="list-item">
-                        <td  class="tableitem" width="10%">1</td>
-                        <td  class="tableitem" width="40%">Luu Trong Phat</td>
-                        <td  class="tableitem" width="20%">SGN</td>
-                        <td  class="tableitem" width="20%">HNA</td>
                     </tr>
                 </table>
             </div>
@@ -405,25 +404,26 @@ footer {
                         <th>Total Amount</th>
                     </tr>
                     </thead>
-                    <tr class="list-item" th:each="flightDetail : ${flightDetails}">
+                    <tr th:each="flightDetail : ${flightDetails}">
                         <td width="10%" class="tableitem" th:text="${flightDetailStat.index + 1}"></td>
                         <td width="20%" class="tableitem" >Flight Ticket</td>
                         <td width="30%" class="tableitem" th:text="${flightDetail.flight.airline.airlineName} + ' ' + ${flightDetail.flight.departureCity} + ' ' + ${flightDetail.flight.arrivalCity}"></td>
                         <td width="10%" class="tableitem" th:text="${flightDetailStat.count}"></td>
-                        <td width="10%" class="tableitem" th:text="${flightDetail.price}"></td>
-                        <td width="20%" class="tableitem" th:text="${flightDetail.price}*${flightDetailStat.count}"></td>
+                        <td width="10%" class="tableitem" th:text="${flightDetail.price + ' $'}"></td>
+                        <td width="20%" class="tableitem" th:text="${flightDetail.price}*${flightDetailStat.count} + ' $'"></td>
                     </tr>
                     <tr>
                         <td width="10%" class="tableitem" th:text="${#lists.size(flightDetails)} + 1"></td>
                         <td width="20%" class="tableitem">Tax</td>
                         <td width="30%" class="tableitem"></td>
                         <td width="10%" class="tableitem">1</td>
-                        <td width="10%" class="tableitem">10.0</td>
-                        <td width="20%" class="tableitem">10.0</td>
+                        <td width="10%" class="tableitem">10.0$</td>
+                        <td width="20%" class="tableitem">10.0$</td>
                     </tr>
-                    <tr class="list-item total-row">
-                        <th colspan="5" class="tableitem" >Grand Total</th>
-                        <td data-label="Grand Total" class="tableitem" th:text="${flightBooking.totalPrice}"></td>
+                    <tr class="total-row">
+                        <th colspan="4" class="tableitem" ></th>
+                        <th class="tableitem" >Grand Total</th>
+                        <td data-label="Grand Total" class="tableitem" th:text="${flightBooking.totalPrice + ' $'}"></td>
                     </tr>
                 </table>
             </div>
