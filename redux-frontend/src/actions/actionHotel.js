@@ -86,5 +86,50 @@ export const getUpdate = (id,data) => async dispatch => {
    }
 }
 
+export const FETCH_ALL_HOTEL_REQUEST = "FETCH_ALL_HOTEL_REQUEST";
+export const FETCH_ALL_HOTEL_SUCCESS = "FETCH_ALL_HOTEL_SUCCESS";
+export const FETCH_ALL_HOTEL_ERROR = "FETCH_ALL_HOTEL_ERROR";
+
+
+export const fetchAllHotel = () => async dispatch => {
+    try {
+        dispatch({ type: FETCH_ALL_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotels`;
+        const response = await axios.get(url)
+        const responseBody = await response.data;
+        dispatch({
+            type: FETCH_ALL_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: FETCH_ALL_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const CREATE_HOTEL_REQUEST = "CREATE_HOTEL_REQUEST";
+export const CREATE_HOTEL_SUCCESS = "CREATE_HOTEL_SUCCESS";
+export const CREATE_HOTEL_ERROR = "CREATE_HOTEL_ERROR";
+
+export const createHotel = (data) => async dispatch => {
+    try {
+        dispatch({ type: CREATE_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel`;
+        const response = await axios.post(url, data)
+        const responseBody = await response.data;
+        dispatch({
+            type: CREATE_HOTEL_SUCCESS
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: CREATE_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
 
 

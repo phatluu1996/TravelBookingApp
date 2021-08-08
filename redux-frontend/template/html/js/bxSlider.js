@@ -1065,23 +1065,23 @@
     /**
      * Initializes touch events
      */
-    var initTouch = function() {
-      // initialize object to contain all touch values
-      slider.touch = {
-        start: {x: 0, y: 0},
-        end: {x: 0, y: 0}
-      };
-      slider.viewport.bind('touchstart MSPointerDown pointerdown', onTouchStart);
+    // var initTouch = function() {
+    //   // initialize object to contain all touch values
+    //   slider.touch = {
+    //     start: {x: 0, y: 0},
+    //     end: {x: 0, y: 0}
+    //   };
+    //   slider.viewport.bind('touchstart MSPointerDown pointerdown', onTouchStart);
 
-      //for browsers that have implemented pointer events and fire a click after
-      //every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
-      slider.viewport.on('click', '.bxslider a', function(e) {
-        if (slider.viewport.hasClass('click-disabled')) {
-          e.preventDefault();
-          slider.viewport.removeClass('click-disabled');
-        }
-      });
-    };
+    //   //for browsers that have implemented pointer events and fire a click after
+    //   //every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
+    //   slider.viewport.on('click', '.bxslider a', function(e) {
+    //     if (slider.viewport.hasClass('click-disabled')) {
+    //       e.preventDefault();
+    //       slider.viewport.removeClass('click-disabled');
+    //     }
+    //   });
+    // };
 
     /**
      * Event handler for "touchstart"

@@ -1,4 +1,7 @@
+import { faChartArea, faHotel, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AdminSidebar = () => {
     return (
@@ -63,13 +66,40 @@ const AdminSidebar = () => {
                         <span className="nav-link">Navigation</span>
                     </li>
                     <li className="nav-item menu-items">
-                        <a className="nav-link" href="#">
+                        <Link className="nav-link" to="/admin-dashboard">
                             <span className="menu-icon">
-                                <i className="mdi mdi-speedometer"></i>
+                                {/* <i className="mdi mdi-speedometer"></i> */}
+                                <FontAwesomeIcon icon={faChartArea} color="#0090e7"></FontAwesomeIcon>
                             </span>
                             <span className="menu-title">Dashboard</span>
-                        </a>
+                        </Link>
                     </li>
+                    <li className="nav-item menu-items">
+                        <Link className="nav-link" to="/admin-user-manage">
+                            <span className="menu-icon">
+                                {/* <i className="mdi mdi-speedometer"></i> */}
+                                <FontAwesomeIcon icon={faUser} color="#00d25b"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Users</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Hotels</span>
+                            <i className="menu-arrow"></i>
+                        </a>
+                        <div className="collapse" id="ui-basic">
+                            <ul className="nav flex-column sub-menu">
+                                <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-manage">List</Link></li>
+                                <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-create">Create</Link></li>
+                                <li className="nav-item"> <Link className="nav-link" to="../../pages/ui-features/typography.html">Edit</Link></li>
+                            </ul>
+                        </div>
+                    </li>
+
                     <li className="nav-item menu-items">
                         <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <span className="menu-icon">

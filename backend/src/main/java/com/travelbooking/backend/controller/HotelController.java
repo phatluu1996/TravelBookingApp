@@ -90,6 +90,7 @@ public class HotelController {
         //http://localhost:8080/api/hotel
         @PostMapping("/hotel")
         public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
+            Location location = locationRepository.save(hotel.getLocation());
             Hotel result = hotelRepository.save(hotel);
             return ResponseEntity.ok().body(result);
         }

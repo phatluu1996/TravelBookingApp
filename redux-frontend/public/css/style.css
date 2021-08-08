@@ -1878,7 +1878,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .book-btn-r {float:right; width:266px; height:27px; padding-top:14px; font-size:12px; text-transform:uppercase; font-family:'Raleway'; color:#ffffff; font-weight:600; text-align:center; display:block;}
 .book-btn-l i {display:block; background:url(../img/book-icon.png) left top no-repeat; float:left; margin:17px 0px 0px 14px; width:12px; height:8px;}
 
-.gallery-i {display: inline-block;}
+.gallery-i {display: inline-block; margin-right: 5px !important;}
 .gallery-i a {display:block; position:relative;}
 .gallery-i span {display:block; width:102px; height:69px; position:absolute; left:0px; top:0px; z-index:999; border:3px solid transparent;}
 .gallery-i.active span {border-color:#ff9e4f;} 

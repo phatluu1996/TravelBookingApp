@@ -729,7 +729,7 @@ const HotelSearchPage = (props) => {
                       listItem={props.hotels?.data?.length}
                       setPageNum={setPage}
                     /> */}
-                    {props.hotels.data && (<div className="pagination">
+                    {props.hotels.data?.length > 0 && (<div className="pagination">
                       {
                         page == 1 ? (<>
                           <a className="active">1</a>

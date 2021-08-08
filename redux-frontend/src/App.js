@@ -26,6 +26,8 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import HotelProfile from './components/Hotel/HotelProfile';
 import { signin, googleSignin } from './actions/actionAuth';
 import AdminManageUser from './components/Admin/AdminManageUser';
+import AdminHotel from './components/Admin/Hotel/AdminHotel';
+import AdminHotelCreate from './components/Admin/Hotel/AdminHotelCreate';
 
 
 const App = (props) => {
@@ -42,8 +44,10 @@ const App = (props) => {
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight" />
 
         <PublicRoute restricted={false} component={AdminDashboard} path="/admin-dashboard" />
-        <PublicRoute restricted={false} component={AdminManageUser} path="/admin-manage" />
+        <PublicRoute restricted={false} component={AdminManageUser} path="/admin-user-manage" />
 
+        <PublicRoute restricted={false} component={AdminHotel} path="/admin-hotel-manage" />
+        <PublicRoute restricted={false} component={AdminHotelCreate} path="/admin-hotel-create" />
 
         <PublicRoute restricted={true} component={Register} path="/register" />
 
@@ -57,9 +61,6 @@ const App = (props) => {
         <PublicRoute restricted={false} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
 
         <PublicRoute component={HotelProfile} path="/hotel-profile" exact />
-        <PublicRoute restricted={false} component={Dashboard} path="/dashboard" exact />
-
-
 
         
       </Switch>

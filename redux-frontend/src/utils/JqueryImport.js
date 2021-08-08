@@ -1406,7 +1406,7 @@ export const customOtherTags = () => {
                         e.preventDefault();
                         slider.viewport.removeClass('click-disabled');
                     }
-                });
+                });                
             };
 
             /**
@@ -1416,7 +1416,7 @@ export const customOtherTags = () => {
              *  - DOM event object
              */
             var onTouchStart = function (e) {
-                //disable slider controls while user is interacting with slides to avoid slider freeze that happens on touch devices when a slide swipe happens immediately after interacting with slider controls
+                //disable slider controls while user is interacting with slides to avoid slider freeze that happens on touch devices when a slide swipe happens immediately after interacting with slider controls                
                 slider.controls.el.addClass('disabled');
 
                 if (slider.working) {
@@ -1560,6 +1560,7 @@ export const customOtherTags = () => {
                 if (slider.viewport.get(0).releasePointerCapture) {
                     slider.viewport.get(0).releasePointerCapture(slider.pointerId);
                 }
+
             };
 
             /**
@@ -2018,7 +2019,7 @@ export const customOtherTags = () => {
         }
     });
 
-    
+
 
     $('.header-lang').on({
         mouseenter: function () {
@@ -2064,13 +2065,13 @@ export const customOtherTags = () => {
     });
 
     $('.header-account').on({
-		mouseenter: function() {
-			$('.account-drop').fadeIn();
-		},
-		mouseleave: function() {
-			$('.account-drop').hide();
-		}
-	});
+        mouseenter: function () {
+            $('.account-drop').fadeIn();
+        },
+        mouseleave: function () {
+            $('.account-drop').hide();
+        }
+    });
 
     $('.flight-line .flight-line-b b').on('click', function () {
         if ($(this).is('.open')) {
@@ -2200,13 +2201,15 @@ export const customOtherTags = () => {
         }
     }, $(this));
 
-    $('.gallery-i a').on('click', function () {
-        var $href = $(this).attr('href');
-        $('.gallery-i').removeClass('active');
-        $(this).closest('.gallery-i').addClass('active');
-        $('.tab-gallery-big img').attr('src', $href);
-        return false;
-    });
+    // $('.gallery-i a').on('click', function () {
+    //     var $href = $(this).attr('href');
+    //     var $src = $(this)[0].getElementsByTagName("img")[0].src;
+    //     $('.gallery-i').removeClass('active');
+    //     $(this).closest('.gallery-i').addClass('active');
+    //     $('.tab-gallery-big img')[0].setAttribute('src', $src);
+    //     return true;
+    // });
+
     $('.content-tabs-head a').on('click', function () {
         var $index = $(this).closest('li').index();
         $('.content-tabs-head a').removeClass('active');
@@ -2340,8 +2343,8 @@ export const customOtherTags = () => {
 
     //TODO fix
     $('.date-inpt').datepicker({ dateFormat: 'dd/mm/yy' }).val();
-    $('.date-booking-inpt').datepicker({ dateFormat: 'yy-mm-dd',maxDate:'0' });
-    $('.date-card-expired-inpt').datepicker({ dateFormat: 'yy-mm-dd',minDate: '0' });
+    $('.date-booking-inpt').datepicker({ dateFormat: 'yy-mm-dd', maxDate: '0' });
+    $('.date-card-expired-inpt').datepicker({ dateFormat: 'yy-mm-dd', minDate: '0' });
 
     $('.custom-select').customSelect();
 
@@ -2514,7 +2517,7 @@ const init_validation = (target) => {
 
     $('#gallery').bxSlider({
         infiniteLoop: true,
-        speed: 500,
+        speed: 300,
         slideWidth: 108,
         minSlides: 1,
         maxSlides: 6,

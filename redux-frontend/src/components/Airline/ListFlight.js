@@ -106,7 +106,7 @@ const ListFlight = (props) => {
             <div className="tables" >
               <div className="typography-heading">Scheduled Flights List</div>
               <div className="shortcodes">
-                <DataTable className="table-a" columns={header} data={airline?.airline?.flights} pagination paginationPerPage={10} />                
+                <DataTable className="table-a table-borderless" columns={header} data={airline?.airline?.flights} pagination paginationPerPage={10}/>                
               </div>
               <div className="clear"></div>
             </div>

@@ -59,6 +59,9 @@ public class FlightBookingServiceImpl implements FlightBookingService{
     @Autowired
     private EmailConfiguration emailConfiguration;
 
+    public FlightBookingServiceImpl() {
+    }
+
     @Override
     public FlightBooking bookFlight(BookingRequest bookingRequest) throws Exception {
         // find Flight

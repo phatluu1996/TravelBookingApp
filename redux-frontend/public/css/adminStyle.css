@@ -7574,7 +7574,7 @@ div.bootstrap-scope .form-check-input.is-valid ~ .valid-tooltip {
 }
 
 div.bootstrap-scope .invalid-feedback {
-  display: none;
+  display: block;
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
@@ -23596,3 +23596,4 @@ div.bootstrap-scope .content-wrapper {
   -webkit-flex-grow: 1;
   flex-grow: 1;
 }
+

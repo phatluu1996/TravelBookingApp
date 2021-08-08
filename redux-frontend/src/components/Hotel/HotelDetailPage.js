@@ -177,9 +177,9 @@ const HotelDetailPage = (props) => {
                                                             {
                                                                 props.hotel.data?.images?.map((image ,index) =>
                                                                     <div  key={index} className="gallery-i">
-                                                                        <a  >
+                                                                        <a>
                                                                             <img  onClick={changeCurrentImgSrc}  alt={image.imageAlt} src={image.imagePath} />
-                                                                            {/* <span></span> */}
+                                                                            <span></span>
                                                                         </a>
                                                                     </div>
                                                                     
