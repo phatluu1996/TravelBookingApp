@@ -7311,7 +7311,7 @@ div.bootstrap-scope .tt-hint:disabled, div.bootstrap-scope .form-control[readonl
 div.bootstrap-scope .jsgrid .jsgrid-table .jsgrid-filter-row select[readonly], div.bootstrap-scope .jsgrid .jsgrid-table .jsgrid-filter-row input[readonly][type=number], div.bootstrap-scope .select2-container--default .select2-selection--single[readonly], div.bootstrap-scope .select2-container--default .select2-selection--single .select2-search__field[readonly], div.bootstrap-scope .typeahead[readonly],
 div.bootstrap-scope .tt-query[readonly],
 div.bootstrap-scope .tt-hint[readonly] {
-  background-color: #e9ecef;
+  background-color: #213242;
   opacity: 1;
 }
 
@@ -7319,8 +7319,12 @@ div.bootstrap-scope select.form-control:focus::-ms-value, div.bootstrap-scope se
 div.bootstrap-scope .jsgrid .jsgrid-table .jsgrid-filter-row select:focus::-ms-value, div.bootstrap-scope .select2-container--default select.select2-selection--single:focus::-ms-value, div.bootstrap-scope .select2-container--default .select2-selection--single select.select2-search__field:focus::-ms-value, div.bootstrap-scope select.typeahead:focus::-ms-value,
 div.bootstrap-scope select.tt-query:focus::-ms-value,
 div.bootstrap-scope select.tt-hint:focus::-ms-value {
-  color: #495057;
+  color: white;
   background-color: #2A3038;
+}
+
+div.bootstrap-scope div.form-group > select.form-control{
+  color : white;
 }
 
 div.bootstrap-scope .form-control-file,
@@ -17905,6 +17909,7 @@ div.bootstrap-scope .tt-query:focus,
 div.bootstrap-scope .tt-hint:focus {
   border: 1px solid rgba(71, 164, 71, 0.5);
   background-color: #2A3038;
+  color: white;
 }
 
 div.bootstrap-scope .form-control.form-control-lg, div.bootstrap-scope .form-control-lg.asColorPicker-input, div.bootstrap-scope .dataTables_wrapper select.form-control-lg, div.bootstrap-scope .jsgrid .jsgrid-table .jsgrid-filter-row input.form-control-lg[type=text],

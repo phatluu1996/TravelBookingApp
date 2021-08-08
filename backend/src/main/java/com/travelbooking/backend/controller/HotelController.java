@@ -1,10 +1,10 @@
 package com.travelbooking.backend.controller;
 
-import com.travelbooking.backend.models.Flight;
-import com.travelbooking.backend.models.Location;
-import com.travelbooking.backend.models.Room;
+import com.travelbooking.backend.models.*;
+import com.travelbooking.backend.repository.AccountRepository;
 import com.travelbooking.backend.repository.LocationRepository;
 import com.travelbooking.backend.repository.RoomRepository;
+import com.travelbooking.backend.security.payload.response.MessageResponse;
 import com.travelbooking.backend.specification.FlightSpecification;
 import com.travelbooking.backend.specification.HotelSpecification;
 import com.travelbooking.backend.specification.RoomSpecification;
@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
-import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 
@@ -43,6 +42,9 @@ public class HotelController {
     private RoomRepository roomRepository;
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
     //http://localhost:8080/api/findHotels
     @GetMapping("/findHotels")
     public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
@@ -89,7 +91,12 @@ public class HotelController {
 
         //http://localhost:8080/api/hotel
         @PostMapping("/hotel")
-        public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
+        public ResponseEntity<?> addHotel(@RequestBody Hotel hotel) {
+            if (accountRepository.existsByUserName(hotel.getAccount().getUserName())) {
+                return ResponseEntity
+                        .badRequest().body("Username has been used !");
+            }
+            Account account = accountRepository.save(hotel.getAccount());
             Location location = locationRepository.save(hotel.getLocation());
             Hotel result = hotelRepository.save(hotel);
             return ResponseEntity.ok().body(result);
@@ -98,7 +105,8 @@ public class HotelController {
         @PutMapping("/hotel/{id}")          
         public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
 
-            hotel.setId(id);;
+            hotel.setId(id);
+            Account account = accountRepository.save(hotel.getAccount());
             Location location = hotel.getLocation();
             locationRepository.save(location);
             Hotel result = hotelRepository.save(hotel);

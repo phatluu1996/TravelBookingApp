@@ -1,5 +1,6 @@
 import { faChartArea, faHotel, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -95,7 +96,6 @@ const AdminSidebar = () => {
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-create">Create</Link></li>
-                                <li className="nav-item"> <Link className="nav-link" to="../../pages/ui-features/typography.html">Edit</Link></li>
                             </ul>
                         </div>
                     </li>
