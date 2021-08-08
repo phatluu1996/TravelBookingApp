@@ -30,6 +30,9 @@ import AdminHotel from './components/Admin/Hotel/AdminHotel';
 import AdminHotelCreate from './components/Admin/Hotel/AdminHotelCreate';
 import AdminHotelEdit from './components/Admin/Hotel/AdminHotelEdit';
 import { setUserSession } from './utils';
+import AdminAirline from './components/Admin/Airline/AdminAirline';
+import AdminAirlineCreate from './components/Admin/Airline/AdminAirlineCreate';
+import AdminAirlineEdit from './components/Admin/Airline/AdminAirlineEdit';
 
 
 const App = (props) => {
@@ -62,6 +65,12 @@ const App = (props) => {
         <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotel} path="/admin-hotel-manage" />
         <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotelCreate} path="/admin-hotel-create" />
         <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotelEdit} path="/admin-hotel-edit" />
+
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminAirline} path="/admin-airline-manage" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminAirlineCreate} path="/admin-airline-create" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminAirlineEdit} path="/admin-airline-edit" />
+
+
 
         <PublicRoute restricted={true} component={Register} path="/register" />
 

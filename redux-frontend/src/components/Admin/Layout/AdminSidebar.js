@@ -1,4 +1,4 @@
-import { faChartArea, faHotel, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChartArea, faHotel, faPlane, faPlaneSlash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
@@ -96,6 +96,21 @@ const AdminSidebar = () => {
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-create">Create</Link></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Airlines</span>
+                            <i className="menu-arrow"></i>
+                        </a>
+                        <div className="collapse" id="ui-basic">
+                            <ul className="nav flex-column sub-menu">
+                                <li className="nav-item"> <Link className="nav-link" to="/admin-airline-manage">List</Link></li>
+                                <li className="nav-item"> <Link className="nav-link" to="/admin-airline-create">Create</Link></li>
                             </ul>
                         </div>
                     </li>

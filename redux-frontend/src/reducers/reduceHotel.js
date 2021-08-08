@@ -59,8 +59,7 @@ function reducerHotel(state = initialState, action) {
     case CREATE_HOTEL_REQUEST:
       return {
         ...state,
-        requesting: true,
-        action:'create'
+        requesting: true
       };
 
     case CREATE_HOTEL_SUCCESS:
@@ -79,34 +78,34 @@ function reducerHotel(state = initialState, action) {
       };
       return state;
 
-      case UPDATE_HOTEL_REQUEST:
-        return {
-          ...state,
-          requesting: true,
-          action:'create'
-        };
-      case UPDATE_HOTEL_SUCCESS:
-        state = {
-          ...state,
-          requesting: false,
-          success: true
-        };
-        return state;
-  
-      case UPDATE_HOTEL_ERROR:
-        state = {
-          ...state,
-          requesting: false,
-          message: action.message
-        };
-        return state;
+    case UPDATE_HOTEL_REQUEST:
+      return {
+        ...state,
+        requesting: true
+      };
+
+    case UPDATE_HOTEL_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true
+      };
+      return state;
+
+    case UPDATE_HOTEL_ERROR:
+      state = {
+        ...state,
+        requesting: false,
+        message: action.message
+      };
+      return state;
 
     case GET_HOTEL_REQUEST:
       return {
         ...state,
         requesting: true
       };
-      
+
 
     case GET_HOTEL_SUCCESS:
       state = {
