@@ -663,7 +663,7 @@ const HotelSearchPage = (props) => {
                         <div  className="offer-slider-i catalog-i fly-in">
                           {/* <input hidden='true' name="hotelId" defaultValue={hotel.id} /> */}
                           <a href="#" className="offer-slider-img">
-                            <img alt="" name="hotelImage" src="img/catalog-09.jpg" />
+                            <img alt="" name="hotelImage" src={hotel?.images[0]?.imagePath} />
                             <span className="offer-slider-overlay">
                               <span className="offer-slider-btn">
                                 view details
@@ -714,7 +714,7 @@ const HotelSearchPage = (props) => {
                               {/* {hotel.rooms[0].roomType} */}
                             </div>
                             <a onClick={() =>
-                              history.push("/hotel-detail?id="+hotel.id)
+                              history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}`)
                             } className="cat-list-btn" >
                               Book now
                             </a>
