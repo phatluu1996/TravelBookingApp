@@ -30,6 +30,8 @@ import AdminHotel from './components/Admin/Hotel/AdminHotel';
 import AdminHotelCreate from './components/Admin/Hotel/AdminHotelCreate';
 import AdminHotelEdit from './components/Admin/Hotel/AdminHotelEdit';
 import { setUserSession } from './utils';
+import UpdateUserDetail from './components/Admin/User/UpdateUserDetail';
+import UserDetail from './components/Admin/User/UserDetail';
 
 
 const App = (props) => {
@@ -77,6 +79,10 @@ const App = (props) => {
         <PublicRoute component={HotelProfile} path="/hotel-profile" exact />
 
 
+        <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
+        <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
+
+        
       </Switch>
     </BrowserRouter>
   );
