@@ -103,10 +103,7 @@ function PopupLogin(props) {
             if (props.auth.message && isRequest) {
                 setErrLogin(true);
             }
-            if (props.auth.data && props.auth.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-                setUserSession(props.auth.data.accessToken, props.auth.data.username, props.auth.data.header, props.auth.data.id, props.auth.data.roles[0]);
-                props.onSubmitUser(props.auth.data);
-
+            if (props.auth.data && props.auth.success) {
                 closePopup();
             }
         }

@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import Home from './components/Home';
@@ -28,14 +28,27 @@ import { signin, googleSignin } from './actions/actionAuth';
 import AdminManageUser from './components/Admin/AdminManageUser';
 import AdminHotel from './components/Admin/Hotel/AdminHotel';
 import AdminHotelCreate from './components/Admin/Hotel/AdminHotelCreate';
+import AdminHotelEdit from './components/Admin/Hotel/AdminHotelEdit';
+import { setUserSession } from './utils';
 
 
 const App = (props) => {
+  const [user, setuser] = useState(null);
+  useEffect(() => {
+    if (props.oath.data) {
+      setuser(props.oath.data);
+      if (props.oath.data && props.oath.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
+        setUserSession(props.oath.data.accessToken, props.oath.data.username, props.oath.data.header, props.oath.data.id, props.oath.data.roles[0]);
+      }
+    }
+    
+  }, [props])
+
   return (
     <BrowserRouter>
       <Switch>
         <PublicRoute restricted={false} component={Home} path="/" exact />
-        <PrivateRoute restricted={getRole() === "ROLE_USER" || props.user.data?.roles[0] === "ROLE_USER"} component={UserProfile} path="/user" />
+        <PrivateRoute restricted={getRole() === "ROLE_USER"} component={UserProfile} path="/user" />
 
         {/* Airline , Flight */}
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={CreateNewFlight} path="/create-flight" />
@@ -43,11 +56,12 @@ const App = (props) => {
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={Airline} path="/airline" />
         <PrivateRoute restricted={getRole() === "ROLE_AIRLINE"} component={ListFlight} path="/list-flight" />
 
-        <PublicRoute restricted={false} component={AdminDashboard} path="/admin-dashboard" />
-        <PublicRoute restricted={false} component={AdminManageUser} path="/admin-user-manage" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminDashboard} path="/admin-dashboard" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminManageUser} path="/admin-user-manage" />
 
-        <PublicRoute restricted={false} component={AdminHotel} path="/admin-hotel-manage" />
-        <PublicRoute restricted={false} component={AdminHotelCreate} path="/admin-hotel-create" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotel} path="/admin-hotel-manage" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotelCreate} path="/admin-hotel-create" />
+        <PrivateRoute restricted={getRole() === "ROLE_ADMIN"} component={AdminHotelEdit} path="/admin-hotel-edit" />
 
         <PublicRoute restricted={true} component={Register} path="/register" />
 
@@ -62,7 +76,7 @@ const App = (props) => {
 
         <PublicRoute component={HotelProfile} path="/hotel-profile" exact />
 
-        
+
       </Switch>
     </BrowserRouter>
   );
@@ -70,7 +84,7 @@ const App = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    user: state.user
+    oath: state.auth
   };
 };
 

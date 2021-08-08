@@ -54,22 +54,22 @@
 
 
     //Change sidebar and content-wrapper height
-    applyStyles();
+    // applyStyles();
 
-    function applyStyles() {
-      //Applying perfect scrollbar
-      if (!body.hasClass("rtl")) {
-        if ($('.settings-panel .tab-content .tab-pane.scroll-wrapper').length) {
-          const settingsPanelScroll = new PerfectScrollbar('.settings-panel .tab-content .tab-pane.scroll-wrapper');
-        }
-        if ($('.chats').length) {
-          const chatsScroll = new PerfectScrollbar('.chats');
-        }
-        if (body.hasClass("sidebar-fixed")) {
-          var fixedSidebarScroll = new PerfectScrollbar('#sidebar .nav');
-        }
-      }
-    }
+    // function applyStyles() {
+    //   //Applying perfect scrollbar
+    //   if (!body.hasClass("rtl")) {
+    //     if ($('.settings-panel .tab-content .tab-pane.scroll-wrapper').length) {
+    //       const settingsPanelScroll = new PerfectScrollbar('.settings-panel .tab-content .tab-pane.scroll-wrapper');
+    //     }
+    //     if ($('.chats').length) {
+    //       const chatsScroll = new PerfectScrollbar('.chats');
+    //     }
+    //     if (body.hasClass("sidebar-fixed")) {
+    //       var fixedSidebarScroll = new PerfectScrollbar('#sidebar .nav');
+    //     }
+    //   }
+    // }
 
     $('[data-toggle="minimize"]').on("click", function() {
       if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {

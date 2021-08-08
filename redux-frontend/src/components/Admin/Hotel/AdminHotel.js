@@ -38,7 +38,7 @@ const AdminHotel = (props) => {
             name: '#',
             selector: 'id',
             sortable: true,
-
+            width:'5%'
         },
         {
             name: 'Hotel Name',
@@ -165,7 +165,7 @@ const AdminHotel = (props) => {
     };
 
     useEffect(() => {
-        let mount = false;
+        let mount = false;        
         props.getAllHotels();
         return () => {
             mount = true;
@@ -190,11 +190,11 @@ const AdminHotel = (props) => {
                                                 <DataTable className="table"
                                                     customStyles={customStyles}
                                                     theme='solarized'
-                                                    progressPending={!props.hotel.data && true}
-                                                    columns={header} data={props.hotel.data ? props.hotel.data : []}
+                                                    progressPending={!props.hotel.all}
+                                                    columns={header} data={props.hotel.all}
                                                     pagination
                                                     paginationPerPage={5}
-                                                    subHeaderComponent={subHeader}
+                                                    subHeaderComponent={subHeader}                                                    
                                                 />
                                             </div>
                                         </div>
