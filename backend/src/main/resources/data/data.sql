@@ -12561,22 +12561,21 @@ VALUES
     ('Phòng tốt , Đầy đủ tiện nghi',5,0,18,1),
     ('Phòng tốt , giá hợp lý',3.5,0,19,1),
     ('Phòng tốt , Đầy đủ tiện nghi',5,0,20,1),
-    ('Phòng tốt , giá hợp lý',5,0,21,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,22,2),
-    ('Phòng tốt , giá hợp lý',4.5,0,23,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,24,2),
-    ('Phòng tốt , giá hợp lý',2.5,0,25,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,26,2),
-    ('Phòng tốt , giá hợp lý',3.5,0,27,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,28,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,29,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,30,3),
-    ('Phòng tốt , giá hợp lý',4,0,31,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,32,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,33,3),
-    ('Phòng tốt , giá hợp lý',4,0,34,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,35,3)
-
+    ('Phòng tốt , giá hợp lý',5,0,17,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,18,2),
+    ('Phòng tốt , giá hợp lý',4.5,0,7,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,8,2),
+    ('Phòng tốt , giá hợp lý',2.5,0,7,2),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,9,2),
+    ('Phòng tốt , giá hợp lý',3.5,0,9,1),
+    ('Phòng tốt , Đầy đủ tiện nghi',5,0,11,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,13,3),
+    ('Phòng tốt ,dịch vụ tạm dược',3,0,10,3),
+    ('Phòng tốt , giá hợp lý',4,0,14,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,15,3),
+    ('Phòng tốt ,dịch vụ tạm dược',3,0,15,3),
+    ('Phòng tốt , giá hợp lý',4,0,14,3),
+    ('Phòng tốt , giá hợp lý',4.5,0,19,3)
 
 --Image
 INSERT INTO [dbo].[image]

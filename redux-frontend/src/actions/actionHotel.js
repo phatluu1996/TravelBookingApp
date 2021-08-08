@@ -132,4 +132,25 @@ export const createHotel = (data) => async dispatch => {
     }
 }
 
+export const CREATE_HOTEL_FEEDBACK_REQUEST = "CREATE_HOTEL_FEEDBACK_REQUEST";
+export const CREATE_HOTEL_FEEDBACK_SUCCESS = "CREATE_HOTEL_FEEDBACK_SUCCESS";
+export const CREATE_HOTEL_FEEDBACK_ERROR = "CREATE_HOTEL_FEEDBACK_ERROR";
 
+
+export const createHotelFeedBack = (data) => async dispatch => {
+    try {
+        dispatch({ type: CREATE_HOTEL_FEEDBACK_REQUEST });
+        const url = `${ROOT_URL}/api/hotelFeedBack`;
+        const response = await axios.post(url, data)
+        const responseBody = await response.data;
+        dispatch({
+            type: CREATE_HOTEL_FEEDBACK_SUCCESS
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: CREATE_HOTEL_FEEDBACK_ERROR,
+            message: error
+        });
+    }
+}

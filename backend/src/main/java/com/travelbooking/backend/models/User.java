@@ -28,7 +28,12 @@ public class User {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
     @Column(name = "retired")
-        private boolean retired;
+    private boolean retired;
+
+    @OneToMany
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnoreProperties("user")
+    private List<HotelFeedBack> hotelFeedBacks;
 
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -41,7 +46,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, Account account, Location location) {
+    public User(Long id, String firstName, String lastName, String gender, Date dateOfBirth, String email, String phoneNumber, boolean retired, List<HotelFeedBack> hotelFeedBacks, Account account, Location location) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,9 +55,9 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.retired = retired;
+        this.hotelFeedBacks = hotelFeedBacks;
         this.account = account;
         this.location = location;
-
     }
 
     public Long getId() {
@@ -117,6 +122,14 @@ public class User {
 
     public void setRetired(boolean retired) {
         this.retired = retired;
+    }
+
+    public List<HotelFeedBack> getHotelFeedBacks() {
+        return hotelFeedBacks;
+    }
+
+    public void setHotelFeedBacks(List<HotelFeedBack> hotelFeedBacks) {
+        this.hotelFeedBacks = hotelFeedBacks;
     }
 
     public Account getAccount() {
