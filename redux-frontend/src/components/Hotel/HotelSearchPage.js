@@ -21,7 +21,7 @@ const HotelSearchPage = (props) => {
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
   const [itemsList, setItemsList] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("price");

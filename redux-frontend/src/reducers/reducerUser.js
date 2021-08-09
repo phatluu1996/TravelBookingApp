@@ -86,6 +86,7 @@ const reducerUser = (state = initialState, action) => {
         requesting: false,
         success: true,
         data: action.payload,
+        all: action.payload,
         form: 'successAllUser'
       };
       return state;

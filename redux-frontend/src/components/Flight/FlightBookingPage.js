@@ -29,6 +29,7 @@ const FlightBookingPage = (props) => {
   const flight = useSelector((state) => state.flights);
   const user = useSelector((state) => state.user);
   const completeBooking = useSelector(state => state.bookFlight);
+  const [isSubmit, setIsSubmit] = useState(false)
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
@@ -90,7 +91,7 @@ const FlightBookingPage = (props) => {
             description: "Testing booking function",
             amount: {
               currency: "USD",
-              value: totalPrice,
+              value: 1,
             },
           },
         ],
@@ -231,7 +232,7 @@ const FlightBookingPage = (props) => {
         passengers: [...inputListPassenger]
       };
       bookFlt(data);   
-      setCheckout(true);   
+      setIsSubmit(true); 
     }
   };
 
@@ -619,11 +620,11 @@ const FlightBookingPage = (props) => {
                                   ? "booking-complete-btn"
                                   : "booking-complete-btn disable"
                               }
-                              // disabled={checkout ? "" : "disable"}
+                              disabled={checkout ? "" : "disable"}
                             >
                               COMPLETE BOOKING
                             </button>
-                            {checkout && <div className="loading" delay-hide="10"></div>}
+                            {isSubmit && <div className="loading" delay-hide="10"></div>}
                           </div>
                         </form>
                       </div>

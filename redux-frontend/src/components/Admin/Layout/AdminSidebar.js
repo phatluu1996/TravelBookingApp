@@ -10,8 +10,8 @@ const AdminSidebar = () => {
         <div>
             <nav className="sidebar sidebar-offcanvas" id="sidebar">
                 <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-                    <a className="sidebar-brand brand-logo" href="index.html"><img src="./assets/images/logo.svg" alt="logo" /></a>
-                    <a className="sidebar-brand brand-logo-mini" href="index.html"><img src="./assets/images/logo-mini.svg" alt="logo" /></a>
+                    <a className="sidebar-brand brand-logo"><img src="./assets/images/logo.svg" alt="logo" /></a>
+                    <a className="sidebar-brand brand-logo-mini"><img src="./assets/images/logo-mini.svg" alt="logo" /></a>
                 </div>
                 <ul className="nav">
                     <li className="nav-item profile">
@@ -92,12 +92,12 @@ const AdminSidebar = () => {
                             <span className="menu-title">Hotels</span>
                             <i className="menu-arrow"></i>
                         </a>
-                        <div className="collapse" id="holtel-drop">
+                        {/* <div className="collapse" id="holtel-drop">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-create">Create</Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </li>
                     <li className="nav-item menu-items">
                         <a className="nav-link" data-toggle="collapse" href="#airline-drop" aria-expanded="false" aria-controls="ui-basic">
@@ -107,12 +107,12 @@ const AdminSidebar = () => {
                             <span className="menu-title">Airlines</span>
                             <i className="menu-arrow"></i>
                         </a>
-                        <div className="collapse" id="airline-drop">
+                        {/* <div className="collapse" id="airline-drop">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-airline-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-airline-create">Create</Link></li>
                             </ul>
-                        </div>
+                        </div> */}
                     </li>
 
                     {/* <li className="nav-item menu-items">

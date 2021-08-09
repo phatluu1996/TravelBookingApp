@@ -204,8 +204,8 @@ const AdminManageUser = (props) => {
                       <DataTable
                         className="table-a"
                         columns={header}
-                        progressPending={!props.users.data}
-                        data={props.users.data ? props.users.data : []}
+                        progressPending={!props.users.all}
+                        data={props.users.all ? props.users.all : []}
                         pagination paginationPerPage={5}
                         theme="solarized"
                         customStyles={customStyles} />

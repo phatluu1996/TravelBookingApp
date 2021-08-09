@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import $ from 'jquery';
 import { getUserFullName, removeUserSession } from '../../../utils';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { signout } from '../../../actions/actionAuth';
 import { connect } from 'react-redux';
 
@@ -205,8 +205,11 @@ const AdminNavbar = (props) => {
                                         </div>
                                     </div>
                                     <div className="preview-item-content">
-                                        <p className="preview-subject mb-1">Log out</p>
+                                        <Link to="/" className="preview-subject mb-1">Back</Link>
                                     </div>
+                                    {/* <div className="preview-item-content">
+                                        <p className="preview-subject mb-1">Log out</p>
+                                    </div> */}
                                 </a>
                                 <div className="dropdown-divider"></div>
                                 <p className="p-3 mb-0 text-center">Advanced settings</p>

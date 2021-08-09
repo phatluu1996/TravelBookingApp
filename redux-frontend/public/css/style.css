@@ -834,8 +834,10 @@ button.srch-btn {cursor: pointer; font-family: 'Montserrat'; font-size:11px; fon
 .offer-slider-i.catalog-i .cat-list-btn:hover {color:#ff7200;}
 .catalog-i .offer-slider-l {width:auto; margin-top:1px;}
 .catalog-i .offer-slider-devider {margin-right: 15px;}
-.offer-slider-img img {width:344px;
-	height:202px;}
+.offer-slider-img img {
+  /* width:344px;height:202px; */
+  width: 100%;height:202px;
+}
 .catalog-head {background:#fff; padding: 9px 17px 9px 17px; margin-bottom: 25px;}
 .catalog-head label {font-family:'Raleway'; float: left; margin: 9px 15px 0px 0px; font-weight: 600; text-transform: uppercase; font-size: 11px; color:#3a4142;}
 .catalog-head .search-select {float: left; width:89px; margin-top: 1px; margin-right: 10px; border:1px solid #dedcdc;}
@@ -899,8 +901,8 @@ show-list:hover{
 	margin:0px;
 	padding:0px;
 	line-height:0px;
-	width:344px;
-	height:202px;
+	/* width:344px;
+	height:202px; */
 	position:relative;
 }
 .offer-slider-overlay {

@@ -132,7 +132,7 @@ const AirlineProfile = (props) => {
                                         Airline Name
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.airlineName}
+                                        {airline.airline?.airlineName}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -141,7 +141,7 @@ const AirlineProfile = (props) => {
                                         Homepage
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.homepage}
+                                        {airline.airline?.homepage}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -150,7 +150,7 @@ const AirlineProfile = (props) => {
                                         Phone
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.phone}
+                                        {airline.airline?.phone}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -159,7 +159,7 @@ const AirlineProfile = (props) => {
                                         Fax
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.fax}
+                                        {airline.airline?.fax}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -184,7 +184,7 @@ const AirlineProfile = (props) => {
                                         Contact Name
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.contactName}
+                                        {airline.airline?.contactName}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -193,7 +193,7 @@ const AirlineProfile = (props) => {
                                         Title
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.contactTitle}
+                                        {airline.airline?.contactTitle}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -202,7 +202,7 @@ const AirlineProfile = (props) => {
                                         Mobile
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.mobile}
+                                        {airline.airline?.mobile}
                                       </div>
                                       <div className="clear"></div>
                                     </div>
@@ -211,7 +211,7 @@ const AirlineProfile = (props) => {
                                         Email
                                       </div>
                                       <div className="p-item-details-ir">
-                                        {airline.airline.email}
+                                        {airline.airline?.email}
                                       </div>
                                       <div className="clear"></div>
                                     </div>

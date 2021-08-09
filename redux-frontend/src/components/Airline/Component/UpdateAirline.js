@@ -169,7 +169,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="airlineName"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.airlineName}
+                  defaultValue={airline.airline?.airlineName}
                   className="form-control"
                 />
               </div>
@@ -182,7 +182,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="phone"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.phone}
+                  defaultValue={airline.airline?.phone}
                   className="form-control"
                 />
               </div>
@@ -195,7 +195,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="fax"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.fax}
+                  defaultValue={airline.airline?.fax}
                   className="form-control"
                 />
               </div>
@@ -208,7 +208,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="homepage"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.homepage}
+                  defaultValue={airline.airline?.homepage}
                   className="form-control"
                 />
               </div>
@@ -224,7 +224,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="contactName"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.contactName}
+                  defaultValue={airline.airline?.contactName}
                   className="form-control"
                 />
               </div>
@@ -237,7 +237,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="contactTitle"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.contactTitle}
+                  defaultValue={airline.airline?.contactTitle}
                   className="form-control"
                 />
               </div>
@@ -250,7 +250,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="mobile"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.mobile}
+                  defaultValue={airline.airline?.mobile}
                   className="form-control"
                 />
               </div>
@@ -263,7 +263,7 @@ const UpdateAirline = (props) => {
                   type="text"
                   name="email"
                   onChange={handleChange}
-                  defaultValue={airline?.airline.email}
+                  defaultValue={airline.airline?.email}
                   className="form-control"
                 />
               </div>
