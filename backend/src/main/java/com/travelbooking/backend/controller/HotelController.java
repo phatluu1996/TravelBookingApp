@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.specification.DBSpecification;
@@ -55,8 +53,22 @@ public class HotelController {
                                        @RequestParam (required = false, name = "checkInDate") Date checkInDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
     ) throws ParseException {
-        Specification<Hotel> spec = HotelSpecification.createSpecification(province,district,ward,Boolean.FALSE,numberAdult,numberChildren,numRoom,checkInDate);
-        return hotelRepository.findAll(spec);
+        boolean check = false;
+        int roomActive = 0;
+        List<Hotel> hotelCheckList = new ArrayList<>();
+        Specification<Hotel> spec = HotelSpecification.createSpecification(province, district, ward, Boolean.FALSE, numberAdult, numberChildren, numRoom, checkInDate);
+
+        List<Hotel> hotels = hotelRepository.findAll(spec);
+        System.out.println(hotels);
+        for (int i = 0; i < hotels.size(); i++) {
+            for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
+                roomActive += hotels.get(i).getRooms().get(j).getMaxAdult();
+            }
+            if (roomActive >= numberAdult) {
+                hotelCheckList.add(hotels.get(i));
+            }
+        }
+        return hotelCheckList;
     }
     //http://localhost:8080/api/findHotel
     @GetMapping("/findHotel")

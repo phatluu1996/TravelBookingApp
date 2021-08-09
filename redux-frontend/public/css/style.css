@@ -1951,7 +1951,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .rates-srch:hover {background:#ff8f35 url(../img/rates-srch.png) left top no-repeat;}
 .rates-devider {height:1px; background:#ebebeb; margin:12px 0px 35px 0px;}
 .available-row .cat-list-item {border-bottom:1px solid #ebebeb; padding-bottom:4px; margin-bottom:19px;}
-.available-row .cat-list-content-p {padding-left:40px;}
+.available-row .cat-list-content-p {padding-left:20px;}
 
 .available-row .cat-list-item-l {width:167px; margin-top:4px;}
 .available-row .cat-list-item-r {margin-left:167px;}
@@ -2094,7 +2094,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .todo-row .cat-list-item .stars {margin-bottom: 8px;}
 .todo-btn {width:85px; height:21px; padding-top:10px; font-size:10px;  text-transform:uppercase; font-weight:700; color:#6a7880; display:block; text-decoration:none; text-align:center; border:1px solid #e5e5e5; border-radius:2px; }
 .todo-btn:hover {color:#ff7200;}
-.todo-row .cat-list-content-p {padding-left: 29px; padding-right: 0px; padding-top: 0px; margin-top: -9px;}      
+.todo-row .cat-list-content-p {padding-left: 29px; padding-right: 20px; padding-top: 0px; margin-top: -9px;}      
 @media all and (-webkit-min-device-pixel-ratio:0) {
 .todo-row .cat-list-content-p {margin-top: -2px;} 
 } 
