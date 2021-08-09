@@ -355,7 +355,7 @@ const EditScheduleFlight = (props) => {
                   <form onSubmit={handleSubmit}>
                     <div className="booking-form">
                       <div className="booking-form-i">
-                        <label>Departure City</label>
+                        <label>Departure City<span style={{color:"red",fontSize:"12px"}}>*</span></label>
 
                         <div className="form-group select-wrapper srch-tab-line">
                           <select
@@ -379,7 +379,7 @@ const EditScheduleFlight = (props) => {
                         <div className="validate-error" style={{}}>
                           {error.arrivalCity}
                         </div>
-                        <label>Arrival City</label>
+                        <label>Arrival City<span style={{color:"red",fontSize:"12px"}}>*</span></label>
 
                         <div className="form-group select-wrapper srch-tab-line">
                           <select
@@ -400,7 +400,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Flight Code</label>
+                        <label>Flight Code<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -420,7 +420,7 @@ const EditScheduleFlight = (props) => {
                       </div>
                       <div className="booking-form-i">
                         <div className="booking-form-i form-group srch-tab-line">
-                          <label>Status</label>
+                          <label>Status<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                           <select
                             className="form-control custom-select"
                             name="status"
@@ -438,7 +438,7 @@ const EditScheduleFlight = (props) => {
                       </div>
 
                       <div className="booking-form-i">
-                        <label>Description</label>
+                        <label>Description<span style={{color:"red",fontSize:"12px"}}>*</span></label>
 
                         <div
                           className="validate-error"
@@ -467,14 +467,14 @@ const EditScheduleFlight = (props) => {
                               defaultValue={flights.hasEntertainment ? "checked" : ""}
                             />
                             Inflight Entertainment
-                          </label>
+                          <span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         </div>
                       </div>
                       <div className="clear"></div>
 
                       <div className="bookin-three-coll">
                         <div className="booking-form-i">
-                          <label>Departure time</label>
+                          <label>Departure time<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                           <div
                             className="validate-error"
                             style={{ float: "none" }}
@@ -493,7 +493,7 @@ const EditScheduleFlight = (props) => {
                           </div>
                         </div>
                         <div className="booking-form-i">
-                          <label>Arrival time</label>
+                          <label>Arrival time<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                           <div
                             className="validate-error"
                             style={{ float: "none" }}
@@ -512,7 +512,7 @@ const EditScheduleFlight = (props) => {
                           </div>
                         </div>
                         <div className="booking-form-i">
-                          <label>Aircraft</label>
+                          <label>Aircraft<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                           <div
                             className="validate-error"
                             style={{ float: "none" }}
@@ -535,7 +535,7 @@ const EditScheduleFlight = (props) => {
                         <div className="clear"></div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Business Capacity</label>
+                        <label>Business Capacity<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -562,7 +562,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Economy Capacity</label>
+                        <label>Economy Capacity<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -593,7 +593,7 @@ const EditScheduleFlight = (props) => {
 
                     <div className="booking-form">
                       <div className="booking-form-i">
-                        <label>Business Baggage Allowance</label>
+                        <label>Business Baggage Allowance<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -620,7 +620,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Economy Baggage Allowance</label>
+                        <label>Economy Baggage Allowance<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -647,7 +647,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Business Cabin-Baggage Allowance</label>
+                        <label>Business Cabin-Baggage Allowance<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -674,7 +674,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Economy Cabin-Baggage Allowance</label>
+                        <label>Economy Cabin-Baggage Allowance<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -706,7 +706,7 @@ const EditScheduleFlight = (props) => {
 
                     <div className="booking-form">
                       <div className="booking-form-i">
-                        <label>Business Ticket Price</label>
+                        <label>Business Ticket Price<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -733,7 +733,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Economy Ticket Price</label>
+                        <label>Economy Ticket Price<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -761,7 +761,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Child Price</label>
+                        <label>Child Price<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}
@@ -789,7 +789,7 @@ const EditScheduleFlight = (props) => {
                         </div>
                       </div>
                       <div className="booking-form-i">
-                        <label>Infant price</label>
+                        <label>Infant price<span style={{color:"red",fontSize:"12px"}}>*</span></label>
                         <div
                           className="validate-error"
                           style={{ float: "none" }}

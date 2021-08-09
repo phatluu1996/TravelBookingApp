@@ -1,5 +1,5 @@
 import {
-    BOOKING_FLIGHT_REQUEST, BOOKING_FLIGHT_SUCCESS, BOOKING_FLIGHT_ERROR 
+    BOOKING_FLIGHT_REQUEST, BOOKING_FLIGHT_SUCCESS, BOOKING_FLIGHT_ERROR, CLEAR_BOOKING_REQUEST 
   } from "../actions/actionBookingFlight";
   
   const initialState = {
@@ -35,6 +35,9 @@ import {
         };
         return state;
 
+      case CLEAR_BOOKING_REQUEST:
+         return initialState;
+        
       default:
         return state;
     }
