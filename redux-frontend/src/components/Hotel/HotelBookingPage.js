@@ -2,14 +2,33 @@ import React, { useEffect } from 'react'
 import Header from '../Layout/Header';
 import Footer from '../Layout/Footer';
 import { importAll, customCheckBoxInput } from '../../utils/JqueryImport';
+import { getUser } from "../../actions/actionUser";
+import { fetchHotelById } from "../../actions/actionHotel";
+import { getRoom } from '../../actions/actionRoom';
+import { connect } from 'react-redux';
+import { PROPERTY_TYPES } from '@babel/types';
+import { useLocation } from 'react-router-dom';
 
-const HotelBookingPage = () => {
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
+const HotelBookingPage = (props) => {
+    let queryParam = useQuery();
+    const user = sessionStorage.getItem("userId")
+
+    
     useEffect(() => {
         let mount = false;
 
         importAll();
         customCheckBoxInput();
+        
+        getUser(queryParam.get("userId"));
+        fetchHotelById(queryParam.get("hotelId"));
+        getRoom(queryParam.get("roomId"));
+        
 
         return () => {
             mount = true;
@@ -279,4 +298,21 @@ const HotelBookingPage = () => {
     )
 }
 
-export default HotelBookingPage;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        hotel: state.hotels,
+        user:state.user,
+        room:state.room,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getHotel: (id) => dispatch(fetchHotelById(id)),
+        getRoom:(id) => dispatch(getRoom(id)),
+        getUser: (id) => dispatch(getUser(id)),
+        
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HotelBookingPage);

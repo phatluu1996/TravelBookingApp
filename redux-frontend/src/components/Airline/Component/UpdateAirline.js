@@ -161,7 +161,7 @@ const UpdateAirline = (props) => {
             <h5 className="update-lbl">Update Airline Infomation:</h5>
             <div>
               <div>
-                <div className="update-input-lbl">Airline Name</div>
+                <div className="update-input-lbl">Airline Name<span style={{color:"red",fontSize:"12px"}}>*</span></div>
                 <div className="validate-update-error">{error.airlineName}</div>
               </div>
               <div>
@@ -175,7 +175,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Phone </div>
+              <div className="update-input-lbl">Phone<span style={{color:"red",fontSize:"12px"}}>*</span></div>
               <div className="validate-update-error">{error.phone}</div>
               <div>
                 <input
@@ -188,7 +188,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Fax Number </div>
+              <div className="update-input-lbl">Fax Number<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.fax}</div>
               <div>
                 <input
@@ -201,7 +201,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Homepage </div>
+              <div className="update-input-lbl">Homepage<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.homepage}</div>
               <div>
                 <input
@@ -217,7 +217,7 @@ const UpdateAirline = (props) => {
               Update Contact Infomation:
             </h5>
             <div>
-              <div className="update-input-lbl">ContactName </div>
+              <div className="update-input-lbl">ContactName<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.contactName}</div>
               <div>
                 <input
@@ -230,7 +230,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Contact Title </div>
+              <div className="update-input-lbl">Contact Title<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.contactTitle}</div>
               <div>
                 <input
@@ -243,7 +243,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Mobile </div>
+              <div className="update-input-lbl">Mobile<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.mobile}</div>
               <div>
                 <input
@@ -256,7 +256,7 @@ const UpdateAirline = (props) => {
               </div>
             </div>
             <div>
-              <div className="update-input-lbl">Email </div>
+              <div className="update-input-lbl">Email<span style={{color:"red",fontSize:"12px"}}>*</span> </div>
               <div className="validate-update-error">{error.email}</div>
               <div>
                 <input

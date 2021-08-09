@@ -33,7 +33,7 @@ public class AirlineController {
     AccountRepository accountRepository;
 
     //http://localhost:8080/api/airline/{id}
-    @PreAuthorize("hasRole('AIRLINE')")
+    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
     @GetMapping("/airline/{id}")
     public ResponseEntity<Airline> getAirline(@PathVariable Long id){
         if(airlineRepository.existsByAccount_Id(id)){
@@ -45,12 +45,11 @@ public class AirlineController {
     }
 
     //http://localhost:8080/api/airline/{id}
-    @PreAuthorize("hasRole('AIRLINE')")
+    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
     @PutMapping("/airline/{id}")
     public ResponseEntity<Airline> updateAirline(@RequestBody Airline airline ,@PathVariable Long id){
         Account account = new Account(airline.getAccount());
         Location location = new Location(airline.getLocation());
-
         accountRepository.save(account);
         locationRepository.save(location);
         Airline result = airlineRepository.save(airline);
@@ -58,7 +57,7 @@ public class AirlineController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
     //http://localhost:8080/api/airline
     @GetMapping("/airlines")
     public Collection<Airline> getAirlines() {
@@ -78,6 +77,8 @@ public class AirlineController {
     //http://localhost:8080/api/airline
     @PostMapping("/airline")
     public ResponseEntity<Airline> addAirline(@RequestBody Airline airline) {
+        Account account =  accountRepository.save(airline.getAccount());
+        Location location = locationRepository.save(airline.getLocation());
         Airline result = airlineRepository.save(airline);
         return ResponseEntity.ok().body(result);
     }
