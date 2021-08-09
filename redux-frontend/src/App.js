@@ -28,6 +28,8 @@ import AdminHotel from './components/Admin/Hotel/AdminHotel';
 import AdminHotelCreate from './components/Admin/Hotel/AdminHotelCreate';
 import AdminHotelEdit from './components/Admin/Hotel/AdminHotelEdit';
 import { setUserSession } from './utils';
+import UpdateUserDetail from './components/Admin/User/UpdateUserDetail';
+import UserDetail from './components/Admin/User/UserDetail';
 import AdminAirline from './components/Admin/Airline/AdminAirline';
 import AdminAirlineCreate from './components/Admin/Airline/AdminAirlineCreate';
 import AdminAirlineEdit from './components/Admin/Airline/AdminAirlineEdit';
@@ -45,7 +47,7 @@ const App = (props) => {
         setUserSession(props.oath.data.accessToken, props.oath.data.username, props.oath.data.header, props.oath.data.id, props.oath.data.roles[0]);
       }
     }
-    
+
   }, [props])
 
   return (
@@ -90,7 +92,10 @@ const App = (props) => {
 
         <PrivateRoute restricted={getRole() === ROLE_HOTEL} component={HotelProfile} path="/hotel-profile" exact />
 
-        
+        <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
+        <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
+
+
       </Switch>
     </BrowserRouter>
   );

@@ -354,6 +354,7 @@ const UpdateUser = (props) => {
         </div>
     );
 };
+
 const mapStateToProps = (state, ownProps) => {
     return {
         dataUpdate: state.user

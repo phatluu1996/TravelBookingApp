@@ -6,6 +6,9 @@ import AdminSidebar from './Layout/AdminSidebar';
 import { getAllUsers } from '../../actions/actionUser';
 import { importAll } from '../../utils/JqueryImport';
 import DataTable, { createTheme } from 'react-data-table-component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const AdminManageUser = (props) => {
 
@@ -89,15 +92,15 @@ const AdminManageUser = (props) => {
       selector: 'phoneNumber',
       sortable: true,
     },
-    // {
-    //   name: 'ACTIONS',
-    //   // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
-    //   cell: flight => <>
-    //     <Link className="list-btn-sm mr-1" to={`/edit-flight?id=${flight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+    {
+      name: 'ACTIONS',
+      // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
+      cell: user => <>
+        <Link className="list-btn-sm mr-1" to={`/update-user-detail?id=${user.account.id}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
 
-    //     <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
+        <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
 
-    // }
+    }
   ];
 
   const customStyles = {

@@ -5676,6 +5676,13 @@ div.bootstrap-scope input[type="checkbox"] {
   padding: 0;
 }
 
+div.bootstrap-scope input[type="text"],
+div.bootstrap-scope input[type="password"],
+div.bootstrap-scope input[type="select"],
+div.bootstrap-scope input[type="text-area"] {
+  -webkit-appearance: listbox;
+}
+
 div.bootstrap-scope input[type="date"],
 div.bootstrap-scope input[type="time"],
 div.bootstrap-scope input[type="datetime-local"],
