@@ -9,8 +9,10 @@ import DataTable from "react-data-table-component";
 import { fetchHotelById } from "../../actions/actionHotel";
 import { createHotelFeedBack } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
-import $ from "jquery";
-import  Pagination  from './Pagination';
+import $, { map } from "jquery";
+import Pagination from './Pagination';
+import CheckBox from '@material-ui/core/Checkbox'
+
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -24,22 +26,23 @@ const HotelDetailPage = (props) => {
     const [currentImage, setCurrentImage] = useState(null);
     const [isLoading, setLoading] = useState(false);
     const [jquery, setJquery] = useState(false);
-    const [areaText,setAreaText] = useState('');
+    const [areaText, setAreaText] = useState(null);
     const [countReview, setCountReview] = useState(0);
 
     const [itemsPerPage, setItemsPerPage] = useState(4);
-    const [pageNumber,setPageNumber]  = useState(1);
+    const [pageNumber, setPageNumber] = useState(1);
 
+    const [mapCheck,setMapCheck] = useState(new Map());
 
     const [itemsPerPageFB, setItemPerPageFB] = useState(4);
-    const [pageNumberFB,setPageNumberFB]  = useState(1);
- 
+    const [pageNumberFB, setPageNumberFB] = useState(1);
+
 
 
     const user = sessionStorage.getItem("userId")
 
-    
- 
+
+
     const customStyles = {
         table: {
             style: {
@@ -53,7 +56,8 @@ const HotelDetailPage = (props) => {
         },
         headCells: {
             style: {
-                paddingLeft: "8px", // override the cell padding for head cells
+                paddingLeft: "8px",
+                fontSize: "20px", // override the cell padding for head cells
                 // paddingRight: '8px',
             },
         },
@@ -70,38 +74,116 @@ const HotelDetailPage = (props) => {
         console.log(e.target);
     };
 
-    // const roomDetail = [
-    //     {
-    //         name: "",
-    //         cell: (room) => (
-               
-    //         ),
-    //     },
-    // ];
+    const handleChange = (id) => {
+            var map = {...mapCheck}
+            map.set(id,!map.get(id))
+            setMapCheck(map)
+       }; 
+
+    const roomDetail = [
+        {
+            name:'',
+            width:"8%",
+            cell:(room , index) =>  <CheckBox checked={mapCheck?.get(room.id)} onClick={()=>handleChange(room.id)} />
+        },
+        {
+            name: "List Room Active",
+            cell: (room) => (
+                 <div className="cat-list-item">
+                    <div className="cat-list-item-l">
+                        <a href="#">
+                            <img
+                                alt=""
+                                src={room?.images[0]?.imagePath ? room.images[0].imagePath : ""}
+                            />
+                        </a>
+                    </div>
+                    <div className="cat-list-item-r">
+                        <div className="cat-list-item-rb">
+                            <div className="cat-list-item-p">
+                                <div className="cat-list-content">
+                                    <div className="cat-list-content-a">
+                                        <div className="cat-list-content-l">
+                                            <div className="cat-list-content-lb">
+                                                <div className="cat-list-content-lpadding">
+                                                    <div className="offer-slider-link">
+                                                        <a href="#">{room?.roomType}</a>
+                                                    </div>
+                                                    <div className="offer-slider-location">
+                                                        Max Adult: {room?.maxAdult} persons
+                                                    </div>
+                                                    <p>
+                                                        Voluptatem quia voluptas sit aspernatur aut odit aut
+                                                        fugit, sed quia consequuntur magni dolores eos.
+                                                    </p>
+                                                    {/* <div className="cat-icons">
+                                                                                                            <span className="cat-icon-01 active"></span>
+                                                                                                            <span className="cat-icon-02"></span>
+                                                                                                            <span className="cat-icon-03"></span>
+                                                                                                            <span className="cat-icon-04"></span>
+                                                                                                            <span className="cat-icon-05"></span>
+                                                                                                            <span className="cat-icon-06"></span>
+                                                                                                            <div className="clear"></div>
+                                                                                                        </div> */}
+                                                </div>
+                                            </div>
+                                            {/* <br className="clear" /> */}
+                                        </div>
+                                    </div>
+                                    <div className="cat-list-content-r">
+                                        <div className="cat-list-content-p">
+                                            <div className="available-price">{room.price}$</div>
+                                            <div className="available-price-a">avg/night</div>
+                                            <div className="available-price-c">
+                                                {room?.roomStatus ? "Unavailable" : "Available"}
+                                            </div>
+                                            <a
+                                                onClick={e => history.push(`/hotel-booking?id=${props?.hotel?.data?.id}
+                                                                                                                            &checkInDate=${queryParam.get("checkInDate")}
+                                                                                                                            &checkOutDate=${queryParam.get("checkOutDate")}
+                                                                                                                            &roomId=${room?.id}
+                                                                                                                            &userId=${props?.user?.data?.id}`)
+                                                } className="available-btn">
+                                                Book now
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br className="clear" />
+                    </div>
+                    <div className="clear"></div>
+                </div>
+            ),
+        },
+    ];
     // const feedbackList = [
     //     {
     //         name: "",
     //         width: "200",
     //         cell: (feedback) => (
 
-               
+
     //         ),
     //     },
     // ];
 
     const setPageNum = (number) => setPageNumber(number);
 
-    const getPagination = (list = [],page, itemsPerPage) => {
-      if (!Array.isArray(list) || list.length === 0) {
-        return [];
-      }
-      const startIdx = (page - 1) * itemsPerPage;
-      const endIdx = (startIdx + itemsPerPage - 1) + 1;
-     
-      return list.slice(startIdx, endIdx);
-    };
+    const getPagination = (list = [], page, itemsPerPage) => {
+        if (!Array.isArray(list) || list.length === 0) {
+            return [];
+        }
+        const startIdx = (page - 1) * itemsPerPage;
+        const endIdx = (startIdx + itemsPerPage - 1) + 1;
 
-    
+        return list.slice(startIdx, endIdx);
+    };
+   
+      
+
     const addNewReview = (e) => {
         var reviews = [];
         var avg = 0;
@@ -115,17 +197,17 @@ const HotelDetailPage = (props) => {
             avg += reviews[index];
         }
         // if(areaText){
-            const data = {
-                rating: avg / 5,
-                feedback: areaText,
-                retired:false,
-                user: props?.user?.data,
-                hotel: props?.hotel?.data
-            }
-            
-             console.log(data)
-             props.addFeedBack(data)
-             setLoading(true);
+        const data = {
+            rating: avg / 5,
+            feedback: areaText,
+            retired: false,
+            user: props?.user?.data,
+            hotel: props?.hotel?.data
+        }
+
+        console.log(data)
+        props.addFeedBack(data)
+        setLoading(true);
         // }
     }
 
@@ -135,6 +217,7 @@ const HotelDetailPage = (props) => {
         props.getUser(user);
         props.getHotel(queryParam.get("id"));
         importAll();
+        
         return () => {
             mount = true;
         };
@@ -144,7 +227,14 @@ const HotelDetailPage = (props) => {
         let mount = false;
         if (props.hotel.data) {
             setJquery(true);
-
+            if(mapCheck.size === 0){
+                var map = new Map();
+            
+                props.hotel?.data?.rooms?.map(room => 
+                    map.set(room.id,false)
+                )
+                setMapCheck(map)
+            }
         }
         if (jquery) {
             importAll();
@@ -686,81 +776,22 @@ const HotelDetailPage = (props) => {
                                                     <div className="content-tabs-i">
                                                         {/* <h2>Your Travel Rates</h2> */}
                                                         <div className="rates-search">
-                                                            <h2>List Room Active</h2>
+                                                          
 
                                                             <div className="available-row">
-                                                                {
-                                                                    getPagination(props.hotel?.data?.rooms,pageNumber,itemsPerPage).map( 
-                                                                        room =>  <div className="cat-list-item">
-                                                                        <div className="cat-list-item-l">
-                                                                            <a href="#">
-                                                                                <img
-                                                                                    alt=""
-                                                                                    src={room?.images[0]?.imagePath ? room.images[0].imagePath : ""}
-                                                                                />
-                                                                            </a>
-                                                                        </div>
-                                                                        <div className="cat-list-item-r">
-                                                                            <div className="cat-list-item-rb">
-                                                                                <div className="cat-list-item-p">
-                                                                                    <div className="cat-list-content">
-                                                                                        <div className="cat-list-content-a">
-                                                                                            <div className="cat-list-content-l">
-                                                                                                <div className="cat-list-content-lb">
-                                                                                                    <div className="cat-list-content-lpadding">
-                                                                                                        <div className="offer-slider-link">
-                                                                                                            <a href="#">{room?.roomType}</a>
-                                                                                                        </div>
-                                                                                                        <div className="offer-slider-location">
-                                                                                                            Max Adult: {room?.maxAdult} persons
-                                                                                                        </div>
-                                                                                                        <p>
-                                                                                                            Voluptatem quia voluptas sit aspernatur aut odit aut
-                                                                                                            fugit, sed quia consequuntur magni dolores eos.
-                                                                                                        </p>
-                                                                                                        {/* <div className="cat-icons">
-                                                                                                            <span className="cat-icon-01 active"></span>
-                                                                                                            <span className="cat-icon-02"></span>
-                                                                                                            <span className="cat-icon-03"></span>
-                                                                                                            <span className="cat-icon-04"></span>
-                                                                                                            <span className="cat-icon-05"></span>
-                                                                                                            <span className="cat-icon-06"></span>
-                                                                                                            <div className="clear"></div>
-                                                                                                        </div> */}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                {/* <br className="clear" /> */}
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="cat-list-content-r">
-                                                                                            <div className="cat-list-content-p">
-                                                                                                <div className="available-price">{room.price}$</div>
-                                                                                                <div className="available-price-a">avg/night</div>
-                                                                                                <div className="available-price-c">
-                                                                                                    {room?.roomStatus ? "Available" : "Unavailable"}
-                                                                                                </div>  
-                                                                                                <a 
-                                                                                                onClick={e => history.push(`/hotel-booking?id=${props?.hotel?.data?.id}
-                                                                                                                            &checkInDate=${queryParam.get("checkInDate")}
-                                                                                                                            &checkOutDate=${queryParam.get("checkOutDate")}
-                                                                                                                            &roomId=${room?.id}
-                                                                                                                            &userId=${props?.user?.data?.id}`)
-                                                                                                } className="available-btn">
-                                                                                                    Book now
-                                                                                                </a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="clear"></div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <br className="clear" />
-                                                                        </div>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-                                                                    )
-                                                                }                                                            
-                                                                <Pagination itemsPerPage={itemsPerPage} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNum}/>
+                                                                
+                                                                <DataTable 
+                                                                    columns={roomDetail}
+                                                                    data={props.hotel?.data?.rooms}
+                                                                    customStyles={customStyles}
+                                                                    pagination
+                                                                    paginationPerPage={4}
+                                                                    // selectableRowsComponent={CheckBox} 
+                                                                    selectableRows={true}
+                                                                    // Clicked
+                                                                    // onSelectedRowsChange={handleChange}
+
+                                                                />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -870,7 +901,7 @@ const HotelDetailPage = (props) => {
                                                                                 <span
                                                                                     style={{
                                                                                         width: `${(props.hotel.data?.hotelRating *
-                                                                                                100) /
+                                                                                            100) /
                                                                                             5
                                                                                             }%`,
                                                                                     }}
@@ -994,69 +1025,69 @@ const HotelDetailPage = (props) => {
                                                                 <h2>Guest Reviews</h2>
                                                                 <div className="guest-reviews-row">
                                                                     {
-                                                                        getPagination(props.hotel?.data?.hotelFeedBacks,pageNumberFB,itemsPerPageFB).map(
+                                                                        getPagination(props.hotel?.data?.hotelFeedBacks, pageNumberFB, itemsPerPageFB).map(
                                                                             feedback =>
-                                                                            <div className="guest-reviews-i">
-                                                                            <div className="guest-reviews-a">
-                                                                                <div className="guest-reviews-l">
-                                                                                    <div className="guest-reviews-img">
-                                                                                        <span>{feedback?.rating}</span> 
-                                                                                        <img alt="" src="img/guest-01.png" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="guest-reviews-r">
-                                                                                    <div className="guest-reviews-rb">
-                                                                                        <div className="guest-reviews-b">
-                                                                                            <div className="guest-reviews-bl">
-                                                                                                <div className="guest-reviews-blb">
-                                                                                                    <div className="guest-reviews-lbl">
-                                                                                                        {feedback?.user?.lastName} {feedback?.user?.firstName}
-                                                                                                    </div>
-                                                                                                    <div className="guest-reviews-lbl-a">
-                                                                                                        from {feedback?.user?.location?.province?.name}
-                                                                                                    </div>
-                                                                                                    <div className="guest-reviews-txt">
-                                                                                                        {feedback?.feedback}
+                                                                                <div className="guest-reviews-i">
+                                                                                    <div className="guest-reviews-a">
+                                                                                        <div className="guest-reviews-l">
+                                                                                            <div className="guest-reviews-img">
+                                                                                                <span>{feedback?.rating}</span>
+                                                                                                <img alt="" src="img/guest-01.png" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="guest-reviews-r">
+                                                                                            <div className="guest-reviews-rb">
+                                                                                                <div className="guest-reviews-b">
+                                                                                                    <div className="guest-reviews-bl">
+                                                                                                        <div className="guest-reviews-blb">
+                                                                                                            <div className="guest-reviews-lbl">
+                                                                                                                {feedback?.user?.lastName} {feedback?.user?.firstName}
+                                                                                                            </div>
+                                                                                                            <div className="guest-reviews-lbl-a">
+                                                                                                                from {feedback?.user?.location?.province?.name}
+                                                                                                            </div>
+                                                                                                            <div className="guest-reviews-txt">
+                                                                                                                {feedback?.feedback}
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        {/* <br className="clear" /> */}
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                {/* <br className="clear" /> */}
+                                                                                                <div className="guest-reviews-br">
+                                                                                                    <div className="guest-reviews-padding">
+                                                                                                        <nav>
+                                                                                                            <ul>
+                                                                                                                {[...Array(5)].map(
+                                                                                                                    (item, index) =>
+                                                                                                                        // {
+                                                                                                                        index + 1 > Math.ceil(feedback?.rating) ? (
+                                                                                                                            <li key={index}>
+                                                                                                                                <a>
+                                                                                                                                    <img alt="" src="img/star-a.png" />
+                                                                                                                                </a>
+                                                                                                                            </li>
+                                                                                                                        ) : (
+                                                                                                                            <li key={index}>
+                                                                                                                                <a>
+                                                                                                                                    <img alt="" src="img/star-b.png" />
+                                                                                                                                </a>
+                                                                                                                            </li>
+                                                                                                                        )
+                                                                                                                    // }
+                                                                                                                )}
+                                                                                                            </ul>
+                                                                                                        </nav>
+                                                                                                        <div className="guest-rating">{feedback?.rating}/5.0</div>
+                                                                                                        <div className="clear"></div>
+                                                                                                        <div className="guest-rating-txt">Recomended</div>
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="guest-reviews-br">
-                                                                                            <div className="guest-reviews-padding">
-                                                                                                <nav>
-                                                                                                    <ul>
-                                                                                                        {[...Array(5)].map(
-                                                                                                            (item, index) =>
-                                                                                                                // {
-                                                                                                                index + 1 > Math.ceil(feedback?.rating) ? (
-                                                                                                                    <li key={index}>
-                                                                                                                        <a>
-                                                                                                                            <img alt="" src="img/star-a.png" />
-                                                                                                                        </a>
-                                                                                                                    </li>
-                                                                                                                ) : (
-                                                                                                                    <li key={index}>
-                                                                                                                        <a>
-                                                                                                                            <img alt="" src="img/star-b.png" />
-                                                                                                                        </a>
-                                                                                                                    </li>
-                                                                                                                )
-                                                                                                            // }
-                                                                                                        )}
-                                                                                                    </ul>
-                                                                                                </nav>
-                                                                                                <div className="guest-rating">{feedback?.rating}/5.0</div>
-                                                                                                <div className="clear"></div>
-                                                                                                <div className="guest-rating-txt">Recomended</div>
-                                                                                            </div>
+                                                                                            {/* <br className="clear" /> */}
                                                                                         </div>
                                                                                     </div>
-                                                                                    {/* <br className="clear" /> */}
+                                                                                    <div className="clear"></div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
                                                                         )
                                                                     }
                                                                 </div>
@@ -1070,65 +1101,66 @@ const HotelDetailPage = (props) => {
                                                                     paginationPerPage={3}
                                                                 /> */}
 
-                                                                <Pagination itemsPerPage={itemsPerPageFB} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNumberFB}/>
-                                                                    <div hidden={user ? false : true} className="review-form">
-                                                                        <h2>Live Review</h2>
-                                                                        {/* <label>User Name:</label>
+                                                                <Pagination itemsPerPage={itemsPerPageFB} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNum} />
+                                                                <div hidden={user ? false : true} className="review-form">
+                                                                    <h2>Live Review</h2>
+                                                                    {/* <label>User Name:</label>
                                   <div className="input-a">
                                     <input type="text" placeholder="" />
                                   </div> */}
-                                                                        <label>Your Review:</label>
-                                                                        <div className="textarea-a">
-                                                                            <textarea id="feedbackTxt" value={areaText} onChange={e =>setAreaText(e.target.value)} name="feedbackTxt" defaultValue="Write some thing...."></textarea>
-                                                                        </div>
+                                                                    <label>Your Review:</label>
+                                                                    <div className="textarea-a">
+                                                                        <textarea id="feedbackTxt" value={areaText} onDurationChange={e => setAreaText(e.target.value)} name="feedbackTxt" placeholder="Write some thing...."></textarea>
+                                                                    </div>
 
-                                                                        <div className="review-rangers-row">
-                                                                            <div className="review-ranger">
-                                                                                <label>Cleanlines</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min">
-                                                                                    </div>
+                                                                    <div className="review-rangers-row">
+                                                                        <div className="review-ranger">
+                                                                            <label>Cleanlines</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min">
                                                                                 </div>
-                                                                                <div className="clear"></div>
                                                                             </div>
-                                                                            <div className="review-ranger">
-                                                                                <label>Service & Stuff</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min"></div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                            <div className="review-ranger">
-                                                                                <label>Price</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min"></div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                            <div className="review-ranger">
-                                                                                <label>Location</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min"></div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                            <div className="review-ranger">
-                                                                                <label>Sleep Quality</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min"></div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                            <div className="review-ranger">
-                                                                                <label>Comfort</label>
-                                                                                <div className="review-ranger-r">
-                                                                                    <div className="slider-range-min"></div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
+                                                                            <div className="clear"></div>
                                                                         </div>
+                                                                     
+                                                                        <div className="review-ranger">
+                                                                            <label>Service & Stuff</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min"></div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                        <div className="review-ranger">
+                                                                            <label>Price</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min"></div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                        <div className="review-ranger">
+                                                                            <label>Location</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min"></div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                        <div className="review-ranger">
+                                                                            <label>Sleep Quality</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min"></div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                        <div className="review-ranger">
+                                                                            <label>Comfort</label>
+                                                                            <div className="review-ranger-r">
+                                                                                <div className="slider-range-min"></div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                    </div>
 
-                                                                        {/* <label>Evaluation</label>
+                                                                    {/* <label>Evaluation</label>
                                                                     <select className="custom-select">
                                                                         <option>&nbsp;</option>
                                                                         <option>1</option>
@@ -1138,10 +1170,10 @@ const HotelDetailPage = (props) => {
                                                                     </select>
                                                                     <label>When did you travel?</label>
                                                                     <div className="input-a"><input type="text" value="" /></div> */}
-                                                                        <button className="review-send" onClick={addNewReview} >
-                                                                            Submit Review
-                                                                        </button>
-                                                                    </div>
+                                                                    <button className="review-send" onClick={addNewReview} >
+                                                                        Submit Review
+                                                                    </button>
+                                                                </div>
 
                                                                 {/* </form> */}
 
@@ -1827,7 +1859,7 @@ const HotelDetailPage = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         hotel: state.hotels,
-        user:state.user,
+        user: state.user,
     };
 };
 
@@ -1835,7 +1867,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getHotel: (id) => dispatch(fetchHotelById(id)),
         addFeedBack: (data) => dispatch(createHotelFeedBack(data)),
-           getUser: (id) => {
+        getUser: (id) => {
             dispatch(getUser(id));
         },
     };
