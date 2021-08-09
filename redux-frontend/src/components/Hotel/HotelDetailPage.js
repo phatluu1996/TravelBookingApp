@@ -10,6 +10,7 @@ import { fetchHotelById } from "../../actions/actionHotel";
 import { createHotelFeedBack } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $ from "jquery";
+import  Pagination  from './Pagination';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -25,8 +26,20 @@ const HotelDetailPage = (props) => {
     const [jquery, setJquery] = useState(false);
     const [areaText,setAreaText] = useState('');
     const [countReview, setCountReview] = useState(0);
+
+    const [itemsPerPage, setItemsPerPage] = useState(4);
+    const [pageNumber,setPageNumber]  = useState(1);
+
+
+    const [itemsPerPageFB, setItemPerPageFB] = useState(4);
+    const [pageNumberFB,setPageNumberFB]  = useState(1);
+ 
+
+
     const user = sessionStorage.getItem("userId")
 
+    
+ 
     const customStyles = {
         table: {
             style: {
@@ -57,150 +70,38 @@ const HotelDetailPage = (props) => {
         console.log(e.target);
     };
 
-    const roomDetail = [
-        {
-            name: "",
-            cell: (room) => (
-                <div className="cat-list-item">
-                    <div className="cat-list-item-l">
-                        <a href="#">
-                            <img
-                                alt=""
-                                src={room?.images[0]?.imagePath ? room.images[0].imagePath : ""}
-                            />
-                        </a>
-                    </div>
-                    <div className="cat-list-item-r">
-                        <div className="cat-list-item-rb">
-                            <div className="cat-list-item-p">
-                                <div className="cat-list-content">
-                                    <div className="cat-list-content-a">
-                                        <div className="cat-list-content-l">
-                                            <div className="cat-list-content-lb">
-                                                <div className="cat-list-content-lpadding">
-                                                    <div className="offer-slider-link">
-                                                        <a href="#">{room?.roomType}</a>
-                                                    </div>
-                                                    <div className="offer-slider-location">
-                                                        Max Adult: {room?.maxAdult} persons
-                                                    </div>
-                                                    <p>
-                                                        Voluptatem quia voluptas sit aspernatur aut odit aut
-                                                        fugit, sed quia consequuntur magni dolores eos.
-                                                    </p>
-                                                    {/* <div className="cat-icons">
-                                                        <span className="cat-icon-01 active"></span>
-                                                        <span className="cat-icon-02"></span>
-                                                        <span className="cat-icon-03"></span>
-                                                        <span className="cat-icon-04"></span>
-                                                        <span className="cat-icon-05"></span>
-                                                        <span className="cat-icon-06"></span>
-                                                        <div className="clear"></div>
-                                                    </div> */}
-                                                </div>
-                                            </div>
-                                            {/* <br className="clear" /> */}
-                                        </div>
-                                    </div>
-                                    <div className="cat-list-content-r">
-                                        <div className="cat-list-content-p">
-                                            <div className="available-price">{room.price}$</div>
-                                            <div className="available-price-a">avg/night</div>
-                                            <div className="available-price-c">
-                                                {room?.roomStatus ? "Available" : "Unavailable"}
-                                            </div>  
-                                            <a 
-                                            onClick={e => history.push(`/hotel-booking?id=${props?.hotel?.data?.id}
-                                                                        &checkInDate=${queryParam.get("checkInDate")}
-                                                                        &checkOutDate=${queryParam.get("checkOutDate")}
-                                                                        &roomId=${room?.id}
-                                                                        &userId=${props?.user?.data?.id}`)
-                                            } className="available-btn">
-                                                Book now
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div className="clear"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <br className="clear" />
-                    </div>
-                    <div className="clear"></div>
-                </div>
-            ),
-        },
-    ];
-    const feedbackList = [
-        {
-            name: "",
-            width: "200",
-            cell: (feedback) => (
-                <div className="guest-reviews-i">
-                    <div className="guest-reviews-a">
-                        <div className="guest-reviews-l">
-                            <div className="guest-reviews-img">
-                                <span>{feedback?.rating}</span>
-                                <img alt="" src="img/guest-01.png" />
-                            </div>
-                        </div>
-                        <div className="guest-reviews-r">
-                            <div className="guest-reviews-rb">
-                                <div className="guest-reviews-b">
-                                    <div className="guest-reviews-bl">
-                                        <div className="guest-reviews-blb">
-                                            <div className="guest-reviews-lbl">
-                                                {feedback?.user?.lastName} {feedback?.user?.firstName}
-                                            </div>
-                                            <div className="guest-reviews-lbl-a">
-                                                from {feedback?.user?.location?.province?.name}
-                                            </div>
-                                            <div className="guest-reviews-txt">
-                                                {feedback?.feedback}
-                                            </div>
-                                        </div>
-                                        {/* <br className="clear" /> */}
-                                    </div>
-                                </div>
-                                <div className="guest-reviews-br">
-                                    <div className="guest-reviews-padding">
-                                        <nav>
-                                            <ul>
-                                                {[...Array(5)].map(
-                                                    (item, index) =>
-                                                        // {
-                                                        index + 1 > Math.ceil(feedback?.rating) ? (
-                                                            <li key={index}>
-                                                                <a>
-                                                                    <img alt="" src="img/star-a.png" />
-                                                                </a>
-                                                            </li>
-                                                        ) : (
-                                                            <li key={index}>
-                                                                <a>
-                                                                    <img alt="" src="img/star-b.png" />
-                                                                </a>
-                                                            </li>
-                                                        )
-                                                    // }
-                                                )}
-                                            </ul>
-                                        </nav>
-                                        <div className="guest-rating">{feedback?.rating}/5.0</div>
-                                        <div className="clear"></div>
-                                        <div className="guest-rating-txt">Recomended</div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* <br className="clear" /> */}
-                        </div>
-                    </div>
-                    <div className="clear"></div>
-                </div>
-            ),
-        },
-    ];
+    // const roomDetail = [
+    //     {
+    //         name: "",
+    //         cell: (room) => (
+               
+    //         ),
+    //     },
+    // ];
+    // const feedbackList = [
+    //     {
+    //         name: "",
+    //         width: "200",
+    //         cell: (feedback) => (
 
+               
+    //         ),
+    //     },
+    // ];
+
+    const setPageNum = (number) => setPageNumber(number);
+
+    const getPagination = (list = [],page, itemsPerPage) => {
+      if (!Array.isArray(list) || list.length === 0) {
+        return [];
+      }
+      const startIdx = (page - 1) * itemsPerPage;
+      const endIdx = (startIdx + itemsPerPage - 1) + 1;
+     
+      return list.slice(startIdx, endIdx);
+    };
+
+    
     const addNewReview = (e) => {
         var reviews = [];
         var avg = 0;
@@ -233,7 +134,7 @@ const HotelDetailPage = (props) => {
 
         props.getUser(user);
         props.getHotel(queryParam.get("id"));
-
+        importAll();
         return () => {
             mount = true;
         };
@@ -788,17 +689,78 @@ const HotelDetailPage = (props) => {
                                                             <h2>List Room Active</h2>
 
                                                             <div className="available-row">
-                                                                <DataTable
-                                                                    // striped="false"
-                                                                    className=""
-                                                                    columns={roomDetail}
-                                                                    data={props?.hotel?.data?.rooms}
-                                                                    // style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}
-                                                                    customStyles={customStyles}
-                                                                    pagination
-                                                                    paginationPerPage={3}
-                                                                />
-                                                                {/* <a href="#" className="availabe-more">load more results</a> */}
+                                                                {
+                                                                    getPagination(props.hotel?.data?.rooms,pageNumber,itemsPerPage).map( 
+                                                                        room =>  <div className="cat-list-item">
+                                                                        <div className="cat-list-item-l">
+                                                                            <a href="#">
+                                                                                <img
+                                                                                    alt=""
+                                                                                    src={room?.images[0]?.imagePath ? room.images[0].imagePath : ""}
+                                                                                />
+                                                                            </a>
+                                                                        </div>
+                                                                        <div className="cat-list-item-r">
+                                                                            <div className="cat-list-item-rb">
+                                                                                <div className="cat-list-item-p">
+                                                                                    <div className="cat-list-content">
+                                                                                        <div className="cat-list-content-a">
+                                                                                            <div className="cat-list-content-l">
+                                                                                                <div className="cat-list-content-lb">
+                                                                                                    <div className="cat-list-content-lpadding">
+                                                                                                        <div className="offer-slider-link">
+                                                                                                            <a href="#">{room?.roomType}</a>
+                                                                                                        </div>
+                                                                                                        <div className="offer-slider-location">
+                                                                                                            Max Adult: {room?.maxAdult} persons
+                                                                                                        </div>
+                                                                                                        <p>
+                                                                                                            Voluptatem quia voluptas sit aspernatur aut odit aut
+                                                                                                            fugit, sed quia consequuntur magni dolores eos.
+                                                                                                        </p>
+                                                                                                        {/* <div className="cat-icons">
+                                                                                                            <span className="cat-icon-01 active"></span>
+                                                                                                            <span className="cat-icon-02"></span>
+                                                                                                            <span className="cat-icon-03"></span>
+                                                                                                            <span className="cat-icon-04"></span>
+                                                                                                            <span className="cat-icon-05"></span>
+                                                                                                            <span className="cat-icon-06"></span>
+                                                                                                            <div className="clear"></div>
+                                                                                                        </div> */}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                {/* <br className="clear" /> */}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="cat-list-content-r">
+                                                                                            <div className="cat-list-content-p">
+                                                                                                <div className="available-price">{room.price}$</div>
+                                                                                                <div className="available-price-a">avg/night</div>
+                                                                                                <div className="available-price-c">
+                                                                                                    {room?.roomStatus ? "Available" : "Unavailable"}
+                                                                                                </div>  
+                                                                                                <a 
+                                                                                                onClick={e => history.push(`/hotel-booking?id=${props?.hotel?.data?.id}
+                                                                                                                            &checkInDate=${queryParam.get("checkInDate")}
+                                                                                                                            &checkOutDate=${queryParam.get("checkOutDate")}
+                                                                                                                            &roomId=${room?.id}
+                                                                                                                            &userId=${props?.user?.data?.id}`)
+                                                                                                } className="available-btn">
+                                                                                                    Book now
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="clear"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <br className="clear" />
+                                                                        </div>
+                                                                        <div className="clear"></div>
+                                                                    </div>
+                                                                    )
+                                                                }                                                            
+                                                                <Pagination itemsPerPage={itemsPerPage} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNum}/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1030,8 +992,75 @@ const HotelDetailPage = (props) => {
 
                                                             <div className="guest-reviews">
                                                                 <h2>Guest Reviews</h2>
-                                                                {/* <div className="guest-reviews-row"> */}
-                                                                <DataTable
+                                                                <div className="guest-reviews-row">
+                                                                    {
+                                                                        getPagination(props.hotel?.data?.hotelFeedBacks,pageNumberFB,itemsPerPageFB).map(
+                                                                            feedback =>
+                                                                            <div className="guest-reviews-i">
+                                                                            <div className="guest-reviews-a">
+                                                                                <div className="guest-reviews-l">
+                                                                                    <div className="guest-reviews-img">
+                                                                                        <span>{feedback?.rating}</span> 
+                                                                                        <img alt="" src="img/guest-01.png" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="guest-reviews-r">
+                                                                                    <div className="guest-reviews-rb">
+                                                                                        <div className="guest-reviews-b">
+                                                                                            <div className="guest-reviews-bl">
+                                                                                                <div className="guest-reviews-blb">
+                                                                                                    <div className="guest-reviews-lbl">
+                                                                                                        {feedback?.user?.lastName} {feedback?.user?.firstName}
+                                                                                                    </div>
+                                                                                                    <div className="guest-reviews-lbl-a">
+                                                                                                        from {feedback?.user?.location?.province?.name}
+                                                                                                    </div>
+                                                                                                    <div className="guest-reviews-txt">
+                                                                                                        {feedback?.feedback}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                {/* <br className="clear" /> */}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="guest-reviews-br">
+                                                                                            <div className="guest-reviews-padding">
+                                                                                                <nav>
+                                                                                                    <ul>
+                                                                                                        {[...Array(5)].map(
+                                                                                                            (item, index) =>
+                                                                                                                // {
+                                                                                                                index + 1 > Math.ceil(feedback?.rating) ? (
+                                                                                                                    <li key={index}>
+                                                                                                                        <a>
+                                                                                                                            <img alt="" src="img/star-a.png" />
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                ) : (
+                                                                                                                    <li key={index}>
+                                                                                                                        <a>
+                                                                                                                            <img alt="" src="img/star-b.png" />
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                )
+                                                                                                            // }
+                                                                                                        )}
+                                                                                                    </ul>
+                                                                                                </nav>
+                                                                                                <div className="guest-rating">{feedback?.rating}/5.0</div>
+                                                                                                <div className="clear"></div>
+                                                                                                <div className="guest-rating-txt">Recomended</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    {/* <br className="clear" /> */}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                                {/* <DataTable
                                                                     // striped="false"
                                                                     columns={feedbackList}
                                                                     data={props?.hotel?.data?.hotelFeedBacks}
@@ -1039,11 +1068,9 @@ const HotelDetailPage = (props) => {
                                                                     customStyles={customStyles}
                                                                     pagination
                                                                     paginationPerPage={3}
-                                                                />
+                                                                /> */}
 
-                                                                {/* </div> */}
-                                                                {/* <a href="#" className="guest-reviews-more">load more reviews</a> */}
-                                                                {/* <form onSubmit={addNewReview}> */}
+                                                                <Pagination itemsPerPage={itemsPerPageFB} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNumberFB}/>
                                                                     <div hidden={user ? false : true} className="review-form">
                                                                         <h2>Live Review</h2>
                                                                         {/* <label>User Name:</label>
