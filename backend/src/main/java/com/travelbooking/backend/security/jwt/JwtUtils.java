@@ -16,7 +16,7 @@ public class JwtUtils {
 
     @Value("travelBookingSecretKey")
     private String jwtSecret;
-    @Value("2592000")
+    @Value("86400000")
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
