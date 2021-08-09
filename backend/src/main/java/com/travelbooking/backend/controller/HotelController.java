@@ -50,11 +50,11 @@ public class HotelController {
     public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
                                        @RequestParam(required = false, name = "district") Integer district,
                                        @RequestParam(required = false, name = "ward") Integer ward,
-                                         @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
-                                         @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
-                                        @RequestParam (required = false, name = "checkInDate") Date checkInDate,
+                                       @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
+                                       @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
+                                       @RequestParam (required = false, name = "checkInDate") Date checkInDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
-                                            ) throws ParseException {
+    ) throws ParseException {
         Specification<Hotel> spec = HotelSpecification.createSpecification(province,district,ward,Boolean.FALSE,numberAdult,numberChildren,numRoom,checkInDate);
         return hotelRepository.findAll(spec);
     }
@@ -68,8 +68,8 @@ public class HotelController {
     //http://localhost:8080/api/hotel
     @GetMapping("/hotel/listRooms/{id}")
     public Collection<Room> getRoomsByHotelId(@PathVariable Long id){
-                Specification<Room> spec =  RoomSpecification.createSpecification(id,false);
-                return roomRepository.findAll(spec);
+        Specification<Room> spec =  RoomSpecification.createSpecification(id,false);
+        return roomRepository.findAll(spec);
     }
 
     //http://localhost:8080/api/hotels
@@ -79,49 +79,49 @@ public class HotelController {
         return hotelRepository.findAll(spec);
     }
 
-        //http://localhost:8080/api/hotel/{id}
-        @GetMapping("/hotel/{id}")
-        public ResponseEntity<Hotel> getHotel(@PathVariable Long id){
-            Hotel hotel = hotelRepository.findById(id).get();
-            if (hotel.getRetired()){
-                return ResponseEntity.ok().body(null);
-            }
-            return  ResponseEntity.ok().body(hotel);
+    //http://localhost:8080/api/hotel/{id}
+    @GetMapping("/hotel/{id}")
+    public ResponseEntity<Hotel> getHotel(@PathVariable Long id){
+        Hotel hotel = hotelRepository.findById(id).get();
+        if (hotel.getRetired()){
+            return ResponseEntity.ok().body(null);
         }
+        return  ResponseEntity.ok().body(hotel);
+    }
 
-        //http://localhost:8080/api/hotel
-        @PostMapping("/hotel")
-        public ResponseEntity<?> addHotel(@RequestBody Hotel hotel) {
-            if (accountRepository.existsByUserName(hotel.getAccount().getUserName())) {
-                return ResponseEntity
-                        .badRequest().body("Username has been used !");
-            }
-            Account account = accountRepository.save(hotel.getAccount());
-            Location location = locationRepository.save(hotel.getLocation());
-            Hotel result = hotelRepository.save(hotel);
-            return ResponseEntity.ok().body(result);
+    //http://localhost:8080/api/hotel
+    @PostMapping("/hotel")
+    public ResponseEntity<?> addHotel(@RequestBody Hotel hotel) {
+        if (accountRepository.existsByUserName(hotel.getAccount().getUserName())) {
+            return ResponseEntity
+                    .badRequest().body("Username has been used !");
         }
-        //http://localhost:8080/api/hotel/{id}
-        @PutMapping("/hotel/{id}")          
-        public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
+        Account account = accountRepository.save(hotel.getAccount());
+        Location location = locationRepository.save(hotel.getLocation());
+        Hotel result = hotelRepository.save(hotel);
+        return ResponseEntity.ok().body(result);
+    }
+    //http://localhost:8080/api/hotel/{id}
+    @PutMapping("/hotel/{id}")
+    public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
 
-            hotel.setId(id);
-            Account account = accountRepository.save(hotel.getAccount());
-            Location location = hotel.getLocation();
-            locationRepository.save(location);
-            Hotel result = hotelRepository.save(hotel);
+        hotel.setId(id);
+        Account account = accountRepository.save(hotel.getAccount());
+        Location location = hotel.getLocation();
+        locationRepository.save(location);
+        Hotel result = hotelRepository.save(hotel);
 
-            return ResponseEntity.ok().body(result);
-        }
-        //http://localhost:8080/api/hotel/{id}
-        @PostMapping("/hotel/{id}")
-        public ResponseEntity<Hotel> removeHotel(@PathVariable Long id) {
-            Hotel hotel = hotelRepository.findById(id).get();
-            hotel.setRetired(true);
-            Hotel result = hotelRepository.save(hotel);
-            return ResponseEntity.ok().body(result);
-        }
+        return ResponseEntity.ok().body(result);
+    }
+    //http://localhost:8080/api/hotel/{id}
+    @PostMapping("/hotel/{id}")
+    public ResponseEntity<Hotel> removeHotel(@PathVariable Long id) {
+        Hotel hotel = hotelRepository.findById(id).get();
+        hotel.setRetired(true);
+        Hotel result = hotelRepository.save(hotel);
+        return ResponseEntity.ok().body(result);
+    }
 
 
-    
+
 }

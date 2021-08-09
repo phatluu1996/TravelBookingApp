@@ -69,10 +69,10 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         Optional<Flight> flightOptional=flightRepository.findById(flightId);
         Flight flight=flightOptional.get();
 
-
+//        User user = userRepository.getByAccountId(user.getAccount().getId());
         // Add Booking
-        Optional<User> userOptional = userRepository.findById(bookingRequest.getUserId());
-        User user = userOptional.get();
+        User user= userRepository.getByAccountId(bookingRequest.getUserId());
+//        User user = userOptional.get();
         FlightBooking fltBooking = new FlightBooking();
         String randomBookingCode = randomString(8);
         fltBooking.setBookingCode(randomBookingCode);
@@ -94,14 +94,17 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             passenger.setGender(psg.isGender());
             passenger.setHasInfant(psg.isHasInfant());
             passenger.setBaggageExtra(psg.getBaggageExtra());
+            passenger.setSeatNumber(psg.getSeatNumber());
             String randomTicket = randomNumber(13);
             passenger.setTicketNumber(randomTicket);
             Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateBooking());
-            if (age > 18) {
-                Float infantPrice = psg.isHasInfant() ? flight.getInfant_price() : 0;
-                passenger.setPrice(GetPriceByClass(bookingRequest, flight) + infantPrice);
-            } else {
+            if (bookingRequest.getType() == 1){
+                passenger.setPrice(flight.getBusinessPrice());
+            } else if(age<18) {
                 passenger.setPrice(flight.getChild_price());
+            } else {
+                Float infantPrice = psg.isHasInfant() ? flight.getInfant_price() : 0;
+                passenger.setPrice(flight.getEconomyPrice() + infantPrice);
             }
             passengerRepository.save(passenger);
 
@@ -141,14 +144,17 @@ public class FlightBookingServiceImpl implements FlightBookingService{
                 passengerReturnFlight.setGender(psg.isGender());
                 passengerReturnFlight.setHasInfant(psg.isHasInfant());
                 passengerReturnFlight.setBaggageExtra(psg.getBaggageExtra());
+                passengerReturnFlight.setSeatNumber(psg.getSeatNumber());
                 String randomTicket = randomNumber(13);
                 passengerReturnFlight.setTicketNumber(randomTicket);
                 Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateReturnBooking());
-                if (age > 18) {
-                    Float infantPrice = psg.isHasInfant() ? returnFlight.getInfant_price() : 0;
-                    passengerReturnFlight.setPrice(GetPriceByClass(bookingRequest, returnFlight) + infantPrice);
-                } else {
+                if (bookingRequest.getReturnType() == 1){
+                    passengerReturnFlight.setPrice(returnFlight.getBusinessPrice());
+                } else if(age<18) {
                     passengerReturnFlight.setPrice(returnFlight.getChild_price());
+                } else {
+                    Float infantPrice = psg.isHasInfant() ? returnFlight.getInfant_price() : 0;
+                    passengerReturnFlight.setPrice(returnFlight.getEconomyPrice() + infantPrice);
                 }
                 passengerRepository.save(passengerReturnFlight);
 

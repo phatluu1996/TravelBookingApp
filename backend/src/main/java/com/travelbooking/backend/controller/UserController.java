@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     PasswordEncoder encoder;
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
         if(userRepository.existsByAccount_Id(id)){
@@ -41,7 +41,7 @@ public class UserController {
         }else return ResponseEntity.ok().body(null);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PutMapping("/user")
     public ResponseEntity<?> updateUser(@RequestBody User user){
         Account account = new Account(user.getAccount());

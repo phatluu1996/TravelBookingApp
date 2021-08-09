@@ -9,6 +9,7 @@ import { faHourglass, faSearch } from "@fortawesome/free-solid-svg-icons";
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
+import { clearBookingCached } from "../../actions/actionBookingFlight";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -309,14 +310,14 @@ const FlightSearchPage = (props) => {
         return price;
     }
     
-    // const ClickBookingHandler = (event) =>{
-    //     setSelectedFlight = this.item.id
-    //     if (sessionStorage.getItem("user") ===""){
+    const handleGoToBooking = (flight) =>  {
+        props.clearBooking();
+        history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
+        "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
+        "&seatClass="+queryParam.get("seatClass")+"&price="+flightPrice(flight)+"&fid="+flight.id
+        );
+    }
 
-    //     } else {
-    //         history.push("/flight-booking")
-    //     }
-    // }
     return (<>
         <Header></Header>
         <div className="main-cont">
@@ -664,15 +665,7 @@ const FlightSearchPage = (props) => {
                                                             <div className="flt-i-price-b">avg/person</div>
                                                             <a  className="cat-list-btn" 
                                                                 onClick={(e) => 
-                                                                    history.push({
-                                                                        pathname:"/flight-booking",
-                                                                        state:{
-                                                                            selectedFlight: flight,
-                                                                            dateBook: queryParam.get("departureDate"),
-                                                                            typeClass: seatClassType
-                                                                        }
-                                                                    })
-                                                                }
+                                                                    handleGoToBooking(flight)}
                                                             >
                                                                 SELECT NOW
                                                             </a>
@@ -742,7 +735,8 @@ const FlightSearchPage = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        flights: state.flight
+        flights: state.flight,
+        
     };
 };
 
@@ -751,6 +745,7 @@ const mapDispatchToProps = (dispatch) => {
         getFlight: (from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
+        clearBooking: () => {dispatch(clearBookingCached)}
         // getAirline: () => {
         //     dispatch()
         // }

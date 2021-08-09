@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom'
+import { createAirline } from '../../../actions/actionAirline';
 import { createHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 
-const AdminHotelCreate = (props) => {
+const AdminAirlineCreate = (props) => {
 
     let history = useHistory();
     const [slProvince, setSlProvince] = useState(null);
@@ -18,12 +19,16 @@ const AdminHotelCreate = (props) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [status, setStatus] = useState(false);
     const [validateError, setValidateError] = useState({
-        hotelName: "",
+        username: "",
+        password: "",
+        airlineName: "",
         email: "",
         phone: "",
+        mobile: "",
+        fax:"",
         contactName: "",
         contactTitle: "",
-        numberOfRoom: "",
+        homepage: "",
         street: "",
         province: "",
         district: "",
@@ -54,23 +59,23 @@ const AdminHotelCreate = (props) => {
         props.getProvince();
 
         return () => {
-            mount =true;
+            mount = true;
         }
     }, [])
 
     useEffect(() => {
         let mount = false;
 
-        if(props.hotel.success && isSubmit){
+        if (props.airline.success && isSubmit) {
             setStatus(true);
         }
 
-        if(status){
-            history.push("/admin-hotel-manage");
+        if (status) {
+            history.push("/admin-airline-manage");
         }
 
         return () => {
-            mount =true;
+            mount = true;
         }
     })
 
@@ -80,27 +85,29 @@ const AdminHotelCreate = (props) => {
         if (isValid(form)) {
             //TODO call API
             var data = {
-                hotelName: form.hotelName.value,
+                airlineName: form.airlineName.value,
                 email: form.email.value,
                 phone: form.phone.value,
                 contactName: form.contactName.value,
                 contactTitle: form.contactTitle.value,
-                numberOfRoom: form.numberOfRoom.value,
+                mobile: form.mobile.value,
+                fax: form.fax.value,
+                homepage: form.homepage.value,
                 location: {
                     street: form.street.value,
                     postalCode: '70000',
-                    province: {id : slProvince.id},
-                    district: {id : slDistrict.id},
-                    ward: {id : slWard.id}
+                    province: { id: slProvince.id },
+                    district: { id: slDistrict.id },
+                    ward: { id: slWard.id }
                 },
                 account: {
                     userName: form.username.value,
                     password: form.password.value,
-                    role : 'HOTEL'
+                    role: 'AIRLINE'
                 },
                 retired: false,
             }
-            props.createHotel(data);
+            props.createAirline(data);
         }
     }
 
@@ -116,20 +123,20 @@ const AdminHotelCreate = (props) => {
             err.username = "";
         }
 
-        let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;            
+        let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
         if (!form.password.value) {
             err.password = "Hotel password is required ";
         } else {
             if (!regex.test(form.password.value)) {
                 err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
-            }else{
+            } else {
                 err.password = "";
-            }            
+            }
         }
-        if (!form.hotelName.value) {
-            err.hotelName = "Hotel name is required ";
+        if (!form.airlineName.value) {
+            err.airlineName = "Hotel name is required ";
         } else {
-            err.hotelName = "";
+            err.airlineName = "";
         }
         if (!form.email.value) {
             err.email = "Email is required ";
@@ -173,21 +180,34 @@ const AdminHotelCreate = (props) => {
         } else {
             err.ward = "";
         }
-        if (!form.numberOfRoom.value) {
-            err.numberOfRoom = " Room Amount is required ";
+        if (!form.fax.value) {
+            err.fax = " Fax is required ";
         } else {
-            err.numberOfRoom = "";
+            err.fax = "";
         }
+        if (!form.mobile.value) {
+            err.mobile = " Mobile is required ";
+        } else {
+            err.mobile = "";
+        }
+        if (!form.homepage.value) {
+            err.homepage = " Mobile is required ";
+        } else {
+            err.homepage = "";
+        }
+
 
         if (
             err.username ||
             err.password ||
-            err.hotelName ||
+            err.airlineName ||
             err.email ||
             err.phone ||
             err.contactName ||
             err.contactTitle ||
-            err.numberOfRoom ||
+            err.mobile ||
+            err.fax ||
+            err.homepage ||
             err.street ||
             err.province ||
             err.district ||
@@ -200,8 +220,8 @@ const AdminHotelCreate = (props) => {
     }
 
     const formControlClass = (field) => {
-        if(!validateError[field]){
-            if(isSubmit){
+        if (!validateError[field]) {
+            if (isSubmit) {
                 return "form-control is-valid";
             }
             return "form-control";
@@ -228,7 +248,7 @@ const AdminHotelCreate = (props) => {
                                     <div className="col-sm-6">
                                         <div className="card">
                                             <div className="card-body">
-                                                <h3 className="card-title mb-5">Add New Hotel</h3>
+                                                <h3 className="card-title mb-5">Add New Airline</h3>
                                                 <form onSubmit={handleSubmit} className="form-sample" autoComplete="false">
                                                     <div className="row">
                                                         <div className="col-md-6">
@@ -249,10 +269,10 @@ const AdminHotelCreate = (props) => {
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
-                                                                <label className="col-form-label">Hotel Name*</label>
-                                                                <input type="text" className={formControlClass("hotelName")} name="hotelName" />
+                                                                <label className="col-form-label">Airline Name*</label>
+                                                                <input type="text" className={formControlClass("airlineName")} name="airlineName" />
                                                                 <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.hotelName}</div>
+                                                                <div className="invalid-feedback">{validateError.airlineName}</div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
@@ -265,20 +285,37 @@ const AdminHotelCreate = (props) => {
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
+                                                                <label className="col-form-label">Mobile*</label>
+                                                                <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" />
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.mobile}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="col-form-label">Fax*</label>
+                                                                <input type="tel" className={formControlClass("fax")} min="1" name="fax" />
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.fax}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="col-form-label">Homepage*</label>
+                                                                <input type="text" className={formControlClass("homepage")} name="homepage" />
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.homepage}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
                                                                 <label className="col-form-label">Email*</label>
                                                                 <input type="email" className={formControlClass("email")} name="email" />
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.email}</div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Room Amount*</label>
-                                                                <input type="number" className={formControlClass("numberOfRoom")} min="1" max="50" name="numberOfRoom" />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.numberOfRoom}</div>
-                                                            </div>
-                                                        </div>
+                                                        
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Name*</label>
@@ -368,15 +405,15 @@ const AdminHotelCreate = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        hotel: state.hotels,
+        airline: state.airline,
         province: state.province
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createHotel: (data) => {
-            dispatch(createHotel(data));
+        createAirline: (data) => {
+            dispatch(createAirline(data));
         },
         getProvince: () => {
             dispatch(retrieveProvince());
@@ -384,4 +421,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminAirlineCreate);

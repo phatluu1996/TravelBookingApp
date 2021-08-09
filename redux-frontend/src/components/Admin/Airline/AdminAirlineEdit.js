@@ -1,29 +1,36 @@
-import { faCheck, faCross, faSkullCrossbones, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBullseye, faCheck, faCross, faEdit, faEye, faEyeDropper, faSkullCrossbones, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { createHotel } from '../../../actions/actionHotel';
+import { createHotel, getHotel, updateHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
+import { useQuery } from '../../../utils/QueryParam';
+import { getAirline, updateAirline } from '../../../actions/actionAirline';
 
-const AdminHotelCreate = (props) => {
-
+const AdminAirlineEdit = (props) => {
+    let queryParam = useQuery();
     let history = useHistory();
+    const [isEdit, setIsEdit] = useState(false);
     const [slProvince, setSlProvince] = useState(null);
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [status, setStatus] = useState(false);
     const [validateError, setValidateError] = useState({
-        hotelName: "",
+        username: "",
+        password: "",
+        airlineName: "",
         email: "",
         phone: "",
+        mobile: "",
+        fax:"",
         contactName: "",
         contactTitle: "",
-        numberOfRoom: "",
+        homepage: "",
         street: "",
         province: "",
         district: "",
@@ -51,6 +58,7 @@ const AdminHotelCreate = (props) => {
     useEffect(() => {
         let mount = false;
 
+        props.getAirline(queryParam.get("id"));
         props.getProvince();
 
         return () => {
@@ -61,13 +69,42 @@ const AdminHotelCreate = (props) => {
     useEffect(() => {
         let mount = false;
 
-        if(props.hotel.success && isSubmit){
+        if(props.airline.success && isSubmit){
             setStatus(true);
         }
 
         if(status){
-            history.push("/admin-hotel-manage");
+            history.push("/admin-airline-manage");
         }
+        
+        if(props.province.data && props.airline.single){            // && !slProvince && !slDistrict && !slWard
+            var pv = props.airline.single.location.province;
+            var dt = props.airline.single.location.district;
+            var w = props.airline.single.location.ward;
+
+            // setSlProvince(pv);
+            // setSlDistrict(dt);
+            // setSlWard(w);        
+            var form = document.getElementById("form");    
+            if(!slProvince){
+                setSlProvince(pv);
+            }
+            
+            if(!slDistrict){
+                setSlDistrict(dt);
+            }
+            
+            if(!slWard){
+                setSlWard(w);
+            }            
+
+            
+            form.province.value = JSON.stringify(pv);
+            form.district.value = JSON.stringify(dt);
+            form.ward.value = JSON.stringify(w);            
+        }
+
+
 
         return () => {
             mount =true;
@@ -79,28 +116,24 @@ const AdminHotelCreate = (props) => {
         var form = e.target;
         if (isValid(form)) {
             //TODO call API
-            var data = {
-                hotelName: form.hotelName.value,
-                email: form.email.value,
-                phone: form.phone.value,
-                contactName: form.contactName.value,
-                contactTitle: form.contactTitle.value,
-                numberOfRoom: form.numberOfRoom.value,
-                location: {
-                    street: form.street.value,
-                    postalCode: '70000',
-                    province: {id : slProvince.id},
-                    district: {id : slDistrict.id},
-                    ward: {id : slWard.id}
-                },
-                account: {
-                    userName: form.username.value,
-                    password: form.password.value,
-                    role : 'HOTEL'
-                },
-                retired: false,
-            }
-            props.createHotel(data);
+            let data = {...props.airline.single};
+            // var data = {
+            data.airlineName = form.airlineName.value;
+            data.email = form.email.value;
+            data.phone = form.phone.value;
+            data.contactName = form.contactName.value;
+            data.contactTitle = form.contactTitle.value;
+            data.mobile = form.mobile.value;
+            data.fax = form.fax.value;
+            data.location.street = form.street.value;
+            data.location.province.id = slProvince.id;
+            data.location.district.id = slDistrict.id;
+            data.location.ward.id = slWard.id;
+            data.account.password = form.password.value;
+            data.retired = false;            
+            data.homepage = form.homepage.value;
+            // }
+            props.updateAirline(data.id,data);
         }
     }
 
@@ -116,20 +149,20 @@ const AdminHotelCreate = (props) => {
             err.username = "";
         }
 
-        let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;            
+        let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
         if (!form.password.value) {
             err.password = "Hotel password is required ";
         } else {
             if (!regex.test(form.password.value)) {
                 err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
-            }else{
+            } else {
                 err.password = "";
-            }            
+            }
         }
-        if (!form.hotelName.value) {
-            err.hotelName = "Hotel name is required ";
+        if (!form.airlineName.value) {
+            err.airlineName = "Hotel name is required ";
         } else {
-            err.hotelName = "";
+            err.airlineName = "";
         }
         if (!form.email.value) {
             err.email = "Email is required ";
@@ -173,21 +206,34 @@ const AdminHotelCreate = (props) => {
         } else {
             err.ward = "";
         }
-        if (!form.numberOfRoom.value) {
-            err.numberOfRoom = " Room Amount is required ";
+        if (!form.fax.value) {
+            err.fax = " Fax is required ";
         } else {
-            err.numberOfRoom = "";
+            err.fax = "";
         }
+        if (!form.mobile.value) {
+            err.mobile = " Mobile is required ";
+        } else {
+            err.mobile = "";
+        }
+        if (!form.homepage.value) {
+            err.homepage = " Homepage is required ";
+        } else {
+            err.homepage = "";
+        }
+
 
         if (
             err.username ||
             err.password ||
-            err.hotelName ||
+            err.airlineName ||
             err.email ||
             err.phone ||
             err.contactName ||
             err.contactTitle ||
-            err.numberOfRoom ||
+            err.mobile ||
+            err.fax ||
+            err.homepage ||
             err.street ||
             err.province ||
             err.district ||
@@ -210,7 +256,7 @@ const AdminHotelCreate = (props) => {
     }
 
     const goBack = () => {
-        history.push("/admin-hotel-manage");
+        history.push("/admin-airline-manage");
     }
 
     return (
@@ -228,13 +274,14 @@ const AdminHotelCreate = (props) => {
                                     <div className="col-sm-6">
                                         <div className="card">
                                             <div className="card-body">
-                                                <h3 className="card-title mb-5">Add New Hotel</h3>
-                                                <form onSubmit={handleSubmit} className="form-sample" autoComplete="false">
+                                                <h3 className="card-title mb-3">Add New Hotel</h3>
+                                                <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => setIsEdit(!isEdit)}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
+                                                <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Username*</label>
-                                                                <input type="text" className={formControlClass("username")} name="username" />
+                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.airline.single?.account.userName} readOnly/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.username}</div>
                                                             </div>
@@ -242,7 +289,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Password*</label>
-                                                                <input type="password" className={formControlClass("password")} name="password" />
+                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.airline.single?.account.password} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.password}</div>
                                                             </div>
@@ -250,39 +297,55 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Hotel Name*</label>
-                                                                <input type="text" className={formControlClass("hotelName")} name="hotelName" />
+                                                                <input type="text" className={formControlClass("airlineName")} name="airlineName" defaultValue={props.airline.single?.airlineName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.hotelName}</div>
+                                                                <div className="invalid-feedback">{validateError.airlineName}</div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Phone Number*</label>
-                                                                <input type="tel" className={formControlClass("phone")} name="phone" />
+                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={props.airline.single?.phone} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.phone}</div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
+                                                                <label className="col-form-label">Mobile*</label>
+                                                                <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" defaultValue={props.airline.single?.mobile} readOnly={!isEdit}/>
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.mobile}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="col-form-label">Fax*</label>
+                                                                <input type="tel" className={formControlClass("fax")} min="1" name="fax" defaultValue={props.airline.single?.fax} readOnly={!isEdit}/>
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.fax}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="col-form-label">Homepage*</label>
+                                                                <input type="text" className={formControlClass("homepage")} name="homepage" defaultValue={props.airline.single?.homepage} readOnly={!isEdit}/>
+                                                                <div className="valid-feedback"></div>
+                                                                <div className="invalid-feedback">{validateError.homepage}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
                                                                 <label className="col-form-label">Email*</label>
-                                                                <input type="email" className={formControlClass("email")} name="email" />
+                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={props.airline.single?.email} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.email}</div>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
-                                                                <label className="col-form-label">Room Amount*</label>
-                                                                <input type="number" className={formControlClass("numberOfRoom")} min="1" max="50" name="numberOfRoom" />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.numberOfRoom}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
                                                                 <label className="col-form-label">Contact Name*</label>
-                                                                <input type="text" className={formControlClass("contactName")} name="contactName" />
+                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={props.airline.single?.contactName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactName}</div>
                                                             </div>
@@ -290,7 +353,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Title*</label>
-                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" />
+                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={props.airline.single?.contactTitle} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactTitle}</div>
                                                             </div>
@@ -304,7 +367,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-12">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Street*</label>
-                                                                <input type="text" className={formControlClass("street")} name="street" />
+                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.airline.single?.location.street} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.street}</div>
                                                             </div>
@@ -312,7 +375,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Province*</label>
-                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince}>
+                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} readOnly={!isEdit}>
                                                                     <option value={null}>---</option>
                                                                     {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)}>{province.name}</option>)}
                                                                 </select>
@@ -322,7 +385,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">District*</label>
-                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict}>
+                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} readOnly={!isEdit}>
                                                                     <option value={null}>---</option>
                                                                     {slProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)}>{district.name}</option>)}
                                                                 </select>
@@ -332,7 +395,7 @@ const AdminHotelCreate = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Ward*</label>
-                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard}>
+                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} readOnly={!isEdit}>
                                                                     <option value='0'>---</option>
                                                                     {slDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)}>{ward.name}</option>)}
                                                                 </select>
@@ -341,8 +404,7 @@ const AdminHotelCreate = (props) => {
                                                         </div>
                                                         <div className="col-md-3"></div>
                                                         <div className="col-md-3">
-                                                            <button type="submit" className="btn btn-lg btn-success btn-block"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
-
+                                                            {isEdit && <button type="submit" className="btn btn-lg btn-success btn-block"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>}
                                                         </div>
                                                         <div className="col-md-3">
                                                             <button onClick={goBack} type="reset" className="btn btn-lg btn-danger btn-block"><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
@@ -368,15 +430,18 @@ const AdminHotelCreate = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        hotel: state.hotels,
+        airline: state.airline,
         province: state.province
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createHotel: (data) => {
-            dispatch(createHotel(data));
+        getAirline: (id) => {
+            dispatch(getAirline(id))
+        },
+        updateAirline: (id, data) => {
+            dispatch(updateAirline(id, data));
         },
         getProvince: () => {
             dispatch(retrieveProvince());
@@ -384,4 +449,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminAirlineEdit);

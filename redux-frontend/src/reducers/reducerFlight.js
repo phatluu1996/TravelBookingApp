@@ -32,11 +32,12 @@ const reducerFlight = (state = initialState, action) => {
         message: action.message
       };
       return state;
-
     default:
       return state;
   }
 };
+
+
 
 export default reducerFlight
 
