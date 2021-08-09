@@ -2,9 +2,9 @@ import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link, useHistory } from 'react-router-dom';
-import { removeUserSession } from "../../utils";
+import { getRole, removeUserSession, ROLE_USER } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faCogs, faMedkit, faScrewdriver, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { signout } from "../../actions/actionAuth";
 import { connect } from "react-redux";
 import { getUser, getUserFullName } from "../../utils";
@@ -52,6 +52,7 @@ const Header = (props) => {
                             </a>
                             <div className="langs-drop">
                                 <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>
+                                {getRole() !== ROLE_USER && <div><Link to="/admin-dashboard" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faCogs}></FontAwesomeIcon>My Admin</Link></div>}
                                 <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>
                             </div>
                         </div>
@@ -78,37 +79,8 @@ const Header = (props) => {
                                     <a className="has-child" >
                                         HOME
                                     </a>
-                                    <ul>
-                                        <li>
-                                            <a href="index.html">Home style one</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_02.html">Home style two</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_03.html">Home style three</a>
-                                        </li>
-                                        <li>
-                                            <a href="index_04.html">Home style four</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <Link to="/admin-dashboard" >
-                                        admin
-                                    </Link>
-                                </li>
-                                <li>
-                                    <a className="has-child" >
-                                        Hotels
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <Link to="/hotel-detail">Hotel item page</Link>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
+                                </li>                                
+                                {/* <li>
                                     <a className="has-child" >
                                         Flights
                                     </a>
@@ -134,8 +106,8 @@ const Header = (props) => {
                                             <a href="booking_complete.html">booking complete</a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li>
+                                </li> */}
+                                {/* <li>
                                     <a className="has-child" >
                                         Airline
                                     </a>
@@ -150,10 +122,7 @@ const Header = (props) => {
                                             <a href="/list-flight">List Flights</a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li>
-                                    <a href="contacts.html">CONTACS</a>
-                                </li>
+                                </li> */}
                             </ul>
                         </nav>
                     </div>
@@ -181,12 +150,12 @@ const Header = (props) => {
                                     <li>
                                         <Link to="/" >Home</Link>
                                     </li>
-                                    <li>
-                                    <Link to="/admin-dashboard" >
-                                        admin
-                                    </Link>
-                                </li>
-                                    <li>
+                                    {/* <li>
+                                        <Link to="/admin-dashboard" >
+                                            admin
+                                        </Link>
+                                    </li> */}
+                                    {/* <li>
                                         <a>Hotels</a>
                                         <ul>
                                             <li>
@@ -210,8 +179,8 @@ const Header = (props) => {
                                                 <Link to="/flight-booking-complete">Flight Booking Finish</Link>
                                             </li>
                                         </ul>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <a >Airline</a>
                                         <ul>
                                             <li>
@@ -224,9 +193,12 @@ const Header = (props) => {
                                                 <a href="/list-flight">List Flights</a>
                                             </li>
                                         </ul>
+                                    </li> */}
+                                    <li>
+                                        <Link to="/about">About</Link>
                                     </li>
                                     <li>
-                                        <a href="/contact-us">Contacts</a>
+                                        <Link to="/contact">Contact</Link>
                                     </li>
                                 </ul>
                             </nav>

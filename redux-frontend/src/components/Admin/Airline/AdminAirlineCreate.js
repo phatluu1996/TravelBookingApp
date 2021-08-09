@@ -230,7 +230,7 @@ const AdminAirlineCreate = (props) => {
     }
 
     const goBack = () => {
-        history.push("/admin-hotel-manage");
+        history.push("/admin-airline-manage");
     }
 
     return (
@@ -350,7 +350,7 @@ const AdminAirlineCreate = (props) => {
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Province*</label>
                                                                 <select className={formControlClass("province")} name="province" onChange={onChangeProvince}>
-                                                                    <option value={null}>---</option>
+                                                                    <option value="0">---</option>
                                                                     {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)}>{province.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.province}</div>
@@ -360,7 +360,7 @@ const AdminAirlineCreate = (props) => {
                                                             <div className="form-group">
                                                                 <label className="col-form-label">District*</label>
                                                                 <select className={formControlClass("district")} name="district" onChange={onChangeDistrict}>
-                                                                    <option value={null}>---</option>
+                                                                    <option value="0">---</option>
                                                                     {slProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)}>{district.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.district}</div>
@@ -370,7 +370,7 @@ const AdminAirlineCreate = (props) => {
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Ward*</label>
                                                                 <select className={formControlClass("ward")} name="ward" onChange={onChangeWard}>
-                                                                    <option value='0'>---</option>
+                                                                    <option value="0">---</option>
                                                                     {slDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)}>{ward.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.ward}</div>

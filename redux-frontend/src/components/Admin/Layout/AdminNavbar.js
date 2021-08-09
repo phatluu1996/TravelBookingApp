@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import $ from 'jquery';
+import { getUserFullName, removeUserSession } from '../../../utils';
+import { useHistory } from 'react-router-dom';
+import { signout } from '../../../actions/actionAuth';
+import { connect } from 'react-redux';
 
 const AdminNavbar = (props) => {
+    const history = useHistory();
+    const [user, setUser] = useState(null)
+    const signout = () => {
+        setUser(null);
+        props.doSignout();
+        removeUserSession();
+        const auth2 = window.gapi.auth2.getAuthInstance()
+        if (auth2 != null) {//If signin with google
+            auth2.signOut().then(
+                auth2.disconnect().then(res => {
+                    setUser(null);
+                })
+            )
+        }
+        history.push("/");
+    }
+
     return (
         <div>
             <nav className="navbar p-0 fixed-top d-flex flex-row">
@@ -159,7 +180,7 @@ const AdminNavbar = (props) => {
                             <a className="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 <div className="navbar-profile">
                                     <img className="img-xs rounded-circle" src="./assets/images/faces/face15.jpg" calt="" />
-                                    <p className="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                                    <p className="mb-0 d-none d-sm-block navbar-profile-name">{getUserFullName()}</p>
                                     <i className="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>
@@ -201,4 +222,18 @@ const AdminNavbar = (props) => {
     );
 };
 
-export default AdminNavbar;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        auth: state.auth,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        doSignout: () => {
+            dispatch(signout());
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

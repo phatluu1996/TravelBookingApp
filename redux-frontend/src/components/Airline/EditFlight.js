@@ -3,7 +3,7 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { importAll } from "../../utils/JqueryImport";
 import EditScheduleFlight from "./Component/EditScheduleFlight";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -23,7 +23,7 @@ const EditFlight = (props) => {
                 Airline - <span>Edit Flight</span>
               </div>
               <div className="breadcrumbs">
-                <a href="/">Home</a> / <a href="/airline">Airline</a> / <a href="/list-flight">List Flights</a> /{" "}
+                <Link to="/">Home</Link> / <Link to="/airline-profile">Airline</Link> / <Link href="/list-flight">List Flights</Link> /{" "}
                 <span>Edit Flight</span>
               </div>
               <div className="clear"></div>

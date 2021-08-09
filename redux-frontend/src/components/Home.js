@@ -226,9 +226,9 @@ const Home = (props) => {
         // console.log(props);
         var form = e.target;
         // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
-        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}`);
-        // document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
-        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
+        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}`);
+        // document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
+        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
     };
 
     const swapProvince = (e) => {
@@ -611,27 +611,26 @@ const Home = (props) => {
 
                 <div className="pop-destinations">
                     <header className="fly-in page-lbl">
-                        <b>Popular Destinations</b>
+                        <b>Popular Hotel</b>
                         <p>
-                            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                            aut fugit.
+                            Special offer for Sparrow members 
                         </p>
                     </header>
                     <div className="mp-popular-row popular-flat">
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-04.jpg" />
+                                <img alt="" src="img/offer-big-hotel-01.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>The Hotel 1060 Vienna</a>
+                                    <a>Intercontinental Danang Sun Penisula</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -665,7 +664,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>1200$</b>
+                                    <b>380$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -674,18 +673,18 @@ const Home = (props) => {
 
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-05.jpg" />
+                                <img alt="" src="img/offer-big-hotel-02.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>Pension Dr. Geissler</a>
+                                    <a>Metropole Ha Noi</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -719,7 +718,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>1400$</b>
+                                    <b>173$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -728,18 +727,18 @@ const Home = (props) => {
 
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-06.jpg" />
+                                <img alt="" src="img/offer-big-hotel-03.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>Hotel Mailberger Hof</a>
+                                    <a>Four Seasons The Nam Hai Resort</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -773,7 +772,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>2200$</b>
+                                    <b>800$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -782,18 +781,18 @@ const Home = (props) => {
 
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-07.jpg" />
+                                <img alt="" src="img/offer-big-hotel-04.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>Hotel Bellevue Wien</a>
+                                    <a>Laguna Lăng Cô</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -827,7 +826,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>3500$</b>
+                                    <b>260$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -836,18 +835,18 @@ const Home = (props) => {
 
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-08.jpg" />
+                                <img alt="" src="img/offer-big-hotel-05.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>Manesol Boutique Lamartine </a>
+                                    <a>Dalat Palace</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -881,7 +880,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>1700$</b>
+                                    <b>117$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -890,18 +889,18 @@ const Home = (props) => {
 
                         <div className="fly-in offer-slider-i">
                             <a className="offer-slider-img">
-                                <img alt="" src="img/offer-big-09.jpg" />
+                                <img alt="" src="img/offer-big-hotel-06.jpg" />
                                 <span className="offer-slider-overlay">
                                     <span className="offer-slider-btn">view details</span>
                                 </span>
                             </a>
                             <div className="offer-slider-txt">
                                 <div className="offer-slider-link">
-                                    <a>The Empress Theodora Hotel</a>
+                                    <a>Vinpearl Resort & Spa Halong</a>
                                 </div>
                                 <div className="offer-slider-l">
                                     <div className="offer-slider-location">
-                                        11 NOV 2014 - 22 NOV 2014
+                                        11 AUG 2020 - 22 NOV 2021
                                     </div>
                                     <nav className="stars">
                                         <ul>
@@ -935,7 +934,7 @@ const Home = (props) => {
                                     </nav>
                                 </div>
                                 <div className="offer-slider-r align-right">
-                                    <b>1400$</b>
+                                    <b>130$</b>
                                     <span>price</span>
                                 </div>
                                 <div className="clear"></div>
@@ -945,7 +944,7 @@ const Home = (props) => {
                     <div className="clear"></div>
                 </div>
 
-                <div className="inform-block">
+                {/* <div className="inform-block">
                     <div className="wrapper-padding">
                         <header className="fly-in page-lbl">
                             <b>helpful information</b>
@@ -1026,9 +1025,13 @@ const Home = (props) => {
                         </div>
                         <div className="clear"></div>
                     </div>
-                </div>
+                </div> */}
+                {/* <div className="tabs">
+                    <div className="typography-heading">tabs</div>
+                    
+                </div> */}
 
-                <div className="travel_experience">
+                {/* <div className="travel_experience">
                     <div className="wrapper-padding">
                         <header className="fly-in page-lbl">
                             <b className="offer-slider-lbl">We are Offering the hottest offers</b>
@@ -1056,38 +1059,134 @@ const Home = (props) => {
 
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
                 <div className="partners-wrapper">
                     <header className="fly-in page-lbl">
-                        <b>Our parthners</b>
+                        <b>Our Airline partner</b>
                         <p>
-                            Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed
-                            quia consequuntur magni
+                            Global airline partners will take you to any destination in the world.
                             <br />
-                            dolores eos qui.
                         </p>
                     </header>
                     <div className="partners fly-in">
                         <a>
-                            <img alt="" src="img/partner-01.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2019/09/11/1568212919133-2482812716f8f0532738cb4518387a0d.png?tr=q-75,w-82" />
                         </a>
                         <a>
-                            <img alt="" src="img/partner-02.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2020/02/21/1582260108949-09348d284bb3fd1675614f43ab22a6d8.png?tr=q-75,w-82" />
                         </a>
                         <a>
-                            <img alt="" src="img/partner-03.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2019/09/11/1568213402893-2a4ed3c760d1f8c92fd95efa17a60377.png?tr=q-75,w-82" />
                         </a>
                         <a>
-                            <img alt="" src="img/partner-04.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2021/05/04/1620136036133-d74f19434de12f627b593e49a144ff6c.png?tr=q-75,w-82" />
                         </a>
                         <a>
-                            <img alt="" src="img/partner-05.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2020/09/29/1601371217702-a33be2e4dcf4e85af9a3739912cc17d5.png?tr=q-75,w-82" />
+                        </a>
+                    </div>
+                </div>
+                <div className="partners-wrapper">
+                    <header className="fly-in page-lbl">
+                        <b>Our Hotel partner</b>
+                        <p>
+                            We partner with hotel chains all over the world to ensure the best stay in every destination of your dreams!
+                            <br />
+                        </p>
+                    </header>
+                    <div className="partners fly-in">
+                        <a>
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200776552-f852b752ae88e7e0902fb0d3bfc41a00.png?tr=q-75,w-82" />
                         </a>
                         <a>
-                            <img alt="" src="img/partner-06.png" />
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200782803-92cd85419dd6440bbc1c7b8d5a061249.png?tr=q-75,w-82" />
                         </a>
+                        <a>
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200819165-5bd89b99597e581e6917c18eb32695ca.png?tr=q-50,w-82" />
+                        </a>
+                        <a>
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200805093-7f22b69691bac8cee0ef4b3f0988fd78.png?tr=q-75,w-82" />
+                        </a>
+                        <a>
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200796134-3e687ae7c1e145253ef72691f5f18318.png?tr=q-75,w-82" />
+                        </a>
+                        <a>
+                            <img alt="" src="https://ik.imagekit.io/tvlk/image/imageResource/2017/08/08/1502200809743-5dde6f77b2b13ac38a752953eb78e692.png?tr=q-75,w-82" />
+                        </a>
+                    </div>
+                </div>
+
+                <div className="pop-destinations">
+                    <div className="wrapper-padding">
+                        <header className="fly-in page-lbl">
+                            <b className="offer-slider-lbl">What do you want to discover? </b>
+                        </header>
+                        <div className="mp-popular-row popular-flat">
+                            <div className="tabs-type-a tabs-block">
+                                <nav className="tabs-nav">
+                                    <ul>
+                                        <li><a className="active">Top flight routes</a></li>
+                                        <li><a>top hotels </a></li>
+                                    </ul>
+                                    <div className="clear"></div>
+                                </nav>
+                                <div className="tabs-content">
+                                    <div className="tabs-content-i">
+                                        <div class="columns-block">
+                                            <div class="columns-row">
+                                                <div class="column mm-3">
+                                                    <p>Vé máy bay Sài Gòn - Hà Nội</p>
+                                                    <p>Vé máy bay Sài Gòn - Đà Nẵng</p>
+                                                    <p>Vé máy bay Sài Gòn - Phú Quốc</p>
+                                                    <p>Vé máy bay Sài Gòn - Nha Trang</p>
+                                                    <p>Vé máy bay Sài Gòn - Đà Lạt</p>
+                                                </div>
+                                                <div class="column mm-3">
+                                                    <p>Vé máy bay Hà Nội - Sài Gòn</p>
+                                                    <p>Vé máy bay Hà Nội - Phú Quốc</p>
+                                                    <p>Vé máy bay Hà Nội - Đà Nẵng</p>
+                                                    <p>Vé máy bay Hà Nội - Nha Trang</p>
+                                                    <p>Vé máy bay Hà Nội - Đà Lạt</p>
+                                                </div>
+                                                <div class="column mm-3">
+                                                    <p>Vé máy bay Đà Nẵng - Sài Gòn</p>
+                                                    <p>Vé máy bay Đà Nẵng - Hà Nội</p>
+                                                    <p>Vé máy bay Đà Lạt - Sài Gòn</p>
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                    </div>
+                                    <div className="tabs-content-i">
+                                        <div class="columns-block">
+                                            <div class="columns-row">
+                                                <div class="column mm-3">
+                                                    <p>Khách sạn Vũng Tàu</p>
+                                                    <p>Khách sạn Đà Lạt</p>
+                                                    <p>Khách sạn Đà Nẵng</p>
+                                                    <p>Khách sạn Hồ Chí Minh</p>
+                                                </div>
+                                                <div class="column mm-3">
+                                                    <p>Khách sạn Nha Trang</p>
+                                                    <p>Khách sạn Hội An</p>
+                                                    <p>Khách sạn Sa Pa</p>
+                                                    <p>Khách sạn Hà Nội</p>
+                                                </div>
+                                                <div class="column mm-3">
+                                                    <p>Khách sạn Phan Thiết</p>
+                                                    <p>Khách sạn Phú Quốc</p>
+                                                    <p>Khách sạn Quy Nhơn</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

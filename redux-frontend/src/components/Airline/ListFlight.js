@@ -96,7 +96,7 @@ const ListFlight = (props) => {
                 Airline - <span>List Flights</span>
               </div>
               <div className="breadcrumbs">
-                <a href="/">Home</a> / <a href="/airline">Airline</a> /{" "}
+                <Link to="/">Home</Link> / <Link to="/airline-profile">Airline</Link> /{" "}
                 <span>List Flights</span>
               </div>
               <div className="clear"></div>

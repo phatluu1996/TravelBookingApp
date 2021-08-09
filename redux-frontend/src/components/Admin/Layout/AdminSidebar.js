@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getRole, getUserFullName, ROLE_ADMIN } from '../../../utils';
 
 const AdminSidebar = () => {
     return (
@@ -21,8 +22,7 @@ const AdminSidebar = () => {
                                     <span className="count bg-success"></span>
                                 </div>
                                 <div className="profile-name">
-                                    <h5 className="mb-0 font-weight-normal">Henry Klein</h5>
-                                    <span>Gold Member</span>
+                                    {getRole() === ROLE_ADMIN && <><h5 className="mb-0 font-weight-normal">{getUserFullName()}</h5><span>Administrator</span></>}                                    
                                 </div>
                             </div>
 
@@ -85,14 +85,14 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                        <a className="nav-link" data-toggle="collapse" href="#holtel-drop" aria-expanded="false" aria-controls="ui-basic">
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
                             </span>
                             <span className="menu-title">Hotels</span>
                             <i className="menu-arrow"></i>
                         </a>
-                        <div className="collapse" id="ui-basic">
+                        <div className="collapse" id="holtel-drop">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-hotel-create">Create</Link></li>
@@ -100,14 +100,14 @@ const AdminSidebar = () => {
                         </div>
                     </li>
                     <li className="nav-item menu-items">
-                        <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                        <a className="nav-link" data-toggle="collapse" href="#airline-drop" aria-expanded="false" aria-controls="ui-basic">
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
                             </span>
                             <span className="menu-title">Airlines</span>
                             <i className="menu-arrow"></i>
                         </a>
-                        <div className="collapse" id="ui-basic">
+                        <div className="collapse" id="airline-drop">
                             <ul className="nav flex-column sub-menu">
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-airline-manage">List</Link></li>
                                 <li className="nav-item"> <Link className="nav-link" to="/admin-airline-create">Create</Link></li>
@@ -115,7 +115,7 @@ const AdminSidebar = () => {
                         </div>
                     </li>
 
-                    <li className="nav-item menu-items">
+                    {/* <li className="nav-item menu-items">
                         <a className="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <span className="menu-icon">
                                 <i className="mdi mdi-laptop"></i>
@@ -188,7 +188,7 @@ const AdminSidebar = () => {
                             </span>
                             <span className="menu-title">Documentation</span>
                         </a>
-                    </li>
+                    </li> */}
                 </ul>
             </nav>
         </div>

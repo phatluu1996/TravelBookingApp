@@ -6,55 +6,49 @@ const Footer = () => {
             <div className="wrapper-padding">
                 <div className="section">
                     <div className="footer-lbl">Get In Touch</div>
-                    <div className="footer-adress">Address: 58911 Lepzig Hore,<br />85000 Vienna, Austria</div>
+                    <div className="footer-adress">590 Cách Mạng Tháng Tám, Phường 11, Quận 3, Thành phố Hồ Chí Minh, Việt Nam, 723564</div>
                     <div className="footer-phones">Telephones: +1 777 55-32-21</div>
-                    <div className="footer-email">E-mail: contacts@miracle.com</div>
-                    <div className="footer-skype">Skype: angelotours</div>
+                    <div className="footer-email">E-mail: sparrow.travel@mail.com</div>
+                    <div className="footer-skype">Skype: sparrowtravel</div>
                 </div>
                 <div className="section">
                     <div className="footer-lbl">Featured deals</div>
                     <div className="footer-tours">
 
                         <div className="footer-tour">
-                            <div className="footer-tour-l"><a href="#"><img alt="" src="img/f-tour-01.jpg" /></a></div>
+                            <div className="footer-tour-l"><a><img alt="" src="img/f-tour-01.jpg" /></a></div>
                             <div className="footer-tour-r">
-                                <div className="footer-tour-a">amsterdam tour</div>
-                                <div className="footer-tour-b">location: netherlands</div>
-                                <div className="footer-tour-c">800$</div>
+                                <div className="footer-tour-a">SGN - DLI</div>
+                                <div className="footer-tour-b">location: Da Lat</div>
+                                <div className="footer-tour-c">max: 44$</div>
                             </div>
                             <div className="clear"></div>
                         </div>
 
 
                         <div className="footer-tour">
-                            <div className="footer-tour-l"><a href="#"><img alt="" src="img/f-tour-02.jpg" /></a></div>
+                            <div className="footer-tour-l"><a><img alt="" src="img/f-tour-02.jpg" /></a></div>
                             <div className="footer-tour-r">
-                                <div className="footer-tour-a">Kiev tour</div>
-                                <div className="footer-tour-b">location: ukraine</div>
-                                <div className="footer-tour-c">550$</div>
+                                <div className="footer-tour-a">SGN - HNA / HNA - SGN</div>
+                                <div className="footer-tour-b">location: TP.HCM / Ha Noi</div>
+                                <div className="footer-tour-c">max: 72$</div>
                             </div>
                             <div className="clear"></div>
                         </div>
 
 
                         <div className="footer-tour">
-                            <div className="footer-tour-l"><a href="#"><img alt="" src="img/f-tour-03.jpg" /></a></div>
+                            <div className="footer-tour-l"><a><img alt="" src="img/info-c-01-danang.png" /></a></div>
                             <div className="footer-tour-r">
-                                <div className="footer-tour-a">vienna tour</div>
-                                <div className="footer-tour-b">location: austria</div>
-                                <div className="footer-tour-c">940$</div>
+                                <div className="footer-tour-a">SGN - DAD / DAD - SGN</div>
+                                <div className="footer-tour-b">location: TP.HCM / Da Nang</div>
+                                <div className="footer-tour-c">max: 48$</div>
                             </div>
                             <div className="clear"></div>
                         </div>
 
                     </div>
-                </div>
-                <div className="section">
-                    <div className="footer-lbl">Twitter widget</div>
-                    <div className="twitter-wiget">
-                        <div id="twitter-feed"></div>
-                    </div>
-                </div>
+                </div>                
                 <div className="section">
                     <div className="footer-lbl">newsletter sign up</div>
                     <div className="footer-subscribe">
@@ -64,19 +58,28 @@ const Footer = () => {
                     </div>
                     <button className="footer-subscribe-btn">Sign up</button>
                 </div>
+                <div className="section">
+                    <div className="footer-lbl">Others</div>
+                    <div className="footer-line">Privacy Policy</div>
+                    <div className="footer-line">Terms & Conditions</div>
+                    <div className="footer-line">Operational Regulations </div>
+                    <div className="footer-line">Register your hotel as our partner</div>
+                    <div className="footer-line">Register as our airline partner</div>
+                    <div className="footer-line">Privacy Policy</div>
+                </div>
             </div>
             <div className="clear"></div>
         </footer>
 
         <footer className="footer-b">
             <div className="wrapper-padding">
-                <div className="footer-left">© Copyright 2015 by Weblionmedia. All rights reserved.</div>
+                <div className="footer-left">© Copyright 2021 by FPT Aptech Team. All rights reserved.</div>
                 <div className="footer-social">
-                    <a href="#" className="footer-twitter"></a>
-                    <a href="#" className="footer-facebook"></a>
-                    <a href="#" className="footer-vimeo"></a>
-                    <a href="#" className="footer-pinterest"></a>
-                    <a href="#" className="footer-instagram"></a>
+                    <a className="footer-twitter"></a>
+                    <a className="footer-facebook"></a>
+                    <a className="footer-vimeo"></a>
+                    <a className="footer-pinterest"></a>
+                    <a className="footer-instagram"></a>
                 </div>
                 <div className="clear"></div>
             </div>

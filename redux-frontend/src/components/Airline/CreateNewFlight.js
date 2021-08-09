@@ -9,6 +9,7 @@ import { retrieveAirline} from "../../actions/actionAirline";
 import {getUserId} from "../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import AddNewFlight from "./Component/AddNewFlight";
+import { Link } from "react-router-dom";
 
 const CreateNewFlight = (props) => {
 
@@ -44,7 +45,7 @@ const CreateNewFlight = (props) => {
                 Airline - <span>Create New Flight</span>
               </div>
               <div className="breadcrumbs">
-                <a href="/">Home</a> / <a href="/airline">Airline</a> /{" "}
+                <Link to="/">Home</Link> / <Link to="/airline-profile">Airline</Link> / <Link href="/list-flight">List Flights</Link> /{" "}
                 <span>Create Flight</span>
               </div>
               <div className="clear"></div>

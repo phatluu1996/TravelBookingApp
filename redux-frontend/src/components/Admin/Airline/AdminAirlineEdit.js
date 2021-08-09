@@ -88,15 +88,21 @@ const AdminAirlineEdit = (props) => {
             var form = document.getElementById("form");    
             if(!slProvince){
                 setSlProvince(pv);
+            }else{
+                pv = slProvince;
             }
             
             if(!slDistrict){
                 setSlDistrict(dt);
+            }else{
+                dt = slDistrict;
             }
             
             if(!slWard){
                 setSlWard(w);
-            }            
+            }else{
+                w = slWard;
+            }    
 
             
             form.province.value = JSON.stringify(pv);
@@ -274,7 +280,7 @@ const AdminAirlineEdit = (props) => {
                                     <div className="col-sm-6">
                                         <div className="card">
                                             <div className="card-body">
-                                                <h3 className="card-title mb-3">Add New Hotel</h3>
+                                                <h3 className="card-title mb-3">{isEdit ? "Edit":"View"} Airline</h3>
                                                 <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => setIsEdit(!isEdit)}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
                                                 <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
                                                     <div className="row">
@@ -375,7 +381,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Province*</label>
-                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} readOnly={!isEdit}>
+                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} readOnly={!isEdit} disabled={!isEdit}>
                                                                     <option value={null}>---</option>
                                                                     {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)}>{province.name}</option>)}
                                                                 </select>
@@ -385,7 +391,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">District*</label>
-                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} readOnly={!isEdit}>
+                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} readOnly={!isEdit} disabled={!isEdit}>
                                                                     <option value={null}>---</option>
                                                                     {slProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)}>{district.name}</option>)}
                                                                 </select>
@@ -395,8 +401,8 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Ward*</label>
-                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} readOnly={!isEdit}>
-                                                                    <option value='0'>---</option>
+                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} readOnly={!isEdit} disabled={!isEdit}>
+                                                                    <option value={null}>---</option>
                                                                     {slDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)}>{ward.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.ward}</div>

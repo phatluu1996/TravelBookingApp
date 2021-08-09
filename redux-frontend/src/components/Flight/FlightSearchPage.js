@@ -10,6 +10,7 @@ import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
 import { clearBookingCached } from "../../actions/actionBookingFlight";
+import { getRole, ROLE_USER } from "../../utils";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -312,10 +313,15 @@ const FlightSearchPage = (props) => {
     
     const handleGoToBooking = (flight) =>  {
         props.clearBooking();
-        history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
-        "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
-        "&seatClass="+queryParam.get("seatClass")+"&price="+flightPrice(flight)+"&fid="+flight.id
-        );
+        if(getRole() == ROLE_USER){
+            history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
+            "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
+            "&seatClass="+queryParam.get("seatClass")+"&price="+flightPrice(flight)+"&fid="+flight.id
+            );
+        }else{
+            $('.header-account a').click();
+        }
+        
     }
 
     return (<>
@@ -494,7 +500,7 @@ const FlightSearchPage = (props) => {
                             </div>
 
 
-                            <div className="side-block fly-in">
+                            {/* <div className="side-block fly-in">
                                 <div className="side-stars">
                                     <div className="side-padding">
                                         <div className="side-lbl">Flight times</div>
@@ -540,7 +546,7 @@ const FlightSearchPage = (props) => {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
 
                         </div>

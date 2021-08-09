@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import UpdateAirline from "./Component/UpdateAirline";
 import { getUserId } from "../../utils";
 
-const Airline = (props) => {
+const AirlineProfile = (props) => {
   // let query = useQuery();
   const dispatch = useDispatch();
 
@@ -456,4 +456,4 @@ const Airline = (props) => {
   );
 };
 
-export default Airline;
+export default AirlineProfile;
