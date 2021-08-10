@@ -36,6 +36,7 @@ import AdminAirlineEdit from './components/Admin/Airline/AdminAirlineEdit';
 import AirlineProfile from './components/Airline/Airline';
 import About from './components/About';
 import Contact from './components/Contact';
+import FlightSearchPage2 from './components/Flight/FlightSearchPage2';
 
 
 const App = (props) => {
@@ -82,6 +83,7 @@ const App = (props) => {
         <PublicRoute restricted={true} component={Register} path="/register" />
 
         <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
+        <PublicRoute restricted={false} component={FlightSearchPage2} path="/flight-round-list" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={FlightBookingPage} path="/flight-booking" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={FlightBookingCompletePage} path="/flight-booking-complete" />
 

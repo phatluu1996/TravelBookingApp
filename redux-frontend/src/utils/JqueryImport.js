@@ -2561,63 +2561,67 @@ export const formStyler = () => {
                 id += dataList;
 
                 // checkbox
-                if (el.is(':checkbox')) {
-                    el.css({ position: 'absolute', left: -9999 }).each(function () {
-                        if (el.next('span.jq-checkbox').length < 1) {
-                            var checkbox = $('<span' + id + ' class="jq-checkbox' + cl + '"' + title + ' style="display: inline-block"><span></span></span>');
-                            el.after(checkbox);
-                            if (el.is(':checked')) checkbox.addClass('checked');
-                            if (el.is(':disabled')) checkbox.addClass('disabled');
-                            // аКаЛаИаК аНаА аПбаЕаВаДаОбаЕаКаБаОаКб
-                            checkbox.click(function () {
-                                if (!checkbox.is('.disabled')) {
-                                    if (el.is(':checked')) {
-                                        el.prop('checked', false);
-                                        checkbox.removeClass('checked');
-                                        checkbox[0].parentElement.getElementsByTagName("input")[0].removeAttribute("checked");
-                                    } else {
-                                        el.prop('checked', true);
-                                        checkbox.addClass('checked');
-                                        checkbox[0].parentElement.getElementsByTagName("input")[0].setAttribute("checked", "");
-                                    }
-                                    el.change();
-                                    return false;
-                                } else {
-                                    return false;
-                                }
-                            });
-                            // аКаЛаИаК аНаА label
-                            el.parent('label').add('label[for="' + el.attr('id') + '"]').click(function (e) {
-                                checkbox.click();
-                                e.preventDefault();
-                            });
-                            // аПаЕбаЕаКаЛббаЕаНаИаЕ аПаО Space аИаЛаИ Enter
-                            el.change(function () {
-                                if (el.is(':checked')) checkbox.addClass('checked');
-                                else checkbox.removeClass('checked');
-                            })
-                                // ббаОаБб аПаЕбаЕаКаЛббаАаЛбб баЕаКаБаОаКб, аКаОбаОббаЙ аНаАбаОаДаИббб аВ баЕаГаЕ label
-                                .keydown(function (e) {
-                                    if (el.parent('label').length && (e.which === 13 || e.which === 32)) checkbox.click();
-                                })
-                                .focus(function () {
-                                    if (!checkbox.is('.disabled')) checkbox.addClass('focused');
-                                })
-                                .blur(function () {
-                                    checkbox.removeClass('focused');
-                                });
-                            // аОаБаНаОаВаЛаЕаНаИаЕ аПбаИ аДаИаНаАаМаИбаЕбаКаОаМ аИаЗаМаЕаНаЕаНаИаИ
-                            el.on('refresh', function () {
-                                if (el.is(':checked')) checkbox.addClass('checked');
-                                else checkbox.removeClass('checked');
-                                if (el.is(':disabled')) checkbox.addClass('disabled');
-                                else checkbox.removeClass('disabled');
-                            });
-                        }
-                    });
+                // if (el.is(':checkbox')) {
+                //     el.css({ position: 'absolute', left: -9999 }).each(function () {
+                //         if (el.next('span.jq-checkbox').length < 1) {
+                //             var checkbox = $('<span' + id + ' class="jq-checkbox' + cl + '"' + title + ' style="display: inline-block"><span></span></span>');
+                //             el.after(checkbox);
+                //             if (el.is(':checked')) checkbox.addClass('checked');
+                //             if (el.is(':disabled')) checkbox.addClass('disabled');
+                //             // аКаЛаИаК аНаА аПбаЕаВаДаОбаЕаКаБаОаКб
+                //             checkbox.click(function () {
+                //                 if (!checkbox.is('.disabled')) {
+                //                     if (el.is(':checked')) {
+                //                         // el.prop('checked', false);
+                //                         checkbox.removeClass('checked');
+                //                         checkbox[0].parentElement.getElementsByTagName("input")[0].removeAttribute("checked");
+                //                         checkbox.siblings("input").trigger("change");
+                //                     } else {
+                //                         // el.prop('checked', true);
+                //                         checkbox.addClass('checked');
+                //                         checkbox[0].parentElement.getElementsByTagName("input")[0].setAttribute("checked", "");
+                //                         checkbox.siblings("input").trigger("change");
+                //                     }
+                //                     // el.change();
+                //                     // el.trigger('change');
+                //                     return false;
+                //                 } else {
+                //                     return false;
+                //                 }
+                //             });
+                //             // аКаЛаИаК аНаА label
+                //             el.parent('label').add('label[for="' + el.attr('id') + '"]').click(function (e) {
+                //                 checkbox.click();
+                //                 e.preventDefault();
+                //             });
+                //             // аПаЕбаЕаКаЛббаЕаНаИаЕ аПаО Space аИаЛаИ Enter
+                //             el.change(function () {
+                //                 if (el.is(':checked')) checkbox.addClass('checked');
+                //                 else checkbox.removeClass('checked');
+                //             })
+                //                 // ббаОаБб аПаЕбаЕаКаЛббаАаЛбб баЕаКаБаОаКб, аКаОбаОббаЙ аНаАбаОаДаИббб аВ баЕаГаЕ label
+                //                 .keydown(function (e) {
+                //                     if (el.parent('label').length && (e.which === 13 || e.which === 32)) checkbox.click();
+                //                 })
+                //                 .focus(function () {
+                //                     if (!checkbox.is('.disabled')) checkbox.addClass('focused');
+                //                 })
+                //                 .blur(function () {
+                //                     checkbox.removeClass('focused');
+                //                 });
+                //             // аОаБаНаОаВаЛаЕаНаИаЕ аПбаИ аДаИаНаАаМаИбаЕбаКаОаМ аИаЗаМаЕаНаЕаНаИаИ
+                //             el.on('refresh', function () {
+                //                 if (el.is(':checked')) checkbox.addClass('checked');
+                //                 else checkbox.removeClass('checked');
+                //                 if (el.is(':disabled')) checkbox.addClass('disabled');
+                //                 else checkbox.removeClass('disabled');
+                //             });
+                //         }
+                //     });
 
-                    // radio
-                } else if (el.is(':radio')) {
+                //     // radio
+                // } else 
+                if (el.is(':radio')) {
                     el.css({ position: 'absolute', left: -9999 }).each(function () {
                         if (el.next('span.jq-radio').length < 1) {
                             var radio = $('<span' + id + ' class="jq-radio' + cl + '"' + title + ' style="display: inline-block"><span></span></span>');
