@@ -36,6 +36,7 @@ import AdminAirlineEdit from './components/Admin/Airline/AdminAirlineEdit';
 import AirlineProfile from './components/Airline/Airline';
 import About from './components/About';
 import Contact from './components/Contact';
+import AdminHotelProfile from './components/Admin/Hotel/AdminHotelProfile';
 import FlightSearchPage2 from './components/Flight/FlightSearchPage2';
 
 
@@ -97,6 +98,7 @@ const App = (props) => {
         <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
         <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
 
+        <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
 
       </Switch>
     </BrowserRouter>
