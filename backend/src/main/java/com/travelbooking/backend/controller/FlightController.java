@@ -95,7 +95,7 @@ public class FlightController {
 
                                           ) {
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
-        Pageable paging = PageRequest.of(page, 6, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
+        Pageable paging = PageRequest.of(page, 4, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
 
         Page<Flight> pagedResult = flightRepository.findAll(spec, paging);
 

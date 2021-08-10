@@ -28,6 +28,16 @@ const Home = (props) => {
     const [selectProvince, setSelectProvince] = useState(null);
     const [selectDistrict, setSelectDistrict] = useState(null);
     const [selectWard, setSelectWard] = useState(null);
+    const [errFlt, setErrFlt] = useState({
+        from: '',
+        to: '',
+        departureDate: ''
+    })
+    const [errHlt, setErrHlt] = useState({
+        province: '',
+        checkin: '',
+        checkout: ''
+    })
     const history = useHistory();
 
     const province = {
@@ -208,31 +218,100 @@ const Home = (props) => {
         var form = e.target;
         const today = new Date();
 
-        // history.push()
-        history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
-            }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
-            }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
-            }&checkInDate=${form.checkInDate.value === ""
-                ? getNextDate(today)
-                : form.checkInDate.value
-            }&checkOutDate=${form.checkOutDate.value === ""
-                ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value)
-                : form.checkOutDate.value
-            }&numRoom=${form.roomHotel.value}`);
+        if (validateHtl(form)) {
+            history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
+                }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
+                }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
+                }&checkInDate=${form.checkInDate.value === ""
+                    ? getNextDate(today)
+                    : form.checkInDate.value
+                }&checkOutDate=${form.checkOutDate.value === ""
+                    ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value)
+                    : form.checkOutDate.value
+                }&numRoom=${form.roomHotel.value}`);
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // console.log(props);
+
         var form = e.target;
-        // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value);
-        // history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}`);
-        // document.location.href = `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&page=1&sortBy=id&sortDir=asc`;
-        history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
+
+        if (validateFlt(form)) {
+            if(form.returnDate.value){
+                history.push(`/flight-round-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`); 
+            }else{
+                history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`); 
+            }
+            
+        }
     };
 
-    const swapProvince = (e) => {
+    const validateFlt = (form) => {
+        var err = {...errFlt};
+        if (!form.from.value) {
+            err.from = 'Departure City cannot be empty';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $("#from-error")[0].innerText = err.from;
+        } else {
+            err.from = '';
+        }
 
+        if (!form.to.value) {
+            err.to = 'Arrival City cannot be empty';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $("#to-error")[0].innerText = err.to;
+        } else {
+            err.to = '';
+        }
+
+        if (!form.departureDate.value) {
+            err.departureDate = 'Departure Date City cannot be empty';
+            form.departureDate.parentElement.classList.add("is-invalid");
+            $("#departureDate-error")[0].innerText = err.departureDate;
+        } else {
+            err.departureDate = '';
+        }
+
+        if (err.from || err.to || err.departureDate) {
+            setErrFlt(err);
+            return false;
+        }
+        return true;
+    }
+
+    const validateHtl = (form) => {
+            var err = {...errHlt}
+        if (form.province.value === "0") {
+            err.province = 'Province cannot be empty';
+            form.province.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $("#province-error")[0].innerText = err.province;
+        } else {
+            err.province = '';
+        }
+
+        if (!form.checkInDate.value) {
+            err.checkin = 'Checkin date cannot be empty';
+            form.checkInDate.parentElement.classList.add("is-invalid");
+            $("#checkin-error")[0].innerText = err.checkin;
+        } else {
+            err.checkin = '';
+        }
+
+        if (!form.checkOutDate.value) {
+            err.checkout = 'Checkout date cannot be empty';
+            form.checkOutDate.parentElement.classList.add("is-invalid");
+            $("#checkout-error")[0].innerText = err.checkout;
+        } else {
+            err.checkout = '';
+        }
+
+        if(err.province || err.checkin || err.checkout){
+            setErrHlt(err);
+            return false;
+        }
+        return true;
     }
 
     return (
@@ -305,7 +384,7 @@ const Home = (props) => {
                                                             <select
                                                                 onChange={onChangeProvince}
                                                                 className="custom-select"
-                                                                name="seatClass"
+                                                                name="province"
                                                                 id="provinces"
                                                             >
                                                                 <option key={0} value={0}>
@@ -317,6 +396,7 @@ const Home = (props) => {
                                                                     </option>
                                                                 ))}
                                                             </select>
+                                                            <div className="booking-error-input" id="province-error"></div>
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-3c">
@@ -356,7 +436,7 @@ const Home = (props) => {
                                                                         {item.name}
                                                                     </option>
                                                                 ))}
-                                                            </select>
+                                                            </select>                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -375,6 +455,7 @@ const Home = (props) => {
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
+                                                        <div className="booking-error-input" id="checkin-error"></div>
                                                     </div>
                                                     <div className="srch-tab-right">
                                                         <label>Check out</label>
@@ -388,6 +469,7 @@ const Home = (props) => {
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
+                                                        <div className="booking-error-input" id="checkout-error"></div>
                                                     </div>
                                                     <div className="clear"></div>
                                                 </div>
@@ -474,6 +556,7 @@ const Home = (props) => {
                                                                     </option>
                                                                 ))}
                                                             </select>
+                                                            <div className="booking-error-input" id="from-error"></div>
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-right transformed">
@@ -497,6 +580,7 @@ const Home = (props) => {
                                                                 ))}
                                                             </select>
                                                         </div>
+                                                        <div className="booking-error-input" id="to-error"></div>
                                                     </div>
                                                     <div className="clear"></div>
                                                 </div>
@@ -516,9 +600,10 @@ const Home = (props) => {
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
+                                                        <div className="booking-error-input" id="departureDate-error"></div>
                                                     </div>
                                                     <div className="srch-tab-3c">
-                                                        <label>arrivals</label>
+                                                        <label>Return</label>
                                                         <div className="input-a">
                                                             <input
                                                                 type="text"
@@ -613,7 +698,7 @@ const Home = (props) => {
                     <header className="fly-in page-lbl">
                         <b>Popular Hotel</b>
                         <p>
-                            Special offer for Sparrow members 
+                            Special offer for Sparrow members
                         </p>
                     </header>
                     <div className="mp-popular-row popular-flat">
@@ -1134,48 +1219,48 @@ const Home = (props) => {
                                 </nav>
                                 <div className="tabs-content">
                                     <div className="tabs-content-i">
-                                        <div class="columns-block">
-                                            <div class="columns-row">
-                                                <div class="column mm-3">
+                                        <div className="columns-block">
+                                            <div className="columns-row">
+                                                <div className="column mm-3">
                                                     <p>Vé máy bay Sài Gòn - Hà Nội</p>
                                                     <p>Vé máy bay Sài Gòn - Đà Nẵng</p>
                                                     <p>Vé máy bay Sài Gòn - Phú Quốc</p>
                                                     <p>Vé máy bay Sài Gòn - Nha Trang</p>
                                                     <p>Vé máy bay Sài Gòn - Đà Lạt</p>
                                                 </div>
-                                                <div class="column mm-3">
+                                                <div className="column mm-3">
                                                     <p>Vé máy bay Hà Nội - Sài Gòn</p>
                                                     <p>Vé máy bay Hà Nội - Phú Quốc</p>
                                                     <p>Vé máy bay Hà Nội - Đà Nẵng</p>
                                                     <p>Vé máy bay Hà Nội - Nha Trang</p>
                                                     <p>Vé máy bay Hà Nội - Đà Lạt</p>
                                                 </div>
-                                                <div class="column mm-3">
+                                                <div className="column mm-3">
                                                     <p>Vé máy bay Đà Nẵng - Sài Gòn</p>
                                                     <p>Vé máy bay Đà Nẵng - Hà Nội</p>
                                                     <p>Vé máy bay Đà Lạt - Sài Gòn</p>
                                                 </div>
                                             </div>
-                                            <div class="clear"></div>
+                                            <div className="clear"></div>
                                         </div>
 
                                     </div>
                                     <div className="tabs-content-i">
-                                        <div class="columns-block">
-                                            <div class="columns-row">
-                                                <div class="column mm-3">
+                                        <div className="columns-block">
+                                            <div className="columns-row">
+                                                <div className="column mm-3">
                                                     <p>Khách sạn Vũng Tàu</p>
                                                     <p>Khách sạn Đà Lạt</p>
                                                     <p>Khách sạn Đà Nẵng</p>
                                                     <p>Khách sạn Hồ Chí Minh</p>
                                                 </div>
-                                                <div class="column mm-3">
+                                                <div className="column mm-3">
                                                     <p>Khách sạn Nha Trang</p>
                                                     <p>Khách sạn Hội An</p>
                                                     <p>Khách sạn Sa Pa</p>
                                                     <p>Khách sạn Hà Nội</p>
                                                 </div>
-                                                <div class="column mm-3">
+                                                <div className="column mm-3">
                                                     <p>Khách sạn Phan Thiết</p>
                                                     <p>Khách sạn Phú Quốc</p>
                                                     <p>Khách sạn Quy Nhơn</p>
@@ -1183,7 +1268,7 @@ const Home = (props) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="clear"></div>
+                                    <div className="clear"></div>
                                 </div>
                             </div>
                         </div>

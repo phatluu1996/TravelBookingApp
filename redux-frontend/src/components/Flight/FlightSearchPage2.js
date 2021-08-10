@@ -5,7 +5,7 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { fetchFlight } from "../../actions/actionFlight";
-import { faHourglass, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faDiceOne, faHourglass, faSearch } from "@fortawesome/free-solid-svg-icons";
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
@@ -23,6 +23,7 @@ const FlightSearchPage = (props) => {
     const [seatClassType, setSeatClassType] = useState("ECONOMY");
     const [isListView, setIsListView] = useState(true);
     const [includePriceRange, setIncludePriceRange] = useState(false);
+    const [departFlight, setDepartFlight] = useState(null);
     const province = {
         properties: [
             {
@@ -158,7 +159,7 @@ const FlightSearchPage = (props) => {
     }
 
     useEffect(() => {
-        let mount = false;        
+        let mount = false;
         importAll();
         document.getElementById("scroll-top").click();
 
@@ -238,8 +239,8 @@ const FlightSearchPage = (props) => {
 
     const setPage = (e) => {
         var index = e.target.value;
-        if(!index){
-            index = e.currentTarget.text;            
+        if (!index) {
+            index = e.currentTarget.text;
             document.getElementById("scroll-top").click();
             document.getElementById("page").value = index;
         }
@@ -310,18 +311,22 @@ const FlightSearchPage = (props) => {
         var price = seatClassType === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
         return price;
     }
-    
-    const handleGoToBooking = (flight) =>  {
+
+    const handleGoToBooking = (flight) => {
         props.clearBooking();
-        if(getRole() == ROLE_USER){
-            history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
-            "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
-            "&seatClass="+queryParam.get("seatClass")+"&price="+flightPrice(flight)+"&fid="+flight.id
+        if (getRole() == ROLE_USER) {
+            history.push("/flight-booking?departureDate=" + queryParam.get("departureDate") +
+                "&adult=" + queryParam.get("adult") + "&child=" + queryParam.get("child") +
+                "&seatClass=" + queryParam.get("seatClass") + "&price=" + flightPrice(flight) + "&fid=" + flight.id
             );
-        }else{
+        } else {
             $('.header-account a').click();
         }
-        
+
+    }
+
+    const includePriceRangeToQuery = () => {
+        setIncludePriceRange(!includePriceRange);
     }
 
     return (<>
@@ -336,11 +341,46 @@ const FlightSearchPage = (props) => {
                         </div>
                         <div className="clear"></div>
                     </div>
+                    {/* Sidebar */}
                     <form className="two-colls" onSubmit={handleSubmit}>
                         <div className="two-colls-left">
 
                             <div className="srch-results-lbl fly-in">
-                                One way Flight
+                                Round way Flight
+                            </div>
+
+                            <div className="side-block fly-in">
+                                <div className="srch-tab-line">
+                                    <div className="side-block-search">
+                                        <div className="page-search-p">
+                                            <div className="srch-tab-3c">
+                                                <div className="alt-data-i">
+                                                    <span className="circle">1</span>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i alt-departure">
+                                                    <b>Departure</b>
+                                                    <span>{queryFilter?.departureDate}</span>
+                                                </div>
+                                            </div>
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i">
+                                                    <b>Route</b>
+                                                    <label><strong>{queryFilter?.from + " -> " + queryFilter?.to}</strong></label>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+                                            <div className="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="srch-results-lbl fly-in">
+
                             </div>
 
                             <div className="side-block fly-in">
@@ -397,7 +437,7 @@ const FlightSearchPage = (props) => {
 
                                             <div className="clear"></div>
                                         </div>
-                                        <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
                                                 <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6" /></div>
@@ -409,22 +449,23 @@ const FlightSearchPage = (props) => {
 
                                             <div className="clear"></div>
                                         </div>
-                                        
+
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
-                                                <input type='checkbox' onChange={(e) => setIncludePriceRange(!includePriceRange)} title="Apply price range into search criteria" />
+                                                <label>Apply Price Range</label>
+                                                <input type='checkbox' onChange={includePriceRangeToQuery} title="Apply price range into search criteria" />
                                             </div>
                                             <div className="clear"></div>
                                         </div>
-                                        <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-line no-margin-bottom" hidden={!includePriceRange}>
                                             <div className="clear"></div>
                                             <div className="srch-tab-left transformed">
                                                 <label>From Price</label>
-                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
+                                                <div className="input-a"><input disabled={!includePriceRange ? '' : 'true'} readOnly={includePriceRange ? '' : 'true'} name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To Price</label>
-                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
+                                                <div className="input-a"><input disabled={!includePriceRange ? '' : 'true'} readOnly={includePriceRange ? '' : 'true'} name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -434,142 +475,9 @@ const FlightSearchPage = (props) => {
                                     </div>
                                 </div>
                             </div>
-
-
-                            {/* <div className="side-block fly-in">
-                                <div className="side-block-search">
-                                    <div className="page-search-p">
-                                        <div className="srch-tab-line">
-                                            <div className="srch-tab-left transformed">
-                                                <input type='checkbox' onChange={(e) => setIncludePriceRange(!includePriceRange)} title="Apply price range into search criteria" />
-                                            </div>
-                                            <div className="clear"></div>
-                                        </div>
-                                        <div className="srch-tab-line no-margin-bottom">
-                                            <div className="clear"></div>
-                                            <div className="srch-tab-left transformed">
-                                                <label>From Price</label>
-                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
-                                            </div>
-                                            <div className="srch-tab-right transformed">
-                                                <label>To Price</label>
-                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
-                                            </div>
-
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-
-                                    <div className="side-padding">
-                                        <div className="side-lbl">Price</div>
-                                        <div className="price-ranger">
-                                            <div id="slider-range"></div>
-                                        </div>
-                                        <div className="price-ammounts">
-                                            <input type="text" id="ammount-from" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} name="priceFrom" readOnly />
-                                            <input type="text" id="ammount-to" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 1500} name="priceTo" readOnly />
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
-
-                            {/* <div className="side-block fly-in">
-                                <div className="side-stars">
-                                    <div className="side-padding">
-                                        <div className="side-lbl">Airlines</div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                Lufthansa (30)
-                                            </label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                United Airlines (18)
-                                            </label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                Air berlin (8)
-                                            </label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                Swiss (2)
-                                            </label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                Turkish Airlines (1)
-                                            </label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <label>
-                                                <input type="checkbox" />
-                                                Air france (1)
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
-
-                            {/* <div className="side-block fly-in">
-                                <div className="side-stars">
-                                    <div className="side-padding">
-                                        <div className="side-lbl">Flight times</div>
-
-                                        <div className="side-time-holder">
-                                            <div className="side-lbl-a">Departure flight</div>
-                                            <div className="side-time">
-                                                <div className="time-ammounts">
-                                                    departure time <span className="time-from">0</span>:00 up to <span className="time-to">0</span>:00
-                                                </div>
-                                                <div className="time-ranger">
-                                                    <div className="time-range"></div>
-                                                </div>
-                                            </div>
-                                            <div className="side-time">
-                                                <div className="time-ammounts">
-                                                    arrival time <span className="time-from">0</span>:00 up to <span className="time-to">0</span>:00
-                                                </div>
-                                                <div className="time-ranger">
-                                                    <div className="time-range"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="side-time-holder">
-                                            <div className="side-lbl-a">return flight</div>
-                                            <div className="side-time">
-                                                <div className="time-ammounts">
-                                                    departure time <span className="time-from">0</span>:00 up to <span className="time-to">0</span>:00
-                                                </div>
-                                                <div className="time-ranger">
-                                                    <div className="time-range"></div>
-                                                </div>
-                                            </div>
-                                            <div className="side-time">
-                                                <div className="time-ammounts">
-                                                    arrival time <span className="time-from">0</span>:00 up to <span className="time-to">0</span>:00
-                                                </div>
-                                                <div className="time-ranger">
-                                                    <div className="time-range"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div> */}
-
-
                         </div>
+
+                        {/* Search Result */}
                         <div className="two-colls-right">
                             <div className="two-colls-right-b">
                                 <div className="padding">
@@ -689,8 +597,8 @@ const FlightSearchPage = (props) => {
                                                         <div className="padding">
                                                             <div className="flt-i-price">{flightPrice(flight)}$</div>
                                                             <div className="flt-i-price-b">avg/person</div>
-                                                            <a  className="cat-list-btn" 
-                                                                onClick={(e) => 
+                                                            <a className="cat-list-btn"
+                                                                onClick={(e) =>
                                                                     handleGoToBooking(flight)}
                                                             >
                                                                 SELECT NOW
@@ -733,12 +641,12 @@ const FlightSearchPage = (props) => {
                                                 {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
                                                 {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
                                                 : props?.flights?.data?.last ? (<>
-                                                    {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages-2}</a>}
-                                                    {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages-1}</a>}
+                                                    {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 2}</a>}
+                                                    {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 1}</a>}
                                                     <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                     : (<>
                                                         <a onClick={setPage}>{props?.flights?.data?.number}</a>
-                                                        <a className="active">{props?.flights?.data?.number+1}</a>
+                                                        <a className="active">{props?.flights?.data?.number + 1}</a>
                                                         <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
                                         }
                                         <a >{">"}</a>
@@ -762,7 +670,7 @@ const FlightSearchPage = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         flights: state.flight,
-        
+
     };
 };
 
@@ -771,7 +679,7 @@ const mapDispatchToProps = (dispatch) => {
         getFlight: (from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
-        clearBooking: () => {dispatch(clearBookingCached)}
+        clearBooking: () => { dispatch(clearBookingCached) }
         // getAirline: () => {
         //     dispatch()
         // }
