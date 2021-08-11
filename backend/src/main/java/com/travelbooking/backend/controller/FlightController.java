@@ -78,7 +78,7 @@ public class FlightController {
     }
 
     @GetMapping("/findFlights")
-    public Page<Flight> findFlights(@RequestParam Optional<String> from,
+    public Hashtable<String,Page<Flight>> findFlights(@RequestParam Optional<String> from,
                                   @RequestParam Optional<String> to,
                                   @RequestParam(required = false) String departureDate,
                                   @RequestParam(required = false) String returnDate,
@@ -94,17 +94,20 @@ public class FlightController {
 
 
                                           ) {
+        Hashtable<String,Page<Flight>> mapResult = new Hashtable<String,Page<Flight>>();
+
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
         Pageable paging = PageRequest.of(page, 4, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
+        Page<Flight> departResult = flightRepository.findAll(spec, paging);
+        mapResult.put("departData", departResult);
 
-        Page<Flight> pagedResult = flightRepository.findAll(spec, paging);
-
-//        if(pagedResult.hasContent()) {
-//            return pagedResult.getContent();
-//        } else {
-//            return new ArrayList<Flight>();
-//        }
-        return pagedResult;
+        if(returnDate.length() > 0){
+            Specification<Flight> returnSpec = FlightSpecification.createSpecification(to, from,Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
+            Pageable returnPaging = PageRequest.of(page, 4, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
+            Page<Flight> returnResult = flightRepository.findAll(returnSpec, returnPaging);
+            mapResult.put("returnData", returnResult);
+        }
+        return mapResult;
     }
 
     private Date convertToDate(String day){

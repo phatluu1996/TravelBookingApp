@@ -5,7 +5,7 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { fetchFlight } from "../../actions/actionFlight";
-import { faHourglass, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHourglass, faSearch, faSuitcase, faTv } from "@fortawesome/free-solid-svg-icons";
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
@@ -230,10 +230,11 @@ const FlightSearchPage = (props) => {
         };
         setQueryFilter(filter);
         setSeatClassType(form.seatClass.value);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
-        // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value, getAmount(form.priceFrom.value), getAmount(form.priceTo.value), 1, "id", "asc");//queryFilter.sortBy //queryFilter.sortDir
-        // window.history.pushState({}, null, `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=${getAmount(form.priceFrom.value)}&priceTo=${getAmount(form.priceTo.value)}&page=${1}&sortBy=id&sortDir=asc`)
+        if(form.returnDate.value){
+            history.push(`/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`); 
+        }else{props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
+            window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        }
     }
 
     const setPage = (e) => {
@@ -320,8 +321,11 @@ const FlightSearchPage = (props) => {
             );
         }else{
             $('.header-account a').click();
-        }
-        
+        }        
+    }
+
+    const includePriceRangeToQuery = () => {
+        setIncludePriceRange(!includePriceRange);
     }
 
     return (<>
@@ -341,6 +345,35 @@ const FlightSearchPage = (props) => {
 
                             <div className="srch-results-lbl fly-in">
                                 One way Flight
+                            </div>
+
+                            <div className="side-block fly-in">
+                                <div className="srch-tab-line">
+                                    <div className="side-block-search">
+                                        <div className="page-search-p">
+                                            <div className="srch-tab-3c">
+                                                <div className="alt-data-i">
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i alt-departure">
+                                                    <b>Departure</b>
+                                                    <span>{queryFilter?.departureDate}</span>
+                                                </div>
+                                            </div>
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i">
+                                                    <b>Route</b>
+                                                    <label><strong>{queryFilter?.from + " -> " + queryFilter?.to}</strong></label>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+                                            <div className="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="side-block fly-in">
@@ -397,7 +430,7 @@ const FlightSearchPage = (props) => {
 
                                             <div className="clear"></div>
                                         </div>
-                                        <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
                                                 <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6" /></div>
@@ -412,11 +445,12 @@ const FlightSearchPage = (props) => {
                                         
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
-                                                <input type='checkbox' onChange={(e) => setIncludePriceRange(!includePriceRange)} title="Apply price range into search criteria" />
+                                                <label>Apply Price Range</label>
+                                                <input type='checkbox' onChange={includePriceRangeToQuery} title="Apply price range into search criteria" />
                                             </div>
                                             <div className="clear"></div>
                                         </div>
-                                        <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-line no-margin-bottom" hidden={!includePriceRange}>
                                             <div className="clear"></div>
                                             <div className="srch-tab-left transformed">
                                                 <label>From Price</label>
@@ -700,25 +734,27 @@ const FlightSearchPage = (props) => {
                                                     </div>
                                                     <div className="clear"></div>
                                                     <div className="alt-details">
-                                                        {/* <div className="alt-details-i">
-                                                            <b>Connections</b>
-                                                            <span>Berlin, Germany</span>
-                                                        </div>
-                                                        <div className="alt-details-i">
-                                                            <b>14:20 John F Kennedy (JFK)</b>
-                                                            <span>USA</span>
-                                                        </div>
-                                                        <div className="alt-details-i">
-                                                            <b>Flight LO-98 Boeing 787-8 (Jet) Economy</b>
-                                                            <span>Operated by Austrian Airlines</span>
-                                                        </div> */}
-                                                        <div className="alt-details-i">
-                                                            <b>Description</b>
-                                                            <span>{flight.description}</span>
-                                                        </div>
-
-                                                        <div className="clear"></div>
+                                                    <div className="alt-details-i">
+                                                        <b>Status</b>
+                                                        <span>{flight.status}</span>
                                                     </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Flight {flight.aircraftType}</b>
+                                                        <span>Operated by {flight.airline.airlineName}</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Description</b>
+                                                        <span>
+                                                            {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
+                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <b></b>
+                                                    </div>
+
+                                                    <div className="clear"></div>
+                                                </div>
                                                 </div>
                                             )}
                                         </div>)}

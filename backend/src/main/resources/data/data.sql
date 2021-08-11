@@ -12169,15 +12169,15 @@ INSERT INTO dbo.[user] ([first_name],[last_name],[gender],[birth_day],[email],[p
 INSERT INTO dbo.airline ([airline_name],[contact_name],[contact_title],
 [email],[fax],[homepage],[created_at],[image],[mobile],[phone],
 [status],[retired],[account_id],[location_id]) VALUES
-('VietJet Air', N'Ms. Nguyễn Thị Hương', N'Đại diện hãng', N'huong@vietjet.test.com', N'19001886', N'https://www.vietjetair.com/vi', N'', N'',
+('VietJet Air', N'Ms. Nguyễn Thị Hương', N'Đại diện hãng', N'huong@vietjet.test.com', N'19001886', N'https://www.vietjetair.com/vi', N'', N'http://localhost:8080/storage/airline/vietjetair.jpg',
 '0998126771', N'19001886',0,0,1,1),
-('Vietname Airlines', N'Mr. Ngô Thành Nam', N'Đại diện hãng', N'nam@vna.test.com', N'+84 2438320320', N'https://www.vietnamairlines.com/vn/vi/Home', N'', N'',
+('Vietname Airlines', N'Mr. Ngô Thành Nam', N'Đại diện hãng', N'nam@vna.test.com', N'+84 2438320320', N'https://www.vietnamairlines.com/vn/vi/Home', N'', N'http://localhost:8080/storage/airline/vietnamairline.png',
 '0901489199', N'1900 1100',0,0,2,2),
-('Bamboo Airways', N'Ms. Lê Hoàng Minh Thư', N'Đại diện hãng', N'thu@bamboo.test.com', N'033 8282525', N'https://www.bambooairways.com/vn-vi/', N'', N'',
+('Bamboo Airways', N'Ms. Lê Hoàng Minh Thư', N'Đại diện hãng', N'thu@bamboo.test.com', N'033 8282525', N'https://www.bambooairways.com/vn-vi/', N'', N'http://localhost:8080/storage/airline/bamboo.png',
 '0903334445', N'19001166',0,0,3,3),
-('JetStar Pacific', N'Ms. Hoàng Mai Anh', N'Đại diện hãng', N'maianh@js.test.com', N'+8428.35474515', N'https://www.jetstar.com/', N'', N'',
+('JetStar Pacific', N'Ms. Hoàng Mai Anh', N'Đại diện hãng', N'maianh@js.test.com', N'+8428.35474515', N'https://www.jetstar.com/', N'', N'http://localhost:8080/storage/airline/jetstar.png',
 '0903314343', N'+8428.36280058',0,0,4,4),
-('VietTravel Airlines', N'Mr. Trương Thành Công', N'Đại diện hãng', N'cong@vtv.test.com', N'(84-28) 38299142', N'https://www.vietravel.com/', N'', N'',
+('VietTravel Airlines', N'Mr. Trương Thành Công', N'Đại diện hãng', N'cong@vtv.test.com', N'(84-28) 38299142', N'https://www.vietravel.com/', N'', N'http://localhost:8080/storage/airline/viettravel.jpg',
 '0831123314', N'(84-28) 38668999',0,0,5,5)
 
 

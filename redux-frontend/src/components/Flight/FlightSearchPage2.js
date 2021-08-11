@@ -5,7 +5,7 @@ import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { fetchFlight } from "../../actions/actionFlight";
-import { faCircle, faDiceOne, faHourglass, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faDiceOne, faHourglass, faSearch, faSuitcase, faTv } from "@fortawesome/free-solid-svg-icons";
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
@@ -24,6 +24,8 @@ const FlightSearchPage = (props) => {
     const [isListView, setIsListView] = useState(true);
     const [includePriceRange, setIncludePriceRange] = useState(false);
     const [departFlight, setDepartFlight] = useState(null);
+    const [returnFlight, setReturnFlight] = useState(null);
+    const [flightTab, setFlightTab] = useState(true);  //true : departure tab , //false : return tab
     const province = {
         properties: [
             {
@@ -229,35 +231,49 @@ const FlightSearchPage = (props) => {
             sortBy: "id",//queryParam.get("sortBy"),
             sortDir: "asc"//queryParam.get("sortDir")
         };
+        setFlightTab(true);
+        setDepartFlight(null);
         setQueryFilter(filter);
         setSeatClassType(form.seatClass.value);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
-        // props.getFlight(form.from.value, form.to.value, form.adult.value, form.child.value, form.infant.value, form.departureDate.value, form.returnDate.value, form.seatClass.value, getAmount(form.priceFrom.value), getAmount(form.priceTo.value), 1, "id", "asc");//queryFilter.sortBy //queryFilter.sortDir
-        // window.history.pushState({}, null, `/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatClass=${form.seatClass.value}&priceFrom=${getAmount(form.priceFrom.value)}&priceTo=${getAmount(form.priceTo.value)}&page=${1}&sortBy=id&sortDir=asc`)
+        if (!filter.returnDate) {
+            history.push(`/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        } else {
+            props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
+            window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        }
     }
 
     const setPage = (e) => {
         var index = e.target.value;
         if (!index) {
             index = e.currentTarget.text;
-            document.getElementById("scroll-top").click();
+            // document.getElementById("scroll-top").click();
             document.getElementById("page").value = index;
         }
         var filter = { ...queryFilter };
         filter.page = parseInt(index);
         setQueryFilter(filter);
-        props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, parseInt(index), filter.sortBy, filter.sortDir);
+        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${parseInt(index)}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+    }
+
+    const setPageByIndex = (index) => {
+        // document.getElementById("scroll-top").click();
+        document.getElementById("page").value = index;
+        var filter = { ...queryFilter };
+        filter.page = parseInt(index);
+        setQueryFilter(filter);
+        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, parseInt(index), filter.sortBy, filter.sortDir);
+        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${parseInt(index)}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
 
     const setNextPage = (index) => {
-        document.getElementById("scroll-top").click();
+        // document.getElementById("scroll-top").click();
         var filter = { ...queryFilter };
         filter.page = parseInt(index);
         setQueryFilter(filter);
         props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
     }
 
     const onChangeSortBy = (e) => {
@@ -266,7 +282,7 @@ const FlightSearchPage = (props) => {
         filter.page = 1;
         setQueryFilter(filter);
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
 
     const onChangeSortDir = (e) => {
@@ -275,7 +291,7 @@ const FlightSearchPage = (props) => {
         filter.page = 1;
         setQueryFilter(filter);
         props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
     }
 
     const toggleDetails = (e) => {
@@ -312,6 +328,13 @@ const FlightSearchPage = (props) => {
         return price;
     }
 
+    const handleSelectDepartFlight = (flight) => {
+        props.clearBooking();
+        setDepartFlight(flight);
+        setFlightTab(false);
+        setPageByIndex(1);
+    }
+
     const handleGoToBooking = (flight) => {
         props.clearBooking();
         if (getRole() == ROLE_USER) {
@@ -325,6 +348,11 @@ const FlightSearchPage = (props) => {
 
     }
 
+    const changeTab = (tab) => {
+        setFlightTab(tab);
+        setPageByIndex(1);
+    }
+
     const includePriceRangeToQuery = () => {
         setIncludePriceRange(!includePriceRange);
     }
@@ -335,7 +363,7 @@ const FlightSearchPage = (props) => {
             <div className="body-wrapper">
                 <div className="wrapper-padding">
                     <div className="page-head">
-                        <div className="page-title">Flights - <span>one way trip</span></div>
+                        <div className="page-title">Flights - <span>round way trip</span></div>
                         <div className="breadcrumbs">
                             <Link to="/">Home</Link> / <span>Flight Search Result</span>
                         </div>
@@ -349,27 +377,27 @@ const FlightSearchPage = (props) => {
                                 Round way Flight
                             </div>
 
-                            <div className="side-block fly-in">
+                            <div className={flightTab ? "side-block fly-in selected" : "side-block fly-in"} onClick={() => changeTab(true)}>
                                 <div className="srch-tab-line">
                                     <div className="side-block-search">
                                         <div className="page-search-p">
                                             <div className="srch-tab-3c">
                                                 <div className="alt-data-i">
-                                                    <span className="circle">1</span>
+                                                    <span className="circle">Departure</span>
                                                 </div>
                                                 <div className="clear"></div>
                                             </div>
 
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i alt-departure">
-                                                    <b>Departure</b>
+                                                    <b>Date</b>
                                                     <span>{queryFilter?.departureDate}</span>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i">
                                                     <b>Route</b>
-                                                    <label><strong>{queryFilter?.from + " -> " + queryFilter?.to}</strong></label>
+                                                    <label><strong>{queryFilter?.from + " - " + queryFilter?.to}</strong></label>
                                                 </div>
                                                 <div className="clear"></div>
                                             </div>
@@ -379,8 +407,34 @@ const FlightSearchPage = (props) => {
                                 </div>
                             </div>
 
-                            <div className="srch-results-lbl fly-in">
+                            <div className={departFlight ? (!flightTab ? "side-block fly-in selected" : "side-block fly-in") : "side-block fly-in disable"} onClick={() => changeTab(departFlight ? false : true)}>
+                                <div className="srch-tab-line">
+                                    <div className="side-block-search">
+                                        <div className="page-search-p">
+                                            <div className="srch-tab-3c">
+                                                <div className="alt-data-i">
+                                                    <span className="circle">Return</span>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
 
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i alt-arrival">
+                                                    <b>Date</b>
+                                                    <span>{queryFilter?.returnDate}</span>
+                                                </div>
+                                            </div>
+                                            <div className="srch-tab-3c transformed mt-1">
+                                                <div className="alt-data-i">
+                                                    <b>Route</b>
+                                                    <label><strong>{queryFilter?.to + " - " + queryFilter?.from}</strong></label>
+                                                </div>
+                                                <div className="clear"></div>
+                                            </div>
+                                            <div className="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="side-block fly-in">
@@ -461,11 +515,11 @@ const FlightSearchPage = (props) => {
                                             <div className="clear"></div>
                                             <div className="srch-tab-left transformed">
                                                 <label>From Price</label>
-                                                <div className="input-a"><input disabled={!includePriceRange ? '' : 'true'} readOnly={includePriceRange ? '' : 'true'} name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To Price</label>
-                                                <div className="input-a"><input disabled={!includePriceRange ? '' : 'true'} readOnly={includePriceRange ? '' : 'true'} name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -482,6 +536,7 @@ const FlightSearchPage = (props) => {
                             <div className="two-colls-right-b">
                                 <div className="padding">
 
+                                    {/* Sorting */}
                                     <div className="catalog-head fly-in">
                                         <label>Sort results by:</label>
                                         <div className="search-select">
@@ -511,147 +566,230 @@ const FlightSearchPage = (props) => {
                                     </div>
                                     {/* List Flight here */}
 
-                                    {!isListView ? (<div className="catalog-row">
+                                    <div className="catalog-row alternative" hidden={!flightTab}>
                                         {props.flights?.data?.content?.map(flight =>
-                                            <div className="alt-fligt-table fly-in" key={flight.id}>
-                                                <div className="alt-fligt-table-a">
-                                                    <div className="alt-fligt-table-img">
-                                                        <a><img alt="" src="img/fl-transp-01.png" /></a>
-                                                    </div>
-                                                    <div className="alt-fligt-table-content">
-                                                        <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>
-                                                        <div className="alt-info"><b>{flight.flightCode} </b></div>
-                                                        <div className="alt-fligt-table-info">
-                                                            <div className="alt-data-i alt-departure">
-                                                                <b>Departure</b>
-                                                                <span>{flight.departureTime}</span>
-                                                            </div>
-                                                            <div className="alt-data-i alt-arrival">
-                                                                <b>Arrival</b>
-                                                                <span>{flight.arrivalTime}</span>
-                                                            </div>
-                                                            <div className="clear"></div>
-                                                        </div>
-                                                        <div className="alt-fligt-table-foot">
-                                                            <div className="alt-fligt-table-foot-l">
-                                                                <div className="flt-i-price">{flightPrice(flight)}$</div>
-                                                                <div className="flt-i-price-b">avg/person</div>
-                                                            </div>
-                                                            <div className="alt-fligt-table-foot-r">
-                                                                <a className="cat-list-btn">select</a>
-                                                            </div>
-                                                            <div className="clear"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>)}
-                                    </div>)
-                                        : (<div className="catalog-row alternative">
-                                            {props.flights?.data?.content?.map(flight =>
-                                                <div className="alt-flight fly-in" key={flight.id}>
-                                                    <div className="alt-flight-a">
-                                                        <div className="alt-flight-l">
-                                                            <div className="alt-flight-lb">
-                                                                <div className="alt-center">
-                                                                    <div className="alt-center-l">
-                                                                        <div className="alt-center-lp">
-                                                                            <div className="alt-logo">
-                                                                                <a ><img alt="" src="img/fl-transp-01.png" /></a>
-                                                                            </div>
+                                            <div className="alt-flight fly-in" key={flight.id}>
+                                                <div className="alt-flight-a">
+                                                    <div className="alt-flight-l">
+                                                        <div className="alt-flight-lb">
+                                                            <div className="alt-center">
+                                                                <div className="alt-center-l">
+                                                                    <div className="alt-center-lp">
+                                                                        <div className="alt-logo">
+                                                                            <a ><img width="142" alt="" src={flight.airline.image} /></a>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="alt-center-c">
-                                                                        <div className="alt-center-cb">
-                                                                            <div className="alt-center-cp">
-                                                                                <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>
-                                                                                <div className="alt-info"><b>#{flight.flightCode} </b></div>
-                                                                                <div className="alt-devider"></div>
-                                                                                <div className="flight-line-b">
-                                                                                    <b onClick={toggleDetails}>details</b>
-                                                                                    <span>{getSeatAmount(flight)} seats left!</span>
-                                                                                </div>
-                                                                                <div className="alt-data-i alt-departure">
-                                                                                    <b>Departure</b>
-                                                                                    <span>{flight.departureTime}</span>
-                                                                                </div>
-                                                                                <div className="alt-data-i alt-arrival">
-                                                                                    <b>Arrival</b>
-                                                                                    <span>{flight.arrivalTime}</span>
-                                                                                </div>
-                                                                                <div className="alt-data-i alt-time">
-                                                                                    <b>time</b>
-                                                                                    <span>{timeDiff(flight.departureTime, flight.arrivalTime)}</span>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="clear"></div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="clear"></div>
+                                                                <div className="alt-center-c">
+                                                                    <div className="alt-center-cb">
+                                                                        <div className="alt-center-cp">
+                                                                            <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>
+                                                                            <div className="alt-info"><b>#{flight.flightCode} </b></div>
+                                                                            <div className="alt-devider"></div>
+                                                                            <div className="flight-line-b">
+                                                                                <b onClick={toggleDetails}>details</b>
+                                                                                <span>{getSeatAmount(flight)} seats left!</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-departure">
+                                                                                <b>Departure</b>
+                                                                                <span>{flight.departureTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-arrival">
+                                                                                <b>Arrival</b>
+                                                                                <span>{flight.arrivalTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-time">
+                                                                                <b>time</b>
+                                                                                <span>{timeDiff(flight.departureTime, flight.arrivalTime)}</span>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="clear"></div>
+                                                                </div>
                                                             </div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                    </div>
-                                                    <div className="alt-flight-lr">
-                                                        <div className="padding">
-                                                            <div className="flt-i-price">{flightPrice(flight)}$</div>
-                                                            <div className="flt-i-price-b">avg/person</div>
-                                                            <a className="cat-list-btn"
-                                                                onClick={(e) =>
-                                                                    handleGoToBooking(flight)}
-                                                            >
-                                                                SELECT NOW
-                                                            </a>
-                                                        </div>
-                                                        <div className="clear"></div>
-                                                    </div>
-                                                    <div className="clear"></div>
-                                                    <div className="alt-details">
-                                                        {/* <div className="alt-details-i">
-                                                            <b>Connections</b>
-                                                            <span>Berlin, Germany</span>
-                                                        </div>
-                                                        <div className="alt-details-i">
-                                                            <b>14:20 John F Kennedy (JFK)</b>
-                                                            <span>USA</span>
-                                                        </div>
-                                                        <div className="alt-details-i">
-                                                            <b>Flight LO-98 Boeing 787-8 (Jet) Economy</b>
-                                                            <span>Operated by Austrian Airlines</span>
-                                                        </div> */}
-                                                        <div className="alt-details-i">
-                                                            <b>Description</b>
-                                                            <span>{flight.description}</span>
-                                                        </div>
-
                                                         <div className="clear"></div>
                                                     </div>
                                                 </div>
-                                            )}
-                                        </div>)}
+                                                <div className="alt-flight-lr">
+                                                    <div className="padding">
+                                                        <div className="flt-i-price">{flightPrice(flight)}$</div>
+                                                        <div className="flt-i-price-b">avg/person</div>
+                                                        <a className="cat-list-btn"
+                                                            onClick={(e) =>
+                                                                handleSelectDepartFlight(flight)}
+                                                        >
+                                                            SELECT NOW
+                                                        </a>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                                <div className="clear"></div>
+                                                <div className="alt-details">
+                                                    <div className="alt-details-i">
+                                                        <b>Status</b>
+                                                        <span>{flight.status}</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Flight {flight.aircraftType}</b>
+                                                        <span>Operated by {flight.airline.airlineName}</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Description</b>
+                                                        <span>
+                                                            {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
+                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <b></b>
+                                                    </div>
+
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="catalog-row alternative" hidden={flightTab}>
+                                        {props.flights?.returnData?.content?.map(flight =>
+                                            <div className="alt-flight fly-in" key={flight.id}>
+                                                <div className="alt-flight-a">
+                                                    <div className="alt-flight-l">
+                                                        <div className="alt-flight-lb">
+                                                            <div className="alt-center">
+                                                                <div className="alt-center-l">
+                                                                    <div className="alt-center-lp">
+                                                                        <div className="alt-logo">
+                                                                            <a ><img alt="" src={flight.airline.image} /></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="alt-center-c">
+                                                                    <div className="alt-center-cb">
+                                                                        <div className="alt-center-cp">
+                                                                            <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>
+                                                                            <div className="alt-info"><b>#{flight.flightCode} </b></div>
+                                                                            <div className="alt-devider"></div>
+                                                                            <div className="flight-line-b">
+                                                                                <b onClick={toggleDetails}>details</b>
+                                                                                <span>{getSeatAmount(flight)} seats left!</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-departure">
+                                                                                <b>Departure</b>
+                                                                                <span>{flight.departureTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-arrival">
+                                                                                <b>Arrival</b>
+                                                                                <span>{flight.arrivalTime}</span>
+                                                                            </div>
+                                                                            <div className="alt-data-i alt-time">
+                                                                                <b>time</b>
+                                                                                <span>{timeDiff(flight.departureTime, flight.arrivalTime)}</span>
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="clear"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="clear"></div>
+                                                    </div>
+                                                </div>
+                                                <div className="alt-flight-lr">
+                                                    <div className="padding">
+                                                        <div className="flt-i-price">{flightPrice(flight)}$</div>
+                                                        <div className="flt-i-price-b">avg/person</div>
+                                                        <a className="cat-list-btn"
+                                                            onClick={(e) =>
+                                                                handleSelectDepartFlight(flight)}
+                                                        >
+                                                            SELECT NOW
+                                                        </a>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                                <div className="clear"></div>
+                                                <div className="alt-details">
+                                                    <div className="alt-details-i">
+                                                        <b>Status</b>
+                                                        <span>{flight.status}</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Flight {flight.aircraftType}</b>
+                                                        <span>Operated by {flight.airline.airlineName}</span>
+                                                    </div>
+                                                    <div className="alt-details-i">
+                                                        <b>Description</b>
+                                                        <span>
+                                                            {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
+                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <b></b>
+                                                    </div>
+
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+
 
                                     <div className="clear"></div>
-
-                                    {props.flights.data && (<div className="pagination">
-                                        <a >{"<"}</a>
+                                    {flightTab ? (<>
                                         {
-                                            props?.flights?.data?.first ? (<>
-                                                <a className="active">1</a>
-                                                {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
-                                                : props?.flights?.data?.last ? (<>
-                                                    {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 2}</a>}
-                                                    {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 1}</a>}
-                                                    <a className="active">{props?.flights?.data?.totalPages}</a></>)
-                                                    : (<>
-                                                        <a onClick={setPage}>{props?.flights?.data?.number}</a>
-                                                        <a className="active">{props?.flights?.data?.number + 1}</a>
-                                                        <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
-                                        }
-                                        <a >{">"}</a>
-                                        <div className="clear"></div>
-                                    </div>)}
+                                            props.flights.data && (<div className="pagination">
+                                                <a >{"<"}</a>
+                                                {
+                                                    props?.flights?.data?.first ? (<>
+                                                        <a className="active">1</a>
+                                                        {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
+                                                        {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        : props?.flights?.data?.last ? (<>
+                                                            {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 2}</a>}
+                                                            {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 1}</a>}
+                                                            <a className="active">{props?.flights?.data?.totalPages}</a></>)
+                                                            : (<>
+                                                                <a onClick={setPage}>{props?.flights?.data?.number}</a>
+                                                                <a className="active">{props?.flights?.data?.number + 1}</a>
+                                                                <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                                }
+                                                <a >{">"}</a>
+                                                <div className="clear"></div>
+                                            </div>)
+                                        }</>
+                                    ) : (<>
+                                        {
+                                            props.flights.returnData && (<div className="pagination">
+                                                <a >{"<"}</a>
+                                                {
+                                                    props?.flights?.returnData?.first ? (<>
+                                                        <a className="active">1</a>
+                                                        {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>2</a>}
+                                                        {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        : props?.flights?.returnData?.last ? (<>
+                                                            {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 2}</a>}
+                                                            {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 1}</a>}
+                                                            <a className="active">{props?.flights?.data?.totalPages}</a></>)
+                                                            : (<>
+                                                                <a onClick={setPage}>{props?.flights?.returnData?.number}</a>
+                                                                <a className="active">{props?.flights?.returnData?.number + 1}</a>
+                                                                <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a></>)
+                                                }
+                                                <a >{">"}</a>
+                                                <div className="clear"></div>
+                                            </div>)
+                                        }</>
+                                    )}
+
                                 </div>
                             </div>
                             <br className="clear" />
@@ -680,9 +818,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
         clearBooking: () => { dispatch(clearBookingCached) }
-        // getAirline: () => {
-        //     dispatch()
-        // }
     };
 };
 

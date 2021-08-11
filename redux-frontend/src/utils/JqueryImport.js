@@ -2073,24 +2073,24 @@ export const customOtherTags = () => {
         }
     });
 
-    $('.flight-line .flight-line-b b').on('click', function () {
-        if ($(this).is('.open')) {
-            $(this).removeClass('open');
-            $(this).closest('.flight-line').find('.flight-details').slideUp();
-        } else {
-            $(this).addClass('open');
-            $(this).closest('.flight-line').find('.flight-details').slideDown();
-        }
-    });
-    $('.alt-flight .flight-line-b b').on('click', function () {
-        if ($(this).is('.open')) {
-            $(this).removeClass('open');
-            $(this).closest('.alt-flight').find('.alt-details').slideUp();
-        } else {
-            $(this).addClass('open');
-            $(this).closest('.alt-flight').find('.alt-details').slideDown();
-        }
-    });
+    // $('.flight-line .flight-line-b b').on('click', function () {
+    //     if ($(this).is('.open')) {
+    //         $(this).removeClass('open');
+    //         $(this).closest('.flight-line').find('.flight-details').slideUp();
+    //     } else {
+    //         $(this).addClass('open');
+    //         $(this).closest('.flight-line').find('.flight-details').slideDown();
+    //     }
+    // });
+    // $('.alt-flight .flight-line-b b').on('click', function () {
+    //     if ($(this).is('.open')) {
+    //         $(this).removeClass('open');
+    //         $(this).closest('.alt-flight').find('.alt-details').slideUp();
+    //     } else {
+    //         $(this).addClass('open');
+    //         $(this).closest('.alt-flight').find('.alt-details').slideDown();
+    //     }
+    // });
     $('.hdr-srch-btn').on('click', function () {
         $('.hdr-srch-overlay').fadeIn().find('input:text').focus();
         return false;

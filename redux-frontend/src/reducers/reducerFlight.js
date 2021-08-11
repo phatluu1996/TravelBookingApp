@@ -21,7 +21,8 @@ const reducerFlight = (state = initialState, action) => {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload
+        data: action.payload.departData,
+        returnData: action.payload.returnData
       };
       return state;
 
