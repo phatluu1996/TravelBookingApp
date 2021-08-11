@@ -1,6 +1,6 @@
 package com.travelbooking.backend.controller;
 
-import com.travelbooking.backend.BookingHotelService.BookingRequest;
+import com.travelbooking.backend.BookingHotelService.BookingRequestRoom;
 import com.travelbooking.backend.models.HotelBooking;
 import com.travelbooking.backend.repository.*;
 import com.travelbooking.backend.BookingHotelService.RoomBookingServicelmpl;
@@ -10,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+
+@CrossOrigin
+@RestController
+@RequestMapping("/api")
 public class HotelBookingController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AirlineController.class);
 
@@ -46,7 +47,7 @@ public class HotelBookingController {
 
     //http://localhost:8080/api/book-hotel
     @PostMapping( "/book-hotel")
-    public ResponseEntity<HotelBooking> bookHotel(@RequestBody BookingRequest bookingRequest) throws Exception {
+    public ResponseEntity<HotelBooking> bookHotel(@RequestBody BookingRequestRoom bookingRequest) throws Exception {
         HotelBooking booking= roomBookingServicelmpl.bookRoom(bookingRequest);
         return ResponseEntity.ok().body(booking);
     }
