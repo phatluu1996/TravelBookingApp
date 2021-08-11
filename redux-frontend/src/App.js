@@ -38,6 +38,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import AdminHotelProfile from './components/Admin/Hotel/AdminHotelProfile';
 import FlightSearchPage2 from './components/Flight/FlightSearchPage2';
+import ComboSearchPage from './components/Admin/Combo/ComboSearchPage';
 
 
 const App = (props) => {
@@ -81,6 +82,7 @@ const App = (props) => {
 
 
 
+
         <PublicRoute restricted={true} component={Register} path="/register" />
 
         <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
@@ -92,6 +94,8 @@ const App = (props) => {
         <PublicRoute restricted={false} component={HotelDetailPage} path="/hotel-detail" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={HotelBookingPage} path="/hotel-booking" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={HotelBookingCompletePage} path="/hotel-booking-complete" />
+
+        <PublicRoute restricted={false} component={ComboSearchPage} path="/combo-list" />
 
         <PrivateRoute restricted={getRole() === ROLE_HOTEL} component={HotelProfile} path="/hotel-profile" exact />
 

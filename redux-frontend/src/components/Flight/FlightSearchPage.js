@@ -9,7 +9,7 @@ import { faHourglass, faSearch, faSuitcase, faTv } from "@fortawesome/free-solid
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
-import { clearBookingCached } from "../../actions/actionBookingFlight";
+import { clearFlightBookingCached } from "../../actions/actionBookingFlight";
 import { getRole, ROLE_USER } from "../../utils";
 
 function useQuery() {
@@ -683,7 +683,7 @@ const FlightSearchPage = (props) => {
                                                                     <div className="alt-center-l">
                                                                         <div className="alt-center-lp">
                                                                             <div className="alt-logo">
-                                                                                <a ><img alt="" src="img/fl-transp-01.png" /></a>
+                                                                                <a ><img width="142" alt="" src={flight.airline.image} /></a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -808,7 +808,7 @@ const mapDispatchToProps = (dispatch) => {
         getFlight: (from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
-        clearBooking: () => {dispatch(clearBookingCached)}
+        clearBooking: () => {dispatch(clearFlightBookingCached)}
         // getAirline: () => {
         //     dispatch()
         // }
