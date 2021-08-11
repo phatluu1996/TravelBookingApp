@@ -38,6 +38,9 @@ import About from './components/About';
 import Contact from './components/Contact';
 import AdminHotelProfile from './components/Admin/Hotel/AdminHotelProfile';
 import FlightSearchPage2 from './components/Flight/FlightSearchPage2';
+import RoundFlightBookingPage from './components/Flight/RoundFlightBookingPage';
+import RoundFlightBookingCompletePage from './components/Flight/RoundFlightBookingCompletePage';
+
 
 
 const App = (props) => {
@@ -86,7 +89,9 @@ const App = (props) => {
         <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
         <PublicRoute restricted={false} component={FlightSearchPage2} path="/flight-round-list" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={FlightBookingPage} path="/flight-booking" />
+        <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={RoundFlightBookingPage} path="/round-flight-booking" />
         <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={FlightBookingCompletePage} path="/flight-booking-complete" />
+        <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={RoundFlightBookingCompletePage} path="/round-flight-booking-complete" />
 
         <PublicRoute restricted={false} component={HotelSearchPage} path="/hotel-list" />
         <PublicRoute restricted={false} component={HotelDetailPage} path="/hotel-detail" />

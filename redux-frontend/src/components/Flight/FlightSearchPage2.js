@@ -337,10 +337,12 @@ const FlightSearchPage = (props) => {
 
     const handleGoToBooking = (flight) => {
         props.clearBooking();
-        if (getRole() == ROLE_USER) {
-            history.push("/flight-booking?departureDate=" + queryParam.get("departureDate") +
+        if(getRole() == ROLE_USER){
+            sessionStorage.setItem("isBooking", true);
+            history.push("/round-flight-booking?departureDate=" + queryParam.get("departureDate") +
                 "&adult=" + queryParam.get("adult") + "&child=" + queryParam.get("child") +
-                "&seatClass=" + queryParam.get("seatClass") + "&price=" + flightPrice(flight) + "&fid=" + flight.id
+                "&seatClass=" + seatClassType + "&fid=" + departFlight.id +"&rfid="+flight.id
+                + "&returnDate=" + queryParam.get("returnDate")
             );
         } else {
             $('.header-account a').click();
@@ -706,7 +708,7 @@ const FlightSearchPage = (props) => {
                                                         <div className="flt-i-price-b">avg/person</div>
                                                         <a className="cat-list-btn"
                                                             onClick={(e) =>
-                                                                handleSelectDepartFlight(flight)}
+                                                                handleGoToBooking(flight)}
                                                         >
                                                             SELECT NOW
                                                         </a>

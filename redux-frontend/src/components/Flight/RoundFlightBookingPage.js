@@ -10,7 +10,7 @@ import { importAll } from "../../utils/JqueryImport";
 import { getUserId } from "../../utils";
 import { getUser } from "../../actions/actionUser";
 import { bookFlight } from "../../actions/actionBookingFlight";
-import { retrieveFlight } from "../../actions/actionFlightByAirline";
+import { getRoundFlight } from "../../actions/actionFlight";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
@@ -26,22 +26,25 @@ const getAge = (travelDate, birthday) => {
   return Math.floor((new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e+10)
 }
 
-const FlightBookingPage = (props) => {
+const RoundFlightBookingPage = (props) => {
   const history = useHistory();
   let queryParam = useQuery();
   const dispatch = useDispatch();
-  const flight = useSelector((state) => state.flights);
+  const flights = useSelector((state) => state.flight);
   const user = useSelector((state) => state.user);
   const completeBooking = useSelector(state => state.bookFlight);
   const [isComplete, setIsComplete] = useState(false)
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
+  const [dateOfReturn, setDateOfReturn] = useState("");
+
   const [totalPrice, setTotalPrice] = useState(0);
+  const [returnTotalPrice,setReturnTotalPrice] = useState(0);
   const [checkout, setCheckout] = useState(false);
   const [extraService, setExtraService] = useState(0);
   const [totalPassenger, setTotalPassenger] = useState(0);
-  const [flightBooking, setflightBooking] = useState(null);
+  const [flightBooking, setFlightBooking] = useState(null);
   const [hasInfant, setHasInfant] = useState([{
     infant: false
   }]);
@@ -71,7 +74,7 @@ const FlightBookingPage = (props) => {
   const [flightDataOrder, setFlightDataOrder] = useState({
     purchase_units: [
       {
-        description: `One way Flight`,
+        description: `Round Trip Flight`,
         amount: {
           currency: "USD",
           value: 1,
@@ -81,14 +84,9 @@ const FlightBookingPage = (props) => {
   })
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
-  // return flight
-  const returnFlightId = 0;
-  const dateOfReturn = "";
-  const returnType = 0;
 
-
-  const getFlight = (id) => {
-    dispatch(retrieveFlight(id));
+  const getFlights = (dId,rId) => {
+    dispatch(getRoundFlight(dId,rId));
   };
 
   const bookFlt = (data) => {
@@ -174,9 +172,6 @@ const FlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
-      //   err[index]["birthday"] = "Wrong format of birthday";
-      // } else {
       err[index]["birthday"] = "";
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
@@ -214,17 +209,17 @@ const FlightBookingPage = (props) => {
     if (validateForm(e)) {
       var data = {
         userId: userId,
-        flightId: flight.id,
+        flightId: flights.data.id,
         dateBooking: dateOfDeparture,
         type: type,
-        returnFlightId: returnFlightId,
+        returnFlightId: flights.returnData.id,
         dateReturnBooking: dateOfReturn,
-        returnType: returnType,
+        returnType: type,
         paymentMethod: paymentMethod,
-        totalPrice: totalPrice,
+        totalPrice: totalPrice+returnTotalPrice,
         passengers: [...inputListPassenger]
       };
-      setflightBooking(data);
+      setFlightBooking(data);
     }
   };
 
@@ -235,17 +230,16 @@ const FlightBookingPage = (props) => {
     }
     window.scrollTo(0, 0);
     importAll();
-    getFlight(queryParam.get("fid"));
+    getFlights(queryParam.get("fid"),queryParam.get("rfid"));
     if (queryParam.get("seatClass") === "ECONOMY") {
       setType(0);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     } else {
       setType(1);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     }
+    setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     getUserBooking(parseInt(getUserId()));
     setDateOfDeparture(queryParam.get("departureDate").split("/").reverse().join("-"));
-
+    setDateOfReturn(queryParam.get("returnDate").split("/").reverse().join("-"))
     var newListPax = [];
     var newListError = [];
     var newListHasInfant = [];
@@ -288,10 +282,13 @@ const FlightBookingPage = (props) => {
   useEffect(() => {
     if (completeBooking.data && checkout) {
       sessionStorage.removeItem("isBooking")
-      history.push({ pathname: "/flight-booking-complete" });
+      history.push({ pathname: "/round-flight-booking-complete" });
     }
-    if (flight) {
+    if (flights.data) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
+    }
+    if(flights.returnData){
+        reCalculateReturnTotalPrice(inputListPassenger, hasInfant);  
     }
 
     if (checkout && !isComplete) {
@@ -353,17 +350,35 @@ const FlightBookingPage = (props) => {
       var paxAge = getAge(dateOfDeparture, pax.birthday);
       if (queryParam.get("seatClass") === "ECONOMY") {
         if (paxAge <= 12 && paxAge >= 0) {
-          var flightPrice = flight.child_price;
+          var flightPrice = flights.data.child_price;
         } else {
-          var flightPrice = flight.economyPrice;
+          var flightPrice = flights.data.economyPrice;
         }
       } else {
-        var flightPrice = flight.businessPrice;
+        var flightPrice = flights.data.businessPrice;
       }
-      var infantPrice = listInfant[index].infant ? flight.infant_price : 0;
+      var infantPrice = listInfant[index].infant ? flights.data.infant_price : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
     setTotalPrice(newTotalPrice);
+  }
+  const reCalculateReturnTotalPrice = (listPax, listInfant) => {
+    var newTotalPrice = 0;
+    listPax.map((pax, index) => {
+      var paxAge = getAge(dateOfReturn, pax.birthday);
+      if (queryParam.get("seatClass") === "ECONOMY") {
+        if (paxAge <= 12 && paxAge >= 0) {
+          var flightPrice = flights.returnData.child_price;
+        } else {
+          var flightPrice = flights.returnData.economyPrice;
+        }
+      } else {
+        var flightPrice = flights.returnData.businessPrice;
+      }
+      var infantPrice = listInfant[index].infant ? flights.returnData.infant_price : 0;
+      newTotalPrice = newTotalPrice + flightPrice + infantPrice;
+    })
+    setReturnTotalPrice(newTotalPrice);
   }
 
   return (
@@ -652,10 +667,10 @@ const FlightBookingPage = (props) => {
                                         .create({
                                           purchase_units: [
                                             {
-                                              description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
+                                              description: `Round Trip Flight ${flights.data.departureCity}-${flights.data.arrivalCity}-${flights.data.departureCity} `,
                                               amount: {
                                                 currency: "USD",
-                                                value: totalPrice,
+                                                value: totalPrice+returnTotalPrice,
                                               },
                                             },
                                           ],
@@ -686,7 +701,7 @@ const FlightBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src="img/check-img-01.jpg" />
+                        <img alt="" src={flights?.data?.airline?.image} style={{width:"95px",height:'60px'}}/>
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -695,17 +710,17 @@ const FlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flight?.departureCity} - {flight?.arrivalCity}
+                                {flights?.data?.departureCity} - {flights?.data?.arrivalCity}
                               </a>
                             </div>
-                            <div className="chk-lbl-a">ONEWAY FLIGHT</div>
+                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
                             <div className="chk-logo">
-                              <img alt="" src="img/lufthansa.png" />
+                              <p>{flights?.data?.airline?.airlineName}</p>
                             </div>
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                              <img alt="" src="img/chk-edit.png" />
+                              
                             </a>
                           </div>
                           <div className="clear"></div>
@@ -720,7 +735,7 @@ const FlightBookingPage = (props) => {
                       <div className="chk-departure">
                         <span>Schedule Time</span>
                         <b>
-                          {flight?.departureTime} - {flight?.arrivalTime}
+                          {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
                           <br />
                         </b>
                       </div>
@@ -745,14 +760,14 @@ const FlightBookingPage = (props) => {
                     <h2>Details</h2>
                     <div className="chk-detais-row">
                       <div className="chk-line">
-                        <span className="chk-l">AIRLINE:</span>
+                        <span className="chk-l">FLIGHT</span>
                         <span className="chk-r">
-                          {flight?.airline?.airlineName}
+                          {flights?.data?.flightCode}
                         </span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
-                        <span className="chk-l">FLIGHT TYPE:</span>
+                        <span className="chk-l">FLIGHT TYPE</span>
                         <span className="chk-r">
                           {queryParam.get("seatClass")}
                         </span>
@@ -782,6 +797,106 @@ const FlightBookingPage = (props) => {
                     </div>
                   </div>
                 </div>
+                <div className="checkout-coll">
+                  <div className="checkout-head">
+                    <div className="checkout-headl">
+                      <a href="#">
+                        <img alt="" src={flights?.returnData?.airline?.image} style={{width:"95px",height:'60px'}}/>
+                      </a>
+                    </div>
+                    <div className="checkout-headr">
+                      <div className="checkout-headrb">
+                        <div className="checkout-headrp">
+                          <div className="chk-left">
+                            <div className="chk-lbl">
+                              <a href="#">
+                                {flights?.returnData?.departureCity} - {flights?.returnData?.arrivalCity}
+                              </a>
+                            </div>
+                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
+                            <div className="chk-logo">
+                              <p>{flights?.returnData?.airline?.airlineName}</p>
+                            </div>
+                          </div>
+                          <div className="chk-right">
+                            <a href="#">
+                              <img alt="" src="img/chk-edit.png" />
+                            </a>
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+
+                  <div className="chk-lines">
+                    <div className="chk-line chk-fligth-info">
+                      <div className="chk-departure">
+                        <span>Schedule Time</span>
+                        <b>
+                          {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
+                          <br />
+                        </b>
+                      </div>
+                      <div className="chk-fligth-devider"></div>
+                      <div className="chk-fligth-time">
+                        <img alt="" src="img/icon-nights.png" />
+                      </div>
+                      <div className="chk-fligth-devider"></div>
+                      <div className="chk-arrival">
+                        <span>Day of Return</span>
+                        <b>
+                          
+                          <br />
+                          {dateOfReturn}
+                        </b>
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+
+                  <div className="chk-details">
+                    <h2>Details</h2>
+                    <div className="chk-detais-row">
+                      <div className="chk-line">
+                        <span className="chk-l">RETURN FLIGHT</span>
+                        <span className="chk-r">
+                          {flights?.returnData?.flightCode}
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">FLIGHT TYPE</span>
+                        <span className="chk-r">
+                          {queryParam.get("seatClass")}
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      {/* <div className="chk-line">
+                        <span className="chk-l">Extra Services</span>
+                        <span className="chk-r">
+                          {extraService}
+                        </span>
+                        <div className="clear"></div>
+                      </div> */}
+                      <div className="chk-line">
+                        <span className="chk-l">taxes and fees</span>
+                        <span className="chk-r">
+                          {(parseInt(returnTotalPrice) * 0.1).toPrecision(3)}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                    </div>
+                    <div className="chk-total">
+                      <div className="chk-total-l">Total Price</div>
+                      <div className="chk-total-r add-more-price-flight">
+                        {returnTotalPrice}$
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="h-help">
                   <div className="h-help-lbl">Need Sparrow Help?</div>
@@ -802,4 +917,4 @@ const FlightBookingPage = (props) => {
   );
 };
 
-export default FlightBookingPage;
+export default RoundFlightBookingPage;

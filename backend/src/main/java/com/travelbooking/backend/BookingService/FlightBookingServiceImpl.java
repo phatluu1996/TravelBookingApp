@@ -98,12 +98,12 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             String randomTicket = randomNumber(13);
             passenger.setTicketNumber(randomTicket);
             Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateBooking());
+            Float infantPrice = psg.isHasInfant() ? flight.getInfant_price() : 0;
             if (bookingRequest.getType() == 1){
-                passenger.setPrice(flight.getBusinessPrice());
-            } else if(age<18) {
-                passenger.setPrice(flight.getChild_price());
+                passenger.setPrice(flight.getBusinessPrice()+ infantPrice);
+            } else if(age<12) {
+                passenger.setPrice(flight.getChild_price()+ infantPrice);
             } else {
-                Float infantPrice = psg.isHasInfant() ? flight.getInfant_price() : 0;
                 passenger.setPrice(flight.getEconomyPrice() + infantPrice);
             }
             passengerRepository.save(passenger);
@@ -148,12 +148,12 @@ public class FlightBookingServiceImpl implements FlightBookingService{
                 String randomTicket = randomNumber(13);
                 passengerReturnFlight.setTicketNumber(randomTicket);
                 Integer age = getAgeTravel(psg.getBirthday(),bookingRequest.getDateReturnBooking());
+                Float infantPrice = psg.isHasInfant() ? returnFlight.getInfant_price() : 0;
                 if (bookingRequest.getReturnType() == 1){
-                    passengerReturnFlight.setPrice(returnFlight.getBusinessPrice());
-                } else if(age<18) {
-                    passengerReturnFlight.setPrice(returnFlight.getChild_price());
+                    passengerReturnFlight.setPrice(returnFlight.getBusinessPrice() + infantPrice);
+                } else if(age<12) {
+                    passengerReturnFlight.setPrice(returnFlight.getChild_price() + infantPrice);
                 } else {
-                    Float infantPrice = psg.isHasInfant() ? returnFlight.getInfant_price() : 0;
                     passengerReturnFlight.setPrice(returnFlight.getEconomyPrice() + infantPrice);
                 }
                 passengerRepository.save(passengerReturnFlight);
