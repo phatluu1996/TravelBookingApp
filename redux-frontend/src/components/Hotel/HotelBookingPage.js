@@ -5,6 +5,7 @@ import { importAll, customCheckBoxInput } from '../../utils/JqueryImport';
 import { getUser } from "../../actions/actionUser";
 import { fetchHotelById } from "../../actions/actionHotel";
 import { getRooms } from "../../actions/actionRoom";
+import {bookRoom} from "../../actions/actionBookingRoom";
 import { connect } from 'react-redux';
 import { PROPERTY_TYPES } from '@babel/types';
 import { useLocation } from 'react-router-dom';
@@ -27,8 +28,10 @@ const HotelBookingPage = (props) => {
         quantity: ""
     }])
     const [isCheck, setIsCheck] = useState(true);
-    const [paymentCheck, setPayment] = useState(false);
+    // const [paymentCheck, setPayment] = useState(false);
     const [checkout, setCheckout] = useState(false);
+    const [dataConfirm,setDataConfirm] = useState(null);
+    const [isComplete, setIsComplete] = useState(false)
     const [error, setError] = useState([{
         firstName: "",
         lastName: "",
@@ -43,6 +46,7 @@ const HotelBookingPage = (props) => {
         // console.log(getTimeDiff(dateConvert(ci),dateConvert(co),"d"));
         setDateCalculate(getTimeDiff(dateConvert(ci), dateConvert(co), "d"));
     }
+
     const getTimeDiff = (startTime, endTime, type) => {
         // let startTime = new Date(_startTime.replace(/-/g, '/'));
         // let endTime = new Date(_endTime.replace(/-/g, '/'));
@@ -71,6 +75,7 @@ const HotelBookingPage = (props) => {
         return dt;
     }
 
+    
     const allRoomTypeString = () => {
         var roomTypes = [];
         props.rooms?.data?.map(
@@ -87,7 +92,7 @@ const HotelBookingPage = (props) => {
         return totalPrice * dateNumber;
     }
     const validateForm = (e) => {
-        const form = e;
+        const form = e.target;
         const err = { ...error };
         const pattern =
             /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
@@ -110,26 +115,21 @@ const HotelBookingPage = (props) => {
         } else {
             err.email = "";
         }
-        if (!form.phone.value) {
-            err.phone = "Phone is required ";
+        if (!form.phoneNumber.value) {
+            err.phoneNumber = "Phone is required ";
         } else {
-            err.phone = "";
+            err.phoneNumber = "";
         }
 
         if (
-            err.hotelName ||
-            err.email ||
-            err.phone ||
-            err.contactName ||
-            err.contactTitle ||
-            err.address ||
-            err.numberOfRoom ||
-            err.avgPriceAtNight
+            err.firstName ||
+            err.lastName ||
+            err.phoneNumber ||
+            err.email
         ) {
             setError(err);
             return false;
         }
-
         return true;
     };
 
@@ -150,16 +150,57 @@ const HotelBookingPage = (props) => {
             console.log(orderID);
             return orderID;
           });
-      };
+    };
       const onApprove = (data, actions) => {
         return actions.order.capture().then(function (details) {
           console.log(`Transaction completed by ${details.payer.name.given_name}!`);
           setCheckout(true);
         });
       };
+
       const onError = (err) => {
         console.log(err.toString());
       };
+
+      const bookingSubmit = (e) =>{ 
+        e.preventDefault()
+        var totalPrice = calculatePrice();
+        var room = [...props.rooms?.data];
+        var newArr = [];
+        props.rooms?.data.map(
+            room => newArr.push({id:room.id})
+        )
+        // console.log(room);
+          if(validateForm(e)){
+              var data =
+              {
+                    user:props.user?.data,
+                    // hotel:props.hotel?.data,
+                    rooms:newArr,
+                    dateBooking:new Date(),
+                    checkInDate:new Date(dateConvert(queryParam.get("checkInDate"))),
+                    checkOutDate:new Date(dateConvert(queryParam.get("checkOutDate"))),
+                    numberOfGuests:parseInt(queryParam.get("numberAdult")) + parseInt(queryParam.get("numberChildren")),
+                    totalPrice:totalPrice,
+                    paymentMethod:"Payment"
+              }
+              
+            //  setDataConfirm(data);
+             props.bookRoom(data);
+            // console.log(JSON.stringify(props.user?.data));
+            // console.log(JSON.stringify(room));
+          }
+      }
+//   private User user;
+//     private Hotel hotel;
+//     private List<Room> rooms;
+//     private Date dateBooking;
+//     private Date checkInDate;
+//     private Date checkOutDate;
+//     private int numberOfGuests;
+//     private Float totalPrice;
+//     private String paymentMethod;
+
     // Hoa logic
     // const getRoomByBoomTy = (list = []) => {
     //     var newList = [];
@@ -208,7 +249,7 @@ const HotelBookingPage = (props) => {
     useEffect(() => {
 
         let mount = false;
-        var listIds = queryParam.get("roomIds").split(".").map(x => +x);
+        var  listIds = queryParam.get("roomIds").split(".").map(x => +x);
         // var b = a.split(',').map(function(item) {
         //     return parseInt(item, 10);
         // });
@@ -224,14 +265,15 @@ const HotelBookingPage = (props) => {
         } else {
             $(".header-account a").click();
         }
-
-
-
+        // if (checkout && !isComplete) {
+        //     props.bookRoom(dataConfirm);
+        //     setIsComplete(true);
+        // }
         return () => {
             mount = true;
         }
     }, [])
-
+    
     return (
         <>
             <Header></Header>
@@ -252,9 +294,7 @@ const HotelBookingPage = (props) => {
                                         <div className="sp-page-p">
                                             <div className="booking-left">
                                                 <h2>Your Personal Information</h2>
-                                                <form>
-
-
+                                                <form onSubmit={bookingSubmit}>
                                                     <div className="booking-form">
                                                         <div className="booking-form-i">
                                                             <label>First Name:</label>
@@ -272,14 +312,14 @@ const HotelBookingPage = (props) => {
                                                         </div>
                                                         <div className="booking-form-i">
                                                             <label>Email Adress:</label>
-                                                            <div className="input"><input type="text" name="email" defaultValue={props.user?.data?.email} /></div>
+                                                            <div className="input"><input disabled={true} type="text"  name="email" defaultValue={props.user?.data?.email} /></div>
                                                             <div className="booking-error-input">
                                                                 {error.email}
                                                             </div>
                                                         </div>
                                                         <div className="booking-form-i">
                                                             <label>Preferred Phone Number:</label>
-                                                            <div className="input"><input type="text" name="phoneNumber" defaultValue={props.user?.data?.phoneNumber} /></div>
+                                                            <div className="input"><input disabled={true} type="text" name="phoneNumber" defaultValue={props.user?.data?.phoneNumber} /></div>
                                                             <div className="booking-error-input">
                                                                 {error.phoneNumber}
                                                             </div>
@@ -293,8 +333,8 @@ const HotelBookingPage = (props) => {
                                                         </div>
                                                         <div className="booking-devider"></div>
                                                     </div>
-                                                </form>
-                                                <div hidden={isCheck ? true : false}>
+                                              
+                                                {/* <div hidden={isCheck ? true : false}>
                                                     <h2>Your Representative Information</h2>
                                                     <div className="booking-form">
                                                         <div className="booking-form-i">
@@ -329,12 +369,12 @@ const HotelBookingPage = (props) => {
                                                         <div className="clear"></div>
                                                         <div className="booking-devider"></div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="booking-complete">
-                                                    <button className="booking-complete-btn">COMPLETE INPUT</button>
+                                                    <button className="booking-complete-btn" type="submit">Validate</button>
                                                 </div>
-
-                                                <div style={{ paddingTop: "30px" }} hidden={paymentCheck ? true : false} >
+                                                {/* </form> */}
+                                                <div style={{ paddingTop: "30px" }} hidden={dataConfirm === null? true : false} >
                                                     {/* <div className="booking-devider"></div> */}
                                                     <h2>How would you like to pay?</h2>
                                                     <div className="payment-wrapper">
@@ -351,11 +391,6 @@ const HotelBookingPage = (props) => {
                                                                         to securely complete your payment using
                                                                         credit or debit cards.
                                                                     </span>
-                                                                    {/* <div className="payment-alert-close">
-                                    <a>
-                                      <img alt="" src="img/alert-close.png" />
-                                    </a>
-                                  </div> */}
                                                                 </div>
 
                                                                 {/* <a className="paypal-btn">proceed to paypall</a> */}
@@ -404,10 +439,9 @@ const HotelBookingPage = (props) => {
                                                                 </PayPalScriptProvider>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
                                                 </div>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
@@ -558,14 +592,15 @@ const mapStateToProps = (state, ownProps) => {
         rooms: state.room,
     };
 };
-
 const mapDispatchToProps = (dispatch) => {
+
     return {
         getHotel: (id) => dispatch(fetchHotelById(id)),
         getRooms: (data) => dispatch(getRooms(data)),
         getUser: (id) => dispatch(getUser(id)),
-
+        bookRoom:(data) => dispatch(bookRoom(data)),
     };
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HotelBookingPage);
