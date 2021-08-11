@@ -315,6 +315,7 @@ const FlightSearchPage = (props) => {
     const handleGoToBooking = (flight) =>  {
         props.clearBooking();
         if(getRole() == ROLE_USER){
+            sessionStorage.setItem("isBooking", true);
             history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
             "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
             "&seatClass="+seatClassType+"&price="+flightPrice(flight)+"&fid="+flight.id

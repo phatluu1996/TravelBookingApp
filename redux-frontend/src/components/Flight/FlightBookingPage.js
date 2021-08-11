@@ -69,12 +69,24 @@ const FlightBookingPage = (props) => {
       price: 0,
     },
     ]);
+  const [flightDataOrder, setFlightDataOrder] = useState({
+    purchase_units: [
+      {
+        description: `One way Flight`,
+        amount: {
+          currency: "USD",
+          value: 1,
+        },
+      },
+    ],
+  })
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
   // return flight
   const returnFlightId = 0;
   const dateOfReturn = "";
   const returnType = 0;
+
 
   const getFlight = (id) => {
     dispatch(retrieveFlight(id));
@@ -88,29 +100,19 @@ const FlightBookingPage = (props) => {
     dispatch(getUser(id));
   };
 
-  const createOrder = (price, actions) => {
+  const createOrder = (data, actions) => {
     return actions.order
-      .create({
-        purchase_units: [
-          {
-            description: "Testing booking function",
-            amount: {
-              currency: "USD",
-              value: 1,
-            },
-          },
-        ],
-      })
+      .create(flightDataOrder)
       .then((orderID) => {
         console.log(orderID);
         return orderID;
       });
   };
 
-  const onApprove = (data, actions) => {       
+  const onApprove = (data, actions) => {
     return actions.order.capture().then(function (details) {
-      console.log(`Transaction completed by ${details.payer.name.given_name}!`);          
-      setCheckout(true);   
+      console.log(`Transaction completed by ${details.payer.name.given_name}!`);
+      setCheckout(true);
     });
   };
 
@@ -168,7 +170,7 @@ const FlightBookingPage = (props) => {
 
   const handleBirthdayChange = (e, index) => {
     const err = [...error];
-    var list = [...inputListPassenger]; 
+    var list = [...inputListPassenger];
 
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
@@ -176,10 +178,10 @@ const FlightBookingPage = (props) => {
       // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
       //   err[index]["birthday"] = "Wrong format of birthday";
       // } else {
-        err[index]["birthday"] = "";
-        
-        list[index]["birthday"] = e.target.value.replaceAll("/", "-");
-        setInputListPassenger(list);
+      err[index]["birthday"] = "";
+
+      list[index]["birthday"] = e.target.value.replaceAll("/", "-");
+      setInputListPassenger(list);
       // }
 
     }
@@ -236,13 +238,14 @@ const FlightBookingPage = (props) => {
         passengers: [...inputListPassenger]
       };
       setflightBooking(data);
-      // bookFlt(data);
-      // setIsSubmit(true);
     }
   };
 
   useEffect(() => {
     let mount = false;
+    if(!sessionStorage.getItem("isBooking")){
+      history.push("/");
+    }
     window.scrollTo(0, 0);
     importAll();
     getFlight(queryParam.get("fid"));
@@ -288,7 +291,7 @@ const FlightBookingPage = (props) => {
         gender: "true"
       })
     });
-    
+
     setInputListPassenger(newListPax);
     setError(newListError);
     setHasInfant(newListHasInfant);
@@ -303,13 +306,14 @@ const FlightBookingPage = (props) => {
 
   useEffect(() => {
     if (completeBooking.data && checkout) {
+      sessionStorage.removeItem("isBooking")
       history.push({ pathname: "/flight-booking-complete" });
     }
     if (flight) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
     }
 
-    if(checkout && !isComplete){
+    if (checkout && !isComplete) {
       bookFlt(flightBooking);
       setIsComplete(true);
     }
@@ -591,7 +595,7 @@ const FlightBookingPage = (props) => {
                                         name="birthday"
                                         type="text"
                                         className="form-control date-booking-inpt"
-                                        placeholder="YYYY-MM-DDDD"                                        
+                                        placeholder="YYYY-MM-DDDD"
                                         onChange={(e) => handleBirthdayChange(e, i)}
                                       />
                                       <span className="date-icon"></span>
@@ -631,7 +635,7 @@ const FlightBookingPage = (props) => {
                             );
                           })}
 
-                          
+
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
@@ -647,17 +651,15 @@ const FlightBookingPage = (props) => {
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
-                          <div className="payment-wrapper mt-2" hidden={!flightBooking}>
+                          {flightBooking && <div className="payment-wrapper mt-2">
                             <div className="payment-tabs">
                               <a className="active">
                                 Payment <span></span>
                               </a>
-                              {/* <a>
-                                Paypal <span></span>
-                              </a> */}
+
                             </div>
                             <div className="clear"></div>
-                            
+
                             <div className="payment-tabs-content">
                               <div className="payment-tab">
                                 <div className="payment-alert">
@@ -669,41 +671,36 @@ const FlightBookingPage = (props) => {
                                 </div>
                                 <PayPalScriptProvider
                                   style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}                                  
+                                  options={{ "client-id": PP_ID }}
                                 >
                                   <PayPalButtons
                                     style={{ height: 25 }}
-                                    createOrder={createOrder}
+                                    createOrder={(data, actions) => {
+                                      return actions.order
+                                        .create({
+                                          purchase_units: [
+                                            {
+                                              description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
+                                              amount: {
+                                                currency: "USD",
+                                                value: totalPrice,
+                                              },
+                                            },
+                                          ],
+                                        })
+                                        .then((orderID) => {
+                                          console.log(orderID);
+                                          return orderID;
+                                        });
+                                    }}
                                     onApprove={onApprove}
                                     onError={onError}
                                   />
                                 </PayPalScriptProvider>
                               </div>
-
-                              {/* <div className="payment-tab">
-                                <div className="payment-alert">
-                                  <span>
-                                    You will be redirected to PayPal's website
-                                    to securely complete your payment using
-                                    paypal account.
-                                  </span>
-                                </div>
-
-                                <PayPalScriptProvider
-                                  style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}
-                                >
-                                  <PayPalButtons
-                                    style={{ height: 25 }}
-                                    fundingSource={"paypal"}
-                                    createOrder={createOrder}
-                                    onApprove={onApprove}
-                                    onError={onError}
-                                  />
-                                </PayPalScriptProvider>
-                              </div> */}
                             </div>
-                          </div>                          
+                          </div>}
+                        
                         </form>
                       </div>
                     </div>
