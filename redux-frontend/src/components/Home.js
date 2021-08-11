@@ -451,7 +451,7 @@ const Home = (props) => {
                                                                 id="checkInDate"
                                                                 type="text"
                                                                 className="date-inpt"
-                                                                placeholder="mm/dd/yy"
+                                                                placeholder="dd/mm/yy"
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -465,7 +465,7 @@ const Home = (props) => {
                                                                 id="checkOutDate"
                                                                 type="text"
                                                                 className="date-inpt"
-                                                                placeholder="mm/dd/yy"
+                                                                placeholder="dd/mm/yy"
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>

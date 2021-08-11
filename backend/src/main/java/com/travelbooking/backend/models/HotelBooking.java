@@ -1,6 +1,8 @@
 package com.travelbooking.backend.models;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Instant;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -11,10 +13,8 @@ public class HotelBooking {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "hotel_type")
-    private String hotelType;
-    @Column(name = "guest_name",columnDefinition = "nvarchar(255)")
-    private String guestName;
+    @Column(name = "booking_code")
+    private String bookingCode;
     @Column(name = "num_of_guest")
     private int numOfGuest;
     @Column(name = "status")
@@ -25,10 +25,9 @@ public class HotelBooking {
     private Date checkOutDate;
     @Column(name = "total_price")
     private Float totalPrice;
-    @Column(name = "number_of_room")
-    private int numberOfRoom;
-    @Column(name = "create_at")
-    private Date createAt;
+    @Column(name="created_at", nullable = false)
+    @CreatedDate
+    private Instant createdAt;
     @LastModifiedDate
     @Column(name = "update_at")
     private Date updateAt;
@@ -50,17 +49,15 @@ public class HotelBooking {
     public HotelBooking() {
     }
 
-    public HotelBooking(Long id, String hotelType, String guestName, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, int numberOfRoom, Date createAt, Date updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
+    public HotelBooking(Long id, String bookingCode, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, Instant createdAt, Date updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
         this.id = id;
-        this.hotelType = hotelType;
-        this.guestName = guestName;
+        this.bookingCode = bookingCode;
         this.numOfGuest = numOfGuest;
         this.status = status;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.totalPrice = totalPrice;
-        this.numberOfRoom = numberOfRoom;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.updateAt = updateAt;
         this.paymentMethod = paymentMethod;
         this.retired = retired;
@@ -76,20 +73,12 @@ public class HotelBooking {
         this.id = id;
     }
 
-    public String getHotelType() {
-        return hotelType;
+    public String getBookingCode() {
+        return bookingCode;
     }
 
-    public void setHotelType(String hotelType) {
-        this.hotelType = hotelType;
-    }
-
-    public String getGuestName() {
-        return guestName;
-    }
-
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
     }
 
     public int getNumOfGuest() {
@@ -132,20 +121,12 @@ public class HotelBooking {
         this.totalPrice = totalPrice;
     }
 
-    public int getNumberOfRoom() {
-        return numberOfRoom;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setNumberOfRoom(int numberOfRoom) {
-        this.numberOfRoom = numberOfRoom;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Date getUpdateAt() {
