@@ -1574,7 +1574,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 
 .side-block-search .search-select.half-width {border:1px solid #dedcdc; width:145px;}
 .side-block.disable {opacity: 0.4;}
-.side-block.selected {background: #e6eaeb;-webkit-box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.5);-moz-box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.5); box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.3);}
+.side-block.selected {background: #d4d4d4;-webkit-box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.5);-moz-box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.5); box-shadow: 1px 2px 3px 0px rgba(50, 50, 50, 0.3);}
 .side-block {background: #fff; margin-bottom: 10px;}
 .side-block .page-search-p {padding: 22px 18px 22px 18px;}
 .side-block .page-search-p label {display: block; font-size: 11px; color:#4c4c4c; text-transform: uppercase; font-family:'Montserrat'; font-weight: normal; margin-bottom: 9px;}

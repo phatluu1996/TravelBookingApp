@@ -16,6 +16,8 @@ import {
     faBaby,
     faMale,
     faChair,
+    faHotel,
+    faPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { retrieveProvince } from "../actions/actionLocation";
 import $ from 'jquery';
@@ -218,7 +220,7 @@ const Home = (props) => {
         var form = e.target;
         const today = new Date();
 
-        if (validateHtl(form)) {
+        if (validateHtl(form, "hotel-search")) {
             history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
                 }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
                 }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
@@ -232,28 +234,37 @@ const Home = (props) => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmitFlight = (e) => {
         e.preventDefault();
         // console.log(props);
 
         var form = e.target;
 
-        if (validateFlt(form)) {
-            if(form.returnDate.value){
-                history.push(`/flight-round-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`); 
-            }else{
-                history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`); 
+        if (validateFlt(form, "flight-search")) {
+            if (form.returnDate.value) {
+                history.push(`/flight-round-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
+            } else {
+                history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
             }
-            
+
         }
     };
 
-    const validateFlt = (form) => {
-        var err = {...errFlt};
+    const handleSubmitBoth = (e) => {
+        e.preventDefault();
+        var form = e.target;
+        validateFlt(form, "hotel-flight-search");//Validate form with classname "hotel-flight-search"
+        validateHtl(form, "hotel-flight-search");//Validate form with classname "hotel-flight-search"
+
+
+    }
+
+    const validateFlt = (form, formSelector) => {
+        var err = { ...errFlt };
         if (!form.from.value) {
             err.from = 'Departure City cannot be empty';
             form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
-            $("#from-error")[0].innerText = err.from;
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
         } else {
             err.from = '';
         }
@@ -261,15 +272,30 @@ const Home = (props) => {
         if (!form.to.value) {
             err.to = 'Arrival City cannot be empty';
             form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
-            $("#to-error")[0].innerText = err.to;
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
         } else {
             err.to = '';
+        }
+
+        if (form.from.value && form.to.value) {
+            if (form.from.value === form.to.value) {
+                err.to = 'Arrival City must be different then Departure City';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+
+                err.from = 'Departure City must be different then Arrival City';
+                form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
+            } else {
+                err.from = '';
+                err.to = '';
+            }
         }
 
         if (!form.departureDate.value) {
             err.departureDate = 'Departure Date City cannot be empty';
             form.departureDate.parentElement.classList.add("is-invalid");
-            $("#departureDate-error")[0].innerText = err.departureDate;
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         } else {
             err.departureDate = '';
         }
@@ -281,12 +307,12 @@ const Home = (props) => {
         return true;
     }
 
-    const validateHtl = (form) => {
-            var err = {...errHlt}
+    const validateHtl = (form, formSelector) => {
+        var err = { ...errHlt }
         if (form.province.value === "0") {
             err.province = 'Province cannot be empty';
             form.province.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
-            $("#province-error")[0].innerText = err.province;
+            $(`.${formSelector} #province-error`)[0].innerText = err.province;
         } else {
             err.province = '';
         }
@@ -294,7 +320,7 @@ const Home = (props) => {
         if (!form.checkInDate.value) {
             err.checkin = 'Checkin date cannot be empty';
             form.checkInDate.parentElement.classList.add("is-invalid");
-            $("#checkin-error")[0].innerText = err.checkin;
+            $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
         } else {
             err.checkin = '';
         }
@@ -302,12 +328,12 @@ const Home = (props) => {
         if (!form.checkOutDate.value) {
             err.checkout = 'Checkout date cannot be empty';
             form.checkOutDate.parentElement.classList.add("is-invalid");
-            $("#checkout-error")[0].innerText = err.checkout;
+            $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
         } else {
             err.checkout = '';
         }
 
-        if(err.province || err.checkin || err.checkout){
+        if (err.province || err.checkin || err.checkout) {
             setErrHlt(err);
             return false;
         }
@@ -365,16 +391,13 @@ const Home = (props) => {
                         <div className="page-search full-width-search search-type-b">
                             <div className="search-type-padding">
                                 <nav className="page-search-tabs">
-                                    <div className="search-tab active">Hotels</div>
-                                    <div className="search-tab ">FLights</div>
+                                    <div className="search-tab active" title="Hotel Booking"><FontAwesomeIcon icon={faHotel} color="#fac807"></FontAwesomeIcon></div>
+                                    <div className="search-tab" title="Flight Booking"><FontAwesomeIcon icon={faPlane} color="#007bff"></FontAwesomeIcon></div>
+                                    <div className="search-tab" title="Cheap Combo Hotel + Flight"><FontAwesomeIcon icon={faHotel} color="#fac807"></FontAwesomeIcon> + <FontAwesomeIcon icon={faPlane} color="#007bff"></FontAwesomeIcon></div>
                                     <div className="clear"></div>
                                 </nav>
                                 <div className="page-search-content">
-                                    <form
-                                        onSubmit={handleSubmitHotel}
-                                        className=" search-tab-content"
-                                        autoComplete="false"
-                                    >
+                                    <form onSubmit={handleSubmitHotel} className="hotel-search search-tab-content" autoComplete="off">
                                         <div className="page-search-p">
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line no-margin-bottom">
@@ -436,7 +459,7 @@ const Home = (props) => {
                                                                         {item.name}
                                                                     </option>
                                                                 ))}
-                                                            </select>                                                            
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -451,7 +474,8 @@ const Home = (props) => {
                                                                 id="checkInDate"
                                                                 type="text"
                                                                 className="date-inpt"
-                                                                placeholder="dd/mm/yy"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -465,7 +489,8 @@ const Home = (props) => {
                                                                 id="checkOutDate"
                                                                 type="text"
                                                                 className="date-inpt"
-                                                                placeholder="dd/mm/yy"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -532,7 +557,7 @@ const Home = (props) => {
                                         </footer>
                                     </form>
 
-                                    <form onSubmit={handleSubmit} className="search-tab-content" autoComplete="false">
+                                    <form onSubmit={handleSubmitFlight} className="flight-search search-tab-content" autoComplete="off">
                                         <div className="page-search-p">
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line no-margin-bottom">
@@ -545,10 +570,7 @@ const Home = (props) => {
                                                                 id="departure-city"
                                                             >
                                                                 {province.properties.map((province) => (
-                                                                    <option
-                                                                        key={province.value}
-                                                                        value={province.value}
-                                                                    >
+                                                                    <option key={province.value} value={province.value} >
                                                                         {province.label}{" "}
                                                                         {province.value
                                                                             ? "(" + province.value + ")"
@@ -562,16 +584,9 @@ const Home = (props) => {
                                                     <div className="srch-tab-right transformed">
                                                         <label>To</label>
                                                         <div className="select-wrapper">
-                                                            <select
-                                                                className="custom-select"
-                                                                name="to"
-                                                                id="arrival-city"
-                                                            >
+                                                            <select className="custom-select" name="to" id="arrival-city" >
                                                                 {province.properties.map((province) => (
-                                                                    <option
-                                                                        key={province.value}
-                                                                        value={province.value}
-                                                                    >
+                                                                    <option key={province.value} value={province.value} >
                                                                         {province.label}{" "}
                                                                         {province.value
                                                                             ? "(" + province.value + ")"
@@ -597,6 +612,7 @@ const Home = (props) => {
                                                                 name="departureDate"
                                                                 id="departureDate"
                                                                 placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -611,6 +627,7 @@ const Home = (props) => {
                                                                 name="returnDate"
                                                                 id="returnDate"
                                                                 placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -684,6 +701,305 @@ const Home = (props) => {
                                             <button type="submit" className="srch-btn">
                                                 Search
                                             </button>
+                                            <div className="clear"></div>
+                                        </footer>
+                                    </form>
+
+                                    <form onSubmit={handleSubmitBoth} className="hotel-flight-search search-tab-content" autoComplete="off">
+                                        <div className="page-search-p">
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-left transformed">
+                                                        <label>From</label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                className="custom-select"
+                                                                name="from"
+                                                                id="departure-city"
+                                                            >
+                                                                {province.properties.map((province) => (
+                                                                    <option key={province.value} value={province.value} >
+                                                                        {province.label}{" "}
+                                                                        {province.value
+                                                                            ? "(" + province.value + ")"
+                                                                            : ""}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                            <div className="booking-error-input" id="from-error"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-right transformed">
+                                                        <label>To</label>
+                                                        <div className="select-wrapper">
+                                                            <select className="custom-select" name="to" id="arrival-city" >
+                                                                {province.properties.map((province) => (
+                                                                    <option key={province.value} value={province.value} >
+                                                                        {province.label}{" "}
+                                                                        {province.value
+                                                                            ? "(" + province.value + ")"
+                                                                            : ""}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div className="booking-error-input" id="to-error"></div>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-3c">
+                                                        <label>Departure</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                type="text"
+                                                                className="date-inpt"
+                                                                name="departureDate"
+                                                                // id="departureDate"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
+                                                            />{" "}
+                                                            <span className="date-icon"></span>
+                                                        </div>
+                                                        <div className="booking-error-input" id="departureDate-error"></div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>Return</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                type="text"
+                                                                className="date-inpt"
+                                                                name="returnDate"
+                                                                // id="returnDate"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
+                                                            />{" "}
+                                                            <span className="date-icon"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>seat class </label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                className="custom-select"
+                                                                name="seatClass"
+                                                                id="seatClass"
+                                                            >
+                                                                {seatClass.properties.map((item) => (
+                                                                    <option key={item.value} value={item.value}>
+                                                                        {item.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-3c">
+                                                        <label>Adult</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                name="adult"
+                                                                type="number"
+                                                                defaultValue={1}
+                                                                min="1"
+                                                                max="7"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>Child</label>
+
+                                                        <div className="input-a">
+                                                            <input
+                                                                name="child"
+                                                                type="number"
+                                                                defaultValue={0}
+                                                                min="0"
+                                                                max="6"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>Infant</label>
+
+                                                        <div className="input-a">
+                                                            <input
+                                                                name="infant"
+                                                                type="number"
+                                                                defaultValue={0}
+                                                                max="6"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="clear"></div>
+                                        </div>
+                                        <div className="page-search-p">
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-3c">
+                                                        <label>Province</label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                onChange={onChangeProvince}
+                                                                className="custom-select"
+                                                                name="province"
+                                                                id="provinces"
+                                                            >
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
+                                                                {props.provinces?.data?.map((item) => (
+                                                                    <option key={item.id} value={item.id}>
+                                                                        {item.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                            <div className="booking-error-input" id="province-error"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>District</label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                onChange={onChangeDistrict}
+                                                                className="custom-select"
+                                                                name="district"
+                                                                id="districts"
+                                                            >
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
+                                                                {selectProvince?.districts?.map((item) => (
+                                                                    <option key={item.id} value={item.id}>
+                                                                        {item.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>Ward</label>
+                                                        <div className="select-wrapper">
+                                                            <select
+                                                                className="custom-select"
+                                                                name="ward"
+                                                                id="wards"
+                                                                onChange={onChangeWard}
+                                                            >
+                                                                <option key={0} value={0}>
+                                                                    --
+                                                                </option>
+                                                                {selectDistrict?.wards?.map((item) => (
+                                                                    <option key={item.id} value={item.id}>
+                                                                        {item.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-left">
+                                                        <label>Check in</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                name="checkInDate"
+                                                                // id="checkInDate"
+                                                                type="text"
+                                                                className="date-inpt"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
+                                                            />{" "}
+                                                            <span className="date-icon"></span>
+                                                        </div>
+                                                        <div className="booking-error-input" id="checkin-error"></div>
+                                                    </div>
+                                                    <div className="srch-tab-right">
+                                                        <label>Check out</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                name="checkOutDate"
+                                                                // id="checkOutDate"
+                                                                type="text"
+                                                                className="date-inpt"
+                                                                placeholder="mm/dd/yy"
+                                                                autoComplete={"off"}
+                                                            />{" "}
+                                                            <span className="date-icon"></span>
+                                                        </div>
+                                                        <div className="booking-error-input" id="checkout-error"></div>
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="search-large-i">
+                                                <div className="srch-tab-line no-margin-bottom">
+                                                    <div className="srch-tab-3c">
+                                                        <label>Rooms</label>
+
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="roomHotel"
+                                                                name="roomHotel"
+                                                                type="number"
+                                                                defaultValue={1}
+                                                                min="1"
+                                                                max="30"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div className="srch-tab-3c">
+                                                        <label>adult</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="adultHotel"
+                                                                name="adultHotel"
+                                                                type="number"
+                                                                defaultValue={1}
+                                                                min="1"
+                                                                max="7"
+                                                            />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className="srch-tab-3c">
+                                                        <label>Child</label>
+                                                        <div className="input-a">
+                                                            <input
+                                                                id="childRenHotel"
+                                                                name="childRenHotel"
+                                                                type="number"
+                                                                defaultValue={0}
+                                                                min="0"
+                                                                max="7"
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="clear"></div>
+                                                </div>
+                                            </div>
+
+                                            <div className="clear"></div>
+                                        </div>
+                                        <footer className="search-footer">
+                                            <button className="srch-btn">Search</button>
                                             <div className="clear"></div>
                                         </footer>
                                     </form>
@@ -1028,124 +1344,6 @@ const Home = (props) => {
                     </div>
                     <div className="clear"></div>
                 </div>
-
-                {/* <div className="inform-block">
-                    <div className="wrapper-padding">
-                        <header className="fly-in page-lbl">
-                            <b>helpful information</b>
-                            <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                                aut fugit.
-                            </p>
-                        </header>
-                        <div className="fly-in advantages-row flat">
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-01.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">how to choose a tour</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-02.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">booking of tickets</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-03.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">weekend getaway</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flat-adv large">
-                                <div className="flat-adv-a">
-                                    <div className="flat-adv-l">
-                                        <img alt="" src="img/info-c-04.png" />
-                                    </div>
-                                    <div className="flat-adv-r">
-                                        <div className="flat-adv-rb">
-                                            <div className="flat-adv-b">Traveling with family</div>
-                                            <div className="flat-adv-c">
-                                                Perspiciatis unde omnis iste natus doxes sit voluptatem
-                                                accusantium doloremque la dantiumeaque ipsa.
-                                            </div>
-                                            <a className="flat-adv-btn">Read more</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                </div> */}
-                {/* <div className="tabs">
-                    <div className="typography-heading">tabs</div>
-                    
-                </div> */}
-
-                {/* <div className="travel_experience">
-                    <div className="wrapper-padding">
-                        <header className="fly-in page-lbl">
-                            <b className="offer-slider-lbl">We are Offering the hottest offers</b>
-                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione.</p>
-                        </header>
-                        <div className="t-experience-row fly-in">
-
-                            <div className="t-experience-i">
-                                <div className="t-experience-a"><img alt="" src="img/info-c-01.png" /></div>
-                                <div className="t-experience-b">how to choose a tour</div>
-                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
-                            </div>
-
-                            <div className="t-experience-i">
-                                <div className="t-experience-a"><img alt="" src="img/info-c-02.png" /></div>
-                                <div className="t-experience-b">booking of tickets</div>
-                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
-                            </div>
-
-                            <div className="t-experience-i">
-                                <div className="t-experience-a"><img alt="" src="img/info-c-03.png" /></div>
-                                <div className="t-experience-b">weekend getaway</div>
-                                <div className="t-experience-c">Perspiciatis unde omnis iste natu doxes sit volupta- tem accusa ntium doloremque la dantmea.</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div> */}
-
 
                 <div className="partners-wrapper">
                     <header className="fly-in page-lbl">

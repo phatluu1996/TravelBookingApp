@@ -643,7 +643,7 @@ const FlightSearchPage = (props) => {
                                             <div className="alt-fligt-table fly-in" key={flight.id}>
                                                 <div className="alt-fligt-table-a">
                                                     <div className="alt-fligt-table-img">
-                                                        <a><img alt="" src="img/fl-transp-01.png" /></a>
+                                                        <a><img width="142" alt="" src={flight.airline.image} /></a>
                                                     </div>
                                                     <div className="alt-fligt-table-content">
                                                         <div className="alt-lbl">{provinceLabel(flight.departureCity)} - {provinceLabel(flight.arrivalCity)}</div>

@@ -663,7 +663,7 @@ const FlightSearchPage = (props) => {
                                                                 <div className="alt-center-l">
                                                                     <div className="alt-center-lp">
                                                                         <div className="alt-logo">
-                                                                            <a ><img alt="" src={flight.airline.image} /></a>
+                                                                            <a ><img width="142" alt="" src={flight.airline.image} /></a>
                                                                         </div>
                                                                     </div>
                                                                 </div>

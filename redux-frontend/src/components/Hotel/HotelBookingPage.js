@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { PROPERTY_TYPES } from '@babel/types';
 import { useLocation } from 'react-router-dom';
 import $ from "jquery";
-import moment from 'moment';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
 
