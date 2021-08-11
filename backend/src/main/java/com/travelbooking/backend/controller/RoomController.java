@@ -1,5 +1,6 @@
 package com.travelbooking.backend.controller;
 import java.util.Collection;
+import java.util.List;
 
 import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.models.Room;
@@ -7,19 +8,13 @@ import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.repository.RoomRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 
+import com.travelbooking.backend.specification.RoomSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -38,6 +33,12 @@ public class RoomController {
         return roomRepository.findAll(spec);
     }
 
+    @PostMapping("/ListRoom")
+    public Collection<Room> getRoomWithListId(@RequestBody List<Long> ids) {
+            Specification<?> spec = RoomSpecification.getListRoomByListId(ids,Boolean.FALSE);
+        return roomRepository.findAll(spec);
+    }
+
         //http://localhost:8080/api/room/{id}
         @GetMapping("/room/{id}")
         public ResponseEntity<Room> getRoomById(@PathVariable Long id){
@@ -47,6 +48,7 @@ public class RoomController {
             }
             return  ResponseEntity.ok().body(room);
         }
+
 
         //http://localhost:8080/api/room
         @PostMapping("/room")

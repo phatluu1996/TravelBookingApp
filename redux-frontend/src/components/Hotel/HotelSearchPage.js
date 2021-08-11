@@ -714,7 +714,7 @@ const HotelSearchPage = (props) => {
                               {/* {hotel.rooms[0].roomType} */}
                             </div>
                             <a onClick={() =>
-                              history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}`)
+                              history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&numberAdult=${queryParam.get("numberAdult")}&numberChildren=${queryParam.get("numberChildren")}`)
                             } className="cat-list-btn" >
                               Book now
                             </a>

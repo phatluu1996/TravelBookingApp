@@ -10,9 +10,12 @@ import { fetchHotelById } from "../../actions/actionHotel";
 import { createHotelFeedBack } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
-import Pagination from './Pagination';
-import CheckBox from '@material-ui/core/Checkbox'
-
+import Pagination from "./Pagination";
+import CheckBox from "@material-ui/core/Checkbox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBaby, faCheck, faMale } from "@fortawesome/free-solid-svg-icons";
+import { red } from "@material-ui/core/colors";
+import { getRole, ROLE_USER } from "../../utils";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -29,19 +32,20 @@ const HotelDetailPage = (props) => {
     const [areaText, setAreaText] = useState(null);
     const [countReview, setCountReview] = useState(0);
 
-    const [itemsPerPage, setItemsPerPage] = useState(4);
-    const [pageNumber, setPageNumber] = useState(1);
+    const [totalAdult, setTotalAdult] = useState(0);
+    const [totalChild, setTotalChild] = useState(0);
 
-    const [mapCheck,setMapCheck] = useState(new Map());
+    // const [pageNumber, setPageNumber] = useState(1);
+
+    const [bookingList, setBookingList] = useState([]);
+
+    const [mapCheck, setMapCheck] = useState(new Map());
 
     const [itemsPerPageFB, setItemPerPageFB] = useState(4);
+
     const [pageNumberFB, setPageNumberFB] = useState(1);
 
-
-
-    const user = sessionStorage.getItem("userId")
-
-
+    const user = sessionStorage.getItem("userId");
 
     const customStyles = {
         table: {
@@ -74,22 +78,52 @@ const HotelDetailPage = (props) => {
         console.log(e.target);
     };
 
-    const handleChange = (id) => {
-            var map = {...mapCheck}
-            map.set(id,!map.get(id))
-            setMapCheck(map)
-       }; 
+    const addNewBook = (e) => {
+        if (getRole() != ROLE_USER) {
+            $(".header-account a").click();
+        } else if (
+            totalAdult < parseInt(queryParam.get("numberAdult")) ||
+            totalChild < parseInt(queryParam.get("numberChildren"))
+        ) {
+            alert("Select the number of rooms suitable for the number of people");
+            return [];
+        } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
+            alert("Please select your room");
+            return [];
+        } else {
+        //   console.log( `/hotel-booking?id=${props?.hotel?.data?.id}
+        //   &checkInDate=${queryParam.get("checkInDate")}
+        //   &checkOutDate=${queryParam.get("checkOutDate")}
+        //   &roomIds=${bookingList.join(".")}`)  
+            history.push(
+                `/hotel-booking?id=${props?.hotel?.data?.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
+            );
+            console.log(bookingList);
+        }
+    };
+    const handleChange = (e) => {
+        var totalA = 0;
+        var totalC = 0;
+        var ids = [];
+        console.log(e);
+       
+        e.selectedRows.map((r) => {
+            totalA = totalA + r.maxAdult;
+            totalC = totalC + r.maxChildren;
+            ids.push(r.id);
+        });
+        setTotalAdult(totalA);
+        setTotalChild(totalC);
+        setBookingList(ids);
+    };
+
+    
 
     const roomDetail = [
         {
-            name:'',
-            width:"8%",
-            cell:(room , index) =>  <CheckBox checked={mapCheck?.get(room.id)} onClick={()=>handleChange(room.id)} />
-        },
-        {
             name: "List Room Active",
             cell: (room) => (
-                 <div className="cat-list-item">
+                <div className="cat-list-item">
                     <div className="cat-list-item-l">
                         <a href="#">
                             <img
@@ -117,14 +151,14 @@ const HotelDetailPage = (props) => {
                                                         fugit, sed quia consequuntur magni dolores eos.
                                                     </p>
                                                     {/* <div className="cat-icons">
-                                                                                                            <span className="cat-icon-01 active"></span>
-                                                                                                            <span className="cat-icon-02"></span>
-                                                                                                            <span className="cat-icon-03"></span>
-                                                                                                            <span className="cat-icon-04"></span>
-                                                                                                            <span className="cat-icon-05"></span>
-                                                                                                            <span className="cat-icon-06"></span>
-                                                                                                            <div className="clear"></div>
-                                                                                                        </div> */}
+                                                                                            <span className="cat-icon-01 active"></span>
+                                                                                            <span className="cat-icon-02"></span>
+                                                                                            <span className="cat-icon-03"></span>
+                                                                                            <span className="cat-icon-04"></span>
+                                                                                            <span className="cat-icon-05"></span>
+                                                                                            <span className="cat-icon-06"></span>
+                                                                                            <div className="clear"></div>
+                                                                                        </div> */}
                                                 </div>
                                             </div>
                                             {/* <br className="clear" /> */}
@@ -135,17 +169,10 @@ const HotelDetailPage = (props) => {
                                             <div className="available-price">{room.price}$</div>
                                             <div className="available-price-a">avg/night</div>
                                             <div className="available-price-c">
-                                                {room?.roomStatus ? "Unavailable" : "Available"}
+                                                {room?.roomStatus}
                                             </div>
-                                            <a
-                                                onClick={e => history.push(`/hotel-booking?id=${props?.hotel?.data?.id}
-                                                                                                                            &checkInDate=${queryParam.get("checkInDate")}
-                                                                                                                            &checkOutDate=${queryParam.get("checkOutDate")}
-                                                                                                                            &roomId=${room?.id}
-                                                                                                                            &userId=${props?.user?.data?.id}`)
-                                                } className="available-btn">
-                                                Book now
-                                            </a>
+                                            {/* <CheckBox checked={mapCheck?.get(room.id)} onChange={handleChange(room.id)} /> */}
+                                            {/* <CheckBox checked={mapCheck?.get(room.id)} onClick={e=>handleChange(room.id)} /> */}
                                         </div>
                                     </div>
                                     <div className="clear"></div>
@@ -159,38 +186,28 @@ const HotelDetailPage = (props) => {
             ),
         },
     ];
-    // const feedbackList = [
-    //     {
-    //         name: "",
-    //         width: "200",
-    //         cell: (feedback) => (
 
-
-    //         ),
-    //     },
-    // ];
-
-    const setPageNum = (number) => setPageNumber(number);
+    // const setPageNum = (number) => setPageNumber(number);
 
     const getPagination = (list = [], page, itemsPerPage) => {
         if (!Array.isArray(list) || list.length === 0) {
             return [];
         }
         const startIdx = (page - 1) * itemsPerPage;
-        const endIdx = (startIdx + itemsPerPage - 1) + 1;
+        const endIdx = startIdx + itemsPerPage - 1 + 1;
 
         return list.slice(startIdx, endIdx);
     };
-   
-      
 
     const addNewReview = (e) => {
         var reviews = [];
         var avg = 0;
-        $('.review-ranger').each(function () {
+        $(".review-ranger").each(function () {
             var $this = $(this);
             // var $index = $(this).index();
-            reviews.push(parseFloat($this.find('.slider-range-min')[0].children[1].innerText));
+            reviews.push(
+                parseFloat($this.find(".slider-range-min")[0].children[1].innerText)
+            );
         });
 
         for (let index = 0; index < reviews.length; index++) {
@@ -202,14 +219,13 @@ const HotelDetailPage = (props) => {
             feedback: areaText,
             retired: false,
             user: props?.user?.data,
-            hotel: props?.hotel?.data
-        }
-
-        console.log(data)
-        props.addFeedBack(data)
+            hotel: props?.hotel?.data,
+        };
+        console.log(data);
+        props.addFeedBack(data);
         setLoading(true);
         // }
-    }
+    };
 
     useEffect(() => {
         let mount = false;
@@ -217,7 +233,7 @@ const HotelDetailPage = (props) => {
         props.getUser(user);
         props.getHotel(queryParam.get("id"));
         importAll();
-        
+
         return () => {
             mount = true;
         };
@@ -225,24 +241,23 @@ const HotelDetailPage = (props) => {
 
     useEffect(() => {
         let mount = false;
-        if (props.hotel.data) {
-            setJquery(true);
-            if(mapCheck.size === 0){
-                var map = new Map();
-            
-                props.hotel?.data?.rooms?.map(room => 
-                    map.set(room.id,false)
-                )
-                setMapCheck(map)
-            }
-        }
+
         if (jquery) {
             importAll();
-            let count = 0;
-            for (let index = 0; index < props.hotel?.data?.feedbackList?.length; index++) {
-                count++;
+            if (props.hotel.data) {
+                setJquery(true);
+                if (mapCheck.size === 0) {
+                    var map = new Map();
+
+                    props.hotel?.data?.rooms?.map((room) => map.set(room.id, false));
+                    setMapCheck(map);
+                }
             }
-            setCountReview(count);
+            // let count = 0;
+            // for (let index = 0; index < props.hotel?.data?.feedbackList?.length; index++) {
+            //     count++;
+            // }
+            // setCountReview(count);
         }
 
         return () => {
@@ -280,20 +295,6 @@ const HotelDetailPage = (props) => {
                                                             <span className="clear"></span>
                                                         </a>
                                                     </div>
-                                                    {/* <div className="h-tab-i">
-                                                        <a href="#" className="h-tab-item-02">
-                                                            <i></i>
-                                                            <span>map</span>
-                                                            <span className="clear"></span>
-                                                        </a>
-                                                    </div> */}
-                                                    {/* <div className="h-tab-i">
-                                                        <a href="#" className="h-tab-item-03">
-                                                            <i></i>
-                                                            <span>calendar</span>
-                                                            <span className="clear"></span>
-                                                        </a>
-                                                    </div> */}
                                                 </div>
                                                 <div className="h-tabs-right">
                                                     <a
@@ -776,22 +777,74 @@ const HotelDetailPage = (props) => {
                                                     <div className="content-tabs-i">
                                                         {/* <h2>Your Travel Rates</h2> */}
                                                         <div className="rates-search">
-                                                          
-
+                                                            <h2>
+                                                                *Select the number of rooms suitable for the
+                                                                number of people{" "}
+                                                            </h2>
+                                                            <h2
+                                                                style={
+                                                                    totalAdult <
+                                                                        parseInt(queryParam.get("numberAdult"))
+                                                                        ? { color: "red" }
+                                                                        : {}
+                                                                }
+                                                            >
+                                                                <FontAwesomeIcon
+                                                                    icon={faMale}
+                                                                ></FontAwesomeIcon>
+                                                                {totalAdult}/{queryParam.get("numberAdult")}
+                                                            </h2>
+                                                            <h2
+                                                                hidden={
+                                                                    parseInt(queryParam.get("numberChildren")) ===
+                                                                        0
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                                style={
+                                                                    totalChild <
+                                                                        parseInt(queryParam.get("numberChildren"))
+                                                                        ? { color: "red" }
+                                                                        : {}
+                                                                }
+                                                            >
+                                                                <FontAwesomeIcon
+                                                                    icon={faBaby}
+                                                                ></FontAwesomeIcon>
+                                                                {totalChild}/{queryParam.get("numberChildren")}
+                                                            </h2>
                                                             <div className="available-row">
-                                                                
-                                                                <DataTable 
+                                                                <DataTable
                                                                     columns={roomDetail}
                                                                     data={props.hotel?.data?.rooms}
                                                                     customStyles={customStyles}
                                                                     pagination
                                                                     paginationPerPage={4}
-                                                                    // selectableRowsComponent={CheckBox} 
+                                                                    // selectableRowsComponent={CheckBox}
                                                                     selectableRows={true}
                                                                     // Clicked
-                                                                    // onSelectedRowsChange={handleChange}
-
+                                                                    onSelectedRowsChange={handleChange}
                                                                 />
+                                                                <a
+                                                                    onClick={(e) => addNewBook()}
+                                                                    className="book-btn"
+                                                                >
+                                                                    <span className="book-btn-l">
+                                                                        <FontAwesomeIcon
+                                                                            icon={faCheck}
+                                                                            style={{
+                                                                                display: "block",
+                                                                                color: "white",
+                                                                                float: "left",
+                                                                                margin: "17px 0px 0px 14px",
+                                                                                width: "12px",
+                                                                                height: "8px",
+                                                                            }}
+                                                                        />
+                                                                    </span>
+                                                                    <span className="book-btn-r">Book now</span>
+                                                                    <div className="clear"></div>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -901,7 +954,7 @@ const HotelDetailPage = (props) => {
                                                                                 <span
                                                                                     style={{
                                                                                         width: `${(props.hotel.data?.hotelRating *
-                                                                                            100) /
+                                                                                                100) /
                                                                                             5
                                                                                             }%`,
                                                                                     }}
@@ -1024,105 +1077,127 @@ const HotelDetailPage = (props) => {
                                                             <div className="guest-reviews">
                                                                 <h2>Guest Reviews</h2>
                                                                 <div className="guest-reviews-row">
-                                                                    {
-                                                                        getPagination(props.hotel?.data?.hotelFeedBacks, pageNumberFB, itemsPerPageFB).map(
-                                                                            feedback =>
-                                                                                <div className="guest-reviews-i">
-                                                                                    <div className="guest-reviews-a">
-                                                                                        <div className="guest-reviews-l">
-                                                                                            <div className="guest-reviews-img">
-                                                                                                <span>{feedback?.rating}</span>
-                                                                                                <img alt="" src="img/guest-01.png" />
+                                                                    {getPagination(
+                                                                        props.hotel?.data?.hotelFeedBacks,
+                                                                        pageNumberFB,
+                                                                        itemsPerPageFB
+                                                                    ).map((feedback) => (
+                                                                        <div className="guest-reviews-i">
+                                                                            <div className="guest-reviews-a">
+                                                                                <div className="guest-reviews-l">
+                                                                                    <div className="guest-reviews-img">
+                                                                                        <span>{feedback?.rating}</span>
+                                                                                        <img
+                                                                                            alt=""
+                                                                                            src="img/guest-01.png"
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="guest-reviews-r">
+                                                                                    <div className="guest-reviews-rb">
+                                                                                        <div className="guest-reviews-b">
+                                                                                            <div className="guest-reviews-bl">
+                                                                                                <div className="guest-reviews-blb">
+                                                                                                    <div className="guest-reviews-lbl">
+                                                                                                        {feedback?.user?.lastName}{" "}
+                                                                                                        {feedback?.user?.firstName}
+                                                                                                    </div>
+                                                                                                    <div className="guest-reviews-lbl-a">
+                                                                                                        from{" "}
+                                                                                                        {
+                                                                                                            feedback?.user?.location
+                                                                                                                ?.province?.name
+                                                                                                        }
+                                                                                                    </div>
+                                                                                                    <div className="guest-reviews-txt">
+                                                                                                        {feedback?.feedback}
+                                                                                                    </div>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="guest-reviews-r">
-                                                                                            <div className="guest-reviews-rb">
-                                                                                                <div className="guest-reviews-b">
-                                                                                                    <div className="guest-reviews-bl">
-                                                                                                        <div className="guest-reviews-blb">
-                                                                                                            <div className="guest-reviews-lbl">
-                                                                                                                {feedback?.user?.lastName} {feedback?.user?.firstName}
-                                                                                                            </div>
-                                                                                                            <div className="guest-reviews-lbl-a">
-                                                                                                                from {feedback?.user?.location?.province?.name}
-                                                                                                            </div>
-                                                                                                            <div className="guest-reviews-txt">
-                                                                                                                {feedback?.feedback}
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        {/* <br className="clear" /> */}
-                                                                                                    </div>
+                                                                                        <div className="guest-reviews-br">
+                                                                                            <div className="guest-reviews-padding">
+                                                                                                <nav>
+                                                                                                    <ul>
+                                                                                                        {[...Array(5)].map(
+                                                                                                            (item, index) =>
+                                                                                                                // {
+                                                                                                                index + 1 >
+                                                                                                                    Math.ceil(
+                                                                                                                        feedback?.rating
+                                                                                                                    ) ? (
+                                                                                                                    <li key={index}>
+                                                                                                                        <a>
+                                                                                                                            <img
+                                                                                                                                alt=""
+                                                                                                                                src="img/star-a.png"
+                                                                                                                            />
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                ) : (
+                                                                                                                    <li key={index}>
+                                                                                                                        <a>
+                                                                                                                            <img
+                                                                                                                                alt=""
+                                                                                                                                src="img/star-b.png"
+                                                                                                                            />
+                                                                                                                        </a>
+                                                                                                                    </li>
+                                                                                                                )
+                                                                                                            // }
+                                                                                                        )}
+                                                                                                    </ul>
+                                                                                                </nav>
+                                                                                                <div className="guest-rating">
+                                                                                                    {feedback?.rating}/5.0
                                                                                                 </div>
-                                                                                                <div className="guest-reviews-br">
-                                                                                                    <div className="guest-reviews-padding">
-                                                                                                        <nav>
-                                                                                                            <ul>
-                                                                                                                {[...Array(5)].map(
-                                                                                                                    (item, index) =>
-                                                                                                                        // {
-                                                                                                                        index + 1 > Math.ceil(feedback?.rating) ? (
-                                                                                                                            <li key={index}>
-                                                                                                                                <a>
-                                                                                                                                    <img alt="" src="img/star-a.png" />
-                                                                                                                                </a>
-                                                                                                                            </li>
-                                                                                                                        ) : (
-                                                                                                                            <li key={index}>
-                                                                                                                                <a>
-                                                                                                                                    <img alt="" src="img/star-b.png" />
-                                                                                                                                </a>
-                                                                                                                            </li>
-                                                                                                                        )
-                                                                                                                    // }
-                                                                                                                )}
-                                                                                                            </ul>
-                                                                                                        </nav>
-                                                                                                        <div className="guest-rating">{feedback?.rating}/5.0</div>
-                                                                                                        <div className="clear"></div>
-                                                                                                        <div className="guest-rating-txt">Recomended</div>
-                                                                                                    </div>
+                                                                                                <div className="clear"></div>
+                                                                                                <div className="guest-rating-txt">
+                                                                                                    Recomended
                                                                                                 </div>
                                                                                             </div>
-                                                                                            {/* <br className="clear" /> */}
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="clear"></div>
+                                                                                    {/* <br className="clear" /> */}
                                                                                 </div>
-                                                                        )
-                                                                    }
+                                                                            </div>
+                                                                            <div className="clear"></div>
+                                                                        </div>
+                                                                    ))}
                                                                 </div>
-                                                                {/* <DataTable
-                                                                    // striped="false"
-                                                                    columns={feedbackList}
-                                                                    data={props?.hotel?.data?.hotelFeedBacks}
-                                                                    // style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}
-                                                                    customStyles={customStyles}
-                                                                    pagination
-                                                                    paginationPerPage={3}
-                                                                /> */}
-
-                                                                <Pagination itemsPerPage={itemsPerPageFB} listItem={props?.hotel?.data?.rooms?.length} setPageNum={setPageNum} />
-                                                                <div hidden={user ? false : true} className="review-form">
+                                                                <Pagination
+                                                                    itemsPerPage={itemsPerPageFB}
+                                                                    listItem={props?.hotel?.data?.rooms?.length}
+                                                                    setPageNum={setPageNumberFB}
+                                                                />
+                                                                <div
+                                                                    hidden={user ? false : true}
+                                                                    className="review-form"
+                                                                >
                                                                     <h2>Live Review</h2>
-                                                                    {/* <label>User Name:</label>
-                                  <div className="input-a">
-                                    <input type="text" placeholder="" />
-                                  </div> */}
+
                                                                     <label>Your Review:</label>
                                                                     <div className="textarea-a">
-                                                                        <textarea id="feedbackTxt" value={areaText} onDurationChange={e => setAreaText(e.target.value)} name="feedbackTxt" placeholder="Write some thing...."></textarea>
+                                                                        <textarea
+                                                                            id="feedbackTxt"
+                                                                            value={areaText}
+                                                                            onDurationChange={(e) =>
+                                                                                setAreaText(e.target.value)
+                                                                            }
+                                                                            name="feedbackTxt"
+                                                                            placeholder="Write some thing...."
+                                                                        ></textarea>
                                                                     </div>
 
                                                                     <div className="review-rangers-row">
                                                                         <div className="review-ranger">
                                                                             <label>Cleanlines</label>
                                                                             <div className="review-ranger-r">
-                                                                                <div className="slider-range-min">
-                                                                                </div>
+                                                                                <div className="slider-range-min"></div>
                                                                             </div>
                                                                             <div className="clear"></div>
                                                                         </div>
-                                                                     
+
                                                                         <div className="review-ranger">
                                                                             <label>Service & Stuff</label>
                                                                             <div className="review-ranger-r">
@@ -1159,298 +1234,16 @@ const HotelDetailPage = (props) => {
                                                                             <div className="clear"></div>
                                                                         </div>
                                                                     </div>
-
-                                                                    {/* <label>Evaluation</label>
-                                                                    <select className="custom-select">
-                                                                        <option>&nbsp;</option>
-                                                                        <option>1</option>
-                                                                        <option>2</option>
-                                                                        <option>3</option>
-                                                                        <option>4</option>
-                                                                    </select>
-                                                                    <label>When did you travel?</label>
-                                                                    <div className="input-a"><input type="text" value="" /></div> */}
-                                                                    <button className="review-send" onClick={addNewReview} >
+                                                                    <button
+                                                                        className="review-send"
+                                                                        onClick={addNewReview}
+                                                                    >
                                                                         Submit Review
                                                                     </button>
                                                                 </div>
-
-                                                                {/* </form> */}
-
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {/* <div className="content-tabs-i">
-                                                        <h2>Things to do</h2>
-                                                        <p className="small">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
-                                                        <div className="todo-devider"></div>
-                                                        <div className="todo-row">
-
-                                                            <div className="cat-list-item">
-                                                                <div className="cat-list-item-l">
-                                                                    <a href="#"><img alt="" src="img/todo-01.jpg" /></a>
-                                                                </div>
-                                                                <div className="cat-list-item-r">
-                                                                    <div className="cat-list-item-rb">
-                                                                        <div className="cat-list-item-p">
-                                                                            <div className="cat-list-content">
-                                                                                <div className="cat-list-content-a">
-                                                                                    <div className="cat-list-content-l">
-                                                                                        <div className="cat-list-content-lb">
-                                                                                            <div className="cat-list-content-lpadding">
-                                                                                                <div className="offer-slider-link"><a href="#">Totam rem aperiam, eaque ipsa quae</a></div>
-                                                                                                <div className="offer-rate">Exelent</div>
-                                                                                                <p>Voluptatem quia voluptas sit aspernatur aut odit  aut figut, sed quia consequuntur magni dolores eos qui  voluptatem sequi nescuint. Neque porro quisqua. Sed ut perspiciatis  unde omnis ste.</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br className="clear" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="cat-list-content-r">
-                                                                                    <div className="cat-list-content-p">
-                                                                                        <nav className="stars">
-                                                                                            <ul>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                            </ul>
-                                                                                            <div className="clear"></div>
-                                                                                        </nav>
-                                                                                        <div className="cat-list-review">31 reviews</div>
-                                                                                        <a href="#" className="todo-btn">Read more</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <br className="clear" />
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div>
-
-
-                                                            <div className="cat-list-item">
-                                                                <div className="cat-list-item-l">
-                                                                    <a href="#"><img alt="" src="img/todo-02.jpg" /></a>
-                                                                </div>
-                                                                <div className="cat-list-item-r">
-                                                                    <div className="cat-list-item-rb">
-                                                                        <div className="cat-list-item-p">
-                                                                            <div className="cat-list-content">
-                                                                                <div className="cat-list-content-a">
-                                                                                    <div className="cat-list-content-l">
-                                                                                        <div className="cat-list-content-lb">
-                                                                                            <div className="cat-list-content-lpadding">
-                                                                                                <div className="offer-slider-link"><a href="#">Invertore veitatis et quasi architecto</a></div>
-                                                                                                <div className="offer-rate">Exelent</div>
-                                                                                                <p>Voluptatem quia voluptas sit aspernatur aut odit  aut figut, sed quia consequuntur magni dolores eos qui  voluptatem sequi nescuint. Neque porro quisqua. Sed ut perspiciatis  unde omnis ste.</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br className="clear" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="cat-list-content-r">
-                                                                                    <div className="cat-list-content-p">
-                                                                                        <nav className="stars">
-                                                                                            <ul>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                            </ul>
-                                                                                            <div className="clear"></div>
-                                                                                        </nav>
-                                                                                        <div className="cat-list-review">31 reviews</div>
-                                                                                        <a href="#" className="todo-btn">Read more</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <br className="clear" />
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div>
-
-
-                                                            <div className="cat-list-item">
-                                                                <div className="cat-list-item-l">
-                                                                    <a href="#"><img alt="" src="img/todo-03.jpg" /></a>
-                                                                </div>
-                                                                <div className="cat-list-item-r">
-                                                                    <div className="cat-list-item-rb">
-                                                                        <div className="cat-list-item-p">
-                                                                            <div className="cat-list-content">
-                                                                                <div className="cat-list-content-a">
-                                                                                    <div className="cat-list-content-l">
-                                                                                        <div className="cat-list-content-lb">
-                                                                                            <div className="cat-list-content-lpadding">
-                                                                                                <div className="offer-slider-link"><a href="#">Dolores eos qui ratione voluptatem</a></div>
-                                                                                                <div className="offer-rate">Exelent</div>
-                                                                                                <p>Voluptatem quia voluptas sit aspernatur aut odit  aut figut, sed quia consequuntur magni dolores eos qui  voluptatem sequi nescuint. Neque porro quisqua. Sed ut perspiciatis  unde omnis ste.</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br className="clear" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="cat-list-content-r">
-                                                                                    <div className="cat-list-content-p">
-                                                                                        <nav className="stars">
-                                                                                            <ul>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                            </ul>
-                                                                                            <div className="clear"></div>
-                                                                                        </nav>
-                                                                                        <div className="cat-list-review">31 reviews</div>
-                                                                                        <a href="#" className="todo-btn">Read more</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <br className="clear" />
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div>
-
-
-                                                            <div className="cat-list-item">
-                                                                <div className="cat-list-item-l">
-                                                                    <a href="#"><img alt="" src="img/todo-04.jpg" /></a>
-                                                                </div>
-                                                                <div className="cat-list-item-r">
-                                                                    <div className="cat-list-item-rb">
-                                                                        <div className="cat-list-item-p">
-                                                                            <div className="cat-list-content">
-                                                                                <div className="cat-list-content-a">
-                                                                                    <div className="cat-list-content-l">
-                                                                                        <div className="cat-list-content-lb">
-                                                                                            <div className="cat-list-content-lpadding">
-                                                                                                <div className="offer-slider-link"><a href="#">Neque porro quisquaem est qui dolorem</a></div>
-                                                                                                <div className="offer-rate">Exelent</div>
-                                                                                                <p>Voluptatem quia voluptas sit aspernatur aut odit  aut figut, sed quia consequuntur magni dolores eos qui  voluptatem sequi nescuint. Neque porro quisqua. Sed ut perspiciatis  unde omnis ste.</p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br className="clear" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="cat-list-content-r">
-                                                                                    <div className="cat-list-content-p">
-                                                                                        <nav className="stars">
-                                                                                            <ul>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                               <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                                <li><a href="#"><img alt="" src="img/todostar-a.png" /></a></li>
-                                                                                            </ul>
-                                                                                            <div className="clear"></div>
-                                                                                        </nav>
-                                                                                        <div className="cat-list-review">31 reviews</div>
-                                                                                        <a href="#" className="todo-btn">Read more</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="clear"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <br className="clear" />
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div>
-
-                                                        </div>
-                                                        <a href="#" className="guest-reviews-more">Load more reviews</a>
-                                                    </div> */}
-
-                                                    {/* <div className="content-tabs-i">
-                                                        <h2>FAQ</h2>
-                                                        <p className="small">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
-                                                        <div className="todo-devider"></div>
-                                                        <div className="faq-row">
-
-                                                            <div className="faq-item">
-                                                                <div className="faq-item-a">
-                                                                    <span className="faq-item-left">Totam rem aperiam, eaquie ipsa quae?</span>
-                                                                    <span className="faq-item-i"></span>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="faq-item-b">
-                                                                    <div className="faq-item-p">
-                                                                        Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia aspernatur aut odit aut fugit consequuntur magni dolores eos qui voluptatem sequi nesciunt. aspernatur aut odit aut fugit
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="faq-item">
-                                                                <div className="faq-item-a">
-                                                                    <span className="faq-item-left">Dolores eos qui ratione voluptatem sequi nescuin?</span>
-                                                                    <span className="faq-item-i"></span>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="faq-item-b">
-                                                                    <div className="faq-item-p">
-                                                                        Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia aspernatur aut odit aut fugit consequuntur magni dolores eos qui voluptatem sequi nesciunt. aspernatur aut odit aut fugit
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="faq-item">
-                                                                <div className="faq-item-a">
-                                                                    <span className="faq-item-left">Neque porro quisquam est, qui dolorem ipsum?</span>
-                                                                    <span className="faq-item-i"></span>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="faq-item-b">
-                                                                    <div className="faq-item-p">
-                                                                        Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia aspernatur aut odit aut fugit consequuntur magni dolores eos qui voluptatem sequi nesciunt. aspernatur aut odit aut fugit
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="faq-item">
-                                                                <div className="faq-item-a">
-                                                                    <span className="faq-item-left">Dolor sit amet consectutur adipisci velit, sed?</span>
-                                                                    <span className="faq-item-i"></span>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="faq-item-b">
-                                                                    <div className="faq-item-p">
-                                                                        Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia aspernatur aut odit aut fugit consequuntur magni dolores eos qui voluptatem sequi nesciunt. aspernatur aut odit aut fugit
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div className="faq-item">
-                                                                <div className="faq-item-a">
-                                                                    <span className="faq-item-left">Consectetur, adipisci velit, sed quia non numquam?</span>
-                                                                    <span className="faq-item-i"></span>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="faq-item-b">
-                                                                    <div className="faq-item-p">
-                                                                        Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia aspernatur aut odit aut fugit consequuntur magni dolores eos qui voluptatem sequi nesciunt. aspernatur aut odit aut fugit
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -1462,15 +1255,21 @@ const HotelDetailPage = (props) => {
                             <div className="sp-page-r">
                                 <div className="h-detail-r">
                                     <div className="h-detail-lbl">
-                                        <div className="h-detail-lbl-a">{props.hotel?.data?.hotelName}</div>
-                                        <div className="h-detail-lbl-b">{props.hotel?.data?.location?.street},{props.hotel?.data?.location?.province?.name}</div>
+                                        <div className="h-detail-lbl-a">
+                                            {props.hotel?.data?.hotelName}
+                                        </div>
+                                        <div className="h-detail-lbl-b">
+                                            {props.hotel?.data?.location?.street},
+                                            {props.hotel?.data?.location?.province?.name}
+                                        </div>
                                     </div>
                                     <div className="h-detail-stars">
                                         <ul className="h-stars-list">
                                             {[...Array(5)].map(
                                                 (item, index) =>
                                                     // {
-                                                    index + 1 > Math.ceil(props.hotel?.data?.hotelRating) ? (
+                                                    index + 1 >
+                                                        Math.ceil(props.hotel?.data?.hotelRating) ? (
                                                         <li key={index}>
                                                             <a>
                                                                 <img alt="" src="img/star-a.png" />
@@ -1485,11 +1284,13 @@ const HotelDetailPage = (props) => {
                                                     )
                                                 // }
                                             )}
-
-
                                         </ul>
                                         <div className="h-stars-lbl">{countReview} reviews</div>
-                                        <a hidden={user ? false : true} href="#" className="h-add-review">
+                                        <a
+                                            hidden={user ? false : true}
+                                            href="#"
+                                            className="h-add-review"
+                                        >
                                             add review
                                         </a>
                                         <div className="clear"></div>
@@ -1512,11 +1313,6 @@ const HotelDetailPage = (props) => {
                     <span className="wishlist-btn-r">Select Room</span>
                     <div className="clear"></div>
                   </a> */}
-                                    {/* <a href="#" className="book-btn">
-                                        <span className="book-btn-l"><i></i></span>
-                                        <span className="book-btn-r">ADD TO wish list</span>
-                                        <div className="clear"></div>
-                                    </a> */}
                                 </div>
 
                                 <div className="h-help">
@@ -1530,25 +1326,31 @@ const HotelDetailPage = (props) => {
 
                                 <div className="reasons-rating">
                                     <div id="reasons-slider">
-                                        {
-                                            props?.hotel?.data?.hotelFeedBacks?.slice(0, 4)?.map(
-                                                feedback =>
-                                                    <div className="reasons-rating-i">
-                                                        <div className="reasons-rating-txt">{feedback?.feedback}</div>
-                                                        <div className="reasons-rating-user">
-                                                            <div className="reasons-rating-user-l">
-                                                                <img alt="" src="img/r-user.png" />
-                                                                <span>{feedback?.rating}</span>
-                                                            </div>
-                                                            <div className="reasons-rating-user-r">
-                                                                <b>{feedback?.user?.lastName} {feedback?.user?.firstName}</b>
-                                                                <span>{feedback?.user?.location?.province.name}</span>
-                                                            </div>
-                                                            <div className="clear"></div>
-                                                        </div>
+                                        {props?.hotel?.data?.hotelFeedBacks
+                                            ?.slice(0, 4)
+                                            ?.map((feedback) => (
+                                                <div className="reasons-rating-i">
+                                                    <div className="reasons-rating-txt">
+                                                        {feedback?.feedback}
                                                     </div>
-                                            )
-                                        }
+                                                    <div className="reasons-rating-user">
+                                                        <div className="reasons-rating-user-l">
+                                                            <img alt="" src="img/r-user.png" />
+                                                            <span>{feedback?.rating}</span>
+                                                        </div>
+                                                        <div className="reasons-rating-user-r">
+                                                            <b>
+                                                                {feedback?.user?.lastName}{" "}
+                                                                {feedback?.user?.firstName}
+                                                            </b>
+                                                            <span>
+                                                                {feedback?.user?.location?.province.name}
+                                                            </span>
+                                                        </div>
+                                                        <div className="clear"></div>
+                                                    </div>
+                                                </div>
+                                            ))}
 
                                         {/* 
                     <div className="reasons-rating-i">
@@ -1588,7 +1390,6 @@ const HotelDetailPage = (props) => {
                     </div>  
                             */}
                                     </div>
-
                                 </div>
 
                                 <div className="h-liked">

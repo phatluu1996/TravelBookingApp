@@ -29,3 +29,21 @@ export const getRoom = (id) => async dispatch => {
         });
     }
 }
+export const getRooms = (data) => async dispatch => {
+    try {
+        dispatch({ type: GET_ROOM_REQUEST });
+        const url = `${ROOT_URL}/api/ListRoom`;
+        const response = await axios.post(url,data)
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_ROOM_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_ROOM_ERROR,
+            message: error
+        });
+    }
+}

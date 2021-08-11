@@ -1,4 +1,4 @@
-import {GET_ROOM_REQUEST,GET_ROOM_SUCCESS,GET_ROOM_ERROR} from "../actions/actionRoom";
+import {BOOKING_ROOM_REQUEST,BOOKING_ROOM_SUCCESS,BOOKING_ROOM_ERROR} from "../actions/actionBookingRoom";
 
 const initialState = {
     requesting: false,
@@ -6,15 +6,15 @@ const initialState = {
     message: null,
     data: null
   }
-function reducerRoom(state = initialState, action) {
+function reducerBookingRoom(state = initialState, action) {
     switch (action.type) {
-        case GET_ROOM_REQUEST:
+        case BOOKING_ROOM_REQUEST:
           return {
             ...state,
             requesting: true
           };
     
-        case GET_ROOM_SUCCESS:
+        case BOOKING_ROOM_SUCCESS:
           state = {
             ...state,
             requesting: false,
@@ -23,7 +23,7 @@ function reducerRoom(state = initialState, action) {
           };
           return state;
     
-        case GET_ROOM_ERROR:
+        case BOOKING_ROOM_ERROR:
           state = {
             ...state,
             requesting: false,
@@ -36,4 +36,4 @@ function reducerRoom(state = initialState, action) {
       }
   };
   
-  export default reducerRoom;
+  export default reducerBookingRoom;

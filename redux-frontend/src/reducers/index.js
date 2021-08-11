@@ -10,6 +10,7 @@ import reducerBookingFlight from './reducerBookingFlight';
 import reducerAuth from './reduceAuth';
 import reducerFeedBack from './reducerFeedBack';
 import reducerRoom from './reducerRoom';
+import reducerBookingRoom from './reducerBookingRoom';
 
 const reducers = combineReducers({
 	flight : reducerFlight,
@@ -21,7 +22,8 @@ const reducers = combineReducers({
 	bookFlight: reducerBookingFlight,
 	auth: reducerAuth,
 	feedback:reducerFeedBack,
-	room:reducerRoom
+	room:reducerRoom,
+	bookRoom:reducerBookingRoom
 });
 
 export default (state, action) => reducers(state, action);
