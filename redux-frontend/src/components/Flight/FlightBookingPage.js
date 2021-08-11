@@ -10,17 +10,21 @@ import { importAll } from "../../utils/JqueryImport";
 import { getUserId } from "../../utils";
 import { getUser } from "../../actions/actionUser";
 import { bookFlight } from "../../actions/actionBookingFlight";
-import { retrieveFlight} from "../../actions/actionFlightByAirline";
+import { retrieveFlight } from "../../actions/actionFlightByAirline";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const getAge = (travelDate,birthday) => Math.floor((new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e+10)
+const getAge = (travelDate, birthday) => {
+  return Math.floor((new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e+10)
+}
 
 const FlightBookingPage = (props) => {
   const history = useHistory();
@@ -29,21 +33,22 @@ const FlightBookingPage = (props) => {
   const flight = useSelector((state) => state.flights);
   const user = useSelector((state) => state.user);
   const completeBooking = useSelector(state => state.bookFlight);
-  const [isSubmit, setIsSubmit] = useState(false)
+  const [isComplete, setIsComplete] = useState(false)
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkout, setCheckout] = useState(false);
-  const [extraService, setExtraService]= useState(0);
+  const [extraService, setExtraService] = useState(0);
   const [totalPassenger, setTotalPassenger] = useState(0);
-  const [price,setPrice]=useState(0);
+  const [price, setPrice] = useState(0);
+  const [flightBooking, setflightBooking] = useState(null);
   const [hasInfant, setHasInfant] = useState([{
-    infant:"false"
+    infant: false
   }]);
 
   const [isMale, setIsMale] = useState([{
-    gender:"true"
+    gender: "true"
   }]);
 
   const [error, setError] = useState([{
@@ -52,8 +57,8 @@ const FlightBookingPage = (props) => {
     birthday: "",
   }]);
 
-  const [inputListPassenger, setInputListPassenger] = useState([
-    {
+  const [inputListPassenger, setInputListPassenger] = useState(
+    [{
       firstname: "",
       lastname: "",
       gender: "true",
@@ -61,15 +66,27 @@ const FlightBookingPage = (props) => {
       hasInfant: "false",
       baggageExtra: 0,
       seatNumber: "",
-      price:0,
+      price: 0,
     },
-  ]);
+    ]);
+  const [flightDataOrder, setFlightDataOrder] = useState({
+    purchase_units: [
+      {
+        description: `One way Flight`,
+        amount: {
+          currency: "USD",
+          value: 1,
+        },
+      },
+    ],
+  })
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
   // return flight
   const returnFlightId = 0;
   const dateOfReturn = "";
   const returnType = 0;
+
 
   const getFlight = (id) => {
     dispatch(retrieveFlight(id));
@@ -85,17 +102,7 @@ const FlightBookingPage = (props) => {
 
   const createOrder = (data, actions) => {
     return actions.order
-      .create({
-        purchase_units: [
-          {
-            description: "Testing booking function",
-            amount: {
-              currency: "USD",
-              value: 1,
-            },
-          },
-        ],
-      })
+      .create(flightDataOrder)
       .then((orderID) => {
         console.log(orderID);
         return orderID;
@@ -112,12 +119,12 @@ const FlightBookingPage = (props) => {
   const onError = (err) => {
     console.log(err.toString());
   };
-  
+
   const validateForm = (e) => {
-    const err = [...error ];
+    const err = [...error];
     const list = [...inputListPassenger];
- 
-    for (var index=0;index<list.length;index++){
+
+    for (var index = 0; index < list.length; index++) {
       if (!list[index]["firstname"]) {
         err[index]["firstname"] = "Firstname required.";
       } else {
@@ -137,18 +144,18 @@ const FlightBookingPage = (props) => {
       };
     };
 
-    for (var index=0;index<list.length;index++){
+    for (var index = 0; index < list.length; index++) {
       if (err[index]["firstname"] || err[index]["lastname"] || err[index]["birthday"]) {
-        setError(err); 
+        setError(err);
         return false;
       }
     }
     return true;
   };
 
-  const handleChange = (e,index) => {
+  const handleChange = (e, index) => {
     e.preventDefault();
-    const err = [ ...error ];
+    const err = [...error];
     const { name, value } = e.target;
     const list = [...inputListPassenger];
     list[index][name] = value;
@@ -161,31 +168,28 @@ const FlightBookingPage = (props) => {
     setError(err);
   };
 
-  const handleBirthdayChange = (e,index) => {
-    e.preventDefault();
-    const err = [ ...error ];
-    const { name,value } = e.target;
-    const list = [...inputListPassenger];
-    list[index]["birthday"] = value;
-    setInputListPassenger(list);
-    if (!list[index]["birthday"]){
-    
+  const handleBirthdayChange = (e, index) => {
+    const err = [...error];
+    var list = [...inputListPassenger];
+
+    if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
+      // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
+      //   err[index]["birthday"] = "Wrong format of birthday";
+      // } else {
       err[index]["birthday"] = "";
-      if (type == 0){
-        let age = getAge(dateOfDeparture,list[index]["birthday"])
 
-        if (age<18) {
-          setTotalPrice(parseInt(totalPrice) - parseInt(price)+parseInt(flight.child_price));
-        };
-      }
+      list[index]["birthday"] = e.target.value.replaceAll("/", "-");
+      setInputListPassenger(list);
+      // }
+
     }
     setError(err);
   };
 
-  const handleGenderClick = (e,index) => {
-    e.preventDefault();
+  const handleGenderClick = (e, index) => {
+    // e.preventDefault();
     const checkgender = [...isMale];
     const list = [...inputListPassenger];
     if (e.currentTarget.innerHTML === "F") {
@@ -193,27 +197,29 @@ const FlightBookingPage = (props) => {
       checkgender[index]["gender"] = "false";
     } else {
       list[index]["gender"] = "true"
-      checkgender[index]["gender"] = "true";    
+      checkgender[index]["gender"] = "true";
     }
     setIsMale(checkgender);
     setInputListPassenger(list);
   };
 
-  const handleInfantChange = (e,index) => {
-    e.preventDefault();
+  const handleInfantChange = (e, index) => {
+    // e.preventDefault();
     const checkinfant = [...hasInfant];
-    const list = [...inputListPassenger];
-    if (e.currentTarget.checked) {
-      list[index]["hasInfant"] = "true";
-      checkinfant[index]["infant"]="true";
-      setTotalPrice(parseInt(totalPrice) + parseInt(flight.infant_price));
-    } else {
-      list[index]["hasInfant"] = "false";
-      setTotalPrice(parseInt(totalPrice) - parseInt(flight.infant_price));
-      checkinfant[index]["infant"]="false";
-    }
-    setInputListPassenger(list);
-    setHasInfant(checkinfant)
+    checkinfant[index].infant = !checkinfant[index].infant;
+    setHasInfant(checkinfant);
+    // const list = [...inputListPassenger];
+    // if (e.currentTarget.checked) {
+    //   list[index]["hasInfant"] = "true";
+    //   checkinfant[index]["infant"] = "true";
+    //   setTotalPrice(parseInt(totalPrice) + parseInt(flight.infant_price));
+    // } else {
+    //   list[index]["hasInfant"] = "false";
+    //   setTotalPrice(parseInt(totalPrice) - parseInt(flight.infant_price));
+    //   checkinfant[index]["infant"] = "false";
+    // }
+    // setInputListPassenger(list);
+    // setHasInfant(checkinfant)
   };
 
   const handleBookingSubmit = (e) => {
@@ -221,7 +227,7 @@ const FlightBookingPage = (props) => {
     if (validateForm(e)) {
       var data = {
         userId: userId,
-        flightId: flight.id,  
+        flightId: flight.id,
         dateBooking: dateOfDeparture,
         type: type,
         returnFlightId: returnFlightId,
@@ -231,73 +237,163 @@ const FlightBookingPage = (props) => {
         totalPrice: totalPrice,
         passengers: [...inputListPassenger]
       };
-      bookFlt(data);   
-      setIsSubmit(true); 
+      setflightBooking(data);
     }
   };
 
   useEffect(() => {
     let mount = false;
+    if(!sessionStorage.getItem("isBooking")){
+      history.push("/");
+    }
     window.scrollTo(0, 0);
     importAll();
     getFlight(queryParam.get("fid"));
     if (queryParam.get("seatClass") === "ECONOMY") {
       setType(0);
-      setTotalPassenger(parseInt(queryParam.get("adult"))+parseInt(queryParam.get("child")));
-      setTotalPrice((parseInt(queryParam.get("adult"))+parseInt(queryParam.get("child")))*queryParam.get("price"));
-      setPrice(queryParam.get("price"));
+      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
+      // setTotalPrice((parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child"))) * queryParam.get("price"));
+      // setPrice(queryParam.get("price"));
     } else {
       setType(1);
-      setTotalPassenger(parseInt(queryParam.get("adult"))+parseInt(queryParam.get("child")));
-      setTotalPrice((parseInt(queryParam.get("adult"))+parseInt(queryParam.get("child")))*queryParam.get("price"));
-      setPrice(queryParam.get("price"));
+      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
+      // setTotalPrice((parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child"))) * queryParam.get("price"));
+      // setPrice(queryParam.get("price"));
     }
     getUserBooking(parseInt(getUserId()));
     setDateOfDeparture(queryParam.get("departureDate").split("/").reverse().join("-"));
-    
+
+    var newListPax = [];
+    var newListError = [];
+    var newListHasInfant = [];
+    var newListIsMale = [];
+    [...Array(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")))].map((item, index) => {
+      newListPax.push({
+        firstname: "",
+        lastname: "",
+        gender: "true",
+        birthday: "",
+        hasInfant: "false",
+        baggageExtra: 0,
+        seatNumber: "",
+        price: 0,
+      })
+
+      newListError.push({
+        firstname: "",
+        lastname: "",
+        birthday: "",
+      })
+      newListHasInfant.push({
+        infant: false
+      })
+      newListIsMale.push({
+        gender: "true"
+      })
+    });
+
+    setInputListPassenger(newListPax);
+    setError(newListError);
+    setHasInfant(newListHasInfant);
+    setIsMale(newListIsMale);
+
+
+
     return () => {
       mount = true;
     };
   }, []);
 
   useEffect(() => {
-    if(completeBooking.data && checkout){
+    if (completeBooking.data && checkout) {
+      sessionStorage.removeItem("isBooking")
       history.push({ pathname: "/flight-booking-complete" });
+    }
+    if (flight) {
+      reCalculateTotalPrice(inputListPassenger, hasInfant);
+    }
+
+    if (checkout && !isComplete) {
+      bookFlt(flightBooking);
+      setIsComplete(true);
     }
   })
 
 
-  const handleAddClick = (e) => {
-    e.preventDefault();
-   
-    setInputListPassenger([...inputListPassenger, {
-      firstname: "",
-      lastname: "",
-      gender: "true",
-      birthday: "",
-      hasInfant: "false",
-      baggageExtra: 0,
-      seatNumber: "",
-      price:0
-    }]);
-    setError([...error,{
-      firstname: "",
-      lastname: "",
-      birthday: "",
-    }]);
-    setIsMale([...isMale,{
-      gender:"true"
-    }]);
-    setHasInfant([...hasInfant,{
-      infant:"false"
-    }])
-    if(inputListPassenger.length == totalPassenger){
-      setTotalPassenger(parseInt(totalPassenger)+1);
-      setTotalPrice(parseInt(totalPrice) + parseInt(price));
-    } else {
+  const handleAddClick = (amount) => {
+    // e.preventDefault();
+    if (amount > 0) {
+      var tempPaxList = [...inputListPassenger, {
+        firstname: "",
+        lastname: "",
+        gender: "true",
+        birthday: "",
+        hasInfant: "false",
+        baggageExtra: 0,
+        seatNumber: "",
+        price: 0
+      }];
+      setInputListPassenger(tempPaxList);
+
+      setError([...error, {
+        firstname: "",
+        lastname: "",
+        birthday: "",
+      }]);
+      setIsMale([...isMale, {
+        gender: "true"
+      }]);
+      var tempListHasInfant = [...hasInfant, {
+        infant: false
+      }]
+      setHasInfant(tempListHasInfant)
+      // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
+    } else if (amount < 0) {
+      var tempPaxList = [...inputListPassenger]
+      tempPaxList.pop();
+      var tempListHasInfant = [...hasInfant];
+      tempListHasInfant.pop();
+      var tempErr = [...error];
+      tempErr.pop();
+      var tempIsMale = [...isMale];
+      [...isMale].pop();
+      setInputListPassenger(tempPaxList);
+      setHasInfant(tempListHasInfant);
+      setError(tempErr);
+      setIsMale(tempIsMale);
+      // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
     }
-  
+
+
+
+    // if (inputListPassenger.length == totalPassenger) {
+    //   setTotalPassenger(parseInt(totalPassenger) + amount);
+    //   setTotalPrice(parseInt(totalPrice) + parseInt(price));      
+    // } else {
+
+    // }
+
   };
+
+  const reCalculateTotalPrice = (listPax, listInfant) => {
+    var newTotalPrice = 0;
+    listPax.map((pax, index) => {
+      var paxAge = getAge(dateOfDeparture, pax.birthday);
+      if (queryParam.get("seatClass") === "ECONOMY") {
+        if (paxAge <= 12 && paxAge >= 0) {
+          var flightPrice = flight.child_price;
+        } else {
+          var flightPrice = flight.economyPrice;
+        }
+      } else {
+        var flightPrice = flight.businessPrice;
+      }
+      var infantPrice = listInfant[index].infant ? flight.infant_price : 0;
+      newTotalPrice = newTotalPrice + flightPrice + infantPrice;
+    })
+    setTotalPrice(newTotalPrice);
+  }
+
   return (
     <>
       <Header></Header>
@@ -376,7 +472,7 @@ const FlightBookingPage = (props) => {
                           {inputListPassenger.map((x, i) => {
                             return (
                               <div key={i} className="booking-form">
-                                <h4>Passenger {i+1}</h4>
+                                <h4>Passenger {i + 1}</h4>
                                 <div>
                                   <div className="booking-form-i">
                                     <label className="custom-lbl">
@@ -390,8 +486,8 @@ const FlightBookingPage = (props) => {
                                         *
                                       </span>
                                       : <span className="booking-error-input">
-                                    {error[i].firstname}
-                                  </span>
+                                        {error[i].firstname}
+                                      </span>
                                     </label>
                                     <div className="form-control input">
                                       <input
@@ -402,7 +498,7 @@ const FlightBookingPage = (props) => {
                                         onChange={(e) => handleChange(e, i)}
                                       />
                                     </div>
-                                    
+
                                   </div>
                                   <div className="booking-form-i">
                                     <label className="custom-lbl">
@@ -416,8 +512,8 @@ const FlightBookingPage = (props) => {
                                         *
                                       </span>
                                       : <span className="booking-error-input">
-                                    {error[i].lastname}
-                                  </span>
+                                        {error[i].lastname}
+                                      </span>
                                     </label>
                                     <div className="input">
                                       <input
@@ -428,7 +524,7 @@ const FlightBookingPage = (props) => {
                                         onChange={(e) => handleChange(e, i)}
                                       />
                                     </div>
-                                   
+
                                   </div>
                                   <div className="clear"></div>
                                 </div>
@@ -462,18 +558,16 @@ const FlightBookingPage = (props) => {
                                       </span>
                                     </label>
                                     <div name="gender"
-                                      className={`form-control sex-type ${
-                                        isMale[i].gender === "true" ? "chosen" : ""
-                                      }`}
+                                      className={`form-control sex-type ${isMale[i].gender === "true" ? "chosen" : ""
+                                        }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       M
                                     </div>
                                     <div name="gender"
-                                      className={`form-control sex-type ${
-                                        isMale[i].gender === "false" ? "chosen" : ""
-                                      }`}
-                                      onClick={(e)=>handleGenderClick(e,i)}
+                                      className={`form-control sex-type ${isMale[i].gender === "false" ? "chosen" : ""
+                                        }`}
+                                      onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       F
                                     </div>
@@ -491,17 +585,17 @@ const FlightBookingPage = (props) => {
                                         *
                                       </span>
                                       : <span className="booking-error-input">
-                                    {error[i].birthday}
-                                  </span>
+                                        {error[i].birthday}
+                                      </span>
                                     </label>
-                                    
+
 
                                     <div className="input-a">
                                       <input
                                         name="birthday"
                                         type="text"
                                         className="form-control date-booking-inpt"
-                                        placeholder="YYYY-MM-DD"
+                                        placeholder="YYYY-MM-DDDD"
                                         onChange={(e) => handleBirthdayChange(e, i)}
                                       />
                                       <span className="date-icon"></span>
@@ -512,15 +606,24 @@ const FlightBookingPage = (props) => {
 
                                 <div className="clear"></div>
 
-                                {inputListPassenger.length - 1 === i && (
+                                {inputListPassenger.length - 1 === i && (<>
                                   <a
-                                    href="#"
-                                    onClick={handleAddClick}
+                                    onClick={() => handleAddClick(-1)}
+                                    className="add-passanger"
+
+                                  >
+                                    <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
+                                    Remove Passenger
+                                  </a>
+                                  <a
+                                    onClick={() => handleAddClick(1)}
                                     className="add-passanger"
                                   >
+                                    <FontAwesomeIcon color="green" icon={faPlusCircle}></FontAwesomeIcon>
                                     Add Passenger
                                   </a>
-                                )}
+
+                                </>)}
                                 <div className="checkbox">
                                   <label>
                                     <input type="checkbox" />
@@ -532,80 +635,7 @@ const FlightBookingPage = (props) => {
                             );
                           })}
 
-                          <h2>How would you like to pay?</h2>
 
-                          <div className="payment-wrapper">
-                            <div className="payment-tabs">
-                              <a href="#" className="active">
-                                Credit Card <span></span>
-                              </a>
-                              <a href="#">
-                                Paypal <span></span>
-                              </a>
-                            </div>
-                            <div className="clear"></div>
-                            <div className="payment-tabs-content">
-                              <div className="payment-tab">
-                                <div className="payment-alert">
-                                  <span>
-                                    You will be redirected to PayPal's website
-                                    to securely complete your payment using
-                                    credit or debit cards.
-                                  </span>
-                                  {/* <div className="payment-alert-close">
-                                    <a>
-                                      <img alt="" src="img/alert-close.png" />
-                                    </a>
-                                  </div> */}
-                                </div>
-
-                                {/* <a className="paypal-btn">proceed to paypall</a> */}
-
-                                <PayPalScriptProvider
-                                  style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}
-                                >
-                                  <PayPalButtons
-                                    style={{ height: 25 }}
-                                    fundingSource={"card"}
-                                    createOrder={createOrder}
-                                    onApprove={onApprove}
-                                    onError={onError}
-                                  />
-                                </PayPalScriptProvider>
-                              </div>
-
-                              <div className="payment-tab">
-                                <div className="payment-alert">
-                                  <span>
-                                    You will be redirected to PayPal's website
-                                    to securely complete your payment using
-                                    paypal account.
-                                  </span>
-                                  {/* <div className="payment-alert-close">
-                                    <a>
-                                      <img alt="" src="img/alert-close.png" />
-                                    </a>
-                                  </div> */}
-                                </div>
-
-                                {/* <a className="paypal-btn">proceed to paypall</a> */}
-
-                                <PayPalScriptProvider
-                                  style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}
-                                >
-                                  <PayPalButtons
-                                    style={{ height: 25 }}
-                                    fundingSource={"paypal"}
-                                    createOrder={createOrder}
-                                    onApprove={onApprove}
-                                    onError={onError}
-                                  />
-                                </PayPalScriptProvider>
-                              </div>
-                            </div>
-                          </div>
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
@@ -615,17 +645,62 @@ const FlightBookingPage = (props) => {
                             </p>
                             <button
                               type="submit"
-                              className={
-                                checkout
-                                  ? "booking-complete-btn"
-                                  : "booking-complete-btn disable"
-                              }
-                              disabled={checkout ? "" : "disable"}
+                              className="booking-complete-btn"
                             >
-                              COMPLETE BOOKING
+                              VALIDATE
                             </button>
-                            {isSubmit && <div className="loading" delay-hide="10"></div>}
+                            {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
+                          {flightBooking && <div className="payment-wrapper mt-2">
+                            <div className="payment-tabs">
+                              <a className="active">
+                                Payment <span></span>
+                              </a>
+
+                            </div>
+                            <div className="clear"></div>
+
+                            <div className="payment-tabs-content">
+                              <div className="payment-tab">
+                                <div className="payment-alert">
+                                  <span>
+                                    You will be redirected to website
+                                    to securely complete your payment using
+                                    credit or debit cards.
+                                  </span>
+                                </div>
+                                <PayPalScriptProvider
+                                  style={{ maxWidth: "80px" }}
+                                  options={{ "client-id": PP_ID }}
+                                >
+                                  <PayPalButtons
+                                    style={{ height: 25 }}
+                                    createOrder={(data, actions) => {
+                                      return actions.order
+                                        .create({
+                                          purchase_units: [
+                                            {
+                                              description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
+                                              amount: {
+                                                currency: "USD",
+                                                value: totalPrice,
+                                              },
+                                            },
+                                          ],
+                                        })
+                                        .then((orderID) => {
+                                          console.log(orderID);
+                                          return orderID;
+                                        });
+                                    }}
+                                    onApprove={onApprove}
+                                    onError={onError}
+                                  />
+                                </PayPalScriptProvider>
+                              </div>
+                            </div>
+                          </div>}
+                        
                         </form>
                       </div>
                     </div>
@@ -722,7 +797,7 @@ const FlightBookingPage = (props) => {
                       <div className="chk-line">
                         <span className="chk-l">taxes and fees</span>
                         <span className="chk-r">
-                          { (parseInt(totalPrice) * 0.1).toPrecision(3)}
+                          {(parseInt(totalPrice) * 0.1).toPrecision(3)}$
                         </span>
                         <div className="clear"></div>
                       </div>
@@ -730,7 +805,7 @@ const FlightBookingPage = (props) => {
                     <div className="chk-total">
                       <div className="chk-total-l">Total Price</div>
                       <div className="chk-total-r add-more-price-flight">
-                        {totalPrice}
+                        {totalPrice}$
                       </div>
                       <div className="clear"></div>
                     </div>

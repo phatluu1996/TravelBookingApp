@@ -3524,7 +3524,7 @@ pen lang: html, css, js(jquery)
   top: 0;
   left: 0;
   background: black;
-  opacity:0.2;
+  opacity:0.5;
   z-index: 99;
 }
 .loading:after {
