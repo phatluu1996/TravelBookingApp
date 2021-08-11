@@ -188,7 +188,7 @@ const FlightSearchPage = (props) => {
                 sortDir: queryParam.get("sortDir")
             }
             setQueryFilter(filter);
-            setSeatClassType(queryParam.get("seatClass"));
+            setSeatClassType(queryParam.get("seatclassName"));
         }
 
         return () => {

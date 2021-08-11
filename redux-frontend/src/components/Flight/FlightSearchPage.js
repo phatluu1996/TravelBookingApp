@@ -185,7 +185,7 @@ const FlightSearchPage = (props) => {
                 sortDir: queryParam.get("sortDir")
             }
             setQueryFilter(filter);
-            setSeatClassType(queryParam.get("seatClass"));
+            setSeatClassType(queryParam.get("seatclassName"));
         }
 
         return () => {
@@ -317,7 +317,7 @@ const FlightSearchPage = (props) => {
         if(getRole() == ROLE_USER){
             history.push("/flight-booking?departureDate="+queryParam.get("departureDate")+
             "&adult="+queryParam.get("adult")+"&child="+queryParam.get("child")+
-            "&seatClass="+queryParam.get("seatClass")+"&price="+flightPrice(flight)+"&fid="+flight.id
+            "&seatClass="+seatClassType+"&price="+flightPrice(flight)+"&fid="+flight.id
             );
         }else{
             $('.header-account a').click();
@@ -418,7 +418,7 @@ const FlightSearchPage = (props) => {
                                             <div className="srch-tab-left transformed">
                                                 <label>Seat Class</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={queryParam.get("seatClass")}>
+                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={queryParam.get("seatClass")} onChange={(e)=>setSeatClassType(e.target.value)}>
                                                         {seatClass.properties.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
                                                     </select>
                                                 </div>
