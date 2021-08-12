@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { importAll } from '../../utils/JqueryImport';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import { useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 
-function getFormattedDate(date) {;
-    var result =new Date(date);
+function getFormattedDate(date) {
+    ;
+    var result = new Date(date);
     let year = result.getFullYear();
     let month = (1 + result.getMonth()).toString().padStart(2, '0');
     let day = result.getDate().toString().padStart(2, '0');
-  
+
     return month + '/' + day + '/' + year;
 }
 
 
-const FlightBookingCompletePage = (props) => {
-    const history = useHistory();
+const ComboBookingCompletePage = (props) => {
+  const history = useHistory();
   const booking = useSelector((state) => state.bookFlight);
-
     useEffect(() => {
         let mount = false;
         if(!booking.data){
@@ -26,13 +26,13 @@ const FlightBookingCompletePage = (props) => {
         }
         window.scrollTo(0, 0);
         importAll();
-        return () => {
+       return () => {
             mount = true;
         }
     }, [])
-    
+
     return (
-        <> 
+        <>
             <Header></Header>
             <div className="main-cont">
                 <div className="body-wrapper">
@@ -57,37 +57,36 @@ const FlightBookingCompletePage = (props) => {
                                                     <div className="comlete-alert-a">
                                                         <b>Thank You. Your Booking is Confirmed.</b>
                                                         <span>Wish you a pleasant journey!</span>
-                                                        <hr style={{width:"20%",textAlign:"left",marginLeft:"0"}}></hr>                                                        
+                                                        <hr style={{ width: "20%", textAlign: "left", marginLeft: "0" }}></hr>
                                                     </div>
                                                 </div>
 
                                                 <div className="complete-info">
-                                    
+
                                                     <h2>Passenger Information</h2>
-                                                    { 
-                                                        booking?.data?.flightBookingDetails?.map((psg,i)=>
-                                                        <div key={i} className="complete-info-table">
-                                                            <h4>Passenger {i+1}</h4>
-                                                            <div className="complete-info-i">
-                                                                <div className="complete-info-l">Passenger's Name</div>
-                                                                <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname}</div>
-                                                                <div className="clear"></div>
-                                                            </div>
-                                                            <div className="complete-info-i">
-                                                                <div className="complete-info-l">Gender</div>
-                                                                <div className="complete-info-r">{psg?.passenger?.gender ? "Male" : "Female"}</div>
-                                                                <div className="clear"></div>
-                                                            </div>
-                                                            <div className="complete-info-i">
-                                                                <div className="complete-info-l">Birthday</div>
-                                                                <div className="complete-info-r">{getFormattedDate(psg?.passenger?.birthday)}</div>
-                                                                <div className="clear"></div>
-                                                            </div>
-                                                            
-    
-                                                        </div>)
+                                                    {
+                                                        booking?.data?.flightBookingDetails?.slice(0, booking?.data?.flightBookingDetails?.length / 2)?.map((psg, index) =>
+                                                            <div className="complete-info-table">
+                                                                <h4>Passenger {index + 1}</h4>
+                                                                <div className="complete-info-i">
+                                                                    <div className="complete-info-l">Passenger's Name</div>
+                                                                    <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname}</div>
+                                                                    <div className="clear"></div>
+                                                                </div>
+                                                                <div className="complete-info-i">
+                                                                    <div className="complete-info-l">Gender</div>
+                                                                    <div className="complete-info-r">{psg?.passenger?.gender ? "Male" : "Female"}</div>
+                                                                    <div className="clear"></div>
+                                                                </div>
+                                                                <div className="complete-info-i">
+                                                                    <div className="complete-info-l">Birthday</div>
+                                                                    <div className="complete-info-r">{getFormattedDate(psg?.passenger?.birthday)}</div>
+                                                                    <div className="clear"></div>
+                                                                </div>
+                                                            </div>                                                   
+                                                        )
                                                     }
-                                                   
+
                                                     <div className="complete-txt-link"><a href="#">*** Passengers must show valid identification at the airport checkpoint in order to travel..</a></div>
 
                                                     <div className="complete-devider"></div>
@@ -119,6 +118,37 @@ const FlightBookingCompletePage = (props) => {
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.airlineReservationCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
+                                                    </div>
+
+                                                    <div className="complete-devider"></div>
+
+                                                    <div className="complete-info-table">
+                                                        <h2>Return Flight Detail</h2>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Flight Code</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.flightCode}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Departure Date</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.dateOfDeparture)}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Departure Time</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureTime}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Destination</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Reservation Code</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.airlineReservationCode}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
                                                         <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
                                                     </div>
 
@@ -146,12 +176,12 @@ const FlightBookingCompletePage = (props) => {
                                                             <div className="complete-info-r">{booking?.data?.user.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                        <p>** Tips: <br/>
-                                                        1. Mobile Check-in is a convenient way to check-in using your mobile device. Passengers can select their preferred seat, email or print their e-Boarding pass. 
-                                                    Please don’t forget to carry a printout of your boarding card.
-                                                    If you're carrying check-in baggage, please go straight to our bag drop counter.
-                                                        <br/>2. Hand Baggage - One personal item like small laptop bag, ladies’ purse, infant bag etc., only if it fits under the seat in front of you.
-                                                        <br/>3. Additional charges will apply for excess baggage.
+                                                        <p>** Tips: <br />
+                                                            1. Mobile Check-in is a convenient way to check-in using your mobile device. Passengers can select their preferred seat, email or print their e-Boarding pass.
+                                                            Please don’t forget to carry a printout of your boarding card.
+                                                            If you're carrying check-in baggage, please go straight to our bag drop counter.
+                                                            <br />2. Hand Baggage - One personal item like small laptop bag, ladies’ purse, infant bag etc., only if it fits under the seat in front of you.
+                                                            <br />3. Additional charges will apply for excess baggage.
                                                         </p>
                                                         <div className="complete-txt-link"><a href="#"> *** Please check email for your Ticket Information!</a></div>
                                                     </div>
@@ -248,4 +278,4 @@ const FlightBookingCompletePage = (props) => {
     )
 }
 
-export default FlightBookingCompletePage
+export default ComboBookingCompletePage

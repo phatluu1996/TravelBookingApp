@@ -17,12 +17,8 @@ function getFormattedDate(date) {
 
 
 const RoundFlightBookingCompletePage = (props) => {
-    const history = useHistory();
-    const booking = useSelector((state) => state.bookFlight);
-    //   const [firstHalfBooking, setFirstHalfBooking] = useState(
-    //      ""
-    //   );
-    const [arr, setArr] = useState([])
+  const history = useHistory();
+  const booking = useSelector((state) => state.bookFlight);
     useEffect(() => {
         let mount = false;
         if(!booking.data){
@@ -30,12 +26,7 @@ const RoundFlightBookingCompletePage = (props) => {
         }
         window.scrollTo(0, 0);
         importAll();
-        // let halfwayThrough = Math.floor(booking?.data?.flightBookingDetails.length / 2);
-        // setFirstHalfBooking = booking?.data?.flightBookingDetails.slice(0,halfwayThrough);
-        console.log(booking?.data?.flightBookingDetails.length)
-        setArr(booking?.data?.flightBookingDetails.slice(0, booking?.data?.flightBookingDetails.length / 2))
-        console.log(arr);
-        return () => {
+       return () => {
             mount = true;
         }
     }, [])

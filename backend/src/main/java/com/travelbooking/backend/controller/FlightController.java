@@ -90,7 +90,6 @@ public class FlightController {
         return mapResult;
     }
 
-
     @GetMapping("/findFlights")
     public Hashtable<String,Page<Flight>> findFlights(@RequestParam Optional<String> from,
                                   @RequestParam Optional<String> to,

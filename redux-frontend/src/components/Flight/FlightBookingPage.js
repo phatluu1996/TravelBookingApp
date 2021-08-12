@@ -633,7 +633,7 @@ const FlightBookingPage = (props) => {
                               type="submit"
                               className="booking-complete-btn"
                             >
-                              COMPLETE BOOKING
+                              CONFIRM INFORMATION
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
@@ -751,7 +751,7 @@ const FlightBookingPage = (props) => {
                         </b>
                       </div>
     
-                      <div className="chk-arrival" >
+                      <div className="chk-arrival"  style={{float:"left",display:"inline"}}>
                         <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
                         <b style={{float:"none",display:"inline"}}>                 
                           {dateOfDeparture}

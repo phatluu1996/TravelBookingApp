@@ -2,30 +2,14 @@ import React, { useEffect } from 'react'
 import { importAll } from '../../utils/JqueryImport'
 import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
-import { fetchHotelById } from "../../actions/actionHotel";
-import { getRooms } from "../../actions/actionRoom";
-import { getBooking } from "../../actions/actionBookingRoom";
-import { useLocation } from 'react-router-dom';
-import { getUser } from "../../actions/actionUser";
-import { connect } from 'react-redux';
-
-
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
-
 
 const HotelBookingCompletePage = () => {
-    let queryParam = useQuery();
-
-
 
     useEffect(() => {
         let mount = false;
+
         importAll();
-        
-        
-        
+
         return () => {
             mount = true;
         }
@@ -203,23 +187,4 @@ const HotelBookingCompletePage = () => {
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        hotel: state.hotels,
-        user: state.user,
-        rooms: state.room,
-        booking:state.bookRoom
-    };
-};
-const mapDispatchToProps = (dispatch) => {
-
-    return {
-        getHotel: (id) => dispatch(fetchHotelById(id)),
-        getRooms: (data) => dispatch(getRooms(data)),
-        getUser: (id) => dispatch(getUser(id)),
-        getBooking:(id) => dispatch(getBooking(id)),
-    };
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HotelBookingCompletePage);
+export default HotelBookingCompletePage

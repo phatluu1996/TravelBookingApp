@@ -465,7 +465,7 @@ const RoundFlightBookingPage = (props) => {
                             <div className="clear"></div>
                             <div className="checkbox">
                               <label>
-                                <input type="checkbox" value="" />I want to
+                                <input type="checkbox" value="false" />I want to
                                 receive Sparrow news in the future
                               </label>
                             </div>
@@ -644,9 +644,7 @@ const RoundFlightBookingPage = (props) => {
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
-                              Voluptatem quia voluptas sit aspernatur aut odit
-                              aut fugit, sed quia consequuntur magni dolores eos
-                              qui voluptatem sequi nesciunt.{" "}
+                            Please make sure to check flight's detail right and insert correctly passenger information!{" "}
                             </p>
                             <button
                               type="submit"
@@ -770,8 +768,8 @@ const RoundFlightBookingPage = (props) => {
                         </b>
                       </div>
 
-                      <div className="chk-arrival" >
-                        <span style={{ float: "none", display: "inline" }}>Day of Departure  </span>
+                      <div className="chk-arrival" style={{float:"left",display:"inline"}}>
+                        <span style={{ float: "left", display: "inline" }}>Day of Departure  </span>
                         <b style={{ float: "none", display: "inline" }}>
                           {dateOfDeparture}
                         </b>
@@ -864,7 +862,7 @@ const RoundFlightBookingPage = (props) => {
                         </b>
                       </div>
 
-                      <div className="chk-arrival" >
+                      <div className="chk-arrival" style={{float:"left",display:"inline"}}>
                         <span style={{ float: "none", display: "inline" }}>Day of Departure  </span>
                         <b style={{ float: "none", display: "inline" }}>
                           {dateOfReturn}
