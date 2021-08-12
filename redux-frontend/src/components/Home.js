@@ -416,7 +416,7 @@ const Home = (props) => {
                                 <nav className="page-search-tabs">
                                     <div className="search-tab active" title="Hotel Booking"><FontAwesomeIcon icon={faHotel} color="#fac807"></FontAwesomeIcon></div>
                                     <div className="search-tab" title="Flight Booking"><FontAwesomeIcon icon={faPlane} color="#007bff"></FontAwesomeIcon></div>
-                                    <div className="search-tab" title="Cheap Combo Hotel + Flight"><FontAwesomeIcon icon={faHotel} color="#fac807"></FontAwesomeIcon> + <FontAwesomeIcon icon={faPlane} color="#007bff"></FontAwesomeIcon></div>
+                                    <div className="search-tab" title="Hotel + Flight"><FontAwesomeIcon icon={faHotel} color="#fac807"></FontAwesomeIcon> + <FontAwesomeIcon icon={faPlane} color="#007bff"></FontAwesomeIcon></div>
                                     <div className="clear"></div>
                                 </nav>
                                 <div className="page-search-content">
