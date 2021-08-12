@@ -3,6 +3,7 @@ import { importAll } from '../../utils/JqueryImport';
 import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import { useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom';
 
 function getFormattedDate(date) {;
     var result =new Date(date);
@@ -15,10 +16,14 @@ function getFormattedDate(date) {;
 
 
 const FlightBookingCompletePage = (props) => {
+    const history = useHistory();
   const booking = useSelector((state) => state.bookFlight);
 
     useEffect(() => {
         let mount = false;
+        if(!booking.data){
+            history.push("/");
+        }
         window.scrollTo(0, 0);
         importAll();
         return () => {
@@ -181,7 +186,7 @@ const FlightBookingCompletePage = (props) => {
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
                                                             <div className="reasons-i-lbl">Awesome design</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <p>We always tried our best to provide you with the best services.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />
@@ -199,8 +204,8 @@ const FlightBookingCompletePage = (props) => {
                                                 <div className="reasons-r">
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
-                                                            <div className="reasons-i-lbl">carefylly handcrafted</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <div className="reasons-i-lbl">Easy Booking</div>
+                                                            <p>Search and compare flights from dosmetic airlines with many routes in Viet Nam.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />
@@ -218,8 +223,8 @@ const FlightBookingCompletePage = (props) => {
                                                 <div className="reasons-r">
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
-                                                            <div className="reasons-i-lbl">sustomer support</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <div className="reasons-i-lbl">Customer support</div>
+                                                            <p>We are now carving our path to be the best Lifestyle WebApp for our users.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />

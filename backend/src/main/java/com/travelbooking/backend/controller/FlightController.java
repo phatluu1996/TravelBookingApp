@@ -90,20 +90,6 @@ public class FlightController {
         return mapResult;
     }
 
-    @GetMapping("/roundFlight")
-    public Hashtable<String,Flight> getRoundFlight(@RequestParam Long dId,
-                                                         @RequestParam Long rId){
-        Hashtable<String,Flight> mapResult = new Hashtable();
-        Specification<Flight> dSpec = FlightSpecification.createSpecificationForRoundFlight(Optional.ofNullable(dId),Boolean.FALSE);
-        Optional<Flight> dFlight = flightRepository.findOne(dSpec);
-
-        Specification<Flight> rSpec = FlightSpecification.createSpecificationForRoundFlight(Optional.ofNullable(rId),Boolean.FALSE);
-        Optional<Flight> rFlight = flightRepository.findOne(rSpec);
-        mapResult.put("departData", dFlight.get());
-        mapResult.put("returnData", rFlight.get());
-        return mapResult;
-    }
-
     @GetMapping("/findFlights")
     public Hashtable<String,Page<Flight>> findFlights(@RequestParam Optional<String> from,
                                   @RequestParam Optional<String> to,

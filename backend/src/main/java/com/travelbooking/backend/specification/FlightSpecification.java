@@ -16,15 +16,6 @@ public final class FlightSpecification {
         return Specification.where(fromCityContains(from).and(toCityContains(to)).and(fromPrice(priceFrom, isEconomy)).and(toPrice(priceTo, isEconomy)).and(isRetired(retired)));
     }
 
-    public static Specification<Flight> createSpecificationForRoundFlight(Optional<Long> id,
-                                                                          Boolean retired){
-        return Specification.where(isRetired(retired).and((withId(id))));
-    }
-
-    public static Specification<Flight> withId(Optional<Long> id){
-        return (flight, cq, cb) -> id.map(fId -> cb.equal(flight.get("id"), fId)).orElse(null);
-    }
-
     public static Specification<Flight> fromPrice(Optional<Integer> priceFrom,  boolean isEconomy){
         return (flight, cq, cb) -> priceFrom.map(name ->
                 cb.greaterThanOrEqualTo(isEconomy ? flight.get("economyPrice") : flight.get("businessPrice"),name)).orElse(null);
