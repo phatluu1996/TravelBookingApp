@@ -43,6 +43,8 @@ import RoundFlightBookingCompletePage from './components/Flight/RoundFlightBooki
 
 import ComboSearchPage from './components/Admin/Combo/ComboSearchPage';
 import ComboBookingPage from './components/Combo/ComboBookingPage';
+import ComboStepWizard from './components/Combo/ComboStepWizard';
+import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 
 
 const App = (props) => {
@@ -101,6 +103,7 @@ const App = (props) => {
 
         <PublicRoute restricted={false} component={ComboSearchPage} path="/combo-list" />
         <PublicRoute restricted={false} component={ComboBookingPage} path="/combo-booking" />
+        <PublicRoute restricted={false} component={ComboStepWizard} path="/combo-list" />
 
         <PrivateRoute restricted={getRole() === ROLE_HOTEL} component={HotelProfile} path="/hotel-profile" exact />
 
@@ -108,6 +111,7 @@ const App = (props) => {
         <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
 
         <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
+        <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
 
       </Switch>
     </BrowserRouter>

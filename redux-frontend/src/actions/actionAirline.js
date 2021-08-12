@@ -117,5 +117,34 @@ export const getAirline = (id) => async dispatch => {
     }
 }
 
+export const GET_ALL_BOOKING_AIRLINE_REQUEST = "GET_ALL_BOOKING_AIRLINE_REQUEST";
+export const GET_ALL_BOOKING_AIRLINE_SUCCESS = "GET_ALL_BOOKING_AIRLINE_SUCCESS";
+export const GET_ALL_BOOKING_AIRLINE_ERROR = "GET_ALL_BOOKING_AIRLINE_ERROR";
+
+
+export const getAllBookingAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_ALL_BOOKING_AIRLINE_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/airline/allAirlineBooking/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_ALL_BOOKING_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_ALL_BOOKING_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}
+
 
 

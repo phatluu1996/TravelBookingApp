@@ -1,5 +1,8 @@
 import { CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
-import { FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS } from "../actions/actionAirline";
+import { FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS,
+        GET_ALL_BOOKING_AIRLINE_REQUEST, GET_ALL_BOOKING_AIRLINE_SUCCESS, GET_ALL_BOOKING_AIRLINE_ERROR
+
+} from "../actions/actionAirline";
 
 const initialState = {
     requesting: false,
@@ -84,6 +87,29 @@ function reducerAirline(airline = initialState, action) {
             return airline;
 
         case GET_AIRLINE_ERROR:
+            airline = {
+                ...airline,
+                requesting: false,
+                message: action.message
+            };
+            return airline;
+//------------------------------------------------------------
+        case GET_ALL_BOOKING_AIRLINE_REQUEST:
+            return {
+                ...airline,
+                requesting: true
+            };
+
+        case GET_ALL_BOOKING_AIRLINE_SUCCESS:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: true,
+                allBooking: action.payload
+            };
+            return airline;
+
+        case GET_ALL_BOOKING_AIRLINE_ERROR:
             airline = {
                 ...airline,
                 requesting: false,
