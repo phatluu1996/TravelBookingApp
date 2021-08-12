@@ -1,5 +1,6 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -38,7 +39,7 @@ public class FlightBookingDetail {
     private Integer priceType = 0;
 
     @Column(name = "date_of_departure")
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateOfDeparture;
 
     @Column(name = "airline_reservation_code")
