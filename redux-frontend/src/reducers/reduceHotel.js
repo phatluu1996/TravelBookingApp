@@ -1,4 +1,10 @@
-import {CREATE_HOTEL_FEEDBACK_ERROR,CREATE_HOTEL_FEEDBACK_SUCCESS,CREATE_HOTEL_FEEDBACK_REQUEST, FETCH_HOTEL_REQUEST, FETCH_HOTEL_SUCCESS, FETCH_HOTEL_ERROR, FETCH_ALL_HOTEL_REQUEST, FETCH_ALL_HOTEL_SUCCESS, FETCH_ALL_HOTEL_ERROR, CREATE_HOTEL_REQUEST, CREATE_HOTEL_SUCCESS, CREATE_HOTEL_ERROR, GET_HOTEL_REQUEST, GET_HOTEL_SUCCESS, GET_HOTEL_ERROR, UPDATE_HOTEL_REQUEST, UPDATE_HOTEL_SUCCESS, UPDATE_HOTEL_ERROR } from "../actions/actionHotel";
+import {CREATE_HOTEL_FEEDBACK_ERROR,CREATE_HOTEL_FEEDBACK_SUCCESS,CREATE_HOTEL_FEEDBACK_REQUEST, FETCH_HOTEL_REQUEST, FETCH_HOTEL_SUCCESS, FETCH_HOTEL_ERROR, FETCH_ALL_HOTEL_REQUEST, FETCH_ALL_HOTEL_SUCCESS, FETCH_ALL_HOTEL_ERROR, CREATE_HOTEL_REQUEST, CREATE_HOTEL_SUCCESS, CREATE_HOTEL_ERROR, GET_HOTEL_REQUEST, GET_HOTEL_SUCCESS, GET_HOTEL_ERROR, UPDATE_HOTEL_REQUEST, UPDATE_HOTEL_SUCCESS, UPDATE_HOTEL_ERROR,
+      UPDATE_PROFILE_HOTEL_REQUEST, UPDATE_PROFILE_HOTEL_SUCCESS, UPDATE_PROFILE_HOTEL_ERROR,
+      GET_DAILY_INCOME_HOTEL_REQUEST, GET_DAILY_INCOME_HOTEL_SUCCESS, GET_DAILY_INCOME_HOTEL_ERROR,
+      GET_BOOKING_TODAY_HOTEL_REQUEST, GET_BOOKING_TODAY_HOTEL_SUCCESS, GET_BOOKING_TODAY_HOTEL_ERROR,
+      GET_REVENUE_HOTEL_REQUEST, GET_REVENUE_HOTEL_SUCCESS, GET_REVENUE_HOTEL_ERROR,
+      GET_ALL_BOOKING_REQUEST, GET_ALL_BOOKING_SUCCESS, GET_ALL_BOOKING_ERROR
+} from "../actions/actionHotel";
 
 const initialState = {
   requesting: false,
@@ -147,6 +153,121 @@ function reducerHotel(state = initialState, action) {
           requesting: false,
           message: action.message,
           createSuccess : false
+        };
+        return state;
+//------------------------------------------------
+        case UPDATE_PROFILE_HOTEL_REQUEST:
+        return {
+          ...state,
+          requesting : true
+        };
+
+      case UPDATE_PROFILE_HOTEL_SUCCESS:
+        state = {
+          ...state,
+          requesting: false,
+          success: true,
+          single: action.payload
+        };
+        return state;
+  
+      case UPDATE_PROFILE_HOTEL_ERROR:
+        state = {
+          ...state,
+          requesting: false,
+          message: action.message
+        };
+        return state;
+//------------------------------------------------------------
+      case GET_DAILY_INCOME_HOTEL_REQUEST:
+      return {
+        ...state,
+        requesting : true
+      };
+
+      case GET_DAILY_INCOME_HOTEL_SUCCESS:
+        state = {
+          ...state,
+          requesting: false,
+          success: true,
+          dailyIncome: action.payload
+        };
+        return state;
+  
+      case GET_DAILY_INCOME_HOTEL_ERROR:
+        state = {
+          ...state,
+          requesting: false,
+          message: action.message
+        };
+        return state;
+//------------------------------------------------------------
+      case GET_BOOKING_TODAY_HOTEL_REQUEST:
+        return {
+          ...state,
+          requesting : true
+        };
+
+        case GET_BOOKING_TODAY_HOTEL_SUCCESS:
+          state = {
+            ...state,
+            requesting: false,
+            success: true,
+            bookingToday: action.payload
+          };
+          return state;
+
+        case GET_BOOKING_TODAY_HOTEL_ERROR:
+          state = {
+            ...state,
+            requesting: false,
+            message: action.message
+          };
+          return state;
+//------------------------------------------------------------
+      case GET_REVENUE_HOTEL_REQUEST:
+        return {
+          ...state,
+          requesting : true
+        };
+
+      case GET_REVENUE_HOTEL_SUCCESS:
+        state = {
+          ...state,
+          requesting: false,
+          success: true,
+          revenueCurrent: action.payload
+        };
+        return state;
+
+      case GET_REVENUE_HOTEL_ERROR:
+        state = {
+          ...state,
+          requesting: false,
+          message: action.message
+        };
+        return state;
+//------------------------------------------------------------
+      case GET_ALL_BOOKING_REQUEST:
+        return {
+          ...state,
+          requesting : true
+        };
+
+      case GET_ALL_BOOKING_SUCCESS:
+        state = {
+          ...state,
+          requesting: false,
+          success: true,
+          allBooking: action.payload
+        };
+        return state;
+
+      case GET_ALL_BOOKING_ERROR:
+        state = {
+          ...state,
+          requesting: false,
+          message: action.message
         };
         return state;
 

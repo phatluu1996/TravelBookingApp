@@ -42,6 +42,7 @@ import RoundFlightBookingPage from './components/Flight/RoundFlightBookingPage';
 import RoundFlightBookingCompletePage from './components/Flight/RoundFlightBookingCompletePage';
 
 import ComboSearchPage from './components/Admin/Combo/ComboSearchPage';
+import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 
 
 const App = (props) => {
@@ -106,6 +107,7 @@ const App = (props) => {
         <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
 
         <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
+        <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
 
       </Switch>
     </BrowserRouter>

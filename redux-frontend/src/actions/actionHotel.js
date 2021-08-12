@@ -200,3 +200,118 @@ export const createHotelFeedBack = (data) => async dispatch => {
         });
     }
 }
+
+export const UPDATE_PROFILE_HOTEL_REQUEST = "UPDATE_PROFILE_HOTEL_REQUEST";
+export const UPDATE_PROFILE_HOTEL_SUCCESS = "UPDATE_PROFILE_HOTEL_SUCCESS";
+export const UPDATE_PROFILE_HOTEL_ERROR = "UPDATE_PROFILE_HOTEL_ERROR";
+
+export const updateProfileHotel = (id, data) => async dispatch => {
+    try {
+        dispatch({ type: UPDATE_PROFILE_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/${id}`;
+        const response = await axios.put(url, data)
+        const responseBody = await response.data;
+        dispatch({
+            type: UPDATE_PROFILE_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: UPDATE_PROFILE_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_DAILY_INCOME_HOTEL_REQUEST = "GET_DAILY_INCOME_HOTEL_REQUEST";
+export const GET_DAILY_INCOME_HOTEL_SUCCESS = "GET_DAILY_INCOME_HOTEL_SUCCESS";
+export const GET_DAILY_INCOME_HOTEL_ERROR = "GET_DAILY_INCOME_HOTEL_ERROR";
+
+export const getDailyIncomeHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_DAILY_INCOME_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/dailyIncome/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_DAILY_INCOME_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_DAILY_INCOME_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_BOOKING_TODAY_HOTEL_REQUEST = "GET_BOOKING_TODAY_HOTEL_REQUEST";
+export const GET_BOOKING_TODAY_HOTEL_SUCCESS = "GET_BOOKING_TODAY_HOTEL_SUCCESS";
+export const GET_BOOKING_TODAY_HOTEL_ERROR = "GET_BOOKING_TODAY_HOTEL_ERROR";
+
+export const getBookingTodayHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_BOOKING_TODAY_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/countBookingToday/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_BOOKING_TODAY_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_BOOKING_TODAY_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_REVENUE_HOTEL_REQUEST = "GET_REVENUE_HOTEL_REQUEST";
+export const GET_REVENUE_HOTEL_SUCCESS = "GET_REVENUE_HOTEL_SUCCESS";
+export const GET_REVENUE_HOTEL_ERROR = "GET_REVENUE_HOTEL_ERROR";
+
+export const getRevenueHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_REVENUE_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/revenueHotel/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_REVENUE_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_REVENUE_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_ALL_BOOKING_REQUEST = "GET_ALL_BOOKING_REQUEST";
+export const GET_ALL_BOOKING_SUCCESS = "GET_ALL_BOOKING_SUCCESS";
+export const GET_ALL_BOOKING_ERROR = "GET_ALL_BOOKING_ERROR";
+
+export const getAllBookingHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_ALL_BOOKING_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/allBooking/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_ALL_BOOKING_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_ALL_BOOKING_ERROR,
+            message: error
+        });
+    }
+}
