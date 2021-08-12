@@ -1,19 +1,26 @@
 import _ from "lodash";
-import { FETCH_FLIGHT_SUCCESS, FETCH_FLIGHT_ERROR, FETCH_FLIGHT_REQUEST, GET_ROUND_FLIGHT_REQUEST, GET_ROUND_FLIGHT_SUCCESS, GET_ROUND_FLIGHT_ERROR } from "../actions/actionFlight";
+import {
+  GET_ROUND_FLIGHT_ERROR,
+  GET_ROUND_FLIGHT_REQUEST,
+  GET_ROUND_FLIGHT_SUCCESS,
+  FETCH_FLIGHT_SUCCESS,
+  FETCH_FLIGHT_ERROR,
+  FETCH_FLIGHT_REQUEST,
+} from "../actions/actionFlight";
 
 const initialState = {
   requesting: false,
   success: false,
   message: null,
-  data: null
-}
+  data: null,
+};
 
 const reducerFlight = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_FLIGHT_REQUEST:
       return {
         ...state,
-        requesting: true
+        requesting: true,
       };
 
     case FETCH_FLIGHT_SUCCESS:
@@ -22,7 +29,7 @@ const reducerFlight = (state = initialState, action) => {
         requesting: false,
         success: true,
         data: action.payload.departData,
-        returnData: action.payload.returnData
+        returnData: action.payload.returnData,
       };
       return state;
 
@@ -30,7 +37,31 @@ const reducerFlight = (state = initialState, action) => {
       state = {
         ...state,
         requesting: false,
-        message: action.message
+        message: action.message,
+      };
+      return state;
+
+    case GET_ROUND_FLIGHT_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+      };
+
+    case GET_ROUND_FLIGHT_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        data: action.payload.departData,
+        returnData: action.payload.returnData,
+      };
+      return state;
+
+    case GET_ROUND_FLIGHT_ERROR:
+      state = {
+        ...state,
+        requesting: false,
+        message: action.message,
       };
       return state;
 
@@ -63,8 +94,4 @@ const reducerFlight = (state = initialState, action) => {
   }
 };
 
-
-
-export default reducerFlight
-
-
+export default reducerFlight;

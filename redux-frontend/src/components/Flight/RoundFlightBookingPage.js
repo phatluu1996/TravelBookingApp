@@ -10,13 +10,12 @@ import { importAll } from "../../utils/JqueryImport";
 import { getUserId } from "../../utils";
 import { getUser } from "../../actions/actionUser";
 import { bookFlight } from "../../actions/actionBookingFlight";
-import { retrieveFlight } from "../../actions/actionFlightByAirline";
+import { getRoundFlight } from "../../actions/actionFlight";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import ReactModal from "react-modal";
+import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 
 function useQuery() {
@@ -27,23 +26,25 @@ const getAge = (travelDate, birthday) => {
   return Math.floor((new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e+10)
 }
 
-const FlightBookingPage = (props) => {
+const RoundFlightBookingPage = (props) => {
   const history = useHistory();
   let queryParam = useQuery();
   const dispatch = useDispatch();
-  const flight = useSelector((state) => state.flights);
+  const flights = useSelector((state) => state.flight);
   const user = useSelector((state) => state.user);
   const completeBooking = useSelector(state => state.bookFlight);
   const [isComplete, setIsComplete] = useState(false)
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
+  const [dateOfReturn, setDateOfReturn] = useState("");
+
   const [totalPrice, setTotalPrice] = useState(0);
+  const [returnTotalPrice,setReturnTotalPrice] = useState(0);
   const [checkout, setCheckout] = useState(false);
   const [extraService, setExtraService] = useState(0);
   const [totalPassenger, setTotalPassenger] = useState(0);
-  const [flightBooking, setflightBooking] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [flightBooking, setFlightBooking] = useState(null);
   const [hasInfant, setHasInfant] = useState([{
     infant: false
   }]);
@@ -73,7 +74,7 @@ const FlightBookingPage = (props) => {
   const [flightDataOrder, setFlightDataOrder] = useState({
     purchase_units: [
       {
-        description: `One way Flight`,
+        description: `Round Trip Flight`,
         amount: {
           currency: "USD",
           value: 1,
@@ -83,14 +84,9 @@ const FlightBookingPage = (props) => {
   })
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
-  // return flight
-  const returnFlightId = 0;
-  const dateOfReturn = "";
-  const returnType = 0;
 
-
-  const getFlight = (id) => {
-    dispatch(retrieveFlight(id));
+  const getFlights = (dId,rId) => {
+    dispatch(getRoundFlight(dId,rId));
   };
 
   const bookFlt = (data) => {
@@ -176,9 +172,6 @@ const FlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
-      //   err[index]["birthday"] = "Wrong format of birthday";
-      // } else {
       err[index]["birthday"] = "";
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
@@ -216,39 +209,37 @@ const FlightBookingPage = (props) => {
     if (validateForm(e)) {
       var data = {
         userId: userId,
-        flightId: flight.id,
+        flightId: flights.data.id,
         dateBooking: dateOfDeparture,
         type: type,
-        returnFlightId: returnFlightId,
+        returnFlightId: flights.returnData.id,
         dateReturnBooking: dateOfReturn,
-        returnType: returnType,
+        returnType: type,
         paymentMethod: paymentMethod,
-        totalPrice: totalPrice,
+        totalPrice: totalPrice+returnTotalPrice,
         passengers: [...inputListPassenger]
       };
-      setflightBooking(data);
-      setModalIsOpen(true);
+      setFlightBooking(data);
     }
   };
 
   useEffect(() => {
     let mount = false;
-    if (!sessionStorage.getItem("isBooking")) {
+    if(!sessionStorage.getItem("isBooking")){
       history.push("/");
     }
     window.scrollTo(0, 0);
     importAll();
-    getFlight(queryParam.get("fid"));
+    getFlights(queryParam.get("fid"),queryParam.get("rfid"));
     if (queryParam.get("seatClass") === "ECONOMY") {
       setType(0);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     } else {
       setType(1);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     }
+    setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     getUserBooking(parseInt(getUserId()));
     setDateOfDeparture(queryParam.get("departureDate").split("/").reverse().join("-"));
-
+    setDateOfReturn(queryParam.get("returnDate").split("/").reverse().join("-"))
     var newListPax = [];
     var newListError = [];
     var newListHasInfant = [];
@@ -291,10 +282,13 @@ const FlightBookingPage = (props) => {
   useEffect(() => {
     if (completeBooking.data && checkout) {
       sessionStorage.removeItem("isBooking")
-      history.push({ pathname: "/flight-booking-complete" });
+      history.push({ pathname: "/round-flight-booking-complete" });
     }
-    if (flight) {
+    if (flights.data) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
+    }
+    if(flights.returnData){
+        reCalculateReturnTotalPrice(inputListPassenger, hasInfant);  
     }
 
     if (checkout && !isComplete) {
@@ -333,7 +327,7 @@ const FlightBookingPage = (props) => {
       setHasInfant(tempListHasInfant)
       // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
     } else if (amount < 0) {
-      var tempPaxList = [...inputListPassenger];
+      var tempPaxList = [...inputListPassenger]
       tempPaxList.pop();
       var tempListHasInfant = [...hasInfant];
       tempListHasInfant.pop();
@@ -356,29 +350,37 @@ const FlightBookingPage = (props) => {
       var paxAge = getAge(dateOfDeparture, pax.birthday);
       if (queryParam.get("seatClass") === "ECONOMY") {
         if (paxAge <= 12 && paxAge >= 0) {
-          var flightPrice = flight.child_price;
+          var flightPrice = flights.data.child_price;
         } else {
-          var flightPrice = flight.economyPrice;
+          var flightPrice = flights.data.economyPrice;
         }
       } else {
-        var flightPrice = flight.businessPrice;
+        var flightPrice = flights.data.businessPrice;
       }
-      var infantPrice = listInfant[index].infant ? flight.infant_price : 0;
+      var infantPrice = listInfant[index].infant ? flights.data.infant_price : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
-    setTotalPrice(newTotalPrice);
     setTotalPassenger(listPax.length);
+    setTotalPrice(newTotalPrice);
   }
-
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
+  const reCalculateReturnTotalPrice = (listPax, listInfant) => {
+    var newTotalPrice = 0;
+    listPax.map((pax, index) => {
+      var paxAge = getAge(dateOfReturn, pax.birthday);
+      if (queryParam.get("seatClass") === "ECONOMY") {
+        if (paxAge <= 12 && paxAge >= 0) {
+          var flightPrice = flights.returnData.child_price;
+        } else {
+          var flightPrice = flights.returnData.economyPrice;
+        }
+      } else {
+        var flightPrice = flights.returnData.businessPrice;
+      }
+      var infantPrice = listInfant[index].infant ? flights.returnData.infant_price : 0;
+      newTotalPrice = newTotalPrice + flightPrice + infantPrice;
+    })
+    setTotalPassenger(listPax.length);
+    setReturnTotalPrice(newTotalPrice);
   }
 
   return (
@@ -594,11 +596,11 @@ const FlightBookingPage = (props) => {
                                 <div className="clear"></div>
 
                                 {inputListPassenger.length - 1 === i && (<>
-                                  <a 
+                                  <a
                                     id = "removePassengerbutton"
                                     onClick={() => {inputListPassenger.length === 1 ? document.getElementById("removePassengerbutton").disabled=true : handleAddClick(-1)}}
                                     className="add-passanger"
-
+s
                                   >
                                     <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
                                     Remove Passenger
@@ -615,7 +617,7 @@ const FlightBookingPage = (props) => {
                                 <div className="checkbox">
                                   <label>
                                     <input type="checkbox" />
-                                    Save Personal Info
+                                    Save Personal Info ????
                                   </label>
                                 </div>
                                 <div className="booking-devider"></div>
@@ -627,78 +629,68 @@ const FlightBookingPage = (props) => {
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
-                              Please make sure to check flight's detail right and insert correctly passenger information!{" "}
+                              Voluptatem quia voluptas sit aspernatur aut odit
+                              aut fugit, sed quia consequuntur magni dolores eos
+                              qui voluptatem sequi nesciunt.{" "}
                             </p>
                             <button
                               type="submit"
                               className="booking-complete-btn"
                             >
-                              COMPLETE BOOKING
+                              VALIDATE
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
-                          <ReactModal
-                            isOpen={modalIsOpen}
-                            // onAfterOpen={afterOpenModal}
-                            // onRequestClose={closeModal}
-                            ariaHideApp={false}
-                            preventScroll={true}
-                            style={customStyles}
-                            contentLabel="Payments">
-                            <div style={{ float: "right" }}>
-                                <FontAwesomeIcon onClick={() => setModalIsOpen(false)} icon={faTimesCircle}></FontAwesomeIcon>
+                          {flightBooking && <div className="payment-wrapper mt-2">
+                            <div className="payment-tabs">
+                              <a className="active">
+                                Payment <span></span>
+                              </a>
+
                             </div>
-                            {flightBooking && <div className="payment-wrapper mt-2">
-                              <div className="payment-tabs">
-                                <a className="active">
-                                  Payment <span></span>
-                                </a>
+                            <div className="clear"></div>
 
-                              </div>
-                              <div className="clear"></div>
-
-                              <div className="payment-tabs-content">
-                                <div className="payment-tab">
-                                  <div className="payment-alert">
-                                    <span>
-                                      You will be redirected to website
-                                      to securely complete your payment using
-                                      credit or debit cards.
-                                    </span>
-                                  </div>
-
-                                  <PayPalScriptProvider
-                                    style={{ maxWidth: "80px" }}
-                                    options={{ "client-id": PP_ID }}
-                                  >
-                                    <PayPalButtons
-                                      style={{ height: 25 }}
-                                      createOrder={(data, actions) => {
-                                        return actions.order
-                                          .create({
-                                            purchase_units: [
-                                              {
-                                                description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
-                                                amount: {
-                                                  currency: "USD",
-                                                  value: totalPrice,
-                                                },
-                                              },
-                                            ],
-                                          })
-                                          .then((orderID) => {
-                                            console.log(orderID);
-                                            return orderID;
-                                          });
-                                      }}
-                                      onApprove={onApprove}
-                                      onError={onError}
-                                    />
-                                  </PayPalScriptProvider>
+                            <div className="payment-tabs-content">
+                              <div className="payment-tab">
+                                <div className="payment-alert">
+                                  <span>
+                                    You will be redirected to website
+                                    to securely complete your payment using
+                                    credit or debit cards.
+                                  </span>
                                 </div>
+                                <PayPalScriptProvider
+                                  style={{ maxWidth: "80px" }}
+                                  options={{ "client-id": PP_ID }}
+                                >
+                                  <PayPalButtons
+                                    style={{ height: 25 }}
+                                    createOrder={(data, actions) => {
+                                      return actions.order
+                                        .create({
+                                          purchase_units: [
+                                            {
+                                              description: `Round Trip Flight ${flights.data.departureCity}-${flights.data.arrivalCity}-${flights.data.departureCity} `,
+                                              amount: {
+                                                currency: "USD",
+                                                value: totalPrice+returnTotalPrice,
+                                              },
+                                            },
+                                          ],
+                                        })
+                                        .then((orderID) => {
+                                          console.log(orderID);
+                                          return orderID;
+                                        });
+                                    }}
+                                    onApprove={onApprove}
+                                    onError={onError}
+                                  />
+                                </PayPalScriptProvider>
                               </div>
-                            </div>}
-                          </ReactModal>
+                            </div>
+                          </div>}
+                        
                         </form>
                       </div>
                     </div>
@@ -712,7 +704,7 @@ const FlightBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={flight?.airline?.image} style={{width:"93px",height:"65px"}}/>
+                        <img alt="" src={flights?.data?.airline?.image} style={{width:"95px",height:'60px'}}/>
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -721,12 +713,12 @@ const FlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flight?.departureCity} - {flight?.arrivalCity}
+                                {flights?.data?.departureCity} - {flights?.data?.arrivalCity}
                               </a>
                             </div>
-                            <div className="chk-lbl-a">ONEWAY FLIGHT</div>
+                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
                             <div className="chk-logo">
-                              <p>{flight?.airline?.airlineName}</p>
+                              <p>{flights?.data?.airline?.airlineName}</p>
                             </div>
                           </div>
                           <div className="chk-right">
@@ -746,7 +738,7 @@ const FlightBookingPage = (props) => {
                       <div className="chk-departure" style={{float:"none",display:"inline"}}>
                         <span style={{float:"none",display:"inline"}}>Schedule Time</span>
                         <b style={{float:"none",display:"inline"}}>
-                          {flight?.departureTime} - {flight?.arrivalTime}
+                        {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
                           <br />
                         </b>
                       </div>
@@ -760,14 +752,14 @@ const FlightBookingPage = (props) => {
                       <div className="clear"></div>
                     </div>
                   </div>
-
+                  
                   <div className="chk-details">
                     <h2>Details</h2>
                     <div className="chk-detais-row">
                       <div className="chk-line">
                         <span className="chk-l">FLIGHT</span>
                         <span className="chk-r">
-                          {flight?.flightCode}
+                          {flights?.data?.flightCode}
                         </span>
                         <div className="clear"></div>
                       </div>
@@ -802,6 +794,100 @@ const FlightBookingPage = (props) => {
                     </div>
                   </div>
                 </div>
+                <div className="checkout-coll">
+                  <div className="checkout-head">
+                    <div className="checkout-headl">
+                      <a href="#">
+                        <img alt="" src={flights?.returnData?.airline?.image} style={{width:"95px",height:'60px'}}/>
+                      </a>
+                    </div>
+                    <div className="checkout-headr">
+                      <div className="checkout-headrb">
+                        <div className="checkout-headrp">
+                          <div className="chk-left">
+                            <div className="chk-lbl">
+                              <a href="#">
+                                {flights?.returnData?.departureCity} - {flights?.returnData?.arrivalCity}
+                              </a>
+                            </div>
+                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
+                            <div className="chk-logo">
+                              <p>{flights?.returnData?.airline?.airlineName}</p>
+                            </div>
+                          </div>
+                          <div className="chk-right">
+                            <a href="#">
+                              <img alt="" src="img/chk-edit.png" />
+                            </a>
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+
+                  <div className="chk-lines">
+                    <div className="chk-line chk-fligth-info">
+                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
+                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
+                        <b style={{float:"none",display:"inline"}}>
+                        {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
+                          <br />
+                        </b>
+                      </div>
+    
+                      <div className="chk-arrival" >
+                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
+                        <b style={{float:"none",display:"inline"}}>                 
+                          {dateOfReturn}
+                        </b>
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+
+                  <div className="chk-details">
+                    <h2>Details</h2>
+                    <div className="chk-detais-row">
+                      <div className="chk-line">
+                        <span className="chk-l">RETURN FLIGHT</span>
+                        <span className="chk-r">
+                          {flights?.returnData?.flightCode}
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">FLIGHT TYPE</span>
+                        <span className="chk-r">
+                          {queryParam.get("seatClass")}
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">Total Passenger</span>
+                        <span className="chk-r">
+                          {totalPassenger}
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">taxes and fees</span>
+                        <span className="chk-r">
+                          {(parseInt(returnTotalPrice) * 0.1).toPrecision(3)}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                    </div>
+                    <div className="chk-total">
+                      <div className="chk-total-l">Total Price</div>
+                      <div className="chk-total-r add-more-price-flight">
+                        {returnTotalPrice}$
+                      </div>
+                      <div className="clear"></div>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="h-help">
                   <div className="h-help-lbl">Need Sparrow Help?</div>
@@ -822,4 +908,4 @@ const FlightBookingPage = (props) => {
   );
 };
 
-export default FlightBookingPage;
+export default RoundFlightBookingPage;

@@ -53,5 +53,13 @@ public final class FlightSpecification {
     public static Specification<Flight> isRetired(Boolean retired) {
         return (flight, cq, cb) -> retired != null ? cb.equal(flight.get("retired"), retired) : null;
     }
+    public static Specification<Flight> createSpecificationForRoundFlight(Optional<Long> id,
+                                                                          Boolean retired){
+        return Specification.where(isRetired(retired).and((withId(id))));
+    }
+
+    public static Specification<Flight> withId(Optional<Long> id){
+        return (flight, cq, cb) -> id.map(fId -> cb.equal(flight.get("id"), fId)).orElse(null);
+    }
 }
 
