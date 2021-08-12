@@ -8,9 +8,9 @@ import com.travelbooking.backend.models.User;
 import java.util.Date;
 import java.util.List;
 
-public class BookingRequest {
+public class BookingRequestRoom {
     private User user;
-    private Hotel hotel;
+//    private Hotel hotel;
     private List<Room> rooms;
     private Date dateBooking;
     private Date checkInDate;
@@ -20,12 +20,11 @@ public class BookingRequest {
     private String paymentMethod;
 
 
-    public BookingRequest() {
+    public BookingRequestRoom() {
     }
 
-    public BookingRequest(User user, Hotel hotel, List<Room> rooms, Date dateBooking, Date checkInDate, Date checkOutDate, int numberOfGuests, Float totalPrice, String paymentMethod) {
+    public BookingRequestRoom(User user, List<Room> rooms, Date dateBooking, Date checkInDate, Date checkOutDate, int numberOfGuests, Float totalPrice, String paymentMethod) {
         this.user = user;
-        this.hotel = hotel;
         this.rooms = rooms;
         this.dateBooking = dateBooking;
         this.checkInDate = checkInDate;
@@ -41,14 +40,6 @@ public class BookingRequest {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
     }
 
     public List<Room> getRooms() {

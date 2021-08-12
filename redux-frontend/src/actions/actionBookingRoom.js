@@ -12,7 +12,7 @@ export const CLEAR_BOOKING_REQUEST ="CLEAR_BOOKING_REQUEST";
 export const bookRoom = (data) => async dispatch => {
     try {
         dispatch({ type: BOOKING_ROOM_REQUEST });
-        const url = `${ROOT_URL}/api/bookRoom`;
+        const url = `${ROOT_URL}/api/book-hotel`;
         const response = await axios.post(url,data);
         const responseBody = await response.data;
         dispatch({

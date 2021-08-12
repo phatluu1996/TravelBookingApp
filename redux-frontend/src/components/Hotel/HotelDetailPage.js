@@ -96,7 +96,7 @@ const HotelDetailPage = (props) => {
         //   &checkOutDate=${queryParam.get("checkOutDate")}
         //   &roomIds=${bookingList.join(".")}`)  
             history.push(
-                `/hotel-booking?id=${props?.hotel?.data?.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
+                `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
             console.log(bookingList);
         }

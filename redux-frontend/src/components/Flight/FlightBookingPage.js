@@ -61,7 +61,7 @@ const FlightBookingPage = (props) => {
       firstname: "",
       lastname: "",
       gender: "true",
-      birthday: "",
+      birthday: "", 
       hasInfant: "false",
       baggageExtra: 0,
       seatNumber: "",
