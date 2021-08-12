@@ -15,7 +15,8 @@ import { getRoundFlight } from "../../actions/actionFlight";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import ReactModal from "react-modal";
 
 
 function useQuery() {
@@ -34,13 +35,14 @@ const RoundFlightBookingPage = (props) => {
   const user = useSelector((state) => state.user);
   const completeBooking = useSelector(state => state.bookFlight);
   const [isComplete, setIsComplete] = useState(false)
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
   const [dateOfReturn, setDateOfReturn] = useState("");
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const [returnTotalPrice,setReturnTotalPrice] = useState(0);
+  const [returnTotalPrice, setReturnTotalPrice] = useState(0);
   const [checkout, setCheckout] = useState(false);
   const [extraService, setExtraService] = useState(0);
   const [totalPassenger, setTotalPassenger] = useState(0);
@@ -85,8 +87,8 @@ const RoundFlightBookingPage = (props) => {
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
 
-  const getFlights = (dId,rId) => {
-    dispatch(getRoundFlight(dId,rId));
+  const getFlights = (dId, rId) => {
+    dispatch(getRoundFlight(dId, rId));
   };
 
   const bookFlt = (data) => {
@@ -216,21 +218,33 @@ const RoundFlightBookingPage = (props) => {
         dateReturnBooking: dateOfReturn,
         returnType: type,
         paymentMethod: paymentMethod,
-        totalPrice: totalPrice+returnTotalPrice,
+        totalPrice: totalPrice + returnTotalPrice,
         passengers: [...inputListPassenger]
       };
       setFlightBooking(data);
+      setModalIsOpen(true);
     }
   };
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  }
+
   useEffect(() => {
     let mount = false;
-    if(!sessionStorage.getItem("isBooking")){
+    if (!sessionStorage.getItem("isBooking")) {
       history.push("/");
     }
     window.scrollTo(0, 0);
     importAll();
-    getFlights(queryParam.get("fid"),queryParam.get("rfid"));
+    getFlights(queryParam.get("fid"), queryParam.get("rfid"));
     if (queryParam.get("seatClass") === "ECONOMY") {
       setType(0);
     } else {
@@ -287,8 +301,8 @@ const RoundFlightBookingPage = (props) => {
     if (flights.data) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
     }
-    if(flights.returnData){
-        reCalculateReturnTotalPrice(inputListPassenger, hasInfant);  
+    if (flights.returnData) {
+      reCalculateReturnTotalPrice(inputListPassenger, hasInfant);
     }
 
     if (checkout && !isComplete) {
@@ -597,10 +611,11 @@ const RoundFlightBookingPage = (props) => {
 
                                 {inputListPassenger.length - 1 === i && (<>
                                   <a
-                                    id = "removePassengerbutton"
-                                    onClick={() => {inputListPassenger.length === 1 ? document.getElementById("removePassengerbutton").disabled=true : handleAddClick(-1)}}
+                                    id="removePassengerbutton"
+                                    onClick={() => { handleAddClick(-1) }}
+                                    hidden={inputListPassenger.length === 1}
                                     className="add-passanger"
-s
+                                    s
                                   >
                                     <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
                                     Remove Passenger
@@ -637,60 +652,72 @@ s
                               type="submit"
                               className="booking-complete-btn"
                             >
-                              VALIDATE
+                              COMPLETE BOOKING
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
-                          {flightBooking && <div className="payment-wrapper mt-2">
-                            <div className="payment-tabs">
-                              <a className="active">
-                                Payment <span></span>
-                              </a>
-
+                          <ReactModal
+                            isOpen={modalIsOpen}
+                            // onAfterOpen={afterOpenModal}
+                            // onRequestClose={closeModal}
+                            ariaHideApp={false}
+                            preventScroll={true}
+                            style={customStyles}
+                            contentLabel="Payments">
+                            <div style={{ float: "right" }}>
+                              <FontAwesomeIcon onClick={() => setModalIsOpen(false)} icon={faTimesCircle}></FontAwesomeIcon>
                             </div>
-                            <div className="clear"></div>
+                            {flightBooking && <div className="payment-wrapper mt-2">
+                              <div className="payment-tabs">
+                                <a className="active">
+                                  Payment <span></span>
+                                </a>
 
-                            <div className="payment-tabs-content">
-                              <div className="payment-tab">
-                                <div className="payment-alert">
-                                  <span>
-                                    You will be redirected to website
-                                    to securely complete your payment using
-                                    credit or debit cards.
-                                  </span>
-                                </div>
-                                <PayPalScriptProvider
-                                  style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}
-                                >
-                                  <PayPalButtons
-                                    style={{ height: 25 }}
-                                    createOrder={(data, actions) => {
-                                      return actions.order
-                                        .create({
-                                          purchase_units: [
-                                            {
-                                              description: `Round Trip Flight ${flights.data.departureCity}-${flights.data.arrivalCity}-${flights.data.departureCity} `,
-                                              amount: {
-                                                currency: "USD",
-                                                value: totalPrice+returnTotalPrice,
-                                              },
-                                            },
-                                          ],
-                                        })
-                                        .then((orderID) => {
-                                          console.log(orderID);
-                                          return orderID;
-                                        });
-                                    }}
-                                    onApprove={onApprove}
-                                    onError={onError}
-                                  />
-                                </PayPalScriptProvider>
                               </div>
-                            </div>
-                          </div>}
-                        
+                              <div className="clear"></div>
+
+                              <div className="payment-tabs-content">
+                                <div className="payment-tab">
+                                  <div className="payment-alert">
+                                    <span>
+                                      You will be redirected to website
+                                      to securely complete your payment using
+                                      credit or debit cards.
+                                    </span>
+                                  </div>
+
+                                  <PayPalScriptProvider
+                                    style={{ maxWidth: "80px" }}
+                                    options={{ "client-id": PP_ID }}
+                                  >
+                                    <PayPalButtons
+                                      style={{ height: 25 }}
+                                      createOrder={(data, actions) => {
+                                        return actions.order
+                                          .create({
+                                            purchase_units: [
+                                              {
+                                                description: `Round Flight ${flights.data.departureCity}-${flights.data.arrivalCity}, ${flights.returnData.departureCity}-${flights.returnData.arrivalCity}`,
+                                                amount: {
+                                                  currency: "USD",
+                                                  value: totalPrice + returnTotalPrice,
+                                                },
+                                              },
+                                            ],
+                                          })
+                                          .then((orderID) => {
+                                            console.log(orderID);
+                                            return orderID;
+                                          });
+                                      }}
+                                      onApprove={onApprove}
+                                      onError={onError}
+                                    />
+                                  </PayPalScriptProvider>
+                                </div>
+                              </div>
+                            </div>}
+                          </ReactModal>
                         </form>
                       </div>
                     </div>
@@ -704,7 +731,7 @@ s
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={flights?.data?.airline?.image} style={{width:"95px",height:'60px'}}/>
+                        <img alt="" src={flights?.data?.airline?.image} style={{ width: "95px", height: '60px' }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -723,7 +750,7 @@ s
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                              
+
                             </a>
                           </div>
                           <div className="clear"></div>
@@ -735,24 +762,24 @@ s
 
                   <div className="chk-lines">
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
-                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
-                        <b style={{float:"none",display:"inline"}}>
-                        {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
+                      <div className="chk-departure" style={{ float: "none", display: "inline" }}>
+                        <span style={{ float: "none", display: "inline" }}>Schedule Time</span>
+                        <b style={{ float: "none", display: "inline" }}>
+                          {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
                           <br />
                         </b>
                       </div>
-    
+
                       <div className="chk-arrival" >
-                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
-                        <b style={{float:"none",display:"inline"}}>                 
+                        <span style={{ float: "none", display: "inline" }}>Day of Departure  </span>
+                        <b style={{ float: "none", display: "inline" }}>
                           {dateOfDeparture}
                         </b>
                       </div>
                       <div className="clear"></div>
                     </div>
                   </div>
-                  
+
                   <div className="chk-details">
                     <h2>Details</h2>
                     <div className="chk-detais-row">
@@ -798,7 +825,7 @@ s
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={flights?.returnData?.airline?.image} style={{width:"95px",height:'60px'}}/>
+                        <img alt="" src={flights?.returnData?.airline?.image} style={{ width: "95px", height: '60px' }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -829,17 +856,17 @@ s
 
                   <div className="chk-lines">
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
-                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
-                        <b style={{float:"none",display:"inline"}}>
-                        {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
+                      <div className="chk-departure" style={{ float: "none", display: "inline" }}>
+                        <span style={{ float: "none", display: "inline" }}>Schedule Time</span>
+                        <b style={{ float: "none", display: "inline" }}>
+                          {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
                           <br />
                         </b>
                       </div>
-    
+
                       <div className="chk-arrival" >
-                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
-                        <b style={{float:"none",display:"inline"}}>                 
+                        <span style={{ float: "none", display: "inline" }}>Day of Departure  </span>
+                        <b style={{ float: "none", display: "inline" }}>
                           {dateOfReturn}
                         </b>
                       </div>
