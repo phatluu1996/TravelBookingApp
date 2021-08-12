@@ -82,17 +82,14 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         Path path = FileSystems.getDefault().getPath(qrcodePath);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
-//       HotelBooking bk = hotelBookingRepository.getById(createBkSuccess.getId());
-//        if(bk != null){
+
+
             for (int i = 0; i < bookingRequest.getRooms().size(); i++) {
                     Room room = roomRepository.getById(bookingRequest.getRooms().get(i).getId());
                     room.setAvailableTime(bookingRequest.getCheckOutDate());
                     roomRepository.save(room);
-//            }
+            }
             mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath));
-        }
-
-
         return createBkSuccess;
     }
 
@@ -104,7 +101,6 @@ public class RoomBookingServicelmpl implements RoomBookingService {
     public void mapAndSaveToPDF(HotelBooking hotelBooking, User user, File qrcode) throws Exception{
         Map<String, Object > data = new HashMap<>();
         data.put("hotelBooking", hotelBooking);
-//        data.put("hotelBookingRoom", hotelBooking.getHotelBookingDetail().getHotelBookingRooms());
         File pdfAttachment = pdfGenaratorUtil.createPdf("invoicebookingroom",data, ITINERARY_DIR, emailUtil, user);
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);

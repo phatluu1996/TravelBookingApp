@@ -165,7 +165,7 @@ const HotelBookingPage = (props) => {
       const bookingSubmit = (e) =>{ 
         e.preventDefault()
         var totalPrice = calculatePrice();
-        var room = [...props.rooms?.data];
+        // var room = [...props.rooms?.data];
         var newArr = [];
         props.rooms?.data.map(
             room => newArr.push({id:room.id})
@@ -184,9 +184,9 @@ const HotelBookingPage = (props) => {
                     totalPrice:totalPrice,
                     paymentMethod:"Payment"
               }
-              
+            //   console.log(data);
             //  setDataConfirm(data);
-             props.bookRoom(data);
+              props.bookRoom(data);
             // console.log(JSON.stringify(props.user?.data));
             // console.log(JSON.stringify(room));
           }

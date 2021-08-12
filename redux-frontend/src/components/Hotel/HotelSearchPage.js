@@ -205,6 +205,13 @@ const HotelSearchPage = (props) => {
     setSortDir(e.target.value);
   };
 
+  const dateConvert = (date) => {
+    var st = date.replace("/", ".");
+    var pattern = /(\d{2}).(\d{2}).(\d{4})/;
+    var dt = new Date(st.replace(pattern, '$3-$2-$1'));
+    return dt;
+}
+
   useEffect(() => {
     let mount = false;
 
@@ -241,7 +248,7 @@ const HotelSearchPage = (props) => {
         ward: queryParam.get("ward"),
         numberAdult: queryParam.get("numberAdult"),
         numberChildren: queryParam.get("numberChildren"),
-        checkInDate: queryParam.get("checkInDate"),
+        checkInDate:queryParam.get("checkInDate"),
         numRoom: queryParam.get("numRoom"),
       };
       // setListItem(getPagination(props.hotels.data));
@@ -251,6 +258,8 @@ const HotelSearchPage = (props) => {
       mount = true;
     };
   }, []);
+
+  
 
   useEffect(() => {
     let mount = false;
