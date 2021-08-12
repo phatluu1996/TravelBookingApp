@@ -15,7 +15,8 @@ import { retrieveFlight } from "../../actions/actionFlightByAirline";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import ReactModal from "react-modal";
 
 
 function useQuery() {
@@ -43,6 +44,7 @@ const FlightBookingPage = (props) => {
   const [totalPassenger, setTotalPassenger] = useState(0);
   const [price, setPrice] = useState(0);
   const [flightBooking, setflightBooking] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [hasInfant, setHasInfant] = useState([{
     infant: false
   }]);
@@ -62,7 +64,7 @@ const FlightBookingPage = (props) => {
       firstname: "",
       lastname: "",
       gender: "true",
-      birthday: "", 
+      birthday: "",
       hasInfant: "false",
       baggageExtra: 0,
       seatNumber: "",
@@ -238,12 +240,13 @@ const FlightBookingPage = (props) => {
         passengers: [...inputListPassenger]
       };
       setflightBooking(data);
+      setModalIsOpen(true);
     }
   };
 
   useEffect(() => {
     let mount = false;
-    if(!sessionStorage.getItem("isBooking")){
+    if (!sessionStorage.getItem("isBooking")) {
       history.push("/");
     }
     window.scrollTo(0, 0);
@@ -392,6 +395,17 @@ const FlightBookingPage = (props) => {
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
     setTotalPrice(newTotalPrice);
+  }
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
   }
 
   return (
@@ -647,60 +661,72 @@ const FlightBookingPage = (props) => {
                               type="submit"
                               className="booking-complete-btn"
                             >
-                              VALIDATE
+                              COMPLETE BOOKING
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
-                          {flightBooking && <div className="payment-wrapper mt-2">
-                            <div className="payment-tabs">
-                              <a className="active">
-                                Payment <span></span>
-                              </a>
-
+                          <ReactModal
+                            isOpen={modalIsOpen}
+                            // onAfterOpen={afterOpenModal}
+                            // onRequestClose={closeModal}
+                            ariaHideApp={false}
+                            preventScroll={true}
+                            style={customStyles}
+                            contentLabel="Payments">
+                            <div style={{ float: "right" }}>
+                                <FontAwesomeIcon onClick={() => setModalIsOpen(false)} icon={faTimesCircle}></FontAwesomeIcon>
                             </div>
-                            <div className="clear"></div>
+                            {flightBooking && <div className="payment-wrapper mt-2">
+                              <div className="payment-tabs">
+                                <a className="active">
+                                  Payment <span></span>
+                                </a>
 
-                            <div className="payment-tabs-content">
-                              <div className="payment-tab">
-                                <div className="payment-alert">
-                                  <span>
-                                    You will be redirected to website
-                                    to securely complete your payment using
-                                    credit or debit cards.
-                                  </span>
-                                </div>
-                                <PayPalScriptProvider
-                                  style={{ maxWidth: "80px" }}
-                                  options={{ "client-id": PP_ID }}
-                                >
-                                  <PayPalButtons
-                                    style={{ height: 25 }}
-                                    createOrder={(data, actions) => {
-                                      return actions.order
-                                        .create({
-                                          purchase_units: [
-                                            {
-                                              description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
-                                              amount: {
-                                                currency: "USD",
-                                                value: totalPrice,
-                                              },
-                                            },
-                                          ],
-                                        })
-                                        .then((orderID) => {
-                                          console.log(orderID);
-                                          return orderID;
-                                        });
-                                    }}
-                                    onApprove={onApprove}
-                                    onError={onError}
-                                  />
-                                </PayPalScriptProvider>
                               </div>
-                            </div>
-                          </div>}
-                        
+                              <div className="clear"></div>
+
+                              <div className="payment-tabs-content">
+                                <div className="payment-tab">
+                                  <div className="payment-alert">
+                                    <span>
+                                      You will be redirected to website
+                                      to securely complete your payment using
+                                      credit or debit cards.
+                                    </span>
+                                  </div>
+
+                                  <PayPalScriptProvider
+                                    style={{ maxWidth: "80px" }}
+                                    options={{ "client-id": PP_ID }}
+                                  >
+                                    <PayPalButtons
+                                      style={{ height: 25 }}
+                                      createOrder={(data, actions) => {
+                                        return actions.order
+                                          .create({
+                                            purchase_units: [
+                                              {
+                                                description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
+                                                amount: {
+                                                  currency: "USD",
+                                                  value: totalPrice,
+                                                },
+                                              },
+                                            ],
+                                          })
+                                          .then((orderID) => {
+                                            console.log(orderID);
+                                            return orderID;
+                                          });
+                                      }}
+                                      onApprove={onApprove}
+                                      onError={onError}
+                                    />
+                                  </PayPalScriptProvider>
+                                </div>
+                              </div>
+                            </div>}
+                          </ReactModal>
                         </form>
                       </div>
                     </div>
