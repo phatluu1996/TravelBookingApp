@@ -330,7 +330,7 @@ const FlightBookingPage = (props) => {
       setHasInfant(tempListHasInfant)
       // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
     } else if (amount < 0) {
-      var tempPaxList = [...inputListPassenger]
+      var tempPaxList = [...inputListPassenger];
       tempPaxList.pop();
       var tempListHasInfant = [...hasInfant];
       tempListHasInfant.pop();
@@ -364,6 +364,7 @@ const FlightBookingPage = (props) => {
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
     setTotalPrice(newTotalPrice);
+    setTotalPassenger(listPax.length);
   }
 
   return (
@@ -579,8 +580,9 @@ const FlightBookingPage = (props) => {
                                 <div className="clear"></div>
 
                                 {inputListPassenger.length - 1 === i && (<>
-                                  <a
-                                    onClick={() => handleAddClick(-1)}
+                                  <a 
+                                    id = "removePassengerbutton"
+                                    onClick={() => {inputListPassenger.length === 1 ? document.getElementById("removePassengerbutton").disabled=true : handleAddClick(-1)}}
                                     className="add-passanger"
 
                                   >
@@ -599,7 +601,7 @@ const FlightBookingPage = (props) => {
                                 <div className="checkbox">
                                   <label>
                                     <input type="checkbox" />
-                                    Save Personal Info ????
+                                    Save Personal Info
                                   </label>
                                 </div>
                                 <div className="booking-devider"></div>
@@ -611,9 +613,7 @@ const FlightBookingPage = (props) => {
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
-                              Voluptatem quia voluptas sit aspernatur aut odit
-                              aut fugit, sed quia consequuntur magni dolores eos
-                              qui voluptatem sequi nesciunt.{" "}
+                              Please make sure to check flight's detail right and insert correctly passenger information!{" "}
                             </p>
                             <button
                               type="submit"
@@ -686,7 +686,7 @@ const FlightBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src="img/check-img-01.jpg" />
+                        <img alt="" src={flight?.airline?.image} style={{width:"93px",height:"65px"}}/>
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -700,12 +700,12 @@ const FlightBookingPage = (props) => {
                             </div>
                             <div className="chk-lbl-a">ONEWAY FLIGHT</div>
                             <div className="chk-logo">
-                              <img alt="" src="img/lufthansa.png" />
+                              <p>{flight?.airline?.airlineName}</p>
                             </div>
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                              <img alt="" src="img/chk-edit.png" />
+                              
                             </a>
                           </div>
                           <div className="clear"></div>
@@ -717,23 +717,17 @@ const FlightBookingPage = (props) => {
 
                   <div className="chk-lines">
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure">
-                        <span>Schedule Time</span>
-                        <b>
+                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
+                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
+                        <b style={{float:"none",display:"inline"}}>
                           {flight?.departureTime} - {flight?.arrivalTime}
                           <br />
                         </b>
                       </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-fligth-time">
-                        <img alt="" src="img/icon-nights.png" />
-                      </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-arrival">
-                        <span>Day of Departure</span>
-                        <b>
-                          
-                          <br />
+    
+                      <div className="chk-arrival" >
+                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
+                        <b style={{float:"none",display:"inline"}}>                 
                           {dateOfDeparture}
                         </b>
                       </div>
@@ -745,26 +739,26 @@ const FlightBookingPage = (props) => {
                     <h2>Details</h2>
                     <div className="chk-detais-row">
                       <div className="chk-line">
-                        <span className="chk-l">AIRLINE:</span>
+                        <span className="chk-l">FLIGHT</span>
                         <span className="chk-r">
-                          {flight?.airline?.airlineName}
+                          {flight?.flightCode}
                         </span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
-                        <span className="chk-l">FLIGHT TYPE:</span>
+                        <span className="chk-l">FLIGHT TYPE</span>
                         <span className="chk-r">
                           {queryParam.get("seatClass")}
                         </span>
                         <div className="clear"></div>
                       </div>
-                      {/* <div className="chk-line">
-                        <span className="chk-l">Extra Services</span>
+                      <div className="chk-line">
+                        <span className="chk-l">Total Passenger</span>
                         <span className="chk-r">
-                          {extraService}
+                          {totalPassenger}
                         </span>
                         <div className="clear"></div>
-                      </div> */}
+                      </div>
                       <div className="chk-line">
                         <span className="chk-l">taxes and fees</span>
                         <span className="chk-r">

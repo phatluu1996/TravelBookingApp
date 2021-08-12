@@ -360,6 +360,7 @@ const RoundFlightBookingPage = (props) => {
       var infantPrice = listInfant[index].infant ? flights.data.infant_price : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
+    setTotalPassenger(listPax.length);
     setTotalPrice(newTotalPrice);
   }
   const reCalculateReturnTotalPrice = (listPax, listInfant) => {
@@ -378,6 +379,7 @@ const RoundFlightBookingPage = (props) => {
       var infantPrice = listInfant[index].infant ? flights.returnData.infant_price : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
+    setTotalPassenger(listPax.length);
     setReturnTotalPrice(newTotalPrice);
   }
 
@@ -595,9 +597,10 @@ const RoundFlightBookingPage = (props) => {
 
                                 {inputListPassenger.length - 1 === i && (<>
                                   <a
-                                    onClick={() => handleAddClick(-1)}
+                                    id = "removePassengerbutton"
+                                    onClick={() => {inputListPassenger.length === 1 ? document.getElementById("removePassengerbutton").disabled=true : handleAddClick(-1)}}
                                     className="add-passanger"
-
+s
                                   >
                                     <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
                                     Remove Passenger
@@ -732,30 +735,24 @@ const RoundFlightBookingPage = (props) => {
 
                   <div className="chk-lines">
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure">
-                        <span>Schedule Time</span>
-                        <b>
-                          {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
+                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
+                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
+                        <b style={{float:"none",display:"inline"}}>
+                        {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
                           <br />
                         </b>
                       </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-fligth-time">
-                        <img alt="" src="img/icon-nights.png" />
-                      </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-arrival">
-                        <span>Day of Departure</span>
-                        <b>
-                          
-                          <br />
+    
+                      <div className="chk-arrival" >
+                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
+                        <b style={{float:"none",display:"inline"}}>                 
                           {dateOfDeparture}
                         </b>
                       </div>
                       <div className="clear"></div>
                     </div>
                   </div>
-
+                  
                   <div className="chk-details">
                     <h2>Details</h2>
                     <div className="chk-detais-row">
@@ -773,13 +770,13 @@ const RoundFlightBookingPage = (props) => {
                         </span>
                         <div className="clear"></div>
                       </div>
-                      {/* <div className="chk-line">
-                        <span className="chk-l">Extra Services</span>
+                      <div className="chk-line">
+                        <span className="chk-l">Total Passenger</span>
                         <span className="chk-r">
-                          {extraService}
+                          {totalPassenger}
                         </span>
                         <div className="clear"></div>
-                      </div> */}
+                      </div>
                       <div className="chk-line">
                         <span className="chk-l">taxes and fees</span>
                         <span className="chk-r">
@@ -832,23 +829,17 @@ const RoundFlightBookingPage = (props) => {
 
                   <div className="chk-lines">
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure">
-                        <span>Schedule Time</span>
-                        <b>
-                          {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
+                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
+                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
+                        <b style={{float:"none",display:"inline"}}>
+                        {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
                           <br />
                         </b>
                       </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-fligth-time">
-                        <img alt="" src="img/icon-nights.png" />
-                      </div>
-                      <div className="chk-fligth-devider"></div>
-                      <div className="chk-arrival">
-                        <span>Day of Return</span>
-                        <b>
-                          
-                          <br />
+    
+                      <div className="chk-arrival" >
+                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
+                        <b style={{float:"none",display:"inline"}}>                 
                           {dateOfReturn}
                         </b>
                       </div>
@@ -873,13 +864,13 @@ const RoundFlightBookingPage = (props) => {
                         </span>
                         <div className="clear"></div>
                       </div>
-                      {/* <div className="chk-line">
-                        <span className="chk-l">Extra Services</span>
+                      <div className="chk-line">
+                        <span className="chk-l">Total Passenger</span>
                         <span className="chk-r">
-                          {extraService}
+                          {totalPassenger}
                         </span>
                         <div className="clear"></div>
-                      </div> */}
+                      </div>
                       <div className="chk-line">
                         <span className="chk-l">taxes and fees</span>
                         <span className="chk-r">

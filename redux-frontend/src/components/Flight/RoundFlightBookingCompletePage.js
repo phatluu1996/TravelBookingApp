@@ -19,14 +19,17 @@ const RoundFlightBookingCompletePage = (props) => {
 //   const [firstHalfBooking, setFirstHalfBooking] = useState(
 //      ""
 //   );
-
+let arr = []
     useEffect(() => {
         let mount = false;
         window.scrollTo(0, 0);
         importAll();
         // let halfwayThrough = Math.floor(booking?.data?.flightBookingDetails.length / 2);
         // setFirstHalfBooking = booking?.data?.flightBookingDetails.slice(0,halfwayThrough);
-        return () => {
+        console.log(booking?.data?.flightBookingDetails.length)
+       arr = booking?.data?.flightBookingDetails.slice(0,booking?.data?.flightBookingDetails.length/2)
+       console.log(arr) 
+       return () => {
             mount = true;
         }
     }, [])
@@ -65,12 +68,11 @@ const RoundFlightBookingCompletePage = (props) => {
                                     
                                                     <h2>Passenger Information</h2>
                                                     { 
-                                                        booking?.data?.flightBookingDetails?.map((psg,i)=>{
-                                                        
-                                            
-                                                            
-                                                        <div key={i} className="complete-info-table">
-                                                            <h4>Passenger {i+1}</h4>
+                                                        arr && arr.map((psg)=>{
+                                                         
+                                
+                                                        <div className="complete-info-table">
+                                                            <h4>Passenger </h4>
                                                             <div className="complete-info-i">
                                                                 <div className="complete-info-l">Passenger's Name</div>
                                                                 <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname}</div>
@@ -87,9 +89,9 @@ const RoundFlightBookingCompletePage = (props) => {
                                                                 <div className="clear"></div>
                                                             </div>
                                                         </div>
+                                                         
                                                         
-                                                        
-                                                     }
+                                                        }
                                                         )
                                                     }
                                                    
@@ -123,7 +125,8 @@ const RoundFlightBookingCompletePage = (props) => {
                                                             <div className="complete-info-l">Reservation Code</div>
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.airlineReservationCode}</div>
                                                             <div className="clear"></div>
-                                                        </div>                                                    </div>
+                                                        </div>                                                    
+                                                    </div>
 
                                                     <div className="complete-devider"></div>
 
@@ -131,27 +134,27 @@ const RoundFlightBookingCompletePage = (props) => {
                                                         <h2>Return Flight Detail</h2>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Flight Code</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[1]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[1]?.flight.flightCode}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1 ]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.flightCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Date</div>
-                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[1]?.dateOfDeparture)}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.dateOfDeparture)}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Time</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[1]?.flight.departureTime}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureTime}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Destination</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[1]?.flight.arrivalCity}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Reservation Code</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[1]?.airlineReservationCode}</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.airlineReservationCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
@@ -221,7 +224,7 @@ const RoundFlightBookingCompletePage = (props) => {
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
                                                             <div className="reasons-i-lbl">Awesome design</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <p>We always tried our best to provide you with the best services.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />
@@ -239,8 +242,8 @@ const RoundFlightBookingCompletePage = (props) => {
                                                 <div className="reasons-r">
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
-                                                            <div className="reasons-i-lbl">carefylly handcrafted</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <div className="reasons-i-lbl">Easy Booking</div>
+                                                            <p>Search and compare flights from dosmetic airlines with many routes in Viet Nam.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />
@@ -258,8 +261,8 @@ const RoundFlightBookingCompletePage = (props) => {
                                                 <div className="reasons-r">
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
-                                                            <div className="reasons-i-lbl">sustomer support</div>
-                                                            <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequunt.</p>
+                                                            <div className="reasons-i-lbl">Customer support</div>
+                                                            <p>We are now carving our path to be the best Lifestyle WebApp for our users.</p>
                                                         </div>
                                                     </div>
                                                     <br className="clear" />
