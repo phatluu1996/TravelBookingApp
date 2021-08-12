@@ -3,6 +3,7 @@ package com.travelbooking.backend.controller;
 import com.travelbooking.backend.models.*;
 import com.travelbooking.backend.repository.AccountRepository;
 import com.travelbooking.backend.repository.AirlineRepository;
+import com.travelbooking.backend.repository.FlightBookingRepository;
 import com.travelbooking.backend.repository.LocationRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,11 @@ public class AirlineController {
     LocationRepository locationRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    FlightBookingRepository flightBookingRepository;
 
     //http://localhost:8080/api/airline/{id}
-    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
+//    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
     @GetMapping("/airline/{id}")
     public ResponseEntity<Airline> getAirline(@PathVariable Long id){
         if(airlineRepository.existsByAccount_Id(id)){
@@ -98,4 +101,8 @@ public class AirlineController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/airline/allAirlineBooking/{id}")
+    public ResponseEntity<Collection<FlightBooking>> getAllBookingByAirline(@PathVariable Long id){
+        return ResponseEntity.ok().body(flightBookingRepository.getAllBookingByAirlineId(id));
+    }
 }

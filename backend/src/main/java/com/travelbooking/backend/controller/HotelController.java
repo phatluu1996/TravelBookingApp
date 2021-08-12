@@ -1,9 +1,7 @@
 package com.travelbooking.backend.controller;
 
 import com.travelbooking.backend.models.*;
-import com.travelbooking.backend.repository.AccountRepository;
-import com.travelbooking.backend.repository.LocationRepository;
-import com.travelbooking.backend.repository.RoomRepository;
+import com.travelbooking.backend.repository.*;
 import com.travelbooking.backend.security.payload.response.MessageResponse;
 import com.travelbooking.backend.specification.FlightSpecification;
 import com.travelbooking.backend.specification.HotelSpecification;
@@ -23,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.travelbooking.backend.repository.HotelRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 
 import org.slf4j.Logger;
@@ -41,7 +38,8 @@ public class HotelController {
     private RoomRepository roomRepository;
     @Autowired
     private LocationRepository locationRepository;
-
+    @Autowired
+    private HotelBookingRepository hotelBookingRepository;
     @Autowired
     private AccountRepository accountRepository;
     //http://localhost:8080/api/findHotels
@@ -135,6 +133,28 @@ public class HotelController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/hotel/countBookingToday/{id}")
+    public ResponseEntity<?> countBookingPerDay(@PathVariable Long id) {
+        int count = hotelBookingRepository.countBookingPerDateByHotelId(id);
+        return ResponseEntity.ok().body(count);
+    }
 
+    @GetMapping("/hotel/allBooking/{id}")
+    public ResponseEntity<?> getAllBookingByHotelId(@PathVariable Long id) {
+        Collection<HotelBooking> count = hotelBookingRepository.getAllBookingByHotelId(id);
+        return ResponseEntity.ok().body(count);
+    }
+
+    @GetMapping("/hotel/dailyIncome/{id}")
+    public ResponseEntity<?> getDailyIncomeByHotelId(@PathVariable Long id) {
+        float count = hotelBookingRepository.totalDailyIncomeByHotel(id);
+        return ResponseEntity.ok().body(count);
+    }
+
+    @GetMapping("/hotel/revenueHotel/{id}")
+    public ResponseEntity<?> getRevenueByHotelId(@PathVariable Long id) {
+        float revenue = hotelBookingRepository.totalRevenueByHotelId(id);
+        return ResponseEntity.ok().body(revenue);
+    }
 
 }
