@@ -64,6 +64,31 @@ const reducerFlight = (state = initialState, action) => {
         message: action.message,
       };
       return state;
+
+
+    case GET_ROUND_FLIGHT_REQUEST:
+      return {
+        ...state,
+        requesting: true
+      };
+
+    case GET_ROUND_FLIGHT_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        data: action.payload.departData,
+        returnData: action.payload.returnData
+      };
+      return state;
+
+    case GET_ROUND_FLIGHT_ERROR:
+      state = {
+        ...state,
+        requesting: false,
+        message: action.message
+      };
+      return state;
     default:
       return state;
   }

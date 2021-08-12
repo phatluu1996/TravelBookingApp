@@ -253,8 +253,28 @@ const Home = (props) => {
     const handleSubmitBoth = (e) => {
         e.preventDefault();
         var form = e.target;
-        validateFlt(form, "hotel-flight-search");//Validate form with classname "hotel-flight-search"
-        validateHtl(form, "hotel-flight-search");//Validate form with classname "hotel-flight-search"
+        if(validateFlt(form, "hotel-flight-search")//Validate form with classname "hotel-flight-search"
+        && validateHtl(form, "hotel-flight-search")){//Validate form with classname "hotel-flight-search"
+            history.push("/combo-list?"
+            +"from="+form.from.value
+            +"&to="+form.to.value
+            +"&adult="+form.adult.value
+            +"&child="+form.child.value
+            +"&infant="+form.infant.value
+            +"&departureDate="+form.departureDate.value
+            +"&returnDate="+form.returnDate.value
+            +"&seatclassName="+form.seatClass.value
+            +"&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc"
+            +"&province="+form.province.value
+            +"&district="+form.districts.value
+            +"&ward="+form.wards.value
+            +"&hAdult="+form.adultHotel.value
+            +"&hChild="+form.childRenHotel.value
+            +"&checkInDate="+form.checkOutDate.value
+            +"&checkOutDate="+form.checkOutDate.value
+            +"&&numRoom="+form.roomHotel.value
+            );
+        }
 
 
     }

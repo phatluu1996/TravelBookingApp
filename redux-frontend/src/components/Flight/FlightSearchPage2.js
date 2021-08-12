@@ -9,7 +9,7 @@ import { faCircle, faDiceOne, faHourglass, faSearch, faSuitcase, faTv } from "@f
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
-import { clearBookingCached } from "../../actions/actionBookingFlight";
+import { clearFlightBookingCached } from "../../actions/actionBookingFlight";
 import { getRole, ROLE_USER } from "../../utils";
 
 function useQuery() {
@@ -819,7 +819,7 @@ const mapDispatchToProps = (dispatch) => {
         getFlight: (from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
-        clearBooking: () => { dispatch(clearBookingCached) }
+        clearBooking: () => { dispatch(clearFlightBookingCached) }
     };
 };
 

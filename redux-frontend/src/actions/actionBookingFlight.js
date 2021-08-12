@@ -4,7 +4,6 @@ import bookingFlight from '../config/bookingFlight';
 export const BOOKING_FLIGHT_REQUEST = "BOOKING_FLIGHT_REQUEST";
 export const BOOKING_FLIGHT_SUCCESS = "BOOKING_FLIGHT_SUCCESS";
 export const BOOKING_FLIGHT_ERROR = "BOOKING_FLIGHT_ERROR";
-
 export const CLEAR_BOOKING_REQUEST ="CLEAR_BOOKING_REQUEST";
 
 export const bookFlight = (data) => async dispatch => {
@@ -26,7 +25,7 @@ export const bookFlight = (data) => async dispatch => {
     }
 }
 
-export const clearBookingCached = () => async dispatch => {
+export const clearFlightBookingCached = () => async dispatch => {
     dispatch({
         type:CLEAR_BOOKING_REQUEST,
     })

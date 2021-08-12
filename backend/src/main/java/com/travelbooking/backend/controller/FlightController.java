@@ -90,6 +90,20 @@ public class FlightController {
         return mapResult;
     }
 
+    @GetMapping("/roundFlight")
+    public Hashtable<String,Flight> getRoundFlight(@RequestParam Long dId,
+                                                         @RequestParam Long rId){
+        Hashtable<String,Flight> mapResult = new Hashtable();
+        Specification<Flight> dSpec = FlightSpecification.createSpecificationForRoundFlight(Optional.ofNullable(dId),Boolean.FALSE);
+        Optional<Flight> dFlight = flightRepository.findOne(dSpec);
+
+        Specification<Flight> rSpec = FlightSpecification.createSpecificationForRoundFlight(Optional.ofNullable(rId),Boolean.FALSE);
+        Optional<Flight> rFlight = flightRepository.findOne(rSpec);
+        mapResult.put("departData", dFlight.get());
+        mapResult.put("returnData", rFlight.get());
+        return mapResult;
+    }
+
     @GetMapping("/findFlights")
     public Hashtable<String,Page<Flight>> findFlights(@RequestParam Optional<String> from,
                                   @RequestParam Optional<String> to,
@@ -107,7 +121,7 @@ public class FlightController {
 
 
                                           ) {
-        Hashtable<String,Page<Flight>> mapResult = new Hashtable<String,Page<Flight>>();
+        Hashtable<String,Page<Flight>> mapResult = new Hashtable();
 
         Specification<Flight> spec = FlightSpecification.createSpecification(from, to, Optional.ofNullable(priceFrom), Optional.ofNullable(priceTo), seatClass.equals("ECONOMY"),Boolean.FALSE);
         Pageable paging = PageRequest.of(page, 4, Sort.by(sortDir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)).previousOrFirst();
@@ -122,6 +136,8 @@ public class FlightController {
         }
         return mapResult;
     }
+
+
 
     private Date convertToDate(String day){
         Date date = null;
