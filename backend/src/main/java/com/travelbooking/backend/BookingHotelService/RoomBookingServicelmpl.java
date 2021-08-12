@@ -19,9 +19,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -51,12 +49,15 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         String randomBookingCode = randomString(8);
         //Create Booking Detail
         HotelBookingDetail hotelBookingDetail = new HotelBookingDetail();
+        List<HotelBookingRoom> hotelBookingRoomList = new ArrayList<>();
         //Create Booking Room
         for (int i = 0; i < bookingRequest.getRooms().size() ; i++) {
             HotelBookingRoom hotelBookingRoom = new HotelBookingRoom();
             hotelBookingRoom.setHotelBookingDetail(hotelBookingDetail);
             hotelBookingRoom.setRoom(bookingRequest.getRooms().get(i));
             hotelBookingRoomRepository.save(hotelBookingRoom);
+            hotelBookingRoomList.add(hotelBookingRoom);
+
         }
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         //Start Booking Room
@@ -70,6 +71,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         hotelBooking.setUser(bookingRequest.getUser());
         hotelBooking.setHotelBookingDetail(hotelBookingDetail);
         hotelBooking.setRetired(false);
+        hotelBookingDetail.setHotelBookingRooms(hotelBookingRoomList);
         hotelBookingDetailRepository.save(hotelBookingDetail);
         HotelBooking createBkSuccess = hotelBookingRepository.save(hotelBooking);
 

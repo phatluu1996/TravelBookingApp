@@ -35,7 +35,7 @@ public class HotelBookingController {
         return hotelBookingRepository.findAll(spec);
     }
 
-    //http://localhost:8080/api/hotel-booking/{id}
+        //http://localhost:8080/api/hotel-booking/{id}
     @GetMapping("/hotel-booking/{id}")
     public ResponseEntity<HotelBooking> getHotelBookingWithId(@PathVariable Long id) {
         HotelBooking hotelBooking = hotelBookingRepository.getById(id);
