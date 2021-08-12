@@ -1,0 +1,420 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,900,700,500,300,100);
+*{
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+}
+body{
+  background: #E0E0E0;
+  font-family: 'Roboto', sans-serif;
+}
+::selection {background: #f31544; color: #FFF;}
+::moz-selection {background: #f31544; color: #FFF;}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.col-left {
+    float: left;
+}
+.col-right {
+    float: right;
+}
+h1{
+  font-size: 1.5em;
+  color: #444;
+}
+h2{font-size: .9em;}
+h3{
+  font-size: 1.2em;
+  font-weight: 300;
+  line-height: 2em;
+}
+p{
+  font-size: .75em;
+  color: #666;
+  line-height: 1.2em;
+}
+a {
+    text-decoration: none;
+    color: #00a63f;
+}
+
+#invoiceholder{
+  width:100%;
+  height: 100%;
+  padding: 50px 0;
+}
+#invoice{
+  position: relative;
+  margin: 0 auto;
+  width: 700px;
+  background: #FFF;
+}
+
+[id*='invoice-']{ /* Targets all id with 'col-' */
+/*  border-bottom: 1px solid #EEE;*/
+  padding: 20px;
+}
+
+#invoice-top{border-bottom: 2px solid #00a63f;}
+#invoice-mid{min-height: 110px;}
+#invoice-bot{ min-height: 240px;}
+#invoice-bot-2 { min-height: 240px;}
+
+.logo{
+    padding-top: 20px;
+    display: inline-block;
+    vertical-align: middle;
+	width: 110px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.info{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+.logo img,
+.clientlogo img {
+    width: 100%;
+}
+.clientlogo{
+    display: inline-block;
+    vertical-align: middle;
+	width: 50px;
+}
+.clientinfo {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px
+}
+.title{
+  float: right;
+}
+.title p{text-align: right;}
+#message{margin-bottom: 30px; display: block;}
+h2 {
+    margin-bottom: 5px;
+    color: #444;
+}
+.col-right td {
+    color: #666;
+    padding: 5px 8px;
+    border: 0;
+    font-size: 0.75em;
+    border-bottom: 1px solid #eeeeee;
+}
+.col-right td label {
+    margin-left: 5px;
+    font-weight: 600;
+    color: #444;
+}
+.cta-group a {
+    display: inline-block;
+    padding: 7px;
+    border-radius: 4px;
+    background: rgb(196, 57, 10);
+    margin-right: 10px;
+    min-width: 100px;
+    text-align: center;
+    color: #fff;
+    font-size: 0.75em;
+}
+.cta-group .btn-primary {
+    background: #00a63f;
+}
+.cta-group.mobile-btn-group {
+    display: none;
+}
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+td{
+    padding: 10px;
+    border-bottom: 1px solid #cccaca;
+    font-size: 0.70em;
+    text-align: left;
+}
+
+.tabletitle th {
+  border-bottom: 2px solid #ddd;
+  text-align: right;
+}
+.tabletitle th:nth-child(2) {
+    text-align: left;
+}
+th {
+    font-size: 0.7em;
+    text-align: left;
+    padding: 5px 10px;
+}
+.item{width: 50%;}
+.list-item td {
+<!--    text-align: right;-->
+}
+<!--.list-item td:nth-child(2) {-->
+<!--    text-align: left;-->
+<!--}-->
+.total-row th,
+.total-row td {
+    text-align: left;
+    font-weight: 700;
+    font-size: .75em;
+    border: 0 none;
+}
+
+.total-row td.GrandTotal {
+    text-align: right !important;
+}
+
+.table-main {
+
+}
+footer {
+    border-top: 1px solid #eeeeee;;
+    padding: 15px 20px;
+}
+.effect2
+{
+  position: relative;
+}
+.effect2:before, .effect2:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #777;
+  -webkit-box-shadow: 0 15px 10px #777;
+  -moz-box-shadow: 0 15px 10px #777;
+  box-shadow: 0 15px 10px #777;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+.effect2:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+@media screen and (max-width: 767px) {
+    h1 {
+        font-size: .9em;
+    }
+    #invoice {
+        width: 100%;
+    }
+    #message {
+        margin-bottom: 20px;
+    }
+    [id*='invoice-'] {
+        padding: 20px 10px;
+    }
+    .logo {
+        width: 140px;
+    }
+    .title {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 40px;
+    }
+    .title p {
+        text-align: left;
+    }
+    .col-left,
+    .col-right {
+        width: 100%;
+    }
+    .table {
+        margin-top: 20px;
+    }
+    #table {
+        white-space: nowrap;
+        overflow: auto;
+    }
+    #table-2 {
+        white-space: nowrap;
+        overflow: auto;
+    }
+    td {
+        white-space: normal;
+    }
+    .cta-group {
+        text-align: center;
+    }
+    .cta-group.mobile-btn-group {
+        display: block;
+        margin-bottom: 20px;
+    }
+     /*==================== Table ====================*/
+    .table-main {
+        border: 0 none;
+    }
+      .table-main thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+      .table-main tr {
+        border-bottom: 2px solid #eee;
+        display: block;
+        margin-bottom: 20px;
+      }
+      .table-main td {
+        font-weight: 700;
+        display: block;
+        padding-left: 40%;
+        max-width: none;
+        position: relative;
+        border: 1px solid #cccaca;
+        text-align: left;
+      }
+      .table-main td:before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: normal;
+        text-transform: uppercase;
+      }
+    .total-row th {
+        display: none;
+    }
+    .total-row td {
+        text-align: left;
+    }
+    footer {text-align: center;}
+
+    .text-left{
+        text-align: left;
+    }
+
+    .text-right{
+        text-align: right;
+    }
+}
+
+    </style>
+</head>
+<body>
+<div id="invoiceholder">
+    <div id="invoice" class="effect2">
+        <div id="invoice-top">
+            <div class="logo"><img src="http://localhost:8080/images/logo.png" alt="Logo" /></div>
+            <div class="title">
+                <h1>Invoice #<span class="invoiceVal invoice_num"></span></h1>
+                <p>Invoice Date: <span id="invoice_date">01 Feb 2018</span><br/>
+                    GL Date: <span id="gl_date">23 Feb 2018</span>
+                </p>
+            </div>
+        </div>
+
+        <div id="invoice-mid">
+            <div class="clearfix">
+                <div class="col-left">
+                    <div class="clientlogo"><img src="https://cdn3.iconfinder.com/data/icons/daily-sales/512/Sale-card-address-512.png" alt="Sup" /></div>
+                    <div class="clientinfo">
+                        <h2 id="supplier">Sparrow Travel</h2>
+                        <p><span id="address">590 CMT8, Phường 11, Quận 3</span><br/><span id="city">Hồ Chí Minh</span><br/><span id="country">Viet Nam</span> - <span id="zip">70000</span><br/><span id="tax_num">555-555-5555</span><br/></p>
+                    </div>
+                </div>
+                <div class="col-right">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span>Invoice Total</span><label id="invoice_total" th:text="${hotelBooking.totalPrice} + '$'"></label></td>
+                            <td><span>Currency</span><label id="currency">USD</label></td>
+                        </tr>
+                        <tr>
+                            <td><span>Payment Term</span><label id="payment_term">60 gg DFFM</label></td>
+                            <td><span>Invoice Type</span><label id="invoice_type">EXP REP INV</label></td>
+                        </tr>
+                        <tr><td colspan="2"><span>Note</span>#<label id="note">None</label></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="invoice-bot-2">
+            <h4><strong>Invoice Details</strong></h4>
+            <br/>
+            <div id="table-2">
+                <table class="table-main">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Total Amount</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="hotelRoom : ${hotelBooking.hotelBookingDetail.hotelBookingRooms}">
+                        <td width="10%" class="tableitem" th:text="${hotelRoomStat.index + 1}"></td>
+                        <td width="20%" class="tableitem" >Flight Ticket</td>
+                        <td width="30%" class="tableitem" th:text="${hotelRoom.room.roomType} + ' ' + ${hotelBooking.checkInDate} + ' ' + ${hotelBooking.checkOutDate}"></td>
+                        <td width="10%" class="tableitem" th:text="${hotelRoomStat.count}"></td>
+                        <td width="10%" class="tableitem" th:text="${hotelRoom.room.price + ' $'}"></td>
+                        <td width="20%" class="tableitem" th:text="${hotelRoom.room.price}*${hotelRoomStat.count} + ' $'"></td>
+                    </tr>
+                    <tr>
+                        <td width="10%" class="tableitem"></td>
+                        <td width="20%" class="tableitem">Tax</td>
+                        <td width="30%" class="tableitem"></td>
+                        <td width="10%" class="tableitem">1</td>
+                        <td width="10%" class="tableitem">10.0$</td>
+                        <td width="20%" class="tableitem">10.0$</td>
+                    </tr>
+                    <tr class="total-row">
+                        <th colspan="4" class="tableitem" ></th>
+                        <th class="tableitem" >Grand Total</th>
+                        <td data-label="Grand Total" class="tableitem" th:text="${hotelBooking.totalPrice + ' $'}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <footer>
+            <div id="legalcopy" class="clearfix">
+                <p class="col-right">Our mailing address is:
+                    <span class="email"><a href="mailto:supplier.portal@almonature.com">supplier.portal@almonature.com</a></span>
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+</body>
+</html>

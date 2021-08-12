@@ -1,12 +1,14 @@
 package com.travelbooking.backend.models;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "hotel_booking")
 public class HotelBooking {
     @Id
@@ -25,7 +27,7 @@ public class HotelBooking {
     private Date checkOutDate;
     @Column(name = "total_price")
     private Float totalPrice;
-    @Column(name="created_at", nullable = false)
+    @Column(name="created_at")
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate
@@ -35,7 +37,7 @@ public class HotelBooking {
     private String paymentMethod;
 
 
-    @Column(name = "retired", nullable = true)
+    @Column(name = "retired")
     private boolean retired;
 
     @OneToOne
