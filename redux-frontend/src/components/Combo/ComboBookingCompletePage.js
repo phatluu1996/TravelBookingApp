@@ -19,6 +19,9 @@ function getFormattedDate(date) {
 const ComboBookingCompletePage = (props) => {
   const history = useHistory();
   const booking = useSelector((state) => state.bookFlight);
+  const bookingHotel = useSelector((state) => state.bookRoom);
+
+
     useEffect(() => {
         let mount = false;
         if(!booking.data){
@@ -38,9 +41,9 @@ const ComboBookingCompletePage = (props) => {
                 <div className="body-wrapper">
                     <div className="wrapper-padding">
                         <div className="page-head">
-                            <div className="page-title">Flight - <span>Booking confirmation</span></div>
+                            <div className="page-title">Combo - <span>Booking confirmation</span></div>
                             <div className="breadcrumbs">
-                                <a href="#">Home</a> / <a href="#">Flight</a> / <span>Flight booking</span>
+                                <a href="#">Home</a> / <a href="#">Combo</a> / <span>Combo booking</span>
                             </div>
                             <div className="clear"></div>
                         </div>
@@ -70,12 +73,7 @@ const ComboBookingCompletePage = (props) => {
                                                                 <h4>Passenger {index + 1}</h4>
                                                                 <div className="complete-info-i">
                                                                     <div className="complete-info-l">Passenger's Name</div>
-                                                                    <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname}</div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="complete-info-i">
-                                                                    <div className="complete-info-l">Gender</div>
-                                                                    <div className="complete-info-r">{psg?.passenger?.gender ? "Male" : "Female"}</div>
+                                                                    <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname} <span style={{marginLeft:"30px"}}>|| {psg?.passenger?.gender ? "Male" : "Female"}</span> </div>
                                                                     <div className="clear"></div>
                                                                 </div>
                                                                 <div className="complete-info-i">
@@ -92,25 +90,20 @@ const ComboBookingCompletePage = (props) => {
                                                     <div className="complete-devider"></div>
 
                                                     <div className="complete-info-table">
-                                                        <h2>Flight Detail</h2>
+                                                        <h2>Departure Flight Detail</h2>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Flight Code</div>
+                                                            <div className="complete-info-l">Destination</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.departureCity} - {booking?.data?.flightBookingDetails[0]?.flight.arrivalCity} </div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Departure Flight Code</div>
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[0]?.flight.flightCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Date</div>
-                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[0]?.dateOfDeparture)}</div>
-                                                            <div className="clear"></div>
-                                                        </div>
-                                                        <div className="complete-info-i">
-                                                            <div className="complete-info-l">Departure Time</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.departureTime}</div>
-                                                            <div className="clear"></div>
-                                                        </div>
-                                                        <div className="complete-info-i">
-                                                            <div className="complete-info-l">Destination</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[0]?.flight.departureCity} - {booking?.data?.flightBookingDetails[0]?.flight.arrivalCity}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[0]?.dateOfDeparture)} {booking?.data?.flightBookingDetails[0]?.flight.departureTime}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
@@ -125,25 +118,21 @@ const ComboBookingCompletePage = (props) => {
                                                     <div className="complete-info-table">
                                                         <h2>Return Flight Detail</h2>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Flight Code</div>
+                                                            <div className="complete-info-l">Destination</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Return Flight Code</div>
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.flightCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Departure Date</div>
-                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.dateOfDeparture)}</div>
+                                                            <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.dateOfDeparture)}{"  "}{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureTime}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                        <div className="complete-info-i">
-                                                            <div className="complete-info-l">Departure Time</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureTime}</div>
-                                                            <div className="clear"></div>
-                                                        </div>
-                                                        <div className="complete-info-i">
-                                                            <div className="complete-info-l">Destination</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
-                                                            <div className="clear"></div>
-                                                        </div>
+                                                       
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Reservation Code</div>
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.airlineReservationCode}</div>
@@ -151,14 +140,45 @@ const ComboBookingCompletePage = (props) => {
                                                         </div>
                                                         <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
                                                     </div>
+                                                    <div className="complete-devider"></div>
 
+                                                    <div className="complete-info-table">
+                                                        <h2>Hotel Detail</h2>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Hotel Name</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Location</div>
+                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.flightCode}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Reservation Date</div>
+                                                            <div className="complete-info-r">{getFormattedDate(bookingHotel?.data?.checkInDate)} - {getFormattedDate(bookingHotel?.data?.checkOutDate)}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                       
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Number of room</div>
+                                                            <div className="complete-info-r"></div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
+                                                    </div>
                                                     <div className="complete-devider"></div>
 
                                                     <div className="complete-txt final">
                                                         <h2>Contact Information</h2>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Sparrow code</div>
+                                                            <div className="complete-info-l">Sparrow Flight code:  </div>
                                                             <div className="complete-info-r">{booking?.data?.bookingCode}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Sparrow Hotel code:  </div>
+                                                            <div className="complete-info-r">{bookingHotel?.data?.bookingCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
