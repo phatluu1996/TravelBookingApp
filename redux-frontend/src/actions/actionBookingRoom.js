@@ -28,6 +28,30 @@ export const bookRoom = (data) => async dispatch => {
     }
 }
 
+
+export const GET_BOOKING_REQUEST = "GET_BOOKING_REQUEST";
+export const GET_BOOKING_SUCCESS = "GET_BOOKING_SUCCESS";
+export const GET_BOOKING_ERROR = "GET_BOOKING_ERROR";
+
+export const getBooking = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_BOOKING_REQUEST });
+        const url = `${ROOT_URL}/api/hotel-booking/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_BOOKING_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_BOOKING_ERROR,
+            message: error
+        });
+    }
+}
+
 export const clearBookingCached = () => async dispatch => {
     dispatch({
         type:CLEAR_BOOKING_REQUEST,
