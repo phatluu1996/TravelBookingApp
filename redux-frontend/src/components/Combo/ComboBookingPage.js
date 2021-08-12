@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
 import Header from "../Layout/Header";
 import Footer from "../Layout/Footer";
@@ -11,6 +12,10 @@ import { getUserId } from "../../utils";
 import { getUser } from "../../actions/actionUser";
 import { bookFlight } from "../../actions/actionBookingFlight";
 import { getRoundFlight } from "../../actions/actionFlight";
+
+import { fetchHotelById } from "../../actions/actionHotel";
+import { getRooms } from "../../actions/actionRoom";
+import { bookRoom } from "../../actions/actionBookingRoom";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
@@ -48,12 +53,16 @@ const ComboBookingPage = (props) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [returnTotalPrice, setReturnTotalPrice] = useState(0);
-  const [totalFlightPrice, setTotalFlightPrice] = useState(0)
+  const [totalFlightPrice, setTotalFlightPrice] = useState(0);
 
   const [checkout, setCheckout] = useState(false);
   const [extraService, setExtraService] = useState(0);
   const [totalPassenger, setTotalPassenger] = useState(0);
   const [flightBooking, setFlightBooking] = useState(null);
+
+  const [date, setDateCalculate] = useState(0);
+  const [dataConfirm, setDataConfirm] = useState(null);
+  
   const [hasInfant, setHasInfant] = useState([
     {
       infant: false,
@@ -110,6 +119,54 @@ const ComboBookingPage = (props) => {
 
   const getUserBooking = (id) => {
     dispatch(getUser(id));
+  };
+
+  const dateCalculate = () => {
+    // console.log(Date.parse());;
+    var co = queryParam.get("checkOutDate");
+    var ci = queryParam.get("checkInDate");
+    // console.log(getTimeDiff(dateConvert(ci),dateConvert(co),"d"));
+    setDateCalculate(getTimeDiff(dateConvert(ci), dateConvert(co), "d"));
+  };
+
+  const getTimeDiff = (startTime, endTime, type) => {
+    // let startTime = new Date(_startTime.replace(/-/g, '/'));
+    // let endTime = new Date(_endTime.replace(/-/g, '/'));
+    let diff = endTime.getTime() - startTime.getTime(); //Time difference in milliseconds
+    let day = Math.floor(diff / (24 * 60 * 60 * 1000)); //day
+    let hour = Math.floor(diff / (60 * 60 * 1000)) - day * 24; //Time
+    let minute = Math.floor(diff / (60 * 1000)) - day * 24 * 60 - hour * 60; //Minute
+    let second =
+      Math.floor(diff / 1000) -
+      day * 24 * 60 * 60 -
+      hour * 60 * 60 -
+      minute * 60; //second
+    // console.log(day, hour, minute, second);
+    switch (type) {
+      case "h":
+        return hour;
+      case "m":
+        return minute;
+      case "d":
+        return day;
+      default:
+        return minute;
+    }
+  };
+  const calculatePrice = () => {
+    let dateNumber = date;
+    var totalHotelPrice = 0;
+    props.rooms?.data?.map(
+      (room) => (totalHotelPrice = totalHotelPrice + room.price)
+    );
+    return totalHotelPrice * dateNumber;
+  };
+
+  const dateConvert = (date) => {
+    var st = date.replace("/", ".");
+    var pattern = /(\d{2}).(\d{2}).(\d{4})/;
+    var dt = new Date(st.replace(pattern, "$3-$2-$1"));
+    return dt;
   };
 
   const createOrder = (data, actions) => {
@@ -222,8 +279,11 @@ const ComboBookingPage = (props) => {
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();
+    var totalHotelPrice = calculatePrice()*0.9;
+    var newArr = [];
+    props.rooms?.data.map((room, index) => newArr.push({ id: room.id }));
     if (validateForm(e)) {
-      var data = {
+      var dataFlight = {
         userId: userId,
         flightId: flights.data.id,
         dateBooking: dateOfDeparture,
@@ -235,7 +295,21 @@ const ComboBookingPage = (props) => {
         totalPrice: totalPrice + returnTotalPrice,
         passengers: [...inputListPassenger],
       };
-      setFlightBooking(data);
+      var dataHotel = {
+        user: user.data,
+        // hotel:props.hotel?.data,
+        rooms: newArr,
+        dateBooking: new Date(),
+        checkInDate: new Date(dateConvert(queryParam.get("checkInDate"))),
+        checkOutDate: new Date(dateConvert(queryParam.get("checkOutDate"))),
+        numberOfGuests:
+          parseInt(queryParam.get("numberAdult")) +
+          parseInt(queryParam.get("numberChildren")),
+        totalPrice: totalHotelPrice,
+        paymentMethod: "PaymentCombo",
+      };
+      setFlightBooking(dataFlight);
+      setDataConfirm(dataHotel);
       setModalIsOpen(true);
     }
   };
@@ -253,9 +327,9 @@ const ComboBookingPage = (props) => {
 
   useEffect(() => {
     let mount = false;
-    if (!sessionStorage.getItem("isBooking")) {
-      history.push("/");
-    }
+    // if (!sessionStorage.getItem("isBooking")) {
+    //   history.push("/");
+    // }
     window.scrollTo(0, 0);
     importAll();
     getFlights(queryParam.get("fid"), queryParam.get("rfid"));
@@ -312,15 +386,26 @@ const ComboBookingPage = (props) => {
     setError(newListError);
     setHasInfant(newListHasInfant);
     setIsMale(newListIsMale);
+
+    var listIds = queryParam
+      .get("roomIds")
+      .split(".")
+      .map((x) => +x);
+
+    if (user) {
+      props.getHotel(queryParam.get("id"));
+      props.getRooms(listIds);
+      dateCalculate();
+    }
     return () => {
       mount = true;
     };
   }, []);
 
   useEffect(() => {
-    if (completeBooking.data && checkout) {
+    if (completeBooking.data && props.bookRoomData.data && checkout) {
       sessionStorage.removeItem("isBooking");
-      history.push({ pathname: "/round-flight-booking-complete" });
+      history.push({ pathname: "/combo-booking-complete" });
     }
     if (flights.data) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
@@ -328,11 +413,14 @@ const ComboBookingPage = (props) => {
     if (flights.returnData) {
       reCalculateReturnTotalPrice(inputListPassenger, hasInfant);
     }
+
     setTotalFlightPrice((totalPrice + returnTotalPrice) * 0.9);
     if (checkout && !isComplete) {
       bookFlt(flightBooking);
+      props.bookRoom(dataConfirm);
       setIsComplete(true);
     }
+
   });
 
   const handleAddClick = (amount) => {
@@ -448,7 +536,7 @@ const ComboBookingPage = (props) => {
               <div className="breadcrumbs">
                 <Link to="/">Home</Link> /{" "}
                 <a onClick={(e) => history.goBack()} to="">
-                Combo Search Result
+                  Combo Search Result
                 </a>{" "}
                 / <span>Combo Booking</span>
               </div>
@@ -764,12 +852,11 @@ const ComboBookingPage = (props) => {
                                             .create({
                                               purchase_units: [
                                                 {
-                                                  description: `Round Flight ${flights.data.departureCity}-${flights.data.arrivalCity}, ${flights.returnData.departureCity}-${flights.returnData.arrivalCity}`,
+                                                  description: "Combo Flight Hotel",
                                                   amount: {
                                                     currency: "USD",
                                                     value:
-                                                      totalPrice +
-                                                      returnTotalPrice,
+                                                      totalFlightPrice + calculatePrice()*0.9,
                                                   },
                                                 },
                                               ],
@@ -945,20 +1032,20 @@ const ComboBookingPage = (props) => {
                       <div className="chk-line">
                         <span className="chk-l">FLIGHT CLASS</span>
                         <span className="chk-r">
-                        {queryParam.get("seatClass")}
+                          {queryParam.get("seatClass")}
                         </span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
                         <span className="chk-l">Total Passenger</span>
-                        <span className="chk-r">
-                        {totalPassenger}
-                        </span>
+                        <span className="chk-r">{totalPassenger}</span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
                         <span className="chk-l">Combo Discount</span>
-                        <span className="chk-r" style={{color:"green"}}>10%</span>
+                        <span className="chk-r" style={{ color: "green" }}>
+                          10%
+                        </span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
@@ -972,21 +1059,22 @@ const ComboBookingPage = (props) => {
                     <div className="chk-total">
                       <div className="chk-total-l">Total Price</div>
                       <div className="chk-total-r add-more-price-flight">
-                        {totalFlightPrice}$ <del style={{color:"green"}}>{totalPrice + returnTotalPrice}</del>
+                        {totalFlightPrice}${" "}
+                        <del style={{ color: "green" }}>
+                          {totalPrice + returnTotalPrice}$
+                        </del>
                       </div>
                       <div className="clear"></div>
                     </div>
                   </div>
                 </div>
+
+
                 <div className="checkout-coll">
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img
-                          alt=""
-                          src={flights?.returnData?.airline?.image}
-                          style={{ width: "95px", height: "60px" }}
-                        />
+                        <img alt="" src={props.hotel?.image} style={{ width: "95px", height: "60px" }}/>
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -994,14 +1082,45 @@ const ComboBookingPage = (props) => {
                         <div className="checkout-headrp">
                           <div className="chk-left">
                             <div className="chk-lbl">
-                              <a href="#">
-                                {flights?.returnData?.departureCity} -{" "}
-                                {flights?.returnData?.arrivalCity}
-                              </a>
+                              <a href="#">{props.hotel?.data?.hotelName}</a>
                             </div>
-                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
+                            <div className="chk-lbl-a">
+                              {props.hotel?.data?.location?.street},
+                              {props.hotel?.data?.location?.province?.name},
+                              {props.hotel?.data?.location?.district?.name}
+                            </div>
+                            <nav className="chk-stars">
+                              <ul>
+                                {[...Array(5)].map(
+                                  (item, index) =>
+                                    // {
+                                    index + 1 >
+                                    Math.ceil(
+                                      props.hotel?.data?.hotelRating?.rating
+                                    ) ? (
+                                      <li key={index}>
+                                        <a>
+                                          <img alt="" src="img/star-a.png" />
+                                        </a>
+                                      </li>
+                                    ) : (
+                                      <li key={index}>
+                                        <a>
+                                          <img alt="" src="img/star-b.png" />
+                                        </a>
+                                      </li>
+                                    )
+                                  // }
+                                )}
+                              </ul>
+                              <div className="clear"></div>
+                            </nav>
                           </div>
-                          <div className="chk-right"></div>
+                          <div className="chk-right">
+                            <a href="#">
+                             
+                            </a>
+                          </div>
                           <div className="clear"></div>
                         </div>
                       </div>
@@ -1009,40 +1128,60 @@ const ComboBookingPage = (props) => {
                     </div>
                   </div>
 
+                  <div className="chk-lines">
+                    <div className="chk-line">
+                      <span className="chk-nights">{date} Nights</span>
+                      <span className="chk-dates">
+                        {queryParam.get("checkInDate")} -{" "}
+                        {queryParam.get("checkOutDate")}
+                      </span>
+                    </div>
+                    {props.rooms?.data?.map((room) => (
+                      <div className="chk-line">
+                        1 {room.roomType} ROOM FOR{" "}
+                        <span className="chk-persons">
+                          {" "}
+                          {room.maxAdult + room.maxChildren} PERSONS
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
                   <div className="chk-details">
                     <h2>Details</h2>
                     <div className="chk-detais-row">
+                      {props.rooms?.data?.map((room) => (
+                        <>
+                          <h3>Detail Room</h3>
+                          <div className="chk-line">
+                            <span className="chk-l">Room type</span>
+                            {/* <span className="chk-r" >{`${allRoomTypeString()}`}</span> */}
+                            <span className="chk-r">{room.roomType}</span>
+                            <div className="clear"></div>
+                          </div>
+                          <div className="chk-line">
+                            <span className="chk-l">price</span>
+                            <span className="chk-r">{room.price}$</span>
+                            <div className="clear"></div>
+                          </div>
+                        </>
+                      ))}
+                      <h3>Total Price </h3>
                       <div className="chk-line">
-                        <span className="chk-l">RETURN FLIGHT</span>
-                        <span className="chk-r">
-                          {flights?.returnData?.flightCode}
-                        </span>
+                        <span className="chk-l">{date} nights stay</span>
+                        <span className="chk-r">{`${calculatePrice()}`}$</span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
-                        <span className="chk-l">FLIGHT TYPE</span>
-                        <span className="chk-r">
-                          {queryParam.get("seatClass")}
-                        </span>
-                        <div className="clear"></div>
-                      </div>
-                      <div className="chk-line">
-                        <span className="chk-l">Total Passenger</span>
-                        <span className="chk-r">{totalPassenger}</span>
-                        <div className="clear"></div>
-                      </div>
-                      <div className="chk-line">
-                        <span className="chk-l">taxes and fees</span>
-                        <span className="chk-r">
-                          {(parseInt(returnTotalPrice) * 0.1).toPrecision(3)}$
-                        </span>
+                        <span className="chk-l">Combo discount</span>
+                        <span className="chk-r">10%</span>
                         <div className="clear"></div>
                       </div>
                     </div>
                     <div className="chk-total">
-                      <div className="chk-total-l">Total Price</div>
-                      <div className="chk-total-r add-more-price-flight">
-                        {returnTotalPrice}$
+                      <div className="chk-total-l">Final Price</div>
+                      <div className="chk-total-r">
+                        {`${calculatePrice()*0.9}`}$
                       </div>
                       <div className="clear"></div>
                     </div>
@@ -1068,4 +1207,19 @@ const ComboBookingPage = (props) => {
   );
 };
 
-export default ComboBookingPage;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    hotel: state.hotels,
+    rooms: state.room,
+    bookRoomData: state.bookRoom,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getHotel: (id) => dispatch(fetchHotelById(id)),
+    getRooms: (data) => dispatch(getRooms(data)),
+    bookRoom: (data) => dispatch(bookRoom(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ComboBookingPage);
