@@ -219,21 +219,24 @@ const Home = (props) => {
         e.preventDefault();
         var form = e.target;
         const today = new Date();
-
+       
         if (validateHtl(form, "hotel-search")) {
             history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
                 }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
                 }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
-                }&checkInDate=${form.checkInDate.value === ""
-                    ? getNextDate(today)
-                    : form.checkInDate.value
-                }&checkOutDate=${form.checkOutDate.value === ""
-                    ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value)
-                    : form.checkOutDate.value
+                }&checkInDate=${form.checkInDate.value === ""? getNextDate(today):form.checkInDate.value
+                }&checkOutDate=${form.checkOutDate.value === ""?form.checkInDate.value === ""?getNextDate(getNextDate(today)):getNextDate(form.checkInDate.value):form.checkOutDate.value
                 }&numRoom=${form.roomHotel.value}`);
         }
     };
 
+    // const dateConvert = (date) => {
+    //     var st = date.replace("/", ".");
+    //     var pattern = /(\d{2}).(\d{2}).(\d{4})/;
+    //     var dt = new Date(st.replace(pattern, '$3-$2-$1'));
+    //     return dt;
+    // }
+  
     const handleSubmitFlight = (e) => {
         e.preventDefault();
         // console.log(props);

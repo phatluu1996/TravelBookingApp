@@ -22,7 +22,7 @@ public final class HotelSpecification {
                                                            Integer numRoom,
                                                            Date check_in_date){
         return Specification.where(
-                allCheck(province,district,ward,number_children,check_in_date,numRoom)
+                allCheck(province,district,ward,number_children,check_in_date,number_adult)
                         .and(roomNullCheck())
                         .and(isRetired(retired)));
     }
@@ -35,7 +35,7 @@ public final class HotelSpecification {
     }
 
 
-    public static Specification<Hotel> allCheck(Integer province,Integer district,Integer ward,Integer number_children,Date check_in_date,Integer numRoom){
+    public static Specification<Hotel> allCheck(Integer province,Integer district,Integer ward,Integer number_children,Date check_in_date,Integer number_adult){
         return (hotel,cq,cb) -> {
             Join<Hotel,Location> joinTableLocation = hotel.join("location");
             Join<Hotel,Room> joinTableRoom = hotel.join("rooms");
@@ -51,10 +51,10 @@ public final class HotelSpecification {
                 predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
             }
 
-//                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
-                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));
+                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
+                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("availableTime"),check_in_date));
 
-                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
+//                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
                 cq.distinct(true);
             return cb.and(predicates.toArray(new Predicate[predicates.size()]));
         };

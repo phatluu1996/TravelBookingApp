@@ -12,8 +12,11 @@ public class BookingRequestRoom {
     private User user;
 //    private Hotel hotel;
     private List<Room> rooms;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateBooking;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date checkInDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date checkOutDate;
     private int numberOfGuests;
     private Float totalPrice;

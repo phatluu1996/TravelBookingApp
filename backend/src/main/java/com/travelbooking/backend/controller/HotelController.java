@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class HotelController {
                                        @RequestParam(required = false, name = "ward") Integer ward,
                                        @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
                                        @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
-                                       @RequestParam (required = false, name = "checkInDate") Date checkInDate,
+                                       @RequestParam (required = false, name = "checkInDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date checkInDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
     ) throws ParseException {
         boolean check = false;
