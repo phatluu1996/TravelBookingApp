@@ -44,7 +44,7 @@ const ComboSearchPage = (props) => {
 
         var checkinDate = dateConvert(queryParam.get("checkInDate"));
         props.getFlight(queryParam.get("from"), queryParam.get("to"), queryParam.get("adult"), queryParam.get("child"), queryParam.get("infant"), queryParam.get("departureDate"), queryParam.get("returnDate"), queryParam.get("seatClass"), queryParam.get("priceFrom"), queryParam.get("priceTo"), 1, queryParam.get("sortBy"), queryParam.get("sortDir"));
-        props.getHotel(queryParam.get("province"), queryParam.get("district"), queryParam.get("ward"), queryParam.get("hAdult"), queryParam.get("hChild"), checkinDate, queryParam.get("numRoom"));
+        props.getHotel(queryParam.get("province"), queryParam.get("district"), queryParam.get("ward"), queryParam.get("hAdult"), queryParam.get("hChild"), checkinDate.toDateString(), queryParam.get("numRoom"));
         props.getProvince();
     }, []);
 
