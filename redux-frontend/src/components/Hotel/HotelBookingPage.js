@@ -192,65 +192,13 @@ const HotelBookingPage = (props) => {
             // console.log(JSON.stringify(room));
         }
     }
-    //   private User user;
-    //     private Hotel hotel;
-    //     private List<Room> rooms;
-    //     private Date dateBooking;
-    //     private Date checkInDate;
-    //     private Date checkOutDate;
-    //     private int numberOfGuests;
-    //     private Float totalPrice;
-    //     private String paymentMethod;
-
-    // Hoa logic
-    // const getRoomByBoomTy = (list = []) => {
-    //     var newList = [];
-    //     var count = 0;
-    //     const data = {
-    //         roomType: "",
-    //         quantity: 0
-    //         // index:0
-    //     }
-
-    //     if (!Array.isArray(list) || list.length === 0) {
-    //         return [];
-    //     }
-
-    //     list.forEach(room => {
-
-    //         if (!roomTypeExists(room.roomType, newList)) {
-    //             newList.push(room);
-    //         }
-    //         if (roomTypeExists(room.roomType, newList)) {
-    //             if (!roomTypeExists(data.roomType,roomTypeCount)) {
-    //                 let newArr = [...roomTypeCount];
-    //                 let finalArr = [];
-    //                 var index = 0;
-
-    //                 data.roomType = room.roomType;
-    //                 data.count = 0;
-    //                 newArr.filter((d,index) =>d.roomType = data.roomType)
-    //                 setRoomTypeCount()
-    //             }
-    //         }
-    //     });
-
-    //     return newList;
-    // }
-
-
-
-    // function roomTypeExists(roomType, list = []) {
-    //     return list.some(function (el) {
-    //         return el.roomType === roomType;
-    //     });
-    // }
 
 
     useEffect(() => {
 
         let mount = false;
         var listIds = queryParam.get("roomIds").split(".").map(x => +x);
+        window.scrollTo(0, 0);
         // var b = a.split(',').map(function(item) {
         //     return parseInt(item, 10);
         // });
@@ -283,11 +231,7 @@ const HotelBookingPage = (props) => {
         if (checkout && !isComplete) {
             props.bookRoom(dataConfirm);
             setIsComplete(true);
-        }
-        if (props.bookRoomData?.data && checkout) {
-            sessionStorage.removeItem("isRoomBooking")
-            history.push("/hotel-booking-complete");
-        }       
+        }    
     })
 
     return (

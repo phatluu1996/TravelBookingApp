@@ -43,7 +43,7 @@ public class HotelBooking {
 
     @OneToOne
     @JoinColumn(name = "hotel_booking_Detail_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("hotel_booking")
+    @JsonIgnoreProperties("hotelBooking")
     private HotelBookingDetail hotelBookingDetail;
 
     @OneToOne

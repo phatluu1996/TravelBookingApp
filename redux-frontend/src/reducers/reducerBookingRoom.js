@@ -1,4 +1,4 @@
-import {BOOKING_ROOM_REQUEST,BOOKING_ROOM_SUCCESS,BOOKING_ROOM_ERROR} from "../actions/actionBookingRoom";
+import {BOOKING_ROOM_REQUEST,BOOKING_ROOM_SUCCESS,BOOKING_ROOM_ERROR, CLEAR_BOOKING_ROOM_REQUEST} from "../actions/actionBookingRoom";
 
 const initialState = {
     requesting: false,
@@ -30,6 +30,9 @@ function reducerBookingRoom(state = initialState, action) {
             message: action.message
           };
           return state;
+
+        case CLEAR_BOOKING_ROOM_REQUEST:          
+          return initialState;
           
         default:
           return state;
