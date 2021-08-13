@@ -393,11 +393,11 @@ const ComboFlightSearchPage = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-line">
                                                 <label>Departure</label>
-                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={props.filter?.departureDate} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="departureDate" type="text" className="date-departure-flight-inpt" placeholder="mm/dd/yy" defaultValue={props.filter?.departureDate} /> <span className="date-icon"></span></div>
                                             </div>
                                             <div className="srch-tab-right" hidden>
                                                 <label>Return</label>
-                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={props.filter?.returnDate} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="returnDate" type="text" className="date-departure-flight-inpt" placeholder="mm/dd/yy" defaultValue={props.filter?.returnDate} /> <span className="date-icon"></span></div>
                                             </div>
                                             <div className="clear"></div>
                                         </div>

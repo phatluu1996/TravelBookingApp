@@ -67,7 +67,7 @@ const RoundFlightBookingPage = (props) => {
       lastname: "",
       gender: "true",
       birthday: "",
-      hasInfant: "false",
+      hasInfant: false,
       baggageExtra: 0,
       seatNumber: "",
       price: 0,
@@ -202,8 +202,11 @@ const RoundFlightBookingPage = (props) => {
   const handleInfantChange = (e, index) => {
     // e.preventDefault();
     const checkinfant = [...hasInfant];
+    const list = [...inputListPassenger];
+    list[index]["hasInfant"] = !list[index]["hasInfant"];
     checkinfant[index].infant = !checkinfant[index].infant;
     setHasInfant(checkinfant);
+    setInputListPassenger(list);
   };
 
   const handleBookingSubmit = (e) => {
@@ -264,7 +267,7 @@ const RoundFlightBookingPage = (props) => {
         lastname: "",
         gender: "true",
         birthday: "",
-        hasInfant: "false",
+        hasInfant: false,
         baggageExtra: 0,
         seatNumber: "",
         price: 0,
@@ -320,7 +323,7 @@ const RoundFlightBookingPage = (props) => {
         lastname: "",
         gender: "true",
         birthday: "",
-        hasInfant: "false",
+        hasInfant: false,
         baggageExtra: 0,
         seatNumber: "",
         price: 0
@@ -615,7 +618,7 @@ const RoundFlightBookingPage = (props) => {
                                     onClick={() => { handleAddClick(-1) }}
                                     hidden={inputListPassenger.length === 1}
                                     className="add-passanger"
-                                    s
+                                    
                                   >
                                     <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
                                     Remove Passenger

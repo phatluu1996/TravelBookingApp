@@ -64,7 +64,7 @@ const FlightBookingPage = (props) => {
       lastname: "",
       gender: "true",
       birthday: "",
-      hasInfant: "false",
+      hasInfant: false,
       baggageExtra: 0,
       seatNumber: "",
       price: 0,
@@ -207,8 +207,11 @@ const FlightBookingPage = (props) => {
   const handleInfantChange = (e, index) => {
     // e.preventDefault();
     const checkinfant = [...hasInfant];
+    const list = [...inputListPassenger];
+    list[index]["hasInfant"] = !list[index]["hasInfant"];
     checkinfant[index].infant = !checkinfant[index].infant;
     setHasInfant(checkinfant);
+    setInputListPassenger(list);
   };
 
   const handleBookingSubmit = (e) => {
@@ -260,7 +263,7 @@ const FlightBookingPage = (props) => {
         lastname: "",
         gender: "true",
         birthday: "",
-        hasInfant: "false",
+        hasInfant: false,
         baggageExtra: 0,
         seatNumber: "",
         price: 0,
@@ -314,7 +317,7 @@ const FlightBookingPage = (props) => {
         lastname: "",
         gender: "true",
         birthday: "",
-        hasInfant: "false",
+        hasInfant: false,
         baggageExtra: 0,
         seatNumber: "",
         price: 0
@@ -597,10 +600,10 @@ const FlightBookingPage = (props) => {
 
                                 {inputListPassenger.length - 1 === i && (<>
                                   <a 
-                                    id = "removePassengerbutton"
-                                    onClick={() => {inputListPassenger.length === 1 ? document.getElementById("removePassengerbutton").disabled=true : handleAddClick(-1)}}
+                                    id="removePassengerFlightbutton"
+                                    onClick={() => { handleAddClick(-1) }}
+                                    hidden={inputListPassenger.length === 1}
                                     className="add-passanger"
-
                                   >
                                     <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
                                     Remove Passenger
