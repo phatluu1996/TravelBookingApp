@@ -28,7 +28,7 @@ public class HotelFeedBackController {
 
     //http://localhost:8080/api/hotelFeedBack
     @PostMapping("/hotelFeedBack")
-    public ResponseEntity<HotelFeedBack> addHotel(@RequestBody HotelFeedBack hotelFeedBack) {
+    public ResponseEntity<HotelFeedBack> addHotelFeedBack(@RequestBody HotelFeedBack hotelFeedBack) {
         double avgRating  = 0.0;
         double count = 0;
 

@@ -247,6 +247,7 @@ const FlightBookingPage = (props) => {
       setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
     }
     getUserBooking(parseInt(getUserId()));
+    console.log(queryParam.get("departureDate").split("/").reverse().join("-"));
     setDateOfDeparture(queryParam.get("departureDate").split("/").reverse().join("-"));
 
     var newListPax = [];

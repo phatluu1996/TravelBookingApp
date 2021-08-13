@@ -315,3 +315,26 @@ export const getAllBookingHotel = (id) => async dispatch => {
         });
     }
 }
+
+export const GET_HOTEL_BY_ROOM_REQUEST = "GET_HOTEL_BY_ROOM_REQUEST";
+export const GET_HOTEL_BY_ROOM_SUCCESS = "GET_HOTEL_BY_ROOM_SUCCESS";
+export const GET_HOTEL_BY_ROOM_ERROR = "GET_HOTEL_BY_ROOM_ERROR";
+
+export const getHotelByRoom = (data) => async dispatch => {
+    try {
+        dispatch({ type: GET_HOTEL_BY_ROOM_REQUEST });
+        const url = `${ROOT_URL}/api/hotelRoom`;
+        const response = await axios.post(url,data);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_HOTEL_BY_ROOM_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_HOTEL_BY_ROOM_ERROR,
+            message: error
+        });
+    }
+}

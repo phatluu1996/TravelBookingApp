@@ -8,7 +8,7 @@ import { getRooms } from "../../actions/actionRoom";
 import {bookRoom} from "../../actions/actionBookingRoom";
 import { connect } from 'react-redux';
 import { PROPERTY_TYPES } from '@babel/types';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import $ from "jquery";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
@@ -21,6 +21,7 @@ function useQuery() {
 
 const HotelBookingPage = (props) => {
     let queryParam = useQuery();
+    const history = useHistory();
     const user = sessionStorage.getItem("userId")
     const [date, setDateCalculate] = useState(0);
     const [roomTypeCount, setRoomTypeCount] = useState([{
@@ -257,6 +258,10 @@ const HotelBookingPage = (props) => {
         importAll();
         customCheckBoxInput();
 
+        if(!sessionStorage.getItem("isRoomBooking")){
+                history.push(`/`);
+        }
+
         if (user) {
             props.getUser(user);
             props.getHotel(queryParam.get("id"));
@@ -273,7 +278,19 @@ const HotelBookingPage = (props) => {
             mount = true;
         }
     }, [])
-    
+
+    useEffect(() => {
+
+        if (props.bookRoomData.data && checkout) {
+            sessionStorage.removeItem("isRoomBooking")
+            history.push("/hotel-booking-complete");
+        }
+        if (checkout && !isComplete) {
+            props.bookRoom(dataConfirm);
+            setIsComplete(true);
+        }
+    })
+
     return (
         <>
             <Header></Header>
