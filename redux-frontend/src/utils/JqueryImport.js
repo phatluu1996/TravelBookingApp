@@ -2201,14 +2201,14 @@ export const customOtherTags = () => {
         }
     }, $(this));
 
-    // $('.gallery-i a').on('click', function () {
-    //     var $href = $(this).attr('href');
-    //     var $src = $(this)[0].getElementsByTagName("img")[0].src;
-    //     $('.gallery-i').removeClass('active');
-    //     $(this).closest('.gallery-i').addClass('active');
-    //     $('.tab-gallery-big img')[0].setAttribute('src', $src);
-    //     return true;
-    // });
+    $('.gallery-i a').on('click', function () {
+        var $href = $(this).attr('href');
+        var $src = $(this)[0].getElementsByTagName("img")[0].src;
+        $('.gallery-i').removeClass('active');
+        $(this).closest('.gallery-i').addClass('active');
+        $('.tab-gallery-big img')[0].setAttribute('src', $src);
+        return true;
+    });
 
     $('.content-tabs-head a').on('click', function () {
         var $index = $(this).closest('li').index();
@@ -2511,16 +2511,16 @@ const init_validation = (target) => {
         slideMargin: 0
     });
 
-    $('#gallery').bxSlider({
-        infiniteLoop: true,
-        speed: 300,
-        slideWidth: 108,
-        minSlides: 1,
-        maxSlides: 6,
-        moveSlides: 1,
-        auto: false,
-        slideMargin: 7
-    });
+    // $('#gallery').bxSlider({
+    //     infiniteLoop: true,
+    //     speed: 300,
+    //     slideWidth: 108,
+    //     minSlides: 1,
+    //     maxSlides: 6,
+    //     moveSlides: 1,
+    //     auto: false,
+    //     slideMargin: 7
+    // });
 }
 
 export const customCheckBoxInput = () => {

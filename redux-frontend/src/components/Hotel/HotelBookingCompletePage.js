@@ -70,7 +70,7 @@ const HotelBookingCompletePage = (props) => {
                                             <div className="booking-left">
                                                 <h2>Booking Complete</h2>
                                                 <button onClick={
-                                                    history.push(`/`)
+                                                   ()=>history.push(`/`)
                                                 }>
                                                     Home Page
                                                 </button>
@@ -91,27 +91,27 @@ const HotelBookingCompletePage = (props) => {
                                                         </div> */}
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">First Name:</div>
-                                                            <div className="complete-info-r">{user?.firstName}</div>
+                                                            <div className="complete-info-r">{booking.data?.user?.firstName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Last Name:</div>
-                                                            <div className="complete-info-r">{user?.lastName}</div>
+                                                            <div className="complete-info-r">{booking.data?.user?.lastName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">E-Mail Adress:</div>
-                                                            <div className="complete-info-r">{user?.email}</div>
+                                                            <div className="complete-info-r">{booking.data?.user?.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Country:</div>
-                                                            <div className="complete-info-r">{user?.location?.province?.name}</div>
+                                                            <div className="complete-info-r">{booking.data?.user?.location?.province?.name}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Phone Number:</div>
-                                                            <div className="complete-info-r">{user?.phoneNumber}</div>
+                                                            <div className="complete-info-r">{booking.data?.user?.phoneNumber}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>

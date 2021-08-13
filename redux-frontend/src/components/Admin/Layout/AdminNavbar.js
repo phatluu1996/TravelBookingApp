@@ -204,9 +204,9 @@ const AdminNavbar = (props) => {
                                             <i className="mdi mdi-logout text-danger"></i>
                                         </div>
                                     </div>
-                                    <div className="preview-item-content">
-                                        <Link to="/" className="preview-subject mb-1">Back</Link>
-                                    </div>
+                                    <Link to="/" className="preview-item-content">
+                                        <a className="preview-subject mb-1">Back</a>
+                                    </Link>
                                     {/* <div className="preview-item-content">
                                         <p className="preview-subject mb-1">Log out</p>
                                     </div> */}

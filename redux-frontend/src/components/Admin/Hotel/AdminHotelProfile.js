@@ -631,25 +631,25 @@ const AdminHotelProfile = (props) => {
                                                                     <div className='row'>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
-                                                                                    <input type="checkbox" className="form-check-input" name="highSpeedInternet" checked={allService.highSpeedInternet} onClick={onServiceClick} /> High Speed Internet </label>
+                                                                                <label>
+                                                                                    <input type="checkbox" name="highSpeedInternet" checked={allService.highSpeedInternet} onClick={onServiceClick} /> High Speed Internet </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="entertainment" checked={allService.entertainment} onClick={onServiceClick} /> Entertaiment </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="freeParking" checked={allService.freeParking} onClick={onServiceClick} /> Free Parking </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="petAllowed" checked={allService.petAllowed} onClick={onServiceClick} /> Pets Allowed </label>
                                                                             </div>
                                                                         </div>
@@ -657,25 +657,25 @@ const AdminHotelProfile = (props) => {
                                                                     <div className='row'>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="hotTub" checked={allService.hotTub} onClick={onServiceClick} /> Hot Tub </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="swimmingPool" checked={allService.swimmingPool} onClick={onServiceClick} /> Swimming Pool </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="gym" checked={allService.gym} onClick={onServiceClick} /> GYM </label>
                                                                             </div>
                                                                         </div>
                                                                         <div className="form-group col-sm-3">
                                                                             <div className="form-check">
-                                                                                <label className="form-check-label">
+                                                                                <label>
                                                                                     <input type="checkbox" className="form-check-input" name="paymentAtHotel" checked={allService.paymentAtHotel} onClick={onServiceClick} /> Payment At Hotel </label>
                                                                             </div>
                                                                         </div>

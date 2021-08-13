@@ -13,9 +13,12 @@ import $, { map } from "jquery";
 import Pagination from "./Pagination";
 import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBaby, faCheck, faMale } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faBaby, faCheck, faMale } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
 import { getRole, ROLE_USER } from "../../utils";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick'
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -74,8 +77,20 @@ const HotelDetailPage = (props) => {
         },
     };
 
+    var settings = {
+        // infinite: true,
+        // speed: 500,
+        // slidesToShow: 5,
+        // slidesToScroll: 1,
+        prevArrow: <button className="slick-prev"><FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon></button>,
+        nextArrow: <button className="slick-next"><FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon></button>,
+        slidesToShow: 5,
+        slidesToScroll: 5
+    };
+
     const changeCurrentImgSrc = (e) => {
-        console.log(e.target);
+        console.log(e.target.src);
+        setCurrentImage(e.target.src);
     };
 
     const addNewBook = (e) => {
@@ -107,7 +122,7 @@ const HotelDetailPage = (props) => {
         var totalC = 0;
         var ids = [];
         console.log(e);
-       
+
         e.selectedRows.map((r) => {
             totalA = totalA + r.maxAdult;
             totalC = totalC + r.maxChildren;
@@ -118,7 +133,7 @@ const HotelDetailPage = (props) => {
         setBookingList(ids);
     };
 
-    
+
 
     const roomDetail = [
         {
@@ -229,6 +244,10 @@ const HotelDetailPage = (props) => {
     };
 
     useEffect(() => {
+
+    }, [])
+
+    useEffect(() => {
         let mount = false;
 
         props.getUser(user);
@@ -313,13 +332,10 @@ const HotelDetailPage = (props) => {
                                             <div className="mm-tabs-wrapper">
                                                 <div className="tab-item">
                                                     <div className="tab-gallery-big">
-                                                        <img alt="" src="img/tab-photo-01.jpg" />
+                                                        <img alt="" src={currentImage} />
                                                     </div>
-                                                    <div
-                                                        onClick={changeCurrentImgSrc}
-                                                        className="tab-gallery-preview"
-                                                    >
-                                                        <div id="gallery">
+                                                    <div className="tab-gallery-preview" >
+                                                        {/* <div id="gallery">
                                                             {props.hotel.data?.rooms?.map((room, index) => (
                                                                 <div key={index} className="gallery-i">
                                                                     <a>
@@ -327,11 +343,23 @@ const HotelDetailPage = (props) => {
                                                                             alt={room.images[0]?.imageAlt}
                                                                             src={room.images[0]?.imagePath}
                                                                         />
-                                                                        {/* <span></span> */}
                                                                     </a>
                                                                 </div>
                                                             ))}
-                                                        </div>
+                                                        </div> */}
+                                                        {/* <div id="gallery"> */}
+                                                        <Slider {...settings}>
+                                                            {props.hotel.data?.rooms?.map((room, index) => <>
+                                                                {room.images.length > 0 && room.images[0]?.imagePath && <div key={index} className="gallery-i">
+                                                                    <a>
+                                                                        <img onClick={changeCurrentImgSrc} alt={room.images[0]?.imageAlt} src={room.images[0]?.imagePath} />
+                                                                    </a>
+                                                                </div>}
+                                                            </>)}
+                                                        </Slider>
+                                                        {/* </div> */}
+
+
                                                     </div>
                                                 </div>
 
@@ -955,7 +983,7 @@ const HotelDetailPage = (props) => {
                                                                                 <span
                                                                                     style={{
                                                                                         width: `${(props.hotel.data?.hotelRating *
-                                                                                                100) /
+                                                                                            100) /
                                                                                             5
                                                                                             }%`,
                                                                                     }}
@@ -1283,17 +1311,9 @@ const HotelDetailPage = (props) => {
                                                             </a>
                                                         </li>
                                                     )
-                                                // }
                                             )}
                                         </ul>
-                                        <div className="h-stars-lbl">{countReview} reviews</div>
-                                        <a
-                                            hidden={user ? false : true}
-                                            href="#"
-                                            className="h-add-review"
-                                        >
-                                            add review
-                                        </a>
+                                        <div className="h-stars-lbl">{props.hotel?.data?.hotelFeedbacks?.length} reviews</div>
                                         <div className="clear"></div>
                                     </div>
                                     <div className="h-details-text">
@@ -1307,13 +1327,6 @@ const HotelDetailPage = (props) => {
                                             natus error sit voluptatem.
                                         </p>
                                     </div>
-                                    {/* <a href="#" className="wishlist-btn">
-                    <span className="wishlist-btn-l">
-                      <i></i>
-                    </span>
-                    <span className="wishlist-btn-r">Select Room</span>
-                    <div className="clear"></div>
-                  </a> */}
                                 </div>
 
                                 <div className="h-help">
@@ -1352,44 +1365,6 @@ const HotelDetailPage = (props) => {
                                                     </div>
                                                 </div>
                                             ))}
-
-                                        {/* 
-                    <div className="reasons-rating-i">
-                      <div className="reasons-rating-txt">
-                        Sed ut perspiciatis unde omnis iste natus sit voluptatem
-                        accusantium doloremque laudantium, totam.
-                      </div>
-                      <div className="reasons-rating-user">
-                        <div className="reasons-rating-user-l">
-                          <img alt="" src="img/r-user.png" />
-                          <span>5.0</span>
-                        </div>
-                        <div className="reasons-rating-user-r">
-                          <b>Robert Dowson</b>
-                          <span>from Austria</span>
-                        </div>
-                        <div className="clear"></div>
-                      </div>
-                    </div>
-
-                    <div className="reasons-rating-i">
-                      <div className="reasons-rating-txt">
-                        Sed ut perspiciatis unde omnis iste natus sit voluptatem
-                        accusantium doloremque laudantium, totam.
-                      </div>
-                      <div className="reasons-rating-user">
-                        <div className="reasons-rating-user-l">
-                          <img alt="" src="img/r-user.png" />
-                          <span>5.0</span>
-                        </div>
-                        <div className="reasons-rating-user-r">
-                          <b>Mike Tyson</b>
-                          <span>from France</span>
-                        </div>
-                        <div className="clear"></div>
-                      </div>
-                    </div>  
-                            */}
                                     </div>
                                 </div>
 

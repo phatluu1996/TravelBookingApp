@@ -302,9 +302,8 @@ const HotelBookingPage = (props) => {
         }
         if (props.bookRoomData?.data && checkout) {
             sessionStorage.removeItem("isRoomBooking")
-            // history.push("/hotel-booking-complete");
-        }
-       
+            history.push("/hotel-booking-complete");
+        }       
     })
 
     return (
