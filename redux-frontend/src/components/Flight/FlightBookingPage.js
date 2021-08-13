@@ -294,6 +294,7 @@ const FlightBookingPage = (props) => {
       sessionStorage.removeItem("isBooking")
       history.push({ pathname: "/flight-booking-complete" });
     }
+    
     if (flight) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
     }

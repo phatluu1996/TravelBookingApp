@@ -1,4 +1,5 @@
 package com.travelbooking.backend.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -42,6 +43,7 @@ public class HotelBooking {
 
     @OneToOne
     @JoinColumn(name = "hotel_booking_Detail_id",referencedColumnName = "id")
+    @JsonIgnoreProperties("hotel_booking")
     private HotelBookingDetail hotelBookingDetail;
 
     @OneToOne
