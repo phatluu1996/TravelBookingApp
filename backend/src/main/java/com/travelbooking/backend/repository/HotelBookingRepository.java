@@ -54,4 +54,20 @@ public interface HotelBookingRepository extends JpaRepository<HotelBooking,Long>
                                                 "WHERE BOOK_ROOM.room.id = R.id\n" +
                                                 "AND R.hotel.id = 1)))")
     float totalRevenueByHotelId(@Param("id")Long id);
+    
+    @Query(value = "WITH CTE AS\n" +
+            "(SELECT CONVERT(DATE,GETDATE()) AS N\n" +
+            "UNION ALL\n" +
+            "SELECT DATEADD(DAY,-1,N) FROM CTE WHERE DATEADD(DD,-1,N)> DATEADD(MONTH, -1, GETDATE()))\n" +
+            "SELECT CTE.N, BOOKING.PRICE FROM CTE LEFT JOIN (SELECT ISNULL(SUM(BOOK.total_price), 0) PRICE,  CONVERT(DATE,BOOK.created_at) CRE_DT FROM HOTEL_BOOKING BOOK\n" +
+            "WHERE EXISTS (SELECT 1 FROM HOTEL_BOOKING_DETAIL DETAIL\n" +
+            "WHERE BOOK.id = DETAIL.hotel_booking_id\n" +
+            "AND EXISTS (SELECT 1 FROM HOTEL_BOOKING_ROOM BOOK_ROOM\n" +
+            "WHERE DETAIL.ID = BOOK_ROOM.HOTEL_BOOKING_DETAIL_ID\n" +
+            "AND EXISTS (SELECT 1 FROM ROOM R\n" +
+            "WHERE BOOK_ROOM.ROOM_ID = R.ID\n" +
+            "AND R.hotel_id = :hotelId)))\n" +
+            "GROUP BY CONVERT(DATE,BOOK.created_at)) BOOKING ON CTE.N = CONVERT(DATE,booking.CRE_DT)\n" +
+            "ORDER BY CTE.N", nativeQuery = true)
+    Collection reportMonthByHotel(@Param("hotelId")Long id);
 }

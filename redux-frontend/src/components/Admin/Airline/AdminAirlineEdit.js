@@ -20,6 +20,7 @@ const AdminAirlineEdit = (props) => {
     const [slWard, setSlWard] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [status, setStatus] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
     const [validateError, setValidateError] = useState({
         username: "",
         password: "",
@@ -69,7 +70,7 @@ const AdminAirlineEdit = (props) => {
     useEffect(() => {
         let mount = false;
 
-        if(props.airline.success && isSubmit){
+        if(props.airline.success && isSubmit && isSuccess){
             setStatus(true);
         }
 
@@ -140,6 +141,9 @@ const AdminAirlineEdit = (props) => {
             data.homepage = form.homepage.value;
             // }
             props.updateAirline(data.id,data);
+            setIsSuccess(true);
+        }else{
+            setIsSuccess(false);
         }
     }
 
@@ -157,7 +161,7 @@ const AdminAirlineEdit = (props) => {
 
         let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
         if (!form.password.value) {
-            err.password = "Hotel password is required ";
+            err.password = "Airline password is required ";
         } else {
             if (!regex.test(form.password.value)) {
                 err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
@@ -166,7 +170,7 @@ const AdminAirlineEdit = (props) => {
             }
         }
         if (!form.airlineName.value) {
-            err.airlineName = "Hotel name is required ";
+            err.airlineName = "Airline name is required ";
         } else {
             err.airlineName = "";
         }

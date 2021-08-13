@@ -27,9 +27,21 @@ const ComboHotelSearchPage = (props) => {
   const [sortDir, setSortDir] = useState("asc");
 
   const [selectWard, setSelectWard] = useState(null);
-  const provinceLabel = (code) => {
-    // return province.properties.find(item => item.value === code)?.label;
-  };
+
+  const [preferences, setPreferences] = useState({
+    swimmingPool: false,
+    hotTub: false,
+    internet: false,
+    freeParking: false,
+    entertainment: false,
+    gym: false
+  });
+
+  const onChangePreferences = (e, attribute) => {
+    var pref = { ...preferences };
+    pref[attribute] = !pref[attribute];
+    setPreferences(pref);
+  }
 
   const onChangeProvince = (e) => {
     document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = "--";
@@ -68,6 +80,10 @@ const ComboHotelSearchPage = (props) => {
       )
     );
   };
+
+  const toQueryString = (obj) => {
+    return new URLSearchParams(obj).toString();
+  }
 
   const getTimeDiff = (_startTime, _endTime, type) => {
     let startTime = new Date(_startTime.replace(/-/g, "/"));
@@ -135,6 +151,30 @@ const ComboHotelSearchPage = (props) => {
   const getPagination = (list = [], page, itemsPerPage, by, dir) => {
     if (!Array.isArray(list) || list.length === 0) {
       return [];
+    }
+
+    if (preferences.entertainment) {
+      list = list.filter(item => item.entertaiment);
+    }
+
+    if (preferences.freeParking) {
+      list = list.filter(item => item.freeParking);
+    }
+
+    if (preferences.gym) {
+      list = list.filter(item => item.gym);
+    }
+
+    if (preferences.hotTub) {
+      list = list.filter(item => item.hotTub);
+    }
+
+    if (preferences.internet) {
+      list = list.filter(item => item.highSpeedInternet);
+    }
+
+    if (preferences.swimmingPool) {
+      list = list.filter(item => item.swimmingPool);
     }
 
     var sortList = list.sort((a, b) => {
@@ -209,56 +249,41 @@ const ComboHotelSearchPage = (props) => {
     var pattern = /(\d{2}).(\d{2}).(\d{4})/;
     var dt = new Date(st.replace(pattern, '$3-$2-$1'));
     return dt;
-}
+  }
 
   useEffect(() => {
     let mount = false;
-
-    importAll();
+    // importAll();
     props.getProvince();
 
     // (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom)
-    if (
-      !queryParam.get("province") &&
-      !queryParam.get("district") &&
-      !queryParam.get("ward") &&
-      !queryParam.get("numberAdult") &&
-      !queryParam.get("numberChildren") &&
-      !queryParam.get("checkInDate") &&
-      !queryParam.get("numRoom")
-    ) {
-      document.location.href = "/";
+    if (queryParam.toString().length == 0) {
+      history.push("/");
     } else {
-      if (!props.hotel) {
-        props.getHotels(
-          queryParam.get("province"),
-          queryParam.get("district"),
-          queryParam.get("ward"),
-          queryParam.get("numberAdult"),
-          queryParam.get("numberChildren"),
-          queryParam.get("checkInDate"),
-          queryParam.get("numRoom")
-        );
-      }
       setPage(1);
-      let filter = {
-        province: queryParam.get("province"),
-        district: queryParam.get("district"),
-        ward: queryParam.get("ward"),
-        numberAdult: queryParam.get("numberAdult"),
-        numberChildren: queryParam.get("numberChildren"),
-        checkInDate:queryParam.get("checkInDate"),
-        numRoom: queryParam.get("numRoom"),
-      };
-      // setListItem(getPagination(props.hotels.data));
-      setQueryFilter(filter);
+      if (!props.hotel) {
+        var filter = props.filter;
+        performSearch(filter);
+      }
+
+      // let filter = {
+      //   province: queryParam.get("province"),
+      //   district: queryParam.get("district"),
+      //   ward: queryParam.get("ward"),
+      //   numberAdult: queryParam.get("numberAdult"),
+      //   numberChildren: queryParam.get("numberChildren"),
+      //   checkInDate: queryParam.get("checkInDate"),
+      //   numRoom: queryParam.get("numRoom"),
+      // };
+      // // setListItem(getPagination(props.hotels.data));
+      // setQueryFilter(filter);
     }
     return () => {
       mount = true;
     };
   }, []);
 
-  
+
 
   useEffect(() => {
     let mount = false;
@@ -268,21 +293,28 @@ const ComboHotelSearchPage = (props) => {
       var _ward = _district ? _district.wards.find(item => item.id == queryParam.get("ward")) : null;
 
       if (_province) {
-        document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+        if (document.querySelector("#provinces").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+        }
         document.querySelector("#provinces").value = queryParam.get("province");
         setSelectProvince(_province);
       }
 
 
       if (_district) {
-        document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+        if (document.querySelector("#districts").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+        }
         document.querySelector("#districts").value = queryParam.get("district");
         setSelectDistrict(_district)
       }
 
 
       if (_ward) {
-        document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+        if (document.querySelector("#wards").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+        }
+
         document.querySelector("#wards").value = queryParam.get("ward");
         setSelectWard(_ward);
       }
@@ -292,6 +324,14 @@ const ComboHotelSearchPage = (props) => {
       mount = true;
     }
   }, [props.provinces.data])
+
+  const performSearch = (filter, shouldSetState = false) => {
+    if (shouldSetState) {
+      props.setFilter(filter)
+    }
+    props.getHotels(filter.province, filter.district, filter.ward, filter.numberAdult, filter.numberChildren, filter.checkInDate, filter.numRoom);
+    window.history.pushState({}, null, `/combo-list?${toQueryString(filter)}`);
+  }
 
   const getNextDate = (e) => {
     const tomorrow = new Date(e);
@@ -310,20 +350,21 @@ const ComboHotelSearchPage = (props) => {
     var form = e.target;
     const today = new Date();
 
-    props.getHotels(
-      form.provinces.value,
-      form.districts.value,
-      form.wards.value,
-      form.numAdult.value,
-      form.numChildren.value,
-      form.checkInDate.value == ""
-        ? getNextDate(today)
-        : form.checkInDate.value,
-      form.numRoom.value
-    );
-    setPage(1);
+    var filter = { ...props.filter };
+    filter.province = form.provinces.value;
+    filter.district = form.districts.value;
+    filter.ward = form.wards.value;
+    filter.numberAdult = form.numAdult.value;
+    filter.numberChildren = form.numChildren.value;
+    filter.checkInDate = form.checkInDate.value;
+    filter.checkOutDate = queryParam.get("checkOutDate");
+    filter.numRoom = queryParam.get("numRoom");
+    performSearch(filter, true);
   };
 
+  const handleSelectHotel = (hotel) => {
+    props.setSelectHotel(hotel);
+  }
 
 
   const totalPages = () => {
@@ -332,17 +373,18 @@ const ComboHotelSearchPage = (props) => {
 
   return (
     <>
-      <Header></Header>
       <div className="main-cont">
         <div className="body-wrapper">
           <div className="wrapper-padding">
             <div className="page-head">
-              <div className="page-title">
-                Hotels - <span>detail style</span>
-              </div>
+              <div className="page-title">Step 2 - <span>Hotel Select</span></div>
+            </div>
+            <div className="page-head">
+              <Link className="wizard-btn mr-1" to="/">Cancel</Link>
+              <button className="wizard-btn mr-1" onClick={() => props.goToStep(1)}>Back</button>
+              <button className={props.selectHotel ? "wizard-btn" : "wizard-btn disable"} disabled={!props.selectHotel} onClick={() => props.goToStep(3)}>Next</button>
               <div className="breadcrumbs">
-                <a href="#">Home</a> / <a href="#">Hotel</a> /{" "}
-                <span>detail style</span>
+                <Link to="/">Home</Link> / <span>Flight + Hotel</span>
               </div>
               <div className="clear"></div>
             </div>
@@ -524,108 +566,41 @@ const ComboHotelSearchPage = (props) => {
                 <div className="side-block fly-in">
                   <div className="side-stars">
                     <div className="side-padding">
-                      <div className="side-lbl">Star rating</div>
-                      <div className="star-rating-l">Choose Rating</div>
-                      <div className="star-rating-r">
-                        {/* <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-a.png"></a> */}
-                      </div>
-                      <div className="clear"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="side-block fly-in">
-                  <div className="side-stars">
-                    <div className="side-padding">
-                      <div className="side-lbl">Accomodation type</div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          All (823)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Hotel (326)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Resort (141)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Residence (241)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Villas (324)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Apartment (214)
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="side-block fly-in">
-                  <div className="side-stars">
-                    <div className="side-padding">
                       <div className="side-lbl">Preferences</div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Bathroom (823)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "swimmingPool")} />
+                          Swimming pool
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Cable TV (326)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "hotTub")} />
+                          Hot Tub
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Bed & breakfast (141)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "internet")} />
+                          High speed internet
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Apartment (241)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "freeParking")} />
+                          Free Parking
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Mini bar (324)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "entertainment")} />
+                          Entertainments
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Wi - fi (214)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Pets allowed (64)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "gym")} />
+                          Gym
                         </label>
                       </div>
                     </div>
@@ -661,16 +636,9 @@ const ComboHotelSearchPage = (props) => {
                     </div>
 
                     <div className="catalog-row with-text">
-                      {getPagination(
-                        props.hotels.data,
-                        page,
-                        itemsPerPage,
-                        sortBy,
-                        sortDir
-                      ).map((hotel) => (
-                        <div  className="offer-slider-i catalog-i fly-in">
-                          {/* <input hidden='true' name="hotelId" defaultValue={hotel.id} /> */}
-                          <a href="#" className="offer-slider-img">
+                      {getPagination(props.hotels.data, page, itemsPerPage, sortBy, sortDir).map((hotel) => (
+                        <div key={hotel.id} className="offer-slider-i catalog-i fly-in">
+                          <a className={hotel.id == props.selectHotel?.id ? "offer-slider-img selected" : "offer-slider-img"}>
                             <img alt="" name="hotelImage" src={hotel?.images[0]?.imagePath} />
                             <span className="offer-slider-overlay">
                               <span className="offer-slider-btn">
@@ -679,7 +647,7 @@ const ComboHotelSearchPage = (props) => {
                               <span></span>
                             </span>
                           </a>
-                          <div className="offer-slider-txt">
+                          <div className={hotel.id == props.selectHotel?.id ? "offer-slider-txt selected" : "offer-slider-txt"}>
                             <div className="offer-slider-link">
                               <a href="#" name="hotelName" >{hotel.hotelName}</a>
                             </div>
@@ -719,12 +687,9 @@ const ComboHotelSearchPage = (props) => {
                             <div className="offer-slider-devider"></div>
                             <div className="clear"></div>
                             <div className="offer-slider-lead">
-                              {/* {hotel.rooms[0].roomType} */}
                             </div>
-                            <a onClick={() =>
-                              history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&numberAdult=${queryParam.get("numberAdult")}&numberChildren=${queryParam.get("numberChildren")}`)
-                            } className="cat-list-btn" >
-                              Book now
+                            <a onClick={() => handleSelectHotel(hotel)} className="cat-list-btn" >
+                              SELECT
                             </a>
                           </div>
                         </div>
@@ -732,18 +697,13 @@ const ComboHotelSearchPage = (props) => {
                     </div>
 
                     <div className="clear"></div>
-                    {/* <Pagination
-                      itemsPerPage={itemsPerPage}
-                      listItem={props.hotels?.data?.length}
-                      setPageNum={setPage}
-                    /> */}
-                    {props.hotels.data?.length > 0 && (<div className="pagination">
+                    {getPagination(props.hotels.data, page, itemsPerPage, sortBy, sortDir)?.length > 0 ? (<div className="pagination">
                       {
                         page == 1 ? (<>
                           <a className="active">1</a>
                           {totalPages() >= 2 && <a onClick={(e) => setPage(2)}>2</a>}
                           {totalPages() >= 3 && <a onClick={(e) => setPage(3)}>3</a>}
-                          <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
+                          {totalPages() >= 2 && <a onClick={(e) => setPage(page + 1)}>{">"}</a>}</>)
                           : page == totalPages() ? (<>
                             <a onClick={(e) => setPage(page - 1)}>{"<"}</a>
                             {totalPages() >= 3 && <a onClick={(e) => setPage(totalPages() - 2)}>{totalPages() - 2}</a>}
@@ -757,7 +717,9 @@ const ComboHotelSearchPage = (props) => {
                               <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
                       }
                       <div className="clear"></div>
-                    </div>)}
+                    </div>) : (
+                      <h1 className="text-center">NO RESULTS FOUND</h1>
+                    )}
                   </div>
                 </div>
                 <br className="clear" />
@@ -767,7 +729,6 @@ const ComboHotelSearchPage = (props) => {
           </div>
         </div>
       </div>
-      <Footer></Footer>
     </>
   );
 };

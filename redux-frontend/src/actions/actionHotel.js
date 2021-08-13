@@ -161,7 +161,7 @@ export const GET_HOTEL_ERROR = "GET_HOTEL_ERROR";
 export const getHotel = (id) => async dispatch => {
     try {
         dispatch({ type: GET_HOTEL_REQUEST });
-        const url = `${ROOT_URL}/api/hotel/${id}`;
+        const url = `${ROOT_URL}/api/hotel/account/${id}`;
         const response = await axios.get(url)
         const responseBody = await response.data;
         dispatch({
@@ -288,6 +288,29 @@ export const getRevenueHotel = (id) => async dispatch => {
         console.error(error);
         dispatch({
             type: GET_REVENUE_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_REPORT_MONTH_HOTEL_REQUEST = "GET_REPORT_MONTH_HOTEL_REQUEST";
+export const GET_REPORT_MONTH_HOTEL_SUCCESS = "GET_REPORT_MONTH_HOTEL_SUCCESS";
+export const GET_REPORT_MONTH_HOTEL_ERROR = "GET_REPORT_MONTH_HOTEL_ERROR";
+
+export const getReportHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_REPORT_MONTH_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/reportMonth/${id}`;
+        const response = await axios.get(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_REPORT_MONTH_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_REPORT_MONTH_HOTEL_ERROR,
             message: error
         });
     }

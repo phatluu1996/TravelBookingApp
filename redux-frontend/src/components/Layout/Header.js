@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import HeaderViewed from "./Header/HeaderViewed";
 import PopupLogin from "./Header/PopupLogin";
 import { Link, useHistory } from 'react-router-dom';
-import { getRole, removeUserSession, ROLE_ADMIN, ROLE_AIRLINE, ROLE_HOTEL, ROLE_USER } from "../../utils";
+import { getRole, getUserId, removeUserSession, ROLE_ADMIN, ROLE_AIRLINE, ROLE_HOTEL, ROLE_USER } from "../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faCogs, faMedkit, faScrewdriver, faSignOutAlt, faUserAlt, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { signout } from "../../actions/actionAuth";
@@ -51,10 +51,10 @@ const Header = (props) => {
                                 {getUserFullName()}
                             </a>
                             <div className="langs-drop">
-                                {(getRole() == ROLE_USER || getRole() == ROLE_ADMIN) && <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
-                                {getRole() == ROLE_HOTEL && <div><a href="/hotel-profile" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</a></div>}
-                                {getRole() == ROLE_AIRLINE && <div><a href="/airline-profile" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</a></div>}
-                                {getRole() !== ROLE_USER && <div><a href="/admin-dashboard" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faCogs}></FontAwesomeIcon>My Admin</a></div>}
+                                {(getRole() == ROLE_USER) && <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
+                                {getRole() == ROLE_HOTEL && <div><Link to={`/admin-hotel-profile?id=${getUserId()}`} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
+                                {getRole() == ROLE_AIRLINE && <div><Link to={`/admin-airline-profile?id=${getUserId()}`} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
+                                {getRole() !== ROLE_USER && <div><Link to="/admin-dashboard" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faCogs}></FontAwesomeIcon>My Admin</Link></div>}
                                 <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>
                             </div>
                         </div>
