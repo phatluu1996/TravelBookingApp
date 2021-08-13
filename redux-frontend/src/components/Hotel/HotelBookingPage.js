@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Header from '../Layout/Header';
 import Footer from '../Layout/Footer';
 import { importAll, customCheckBoxInput } from '../../utils/JqueryImport';
@@ -8,7 +8,7 @@ import { getRooms } from "../../actions/actionRoom";
 import { bookRoom } from "../../actions/actionBookingRoom";
 import { connect } from 'react-redux';
 import { PROPERTY_TYPES } from '@babel/types';
-import { useHistory, useLocation } from 'react-router-dom';
+import {  useHistory, useLocation } from 'react-router-dom';
 import $ from "jquery";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
@@ -148,31 +148,13 @@ const HotelBookingPage = (props) => {
         }
         return true;
     };
-
-    const createOrder = (data, actions) => {
-        return actions.order
-            .create({
-                purchase_units: [
-                    {
-                        description: "Testing booking function",
-                        amount: {
-                            currency: "USD",
-                            value: 1,
-                        },
-                    },
-                ],
-            })
-            .then((orderID) => {
-                console.log(orderID);
-                return orderID;
-            });
-    };
     const onApprove = (data, actions) => {
         return actions.order.capture().then(function (details) {
-            console.log(`Transaction completed by ${details.payer.name.given_name}!`);
-            setCheckout(true);
+          console.log(`Transaction completed by ${details.payer.name.given_name}!`);
+          setCheckout(true);
         });
-    };
+      };
+    
 
     const onError = (err) => {
         console.log(err.toString());
@@ -200,7 +182,9 @@ const HotelBookingPage = (props) => {
                 totalPrice: totalPrice,
                 paymentMethod: "Payment"
             }
+
             //   console.log(data);
+            
             setDataConfirm(data);
             setModalIsOpen(true);
             //   props.bookRoom(data);
@@ -272,11 +256,10 @@ const HotelBookingPage = (props) => {
         // });
 
         importAll();
-        customCheckBoxInput();
 
-        // if (!sessionStorage.getItem("isRoomBooking")) {
-        //     history.push(`/`);
-        // }
+        if (!sessionStorage.getItem("isRoomBooking")) {
+            history.push("/");
+        }
 
         if (user) {
             props.getUser(user);
@@ -286,16 +269,17 @@ const HotelBookingPage = (props) => {
         } else {
             $(".header-account a").click();
         }
-        // if (checkout && !isComplete) {
-        //     props.bookRoom(dataConfirm);
-        //     setIsComplete(true);
-        // }
+    
         return () => {
             mount = true;
         }
     }, [])
 
     useEffect(() => {
+        if (props.bookRoomData?.data && checkout) {
+            sessionStorage.removeItem("isRoomBooking");
+            history.push("/hotel-booking-complete");
+        }
         if (checkout && !isComplete) {
             props.bookRoom(dataConfirm);
             setIsComplete(true);
