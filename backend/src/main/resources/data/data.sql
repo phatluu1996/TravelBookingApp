@@ -12454,10 +12454,10 @@ INSERT INTO dbo.flight([airline_id],[flight_code],[retired],[status],[descriptio
 
 --Hotel Account
 INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','bachpham'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','hoanguyen'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','ngocle'),
-('$2y$15$JBodpuiElKq7un64RGkP7.vGmlBPM9C3PEu6da9fk.cQbTszhgq.i',0,'HOTEL','phatluu')
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','bachpham'), --password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','hoanguyen'), --password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','ngocle'), --password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','phatluu') --password: 12345
 --Image
 
 -- INSERT INTO [dbo].[image]
