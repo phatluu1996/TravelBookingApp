@@ -86,11 +86,6 @@ const AdminHotel = (props) => {
     </tr></thead>);
 
     const customStyles = {
-        // rows: {
-        //   style: {
-        //     minHeight: '72px', // override the row height
-        //   }
-        // },
         headCells: {
             style: {
                 fontSize: '16px',
@@ -125,10 +120,8 @@ const AdminHotel = (props) => {
                 fontSize: '14px',
                 fontWeight: 400,
                 minHeight: '56px',
-                // backgroundColor: '#ff7200',
                 borderTopStyle: 'solid',
                 borderTopWidth: '1px',
-                // borderTopColor: '#ff7200',
 
             },
             pageButtonsStyle: {
@@ -156,12 +149,6 @@ const AdminHotel = (props) => {
                 },
             },
         },
-        // cells: {
-        //   style: {
-        //     paddingLeft: '8px', // override the cell padding for data cells
-        //     paddingRight: '8px',
-        //   },
-        // },
     };
 
     useEffect(() => {

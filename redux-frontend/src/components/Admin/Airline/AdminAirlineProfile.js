@@ -12,9 +12,9 @@ import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 import { Bar } from "react-chartjs-2";
 import { countBookingTodayAirline, getAirline, getAllBookingAirline, getDailyIncomeAirline, getReportMonthAirline, getRevenueAirline } from '../../../actions/actionAirline';
-import AdminAirlineEdit from './AdminAirlineEdit';
+import AdminAirlineProfileEdit from './AdminAirlineProfileEdit';
 
-const AdminẢilineProfile = (props) => {
+const AdminAirlineProfile = (props) => {
 
     let queryParam = useQuery();
     let history = useHistory();
@@ -480,7 +480,7 @@ const AdminẢilineProfile = (props) => {
                                                             </div>
 
                                                             <div className="tab-pane" id="settings">
-                                                                <AdminAirlineEdit/>
+                                                                <AdminAirlineProfileEdit/>
                                                             </div>
 
                                                             <div className="tab-pane" id="change-password">
@@ -547,4 +547,4 @@ const mapDispatchToProps = (dispatch) => {
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminẢilineProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminAirlineProfile);
