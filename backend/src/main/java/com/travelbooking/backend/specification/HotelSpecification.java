@@ -54,8 +54,8 @@ public final class HotelSpecification {
                 predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
             }
 
-                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
-                predicates.add(cb.lessThan(joinTableRoom.get("availableTime"),check_in_date));
+//                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
+                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));
 
 //                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
                 cq.distinct(true);

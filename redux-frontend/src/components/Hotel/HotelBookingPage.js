@@ -5,13 +5,16 @@ import { importAll, customCheckBoxInput } from '../../utils/JqueryImport';
 import { getUser } from "../../actions/actionUser";
 import { fetchHotelById } from "../../actions/actionHotel";
 import { getRooms } from "../../actions/actionRoom";
-import {bookRoom} from "../../actions/actionBookingRoom";
+import { bookRoom } from "../../actions/actionBookingRoom";
 import { connect } from 'react-redux';
 import { PROPERTY_TYPES } from '@babel/types';
 import { useHistory, useLocation } from 'react-router-dom';
 import $ from "jquery";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
+import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import ReactModal from "react-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 
@@ -25,14 +28,26 @@ const HotelBookingPage = (props) => {
     const user = sessionStorage.getItem("userId")
     const [date, setDateCalculate] = useState(0);
     const [roomTypeCount, setRoomTypeCount] = useState([{
+        
         roomType: "",
         quantity: ""
     }])
     const [isCheck, setIsCheck] = useState(true);
     // const [paymentCheck, setPayment] = useState(false);
     const [checkout, setCheckout] = useState(false);
-    const [dataConfirm,setDataConfirm] = useState(null);
+    const [dataConfirm, setDataConfirm] = useState(null);
     const [isComplete, setIsComplete] = useState(false)
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const customStyles = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+        },
+      }
     const [error, setError] = useState([{
         firstName: "",
         lastName: "",
@@ -76,7 +91,7 @@ const HotelBookingPage = (props) => {
         return dt;
     }
 
-    
+
     const allRoomTypeString = () => {
         var roomTypes = [];
         props.rooms?.data?.map(
@@ -136,71 +151,72 @@ const HotelBookingPage = (props) => {
 
     const createOrder = (data, actions) => {
         return actions.order
-          .create({
-            purchase_units: [
-              {
-                description: "Testing booking function",
-                amount: {
-                  currency: "USD",
-                  value: 1,
-                },
-              },
-            ],
-          })
-          .then((orderID) => {
-            console.log(orderID);
-            return orderID;
-          });
+            .create({
+                purchase_units: [
+                    {
+                        description: "Testing booking function",
+                        amount: {
+                            currency: "USD",
+                            value: 1,
+                        },
+                    },
+                ],
+            })
+            .then((orderID) => {
+                console.log(orderID);
+                return orderID;
+            });
     };
-      const onApprove = (data, actions) => {
+    const onApprove = (data, actions) => {
         return actions.order.capture().then(function (details) {
-          console.log(`Transaction completed by ${details.payer.name.given_name}!`);
-          setCheckout(true);
+            console.log(`Transaction completed by ${details.payer.name.given_name}!`);
+            setCheckout(true);
         });
-      };
+    };
 
-      const onError = (err) => {
+    const onError = (err) => {
         console.log(err.toString());
-      };
+    };
 
-      const bookingSubmit = (e) =>{ 
+    const bookingSubmit = (e) => {
         e.preventDefault()
         var totalPrice = calculatePrice();
         // var room = [...props.rooms?.data];
         var newArr = [];
         props.rooms?.data.map(
-            room => newArr.push({id:room.id})
+            room => newArr.push({ id: room.id })
         )
         // console.log(room);
-          if(validateForm(e)){
-              var data =
-              {
-                    user:props.user?.data,
-                    // hotel:props.hotel?.data,
-                    rooms:newArr,
-                    dateBooking:new Date(),
-                    checkInDate:new Date(dateConvert(queryParam.get("checkInDate"))),
-                    checkOutDate:new Date(dateConvert(queryParam.get("checkOutDate"))),
-                    numberOfGuests:parseInt(queryParam.get("numberAdult")) + parseInt(queryParam.get("numberChildren")),
-                    totalPrice:totalPrice,
-                    paymentMethod:"Payment"
-              }
+        if (validateForm(e)) {
+            var data =
+            {
+                user: props.user?.data,
+                // hotel:props.hotel?.data,
+                rooms: newArr,
+                dateBooking: new Date(),
+                checkInDate: new Date(dateConvert(queryParam.get("checkInDate"))),
+                checkOutDate: new Date(dateConvert(queryParam.get("checkOutDate"))),
+                numberOfGuests: parseInt(queryParam.get("numberAdult")) + parseInt(queryParam.get("numberChildren")),
+                totalPrice: totalPrice,
+                paymentMethod: "Payment"
+            }
             //   console.log(data);
-            //  setDataConfirm(data);
-              props.bookRoom(data);
+            setDataConfirm(data);
+            setModalIsOpen(true);
+            //   props.bookRoom(data);
             // console.log(JSON.stringify(props.user?.data));
             // console.log(JSON.stringify(room));
-          }
-      }
-//   private User user;
-//     private Hotel hotel;
-//     private List<Room> rooms;
-//     private Date dateBooking;
-//     private Date checkInDate;
-//     private Date checkOutDate;
-//     private int numberOfGuests;
-//     private Float totalPrice;
-//     private String paymentMethod;
+        }
+    }
+    //   private User user;
+    //     private Hotel hotel;
+    //     private List<Room> rooms;
+    //     private Date dateBooking;
+    //     private Date checkInDate;
+    //     private Date checkOutDate;
+    //     private int numberOfGuests;
+    //     private Float totalPrice;
+    //     private String paymentMethod;
 
     // Hoa logic
     // const getRoomByBoomTy = (list = []) => {
@@ -250,7 +266,7 @@ const HotelBookingPage = (props) => {
     useEffect(() => {
 
         let mount = false;
-        var  listIds = queryParam.get("roomIds").split(".").map(x => +x);
+        var listIds = queryParam.get("roomIds").split(".").map(x => +x);
         // var b = a.split(',').map(function(item) {
         //     return parseInt(item, 10);
         // });
@@ -258,9 +274,9 @@ const HotelBookingPage = (props) => {
         importAll();
         customCheckBoxInput();
 
-        if(!sessionStorage.getItem("isRoomBooking")){
-                history.push(`/`);
-        }
+        // if (!sessionStorage.getItem("isRoomBooking")) {
+        //     history.push(`/`);
+        // }
 
         if (user) {
             props.getUser(user);
@@ -280,15 +296,15 @@ const HotelBookingPage = (props) => {
     }, [])
 
     useEffect(() => {
-
-        if (props.bookRoomData.data && checkout) {
-            sessionStorage.removeItem("isRoomBooking")
-            history.push("/hotel-booking-complete");
-        }
         if (checkout && !isComplete) {
             props.bookRoom(dataConfirm);
             setIsComplete(true);
         }
+        if (props.bookRoomData?.data && checkout) {
+            sessionStorage.removeItem("isRoomBooking")
+            // history.push("/hotel-booking-complete");
+        }
+       
     })
 
     return (
@@ -329,7 +345,7 @@ const HotelBookingPage = (props) => {
                                                         </div>
                                                         <div className="booking-form-i">
                                                             <label>Email Adress:</label>
-                                                            <div className="input"><input disabled={true} type="text"  name="email" defaultValue={props.user?.data?.email} /></div>
+                                                            <div className="input"><input disabled={true} type="text" name="email" defaultValue={props.user?.data?.email} /></div>
                                                             <div className="booking-error-input">
                                                                 {error.email}
                                                             </div>
@@ -350,8 +366,8 @@ const HotelBookingPage = (props) => {
                                                         </div>
                                                         <div className="booking-devider"></div>
                                                     </div>
-                                              
-                                                {/* <div hidden={isCheck ? true : false}>
+
+                                                    {/* <div hidden={isCheck ? true : false}>
                                                     <h2>Your Representative Information</h2>
                                                     <div className="booking-form">
                                                         <div className="booking-form-i">
@@ -387,78 +403,73 @@ const HotelBookingPage = (props) => {
                                                         <div className="booking-devider"></div>
                                                     </div>
                                                 </div> */}
-                                                <div className="booking-complete">
-                                                    <button className="booking-complete-btn" type="submit">Validate</button>
-                                                </div>
-                                                {/* </form> */}
-                                                <div style={{ paddingTop: "30px" }} hidden={dataConfirm === null? true : false} >
-                                                    {/* <div className="booking-devider"></div> */}
-                                                    <h2>How would you like to pay?</h2>
-                                                    <div className="payment-wrapper">
-                                                        <div className="payment-tabs">
-                                                            <a href="#" className="active">Credit Card <span></span></a>
-                                                            <a href="#">Paypal <span></span></a>
-                                                        </div>
-                                                        <div className="clear"></div>
-                                                        <div className="payment-tabs-content">
-                                                            <div className="payment-tab">
-                                                                <div className="payment-alert">
-                                                                    <span>
-                                                                        You will be redirected to PayPal's website
-                                                                        to securely complete your payment using
-                                                                        credit or debit cards.
-                                                                    </span>
-                                                                </div>
-
-                                                                {/* <a className="paypal-btn">proceed to paypall</a> */}
-
-                                                                <PayPalScriptProvider
-                                                                    style={{ maxWidth: "80px" }}
-                                                                    options={{ "client-id": PP_ID }}
-                                                                >
-                                                                    <PayPalButtons
-                                                                        style={{ height: 25 }}
-                                                                        fundingSource={"card"}
-                                                                        createOrder={createOrder}
-                                                                        onApprove={onApprove}
-                                                                        onError={onError}
-                                                                    />
-                                                                </PayPalScriptProvider>
-                                                            </div>
-
-                                                            <div className="payment-tab">
-                                                                <div className="payment-alert">
-                                                                    <span>
-                                                                        You will be redirected to PayPal's website
-                                                                        to securely complete your payment using
-                                                                        paypal account.
-                                                                    </span>
-                                                                    {/* <div className="payment-alert-close">
-                                    <a>
-                                      <img alt="" src="img/alert-close.png" />
-                                    </a>
-                                  </div> */}
-                                                                </div>
-
-                                                                {/* <a className="paypal-btn">proceed to paypall</a> */}
-
-                                                                <PayPalScriptProvider
-                                                                    style={{ maxWidth: "80px" }}
-                                                                    options={{ "client-id": PP_ID }}
-                                                                >
-                                                                    <PayPalButtons
-                                                                        style={{ height: 25 }}
-                                                                        fundingSource={"paypal"}
-                                                                        createOrder={createOrder}
-                                                                        onApprove={onApprove}
-                                                                        onError={onError}
-                                                                    />
-                                                                </PayPalScriptProvider>
-                                                            </div>
-                                                        </div>
+                                                    <div className="booking-complete">
+                                                        <button className="booking-complete-btn" type="submit">Validate</button>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                    {/* </form> */}
+                                                    <ReactModal
+                                                        isOpen={modalIsOpen}
+                                                        // onAfterOpen={afterOpenModal}
+                                                        // onRequestClose={closeModal}
+                                                        ariaHideApp={false}
+                                                        preventScroll={true}
+                                                        style={customStyles}
+                                                        contentLabel="Payments">
+                                                        <div style={{ float: "right" }}>
+                                                            <FontAwesomeIcon onClick={() => setModalIsOpen(false)} icon={faTimesCircle}></FontAwesomeIcon>
+                                                        </div>
+                                                     <div className="payment-wrapper mt-2">
+                                                            <div className="payment-tabs">
+                                                                <a className="active">
+                                                                    Payment <span></span>
+                                                                </a>
+
+                                                            </div>
+                                                            <div className="clear"></div>
+
+                                                            <div className="payment-tabs-content">
+                                                                <div className="payment-tab">
+                                                                    <div className="payment-alert">
+                                                                        <span>
+                                                                            You will be redirected to website
+                                                                            to securely complete your payment using
+                                                                            credit or debit cards.
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <PayPalScriptProvider
+                                                                        style={{ maxWidth: "80px" }}
+                                                                        options={{ "client-id": PP_ID }}
+                                                                    >
+                                                                        <PayPalButtons
+                                                                            style={{ height: 25 }}
+                                                                            createOrder={(data, actions) => {
+                                                                                return actions.order
+                                                                                    .create({
+                                                                                        purchase_units: [
+                                                                                            {
+                                                                                                description: `Date book ${queryParam.get('checkInDate')}-${queryParam.get('checkOutDate')}`,
+                                                                                                amount: {
+                                                                                                    currency: "USD",
+                                                                                                    value:`${calculatePrice()}`,
+                                                                                                },
+                                                                                            },
+                                                                                        ],
+                                                                                    })
+                                                                                    .then((orderID) => {
+                                                                                        console.log(orderID);
+                                                                                        return orderID;
+                                                                                    });
+                                                                            }}
+                                                                            onApprove={onApprove}
+                                                                            onError={onError}
+                                                                        />
+                                                                    </PayPalScriptProvider>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ReactModal>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -607,6 +618,7 @@ const mapStateToProps = (state, ownProps) => {
         hotel: state.hotels,
         user: state.user,
         rooms: state.room,
+        bookRoomData:state.bookRoom,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -615,7 +627,7 @@ const mapDispatchToProps = (dispatch) => {
         getHotel: (id) => dispatch(fetchHotelById(id)),
         getRooms: (data) => dispatch(getRooms(data)),
         getUser: (id) => dispatch(getUser(id)),
-        bookRoom:(data) => dispatch(bookRoom(data)),
+        bookRoom: (data) => dispatch(bookRoom(data)),
     };
 
 };
