@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
+import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getReportHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
 import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
@@ -38,10 +38,7 @@ const AdminHotelProfile = (props) => {
 
         props.getHotel(queryParam.get("id"));
         props.getProvince();
-        props.getDailyIncome(queryParam.get("id"));
-        props.getBookingToday(queryParam.get("id"));
-        props.getRevenueCurrent(queryParam.get("id"));
-        props.getAllBooking(queryParam.get("id"));
+        
         return () => {
             mount = true;
         }
@@ -51,6 +48,7 @@ const AdminHotelProfile = (props) => {
         let mount = false;
 
         if (props.province.data && props.hotel.single) {
+
             var pv = props.hotel.single.location.province;
             var dt = props.hotel.single.location.district;
             var w = props.hotel.single.location.ward;
@@ -76,6 +74,12 @@ const AdminHotelProfile = (props) => {
 
         if (isInitial && props.hotel.single != null) {
             let service = { ...allService };
+
+            props.getDailyIncome(props.hotel.single?.id);
+            props.getBookingToday(props.hotel.single?.id);
+            props.getRevenueCurrent(props.hotel.single?.id);
+            props.getAllBooking(props.hotel.single?.id);
+            props.getReportMonth(props.hotel.single?.id);
 
             service.highSpeedInternet = props.hotel.single?.highSpeedInternet;
             service.entertainment = props.hotel.single?.entertaiment;
@@ -256,6 +260,22 @@ const AdminHotelProfile = (props) => {
             },
         },
     };
+
+    const barLabel = () => {
+        var label = [];
+        props.hotel.report?.forEach((element, index) => {
+            label[index] = element[0];
+        });
+        return label;
+    }
+
+    const barData = () => {
+        var data = [];
+        props.hotel.report?.forEach((element, index) => {
+            data[index] = element[1];
+        });
+        return data;
+    }
 
     const onServiceClick = (e) => {
         let service = { ...allService };
@@ -447,13 +467,7 @@ const AdminHotelProfile = (props) => {
                                                                     </div>
                                                                     <Bar
                                                                         data={{
-                                                                            labels: [
-                                                                                "Africa",
-                                                                                "Asia",
-                                                                                "Europe",
-                                                                                "Latin America",
-                                                                                "North America"
-                                                                            ],
+                                                                            labels: barLabel(),
                                                                             datasets: [
                                                                                 {
                                                                                     label: "Population (millions)",
@@ -473,7 +487,7 @@ const AdminHotelProfile = (props) => {
                                                                                     ],
                                                                                     borderWidth: 1,
                                                                                     fill: false,
-                                                                                    data: [2478, 5267, 734, 784, 433]
+                                                                                    data: barData()
                                                                                 }
                                                                             ]
                                                                         }}
@@ -708,6 +722,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getAllBooking: (id) => {
             dispatch(getAllBookingHotel(id));
+        },
+        getReportMonth: (id) => {
+            dispatch(getReportHotel(id));
         }
     };
     
