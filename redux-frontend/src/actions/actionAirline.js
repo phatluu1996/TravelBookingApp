@@ -146,5 +146,118 @@ export const getAllBookingAirline = (id) => async dispatch => {
     }
 }
 
+export const GET_DAILY_INCOME_AIRLINE_REQUEST = "GET_DAILY_INCOME_AIRLINE_REQUEST";
+export const GET_DAILY_INCOME_AIRLINE_SUCCESS = "GET_DAILY_INCOME_AIRLINE_SUCCESS";
+export const GET_DAILY_INCOME_AIRLINE_ERROR = "GET_DAILY_INCOME_AIRLINE_ERROR";
 
 
+export const getDailyIncomeAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_DAILY_INCOME_AIRLINE_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/airline/dailyIncomeAirline/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_DAILY_INCOME_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_DAILY_INCOME_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_REVENUE_AIRLINE_REQUEST = "GET_REVENUE_AIRLINE_REQUEST";
+export const GET_REVENUE_AIRLINE_SUCCESS = "GET_REVENUE_AIRLINE_SUCCESS";
+export const GET_REVENUE_AIRLINE_ERROR = "GET_REVENUE_AIRLINE_ERROR";
+
+
+export const getRevenueAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_REVENUE_AIRLINE_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/airline/revenueByAirline/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_REVENUE_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_REVENUE_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}
+
+export const COUNT_BOOKING_TODAY_AIRLINE_REQUEST = "COUNT_BOOKING_TODAY_AIRLINE_REQUEST";
+export const COUNT_BOOKING_TODAY_AIRLINE_SUCCESS = "COUNT_BOOKING_TODAY_AIRLINE_SUCCESS";
+export const COUNT_BOOKING_TODAY_AIRLINE_ERROR = "COUNT_BOOKING_TODAY_AIRLINE_ERROR";
+
+
+export const countBookingTodayAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: COUNT_BOOKING_TODAY_AIRLINE_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/airline/bookingToday/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: COUNT_BOOKING_TODAY_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        dispatch({
+            type: COUNT_BOOKING_TODAY_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_REPORT_MONTH_AIRLINE_REQUEST = "GET_REPORT_MONTH_AIRLINE_REQUEST";
+export const GET_REPORT_MONTH_AIRLINE_SUCCESS = "GET_REPORT_MONTH_AIRLINE_SUCCESS";
+export const GET_REPORT_MONTH_AIRLINE_ERROR = "GET_REPORT_MONTH_AIRLINE_ERROR";
+
+
+export const getReportMonthAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_REPORT_MONTH_AIRLINE_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/airline/reportPerMonth/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_REPORT_MONTH_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        dispatch({
+            type: GET_REPORT_MONTH_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}

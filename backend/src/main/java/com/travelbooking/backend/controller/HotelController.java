@@ -157,4 +157,19 @@ public class HotelController {
         return ResponseEntity.ok().body(revenue);
     }
 
+    //http://localhost:8080/api/hotel/{id}
+    @GetMapping("/hotel/account/{id}")
+    public ResponseEntity<Hotel> getHotelByAccountId(@PathVariable Long id){
+        if(hotelRepository.existsByAccount_Id(id)){
+            Hotel hotel = hotelRepository.getByAccountId(id);
+            if(hotel.getRetired()){
+                return ResponseEntity.ok().body(null);
+            }else return ResponseEntity.ok().body(hotel);
+        }else return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/hotel/reportMonth/{id}")
+    public ResponseEntity<?> getReportMonthByHotelId(@PathVariable Long id) {
+        return ResponseEntity.ok().body(hotelBookingRepository.reportMonthByHotel(id));
+    }
 }

@@ -101,8 +101,28 @@ public class AirlineController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/airline/dailyIncomeAirline/{id}")
+    public ResponseEntity<?> getDailyIncomeByAirline(@PathVariable Long id){
+        return ResponseEntity.ok().body(flightBookingRepository.totalDailyIncomeByAirline(id));
+    }
+
     @GetMapping("/airline/allAirlineBooking/{id}")
     public ResponseEntity<Collection<FlightBooking>> getAllBookingByAirline(@PathVariable Long id){
         return ResponseEntity.ok().body(flightBookingRepository.getAllBookingByAirlineId(id));
+    }
+
+    @GetMapping("/airline/revenueByAirline/{id}")
+    public ResponseEntity<?> getRevenueByAirline(@PathVariable Long id){
+        return ResponseEntity.ok().body(flightBookingRepository.totalRevenueByAirline(id));
+    }
+
+    @GetMapping("/airline/bookingToday/{id}")
+    public ResponseEntity<?> countBookingTodayByAirline(@PathVariable Long id){
+        return ResponseEntity.ok().body(flightBookingRepository.countBookingPerDayAirline(id));
+    }
+
+    @GetMapping("/airline/reportPerMonth/{id}")
+    public ResponseEntity<?> reportPerMonthByAirline(@PathVariable Long id){
+        return ResponseEntity.ok().body(flightBookingRepository.reportPerMonth(id));
     }
 }
