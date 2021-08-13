@@ -4,6 +4,7 @@ import {CREATE_HOTEL_FEEDBACK_ERROR,CREATE_HOTEL_FEEDBACK_SUCCESS,CREATE_HOTEL_F
       GET_BOOKING_TODAY_HOTEL_REQUEST, GET_BOOKING_TODAY_HOTEL_SUCCESS, GET_BOOKING_TODAY_HOTEL_ERROR,
       GET_REVENUE_HOTEL_REQUEST, GET_REVENUE_HOTEL_SUCCESS, GET_REVENUE_HOTEL_ERROR,
       GET_ALL_BOOKING_REQUEST, GET_ALL_BOOKING_SUCCESS, GET_ALL_BOOKING_ERROR,
+      GET_HOTEL_BY_ROOM_REQUEST,GET_HOTEL_BY_ROOM_SUCCESS,GET_HOTEL_BY_ROOM_ERROR,
       GET_REPORT_MONTH_HOTEL_REQUEST, GET_REPORT_MONTH_HOTEL_SUCCESS, GET_REPORT_MONTH_HOTEL_ERROR
 } from "../actions/actionHotel";
 
@@ -13,6 +14,7 @@ const initialState = {
   message: null,
   data: null
 }
+
 
 function reducerHotel(state = initialState, action) {
   switch (action.type) {
@@ -271,6 +273,29 @@ function reducerHotel(state = initialState, action) {
           message: action.message
         };
         return state;
+      //----------------------------------------------------
+        case GET_HOTEL_BY_ROOM_REQUEST:
+          return {
+            ...state,
+            requesting : true
+          };
+  
+        case GET_HOTEL_BY_ROOM_SUCCESS:
+          state = {
+            ...state,
+            requesting: false,
+            success: true,
+            allBooking: action.payload
+          };
+          return state;
+  
+        case GET_HOTEL_BY_ROOM_ERROR:
+          state = {
+            ...state,
+            requesting: false,
+            message: action.message
+          };
+          return state;
 //------------------------------------------------------------
       case GET_REPORT_MONTH_HOTEL_REQUEST:
         return {

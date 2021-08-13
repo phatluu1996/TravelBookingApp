@@ -52,6 +52,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         List<HotelBookingRoom> hotelBookingRoomList = new ArrayList<>();
         //Create Booking Room
         for (int i = 0; i < bookingRequest.getRooms().size() ; i++) {
+
             HotelBookingRoom hotelBookingRoom = new HotelBookingRoom();
             hotelBookingRoom.setHotelBookingDetail(hotelBookingDetail);
             hotelBookingRoom.setRoom(bookingRequest.getRooms().get(i));

@@ -29,6 +29,9 @@ public final class HotelSpecification {
     public static Specification<Hotel> createSpecificationSpecial(Integer id, Boolean retired){
         return Specification.where(isRetired(retired).and(userIdCheck(id)));
     }
+    public static Specification<Hotel> createSpecificationSpecialWithRoom(Room room, Boolean retired){
+        return Specification.where(isRetired(retired).and(getHotelByRoom(room)));
+    }
 
     public static Specification<Hotel> userIdCheck(Integer id){
         return (hotel,cq,cb) -> cb.lessThanOrEqualTo(hotel.get("account"),id);
@@ -52,7 +55,7 @@ public final class HotelSpecification {
             }
 
                 predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
-                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("availableTime"),check_in_date));
+                predicates.add(cb.lessThan(joinTableRoom.get("availableTime"),check_in_date));
 
 //                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
                 cq.distinct(true);
@@ -67,8 +70,8 @@ public final class HotelSpecification {
         };
     }
 
-    public static Specification<Hotel> ratingCheck(Float rating){
-        return (hotel,cq,cb) -> rating != 0 ?cb.equal(hotel.get("hotelRating"),rating):cb.lessThanOrEqualTo(hotel.get("hotelRating"),5);
+    public static Specification<Hotel> getHotelByRoom(Room room){
+        return (hotel,cq,cb) -> cb.equal(hotel.get("rooms"),room);
     }
 
     public static Specification<Hotel> roomStatusCheck(Integer numRoom){

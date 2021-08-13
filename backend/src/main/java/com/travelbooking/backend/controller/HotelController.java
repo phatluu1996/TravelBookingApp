@@ -58,7 +58,7 @@ public class HotelController {
         Specification<Hotel> spec = HotelSpecification.createSpecification(province, district, ward, Boolean.FALSE, numberAdult, numberChildren, numRoom, checkInDate);
 
         List<Hotel> hotels = hotelRepository.findAll(spec);
-        System.out.println(hotels);
+//        System.out.println(hotels);
         for (int i = 0; i < hotels.size(); i++) {
             for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
                 roomActive += hotels.get(i).getRooms().get(j).getMaxAdult();
@@ -81,6 +81,13 @@ public class HotelController {
     public Collection<Room> getRoomsByHotelId(@PathVariable Long id){
         Specification<Room> spec =  RoomSpecification.createSpecification(id,false);
         return roomRepository.findAll(spec);
+    }
+
+    //http://localhost:8080/api/hotelRoom
+    @PostMapping("/hotel/hotelRoom")
+    public Collection<Hotel> getHotelByRoom(@RequestBody Room room){
+        Specification<Hotel> spec =  HotelSpecification.createSpecificationSpecialWithRoom(room,Boolean.FALSE);
+        return hotelRepository.findAll(spec);
     }
 
     //http://localhost:8080/api/hotels
