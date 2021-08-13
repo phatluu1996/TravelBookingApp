@@ -694,7 +694,7 @@ const AdminHotelProfile = (props) => {
                                                                         theme='solarized'
                                                                         // progressPending={!props.hotel.all}
                                                                         columns={header}
-                                                                        data={props.hotel.allBooking}
+                                                                        data={props.hotel?.allBooking}
                                                                         pagination
                                                                         paginationPerPage={5}
                                                                     // subHeaderComponent={subHeader}                                                    

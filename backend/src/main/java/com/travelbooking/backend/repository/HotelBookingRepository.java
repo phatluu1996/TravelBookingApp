@@ -52,7 +52,7 @@ public interface HotelBookingRepository extends JpaRepository<HotelBooking,Long>
                                     "WHERE DETAIL.id = BOOK_ROOM.hotelBookingDetail.id\n" +
                                     "AND EXISTS (SELECT 1 FROM Room R\n" +
                                                 "WHERE BOOK_ROOM.room.id = R.id\n" +
-                                                "AND R.hotel.id = 1)))")
+                                                "AND R.hotel.id = :id)))")
     float totalRevenueByHotelId(@Param("id")Long id);
     
     @Query(value = "WITH CTE AS\n" +
