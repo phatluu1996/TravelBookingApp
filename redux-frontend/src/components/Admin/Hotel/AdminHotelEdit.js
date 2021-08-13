@@ -272,7 +272,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Username*</label>
-                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.hotel.single?.account.userName} readOnly/>
+                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.hotel.single?.account?.userName} readOnly/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.username}</div>
                                                             </div>
@@ -280,7 +280,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Password*</label>
-                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.hotel.single?.account.password} readOnly={!isEdit}/>
+                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.hotel.single?.account?.password} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.password}</div>
                                                             </div>
@@ -342,7 +342,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-12">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Street*</label>
-                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.hotel.single?.location.street} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.hotel.single?.location?.street} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.street}</div>
                                                             </div>

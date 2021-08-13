@@ -69,7 +69,7 @@ const AdminHotel = (props) => {
             name: 'Actions',
             // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
             cell: hotel => <>
-                <Link className="btn btn-success mr-1" to={`/admin-hotel-edit?id=${hotel["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
+                <Link className="btn btn-success mr-1" to={`/admin-hotel-edit?id=${hotel["account"]["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
 
                 <Link className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></Link>
             </>

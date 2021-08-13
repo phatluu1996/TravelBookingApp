@@ -33,7 +33,7 @@ export const fetchFlight = (from, to, adult, child, infant, ddate, rdate, seatCl
     try {
         dispatch({ type: FETCH_FLIGHT_REQUEST });
 
-        const url = `${ROOT_URL}/api/findFlights?from=${from}&to=${to}&adult=${adult}&child=${child}&infant=${infant}&departureDate=${ddate}&returnDate=${rdate}&seatClass=${seatClass}&priceFrom=${priceFrom}&priceTo=${priceTo}&page=${page}&sortBy=${sortBy}&sortDir=${sortDir}`;
+        const url = `${ROOT_URL}/api/findFlights?from=${from}&to=${to}&adult=${parseInt(adult)}&child=${parseInt(child)}&infant=${parseInt(infant)}&departureDate=${ddate}&returnDate=${rdate}&seatClass=${seatClass}&priceFrom=${parseInt(priceFrom)}&priceTo=${parseInt(priceTo)}&page=${parseInt(page)}&sortBy=${sortBy}&sortDir=${sortDir}`;
         const response = await axios.get(url)
         const responseBody = await response.data;
         dispatch({

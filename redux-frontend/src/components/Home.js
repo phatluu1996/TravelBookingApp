@@ -271,11 +271,11 @@ const Home = (props) => {
             +"&province="+form.province.value
             +"&district="+form.districts.value
             +"&ward="+form.wards.value
-            +"&hAdult="+form.adultHotel.value
-            +"&hChild="+form.childRenHotel.value
+            +"&numberAdult="+form.adultHotel.value
+            +"&numberChildren="+form.childRenHotel.value
             +"&checkInDate="+form.checkOutDate.value
             +"&checkOutDate="+form.checkOutDate.value
-            +"&&numRoom="+form.roomHotel.value
+            +"&numRoom="+form.roomHotel.value
             );
         }
 

@@ -69,7 +69,7 @@ const AdminAirline = (props) => {
         {
             name: 'Actions',
             cell: airline => <>
-                <Link className="btn btn-success mr-1" to={`/admin-airline-edit?id=${airline["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
+                <Link className="btn btn-success mr-1" to={`/admin-airline-edit?id=${airline["account"]["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
 
                 <Link className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></Link>
             </>
