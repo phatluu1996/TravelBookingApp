@@ -1,7 +1,7 @@
 import { faBath, faDesktop, faDollarSign, faDumbbell, faMoneyCheckAlt, faParking, faPaw, faSwimmer, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import DataTable, { createTheme } from 'react-data-table-component';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getReportHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
@@ -33,12 +33,34 @@ const AdminHotelProfile = (props) => {
         paymentAtHotel: false
     });
 
+    createTheme('solarized', {
+        text: {
+            primary: 'white',
+            secondary: '#2aa198',
+        },
+        background: {
+            default: '#191c24',
+        },
+        context: {
+            background: '#cb4b16',
+            text: '#FFFFFF',
+        },
+        divider: {
+            default: '#073642',
+        },
+        action: {
+            button: 'rgba(0,0,0,.54)',
+            hover: 'rgba(0,0,0,.08)',
+            disabled: 'rgba(0,0,0,.12)',
+        },
+    });
+
     useEffect(() => {
         let mount = false;
 
         props.getHotel(queryParam.get("id"));
         props.getProvince();
-        
+
         return () => {
             mount = true;
         }
@@ -138,7 +160,7 @@ const AdminHotelProfile = (props) => {
             name: '#',
             selector: 'serial',
             sortable: true,
-            width:'5%'
+            width: '5%'
         },
         {
             name: 'Booking Code',
@@ -233,6 +255,7 @@ const AdminHotelProfile = (props) => {
                 minHeight: '56px',
                 borderTopStyle: 'solid',
                 borderTopWidth: '1px',
+
             },
             pageButtonsStyle: {
                 borderRadius: '50%',
@@ -463,7 +486,7 @@ const AdminHotelProfile = (props) => {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        
+
                                                                     </div>
                                                                     <Bar
                                                                         data={{
@@ -665,16 +688,19 @@ const AdminHotelProfile = (props) => {
 
                                                             <div className="tab-pane" id="change-password">
                                                                 <h6 className="text-center text-warning">BOOKING HISTORY</h6>
-                                                                <DataTable className="table"
-                                                                    customStyles={customStyles}
-                                                                    theme='solarized'
-                                                                    // progressPending={!props.hotel.all}
-                                                                    columns={header} 
-                                                                    data={props.hotel.allBooking}
-                                                                    pagination
-                                                                    paginationPerPage={5}
-                                                                // subHeaderComponent={subHeader}                                                    
-                                                                />
+                                                                <div className="table-responsive">
+                                                                    <DataTable className="table"
+                                                                        customStyles={customStyles}
+                                                                        theme='solarized'
+                                                                        // progressPending={!props.hotel.all}
+                                                                        columns={header}
+                                                                        data={props.hotel.allBooking}
+                                                                        pagination
+                                                                        paginationPerPage={5}
+                                                                    // subHeaderComponent={subHeader}                                                    
+                                                                    />
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -727,7 +753,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getReportHotel(id));
         }
     };
-    
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelProfile);
