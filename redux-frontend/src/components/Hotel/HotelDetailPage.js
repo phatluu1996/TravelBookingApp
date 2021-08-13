@@ -95,10 +95,11 @@ const HotelDetailPage = (props) => {
         //   &checkInDate=${queryParam.get("checkInDate")}
         //   &checkOutDate=${queryParam.get("checkOutDate")}
         //   &roomIds=${bookingList.join(".")}`)  
+            sessionStorage.setItem("isRoomBooking",true)
             history.push(
                 `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
-            console.log(bookingList);
+            // console.log(bookingList);
         }
     };
     const handleChange = (e) => {

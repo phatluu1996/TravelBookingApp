@@ -19,7 +19,7 @@ const HotelBookingCompletePage = (props) => {
     const hotel = useSelector((state) => state.hotels);
     const rooms = useSelector((state) => state.room)
     const [user, setUser] = useState(booking.data?.user);
-
+    const [check,setCheck] = useState(false);
     const history = useHistory();
 
     useEffect(() => {
@@ -27,20 +27,20 @@ const HotelBookingCompletePage = (props) => {
 
         importAll();
         // (room, index) => newArr.push({ id: room.id })
-        if (!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId")) {
-            // console.log(user);
-            // console.log(hotel);
-            // console.log(rooms);
-            // var newArr = [];
-            // booking.hotelBookingDetail?.hotelBookingRooms?.map((bookingRoom,index) =>
-            //     newArr.push({id:bookingRoom?.room?.id})
-            // )
-                // props.getHotel(booking.hotelBookingDetail?.hotelBookingRooms[0]?.room);
-                // props.getRooms(newArr);
-                
-        } else {
-            history.push(`/`);
-        }
+        // if ((!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId")) && check === false) {
+        //     setCheck(true);
+        //     // console.log(user);
+        //     // console.log(hotel);
+        //     // console.log(rooms);
+        //     // var newArr = [];
+        //     // booking.hotelBookingDetail?.hotelBookingRooms?.map((bookingRoom,index) =>
+        //     //     newArr.push({id:bookingRoom?.room?.id})
+        //     // )
+        //         // props.getHotel(booking.hotelBookingDetail?.hotelBookingRooms[0]?.room);
+        //         // props.getRooms(newArr);
+        // } else {
+        //     history.push(`/`);
+        // }
 
 
         return () => {
