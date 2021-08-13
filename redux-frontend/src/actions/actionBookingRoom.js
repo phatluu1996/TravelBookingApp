@@ -7,7 +7,7 @@ export const BOOKING_ROOM_REQUEST = "BOOKING_ROOM_REQUEST";
 export const BOOKING_ROOM_SUCCESS = "BOOKING_ROOM_SUCCESS";
 export const BOOKING_ROOM_ERROR = "BOOKING_ROOM_ERROR";
 
-export const CLEAR_BOOKING_REQUEST ="CLEAR_BOOKING_REQUEST";
+export const CLEAR_BOOKING_ROOM_REQUEST ="CLEAR_BOOKING_ROOM_REQUEST";
 
 export const bookRoom = (data) => async dispatch => {
     try {
@@ -52,8 +52,8 @@ export const getBooking = (id) => async dispatch => {
     }
 }
 
-export const clearBookingCached = () => async dispatch => {
+export const clearRoomBookingCached = () => async dispatch => {
     dispatch({
-        type:CLEAR_BOOKING_REQUEST,
+        type:CLEAR_BOOKING_ROOM_REQUEST,
     })
 }

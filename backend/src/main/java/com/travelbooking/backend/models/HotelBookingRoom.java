@@ -1,5 +1,6 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class HotelBookingRoom {
 
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("hotelBookingRooms")
+    @JsonIgnoreProperties({"hotel","hotelBookingRoom", "images"})
     private Room room;
 
     public HotelBookingRoom() {

@@ -94,9 +94,9 @@ public class RoomBookingServicelmpl implements RoomBookingService {
             }
             mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath));
 
-        HotelBookingDetail hotelBookingDetail2 = hotelBookingDetailRepository.getById(createBkSuccess.getHotelBookingDetail().getId());
-        hotelBookingDetail2.setHotelBooking(createBkSuccess);
-        hotelBookingDetailRepository.save(hotelBookingDetail2);
+//        HotelBookingDetail hotelBookingDetail2 = hotelBookingDetailRepository.getById(createBkSuccess.getHotelBookingDetail().getId());
+//        hotelBookingDetail2.setHotelBooking(createBkSuccess);
+//        hotelBookingDetailRepository.save(hotelBookingDetail2);
         return createBkSuccess;
     }
 

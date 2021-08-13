@@ -19,6 +19,7 @@ import { getRole, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
+import { clearRoomBookingCached } from "../../actions/actionBookingRoom";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -110,10 +111,12 @@ const HotelDetailPage = (props) => {
         //   &checkInDate=${queryParam.get("checkInDate")}
         //   &checkOutDate=${queryParam.get("checkOutDate")}
         //   &roomIds=${bookingList.join(".")}`)  
-            sessionStorage.setItem("isRoomBooking",true)
+            props.clearBookingCached();
+            sessionStorage.setItem("isRoomBooking",true)            
             history.push(
                 `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
+
             // console.log(bookingList);
         }
     };
@@ -1338,36 +1341,6 @@ const HotelDetailPage = (props) => {
                                     <div className="h-help-email">sparrow@mail.com</div>
                                 </div>
 
-                                <div className="reasons-rating">
-                                    <div id="reasons-slider">
-                                        {props?.hotel?.data?.hotelFeedBacks
-                                            ?.slice(0, 4)
-                                            ?.map((feedback) => (
-                                                <div className="reasons-rating-i">
-                                                    <div className="reasons-rating-txt">
-                                                        {feedback?.feedback}
-                                                    </div>
-                                                    <div className="reasons-rating-user">
-                                                        <div className="reasons-rating-user-l">
-                                                            <img alt="" src="img/r-user.png" />
-                                                            <span>{feedback?.rating}</span>
-                                                        </div>
-                                                        <div className="reasons-rating-user-r">
-                                                            <b>
-                                                                {feedback?.user?.lastName}{" "}
-                                                                {feedback?.user?.firstName}
-                                                            </b>
-                                                            <span>
-                                                                {feedback?.user?.location?.province.name}
-                                                            </span>
-                                                        </div>
-                                                        <div className="clear"></div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                    </div>
-                                </div>
-
                                 <div className="h-liked">
                                     <div className="h-liked-lbl">You May Also Like</div>
                                     <div className="h-liked-row">
@@ -1647,6 +1620,7 @@ const mapDispatchToProps = (dispatch) => {
         getUser: (id) => {
             dispatch(getUser(id));
         },
+        clearBookingCached : () => dispatch(clearRoomBookingCached())
     };
 };
 

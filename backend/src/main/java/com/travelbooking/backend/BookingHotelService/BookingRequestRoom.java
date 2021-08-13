@@ -1,6 +1,7 @@
 package com.travelbooking.backend.BookingHotelService;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelbooking.backend.models.Hotel;
 import com.travelbooking.backend.models.Room;
 import com.travelbooking.backend.models.User;
