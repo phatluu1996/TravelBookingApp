@@ -601,7 +601,7 @@ const RoundFlightBookingPage = (props) => {
                                         name="birthday"
                                         type="text"
                                         className="form-control date-booking-inpt"
-                                        placeholder="YYYY-MM-DD"
+                                        placeholder="YYYY/MM/DD"
                                         onChange={(e) => handleBirthdayChange(e, i)}
                                       />
                                       <span className="date-icon"></span>
@@ -653,7 +653,7 @@ const RoundFlightBookingPage = (props) => {
                               type="submit"
                               className="booking-complete-btn"
                             >
-                              COMPLETE BOOKING
+                              PROCESS PAYMENT
                             </button>
                             {checkout && <div className="loading" delay-hide="10"></div>}
                           </div>
@@ -845,7 +845,7 @@ const RoundFlightBookingPage = (props) => {
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                              <img alt="" src="img/chk-edit.png" />
+                             
                             </a>
                           </div>
                           <div className="clear"></div>

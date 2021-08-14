@@ -37,15 +37,15 @@ const AdminNavbar = (props) => {
                     <ul className="navbar-nav w-100">
                         <li className="nav-item w-100">
                             <form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                <input type="text" className="form-control" placeholder="Search products" />
+                                <input type="text" className="form-control" placeholder="Search ..." />
                             </form>
                         </li>
                     </ul>
                     <ul className="navbar-nav navbar-nav-right">
                         <li className="nav-item dropdown d-none d-lg-block">
-                            <a className="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">+ Create New Project</a>
+                            <a className="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">+ Create New</a>
                             <div className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
-                                <h6 className="p-3 mb-0">Projects</h6>
+                                <h6 className="p-3 mb-0">Supplier</h6>
                                 <div className="dropdown-divider"></div>
                                 <a className="dropdown-item preview-item">
                                     <div className="preview-thumbnail">
@@ -54,7 +54,7 @@ const AdminNavbar = (props) => {
                                         </div>
                                     </div>
                                     <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">Software Development</p>
+                                        <p className="preview-subject ellipsis mb-1">Airline</p>
                                     </div>
                                 </a>
                                 <div className="dropdown-divider"></div>
@@ -65,7 +65,7 @@ const AdminNavbar = (props) => {
                                         </div>
                                     </div>
                                     <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">UI Development</p>
+                                        <p className="preview-subject ellipsis mb-1">Hotel</p>
                                     </div>
                                 </a>
                                 <div className="dropdown-divider"></div>
@@ -76,11 +76,11 @@ const AdminNavbar = (props) => {
                                         </div>
                                     </div>
                                     <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">Software Testing</p>
+                                        <p className="preview-subject ellipsis mb-1">Promotion</p>
                                     </div>
                                 </a>
                                 <div className="dropdown-divider"></div>
-                                <p className="p-3 mb-0 text-center">See all projects</p>
+                                <p className="p-3 mb-0 text-center">See all</p>
                             </div>
                         </li>
                         <li className="nav-item nav-settings d-none d-lg-block">
