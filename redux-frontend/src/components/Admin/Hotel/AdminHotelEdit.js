@@ -136,7 +136,6 @@ const AdminHotelEdit = (props) => {
             data.retired = false;
             // }
             props.updateHotel(data.id,data);
-            setIsSuccess(true);
         }else{
             setIsSuccess(false);
         }
@@ -272,7 +271,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Username*</label>
-                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.hotel.single?.account?.userName} readOnly/>
+                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.hotel.data?.account?.userName} readOnly/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.username}</div>
                                                             </div>
@@ -280,7 +279,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Password*</label>
-                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.hotel.single?.account?.password} readOnly={!isEdit}/>
+                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.hotel.data?.account?.password} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.password}</div>
                                                             </div>
@@ -288,7 +287,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Hotel Name*</label>
-                                                                <input type="text" className={formControlClass("hotelName")} name="hotelName" defaultValue={props.hotel.single?.hotelName} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("hotelName")} name="hotelName" defaultValue={props.hotel.data?.hotelName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.hotelName}</div>
                                                             </div>
@@ -296,7 +295,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Phone Number*</label>
-                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={props.hotel.single?.phone} readOnly={!isEdit}/>
+                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={props.hotel.data?.phone} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.phone}</div>
                                                             </div>
@@ -304,7 +303,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Email*</label>
-                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={props.hotel.single?.email} readOnly={!isEdit}/>
+                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={props.hotel.data?.email} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.email}</div>
                                                             </div>
@@ -312,7 +311,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Room Amount*</label>
-                                                                <input type="number" className={formControlClass("numberOfRoom")} min="1" max="50" name="numberOfRoom" defaultValue={props.hotel.single?.numberOfRoom} readOnly={!isEdit}/>
+                                                                <input type="number" className={formControlClass("numberOfRoom")} min="1" max="50" name="numberOfRoom" defaultValue={props.hotel.data?.numberOfRoom} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.numberOfRoom}</div>
                                                             </div>
@@ -320,7 +319,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Name*</label>
-                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={props.hotel.single?.contactName} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={props.hotel.data?.contactName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactName}</div>
                                                             </div>
@@ -328,7 +327,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Title*</label>
-                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={props.hotel.single?.contactTitle} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={props.hotel.data?.contactTitle} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactTitle}</div>
                                                             </div>
@@ -342,7 +341,7 @@ const AdminHotelEdit = (props) => {
                                                         <div className="col-md-12">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Street*</label>
-                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.hotel.single?.location?.street} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.hotel.data?.location?.street} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.street}</div>
                                                             </div>

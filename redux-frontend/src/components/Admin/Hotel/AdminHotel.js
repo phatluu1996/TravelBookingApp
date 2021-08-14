@@ -171,18 +171,18 @@ const AdminHotel = (props) => {
                                 <div className="col-lg-12 grid-margin stretch-card">
                                     <div className="card">
                                         <div className="card-body">
+                                            {props.hotel.requesting && <div className="loading" delay-hide="10"></div>}
                                             <h4 className="card-title">List All Hotels</h4>
                                             <Link className="btn btn-success" to={`/admin-hotel-create`}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
                                             <div className="table-responsive">
-                                                <DataTable className="table"
+                                                {props.hotel.data && <DataTable className="table"
                                                     customStyles={customStyles}
-                                                    theme='solarized'
-                                                    progressPending={!props.hotel.all}
-                                                    columns={header} data={props.hotel.all}
+                                                    theme='solarized'                                                    
+                                                    columns={header} data={props.hotel.data}
                                                     pagination
                                                     paginationPerPage={5}
                                                     subHeaderComponent={subHeader}                                                    
-                                                />
+                                                />}
                                             </div>
                                         </div>
                                     </div>

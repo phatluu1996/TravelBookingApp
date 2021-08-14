@@ -91,4 +91,4 @@ const reducerFeedback = (state = initialState, action) => {
   }
 }
 
-export default reducerFeedback;
+export default reducerFeedback

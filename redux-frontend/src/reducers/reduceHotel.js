@@ -5,7 +5,7 @@ import {CREATE_HOTEL_FEEDBACK_ERROR,CREATE_HOTEL_FEEDBACK_SUCCESS,CREATE_HOTEL_F
       GET_REVENUE_HOTEL_REQUEST, GET_REVENUE_HOTEL_SUCCESS, GET_REVENUE_HOTEL_ERROR,
       GET_ALL_BOOKING_REQUEST, GET_ALL_BOOKING_SUCCESS, GET_ALL_BOOKING_ERROR,
       GET_HOTEL_BY_ROOM_REQUEST,GET_HOTEL_BY_ROOM_SUCCESS,GET_HOTEL_BY_ROOM_ERROR,
-      GET_REPORT_MONTH_HOTEL_REQUEST, GET_REPORT_MONTH_HOTEL_SUCCESS, GET_REPORT_MONTH_HOTEL_ERROR
+      GET_REPORT_MONTH_HOTEL_REQUEST, GET_REPORT_MONTH_HOTEL_SUCCESS, GET_REPORT_MONTH_HOTEL_ERROR, CLEAR_HOTEL_STATE
 } from "../actions/actionHotel";
 
 const initialState = {
@@ -53,7 +53,7 @@ function reducerHotel(state = initialState, action) {
         ...state,
         requesting: false,
         success: true,
-        all: action.payload
+        data: action.payload
       };
       return state;
 
@@ -98,7 +98,7 @@ function reducerHotel(state = initialState, action) {
         ...state,
         requesting: false,
         success: true,
-        single: null
+        data: null
       };
       return state;
 
@@ -116,13 +116,22 @@ function reducerHotel(state = initialState, action) {
         requesting: true
       };
 
+    case CLEAR_HOTEL_STATE:
+      state = {
+        ...state,
+        requesting: false,
+        success: false,
+        data: null
+      };
+      return state;
+
 
     case GET_HOTEL_SUCCESS:
       state = {
         ...state,
         requesting: false,
         success: true,
-        single: action.payload
+        data: action.payload
       };
       return state;
 
