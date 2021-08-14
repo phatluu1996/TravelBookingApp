@@ -55,6 +55,7 @@ const reducerAuth = (state = initialState, action) => {
           requesting: false,
           success: true,
           data: null,
+          account:null,
           form: null
         };
         return state;
@@ -79,7 +80,7 @@ const reducerAuth = (state = initialState, action) => {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload,
+        signupData: action.payload,
         form: 'signup'
       };
       return state;

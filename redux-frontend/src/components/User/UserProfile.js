@@ -20,11 +20,20 @@ const UserProfile = (props) => {
     },[]);
 
     const getAddress = () => {
-        if(!props.user.data?.location) return "";
         const province = props.user.data?.location.province;
         const district = props.user.data?.location.district;
         const ward = props.user.data?.location.ward;
-        return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
+        
+        if(!props.user.data?.location) return "";
+
+        if(province && !district && !ward){
+            return province.name;
+        }else if(province && district && !ward){
+            return district.prefix+" "+district.name+", "+ province.name;
+        }else if(province && district && ward){
+            return ward.prefix+" "+ward.name+", "+district.prefix+" "+district.name+", "+ province.name;
+        }else {return "";}
+        
     }
 
     return (
