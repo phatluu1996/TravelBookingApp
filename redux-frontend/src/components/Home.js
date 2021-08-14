@@ -33,7 +33,8 @@ const Home = (props) => {
     const [errFlt, setErrFlt] = useState({
         from: '',
         to: '',
-        departureDate: ''
+        departureDate: '',
+        returnDate: ''
     })
     const [errHlt, setErrHlt] = useState({
         province: '',
@@ -219,13 +220,13 @@ const Home = (props) => {
         e.preventDefault();
         var form = e.target;
         const today = new Date();
-       
+
         if (validateHtl(form, "hotel-search")) {
             history.push(`/hotel-list?province=${selectProvince != null ? selectProvince.id : 0
                 }&district=${selectDistrict != null ? selectDistrict.id : 0}&ward=${selectWard != null ? selectWard.id : 0
                 }&numberAdult=${form.adultHotel.value}&numberChildren=${form.childRenHotel.value
-                }&checkInDate=${form.checkInDate.value === ""? getNextDate(today):form.checkInDate.value
-                }&checkOutDate=${form.checkOutDate.value === ""?form.checkInDate.value === ""?getNextDate(getNextDate(today)):getNextDate(form.checkInDate.value):form.checkOutDate.value
+                }&checkInDate=${form.checkInDate.value === "" ? getNextDate(today) : form.checkInDate.value
+                }&checkOutDate=${form.checkOutDate.value === "" ? form.checkInDate.value === "" ? getNextDate(getNextDate(today)) : getNextDate(form.checkInDate.value) : form.checkOutDate.value
                 }&numRoom=${form.roomHotel.value}`);
         }
     };
@@ -236,7 +237,7 @@ const Home = (props) => {
     //     var dt = new Date(st.replace(pattern, '$3-$2-$1'));
     //     return dt;
     // }
-  
+
     const handleSubmitFlight = (e) => {
         e.preventDefault();
         // console.log(props);
@@ -256,26 +257,27 @@ const Home = (props) => {
     const handleSubmitBoth = (e) => {
         e.preventDefault();
         var form = e.target;
-        if(validateFlt(form, "hotel-flight-search")//Validate form with classname "hotel-flight-search"
-        && validateHtl(form, "hotel-flight-search")){//Validate form with classname "hotel-flight-search"
+        var validateFlight = validateFlt(form, "hotel-flight-search")//Validate form with classname "hotel-flight-search"
+        var validatehotelResult = validateHtl(form, "hotel-flight-search")//Validate form with classname "hotel-flight-search"
+        if (validateFlight && validatehotelResult) {
             history.push("/combo-list?"
-            +"from="+form.from.value
-            +"&to="+form.to.value
-            +"&adult="+form.adult.value
-            +"&child="+form.child.value
-            +"&infant="+form.infant.value
-            +"&departureDate="+form.departureDate.value
-            +"&returnDate="+form.returnDate.value
-            +"&seatclassName="+form.seatClass.value
-            +"&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc"
-            +"&province="+form.province.value
-            +"&district="+form.districts.value
-            +"&ward="+form.wards.value
-            +"&numberAdult="+form.adultHotel.value
-            +"&numberChildren="+form.childRenHotel.value
-            +"&checkInDate="+form.checkOutDate.value
-            +"&checkOutDate="+form.checkOutDate.value
-            +"&numRoom="+form.roomHotel.value
+                + "from=" + form.from.value
+                + "&to=" + form.to.value
+                + "&adult=" + form.adult.value
+                + "&child=" + form.child.value
+                + "&infant=" + form.infant.value
+                + "&departureDate=" + form.departureDate.value
+                + "&returnDate=" + form.returnDate.value
+                + "&seatclassName=" + form.seatClass.value
+                + "&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc"
+                + "&province=" + form.province.value
+                + "&district=" + form.districts.value
+                + "&ward=" + form.wards.value
+                + "&numberAdult=" + form.adultHotel.value
+                + "&numberChildren=" + form.childRenHotel.value
+                + "&checkInDate=" + form.checkOutDate.value
+                + "&checkOutDate=" + form.checkOutDate.value
+                + "&numRoom=" + form.roomHotel.value
             );
         }
 
@@ -316,11 +318,23 @@ const Home = (props) => {
         }
 
         if (!form.departureDate.value) {
-            err.departureDate = 'Departure Date City cannot be empty';
+            err.departureDate = 'Departure Date cannot be empty';
             form.departureDate.parentElement.classList.add("is-invalid");
             $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         } else {
             err.departureDate = '';
+        }
+
+        if(form.departureDate.value && form.returnDate.value){
+            if(form.departureDate.value >= form.returnDate.value){
+                err.departureDate = 'Departure Date must be smaller than return date';
+                form.departureDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+
+                err.returnDate = 'Return Date must be larger than departure date';
+                form.returnDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            }
         }
 
         if (err.from || err.to || err.departureDate) {
@@ -354,6 +368,21 @@ const Home = (props) => {
             $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
         } else {
             err.checkout = '';
+        }
+
+        if (form.checkInDate.value && form.checkOutDate.value) {
+            if (form.checkInDate.value >= form.checkOutDate.value) {
+                err.checkin = 'Check in date must be smaller than check out date';
+                form.checkInDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+
+                err.checkout = 'Check out date must be larger than check in date';
+                form.checkOutDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+            } else {
+                err.checkin = '';
+                err.checkout = '';
+            }
         }
 
         if (err.province || err.checkin || err.checkout) {
@@ -534,6 +563,7 @@ const Home = (props) => {
                                                                 name="roomHotel"
                                                                 type="number"
                                                                 defaultValue={1}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="1"
                                                                 max="30"
                                                             />
@@ -547,6 +577,7 @@ const Home = (props) => {
                                                                 name="adultHotel"
                                                                 type="number"
                                                                 defaultValue={1}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="1"
                                                                 max="7"
                                                             />
@@ -562,6 +593,7 @@ const Home = (props) => {
                                                                 name="childRenHotel"
                                                                 type="number"
                                                                 defaultValue={0}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="0"
                                                                 max="7"
                                                             />
@@ -654,6 +686,7 @@ const Home = (props) => {
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
+                                                        <div className="booking-error-input" id="returnDate-error"></div>
                                                     </div>
                                                     <div className="srch-tab-3c">
                                                         <label>seat class </label>
@@ -684,6 +717,7 @@ const Home = (props) => {
                                                                 name="adult"
                                                                 type="number"
                                                                 defaultValue={1}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="1"
                                                                 max="7"
                                                             />
@@ -697,8 +731,9 @@ const Home = (props) => {
                                                                 name="child"
                                                                 type="number"
                                                                 defaultValue={0}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="0"
-                                                                max="6"
+                                                                max="7"
                                                             />
                                                         </div>
                                                     </div>
@@ -710,7 +745,9 @@ const Home = (props) => {
                                                                 name="infant"
                                                                 type="number"
                                                                 defaultValue={0}
-                                                                max="6"
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                max="7"
+                                                                min="0"
                                                             />
                                                         </div>
                                                     </div>
@@ -802,6 +839,7 @@ const Home = (props) => {
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
+                                                        <div className="booking-error-input" id="returnDate-error"></div>
                                                     </div>
                                                     <div className="srch-tab-3c">
                                                         <label>seat class </label>
@@ -832,6 +870,7 @@ const Home = (props) => {
                                                                 name="adult"
                                                                 type="number"
                                                                 defaultValue={1}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="1"
                                                                 max="7"
                                                             />
@@ -845,8 +884,9 @@ const Home = (props) => {
                                                                 name="child"
                                                                 type="number"
                                                                 defaultValue={0}
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 min="0"
-                                                                max="6"
+                                                                max="7"
                                                             />
                                                         </div>
                                                     </div>
@@ -858,7 +898,9 @@ const Home = (props) => {
                                                                 name="infant"
                                                                 type="number"
                                                                 defaultValue={0}
-                                                                max="6"
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                max="7"
+                                                                min="0"
                                                             />
                                                         </div>
                                                     </div>
@@ -980,6 +1022,7 @@ const Home = (props) => {
                                                                 id="roomHotel"
                                                                 name="roomHotel"
                                                                 type="number"
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 defaultValue={1}
                                                                 min="1"
                                                                 max="30"
@@ -993,6 +1036,7 @@ const Home = (props) => {
                                                                 id="adultHotel"
                                                                 name="adultHotel"
                                                                 type="number"
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 defaultValue={1}
                                                                 min="1"
                                                                 max="7"
@@ -1008,6 +1052,7 @@ const Home = (props) => {
                                                                 id="childRenHotel"
                                                                 name="childRenHotel"
                                                                 type="number"
+                                                                onKeyPress={(e) => e.preventDefault()}
                                                                 defaultValue={0}
                                                                 min="0"
                                                                 max="7"

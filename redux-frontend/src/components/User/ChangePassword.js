@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { changePassword } from '../../actions/actionAuth';
+import { changePassword, signout } from '../../actions/actionAuth';
 import {removeUserSession} from "../../utils";
 
 const ChangePassword = (props) => {
@@ -43,6 +43,7 @@ const ChangePassword = (props) => {
             if (props.changePass?.account && props.changePass?.success) {
                 alert("Change Password successfuly! Please login again.");
                 removeUserSession();
+                props.signout();
                 history.push("/");
             } else if (props.changePass?.account && !props.changePass?.success) {
                 console.log(props.changePass?.message.response.data.message);
@@ -143,6 +144,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changePassword: (data) => {
             dispatch(changePassword(data));
+        },
+        signout: () => {
+            dispatch(signout());
         }
     };
 };

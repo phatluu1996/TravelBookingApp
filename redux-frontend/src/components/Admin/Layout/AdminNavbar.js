@@ -42,47 +42,6 @@ const AdminNavbar = (props) => {
                         </li>
                     </ul>
                     <ul className="navbar-nav navbar-nav-right">
-                        <li className="nav-item dropdown d-none d-lg-block">
-                            <a className="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">+ Create New</a>
-                            <div className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
-                                <h6 className="p-3 mb-0">Supplier</h6>
-                                <div className="dropdown-divider"></div>
-                                <a className="dropdown-item preview-item">
-                                    <div className="preview-thumbnail">
-                                        <div className="preview-icon bg-dark rounded-circle">
-                                            <i className="mdi mdi-file-outline text-primary"></i>
-                                        </div>
-                                    </div>
-                                    <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">Airline</p>
-                                    </div>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <a className="dropdown-item preview-item">
-                                    <div className="preview-thumbnail">
-                                        <div className="preview-icon bg-dark rounded-circle">
-                                            <i className="mdi mdi-web text-info"></i>
-                                        </div>
-                                    </div>
-                                    <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">Hotel</p>
-                                    </div>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <a className="dropdown-item preview-item">
-                                    <div className="preview-thumbnail">
-                                        <div className="preview-icon bg-dark rounded-circle">
-                                            <i className="mdi mdi-layers text-danger"></i>
-                                        </div>
-                                    </div>
-                                    <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1">Promotion</p>
-                                    </div>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <p className="p-3 mb-0 text-center">See all</p>
-                            </div>
-                        </li>
                         <li className="nav-item nav-settings d-none d-lg-block">
                             <a className="nav-link" href="#">
                                 <i className="mdi mdi-view-grid"></i>

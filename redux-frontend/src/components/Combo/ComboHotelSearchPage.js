@@ -6,8 +6,7 @@ import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { fetchHotel } from "../../actions/actionHotel";
-import { importAll } from "../../utils/JqueryImport";
-// import { useQuery } from "../../utils/QueryParam";
+import $ from 'jquery';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -27,6 +26,12 @@ const ComboHotelSearchPage = (props) => {
   const [sortDir, setSortDir] = useState("asc");
 
   const [selectWard, setSelectWard] = useState(null);
+
+  const [errHlt, setErrHlt] = useState({
+    province: '',
+    checkin: '',
+    checkout: ''
+  })
 
   const [preferences, setPreferences] = useState({
     swimmingPool: false,
@@ -265,18 +270,6 @@ const ComboHotelSearchPage = (props) => {
         var filter = props.filter;
         performSearch(filter);
       }
-
-      // let filter = {
-      //   province: queryParam.get("province"),
-      //   district: queryParam.get("district"),
-      //   ward: queryParam.get("ward"),
-      //   numberAdult: queryParam.get("numberAdult"),
-      //   numberChildren: queryParam.get("numberChildren"),
-      //   checkInDate: queryParam.get("checkInDate"),
-      //   numRoom: queryParam.get("numRoom"),
-      // };
-      // // setListItem(getPagination(props.hotels.data));
-      // setQueryFilter(filter);
     }
     return () => {
       mount = true;
@@ -346,20 +339,23 @@ const ComboHotelSearchPage = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(props.hotels);
-    var form = e.target;
-    const today = new Date();
 
-    var filter = { ...props.filter };
-    filter.province = form.provinces.value;
-    filter.district = form.districts.value;
-    filter.ward = form.wards.value;
-    filter.numberAdult = form.numAdult.value;
-    filter.numberChildren = form.numChildren.value;
-    filter.checkInDate = form.checkInDate.value;
-    filter.checkOutDate = queryParam.get("checkOutDate");
-    filter.numRoom = queryParam.get("numRoom");
-    performSearch(filter, true);
+    var form = e.target;
+
+    if (validateHtl(form, "hotel-flight-search")) {
+      const today = new Date();
+      var filter = { ...props.filter };
+      filter.province = form.provinces.value;
+      filter.district = form.districts.value;
+      filter.ward = form.wards.value;
+      filter.numberAdult = form.numAdult.value;
+      filter.numberChildren = form.numChildren.value;
+      filter.checkInDate = form.checkInDate.value;
+      filter.checkOutDate = queryParam.get("checkOutDate");
+      filter.numRoom = queryParam.get("numRoom");
+      performSearch(filter, true);
+    }
+
   };
 
   const handleSelectHotel = (hotel) => {
@@ -369,6 +365,64 @@ const ComboHotelSearchPage = (props) => {
 
   const totalPages = () => {
     return Math.ceil(props?.hotels?.data?.length / itemsPerPage);
+  }
+
+  const validateHtl = (form, formSelector) => {
+    var err = { ...errHlt }
+    if (form.provinces.value === "0") {
+      err.province = 'Province cannot be empty';
+      form.provinces.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+      $(`.${formSelector} #province-error`)[0].innerText = err.province;
+    } else {
+      err.province = '';
+      form.provinces.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+      $(`.${formSelector} #province-error`)[0].innerText = err.province;
+    }
+
+    if (!form.checkInDate.value) {
+      err.checkin = 'Checkin date cannot be empty';
+      form.checkInDate.parentElement.classList.add("is-invalid");
+      $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+    } else {
+      err.checkin = '';
+      form.checkInDate.parentElement.classList.remove("is-invalid");
+      $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+    }
+
+    if (!form.checkOutDate.value) {
+      err.checkout = 'Checkout date cannot be empty';
+      form.checkOutDate.parentElement.classList.add("is-invalid");
+      $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+    } else {
+      err.checkout = '';
+      form.checkOutDate.parentElement.classList.remove("is-invalid");
+      $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+    }
+
+    if (form.checkInDate.value && form.checkOutDate.value) {
+      if (form.checkInDate.value >= form.checkOutDate.value) {
+        err.checkin = 'Check in date must be smaller than check out date';
+        form.checkInDate.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+
+        err.checkout = 'Check out date must be larger than check in date';
+        form.checkOutDate.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+      } else {
+        err.checkin = '';
+        form.checkInDate.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+        err.checkout = '';
+        form.checkOutDate.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+      }
+    }
+
+    if (err.province || err.checkin || err.checkout) {
+      setErrHlt(err);
+      return false;
+    }
+    return true;
   }
 
   return (
@@ -395,7 +449,7 @@ const ComboHotelSearchPage = (props) => {
                 </div>
 
                 <div className="side-block fly-in">
-                  <form className="side-block-search" onSubmit={handleSubmit} autoComplete="off">
+                  <form className="hotel-flight-search side-block-search" onSubmit={handleSubmit} autoComplete="off">
                     <div className="page-search-p">
                       <div className="srch-tab-line">
                         <div className="rsch-tab-line no-margin-bottom">
@@ -418,6 +472,7 @@ const ComboHotelSearchPage = (props) => {
                                   </option>
                                 ))}
                               </select>
+                              <div className="booking-error-input" id="province-error"></div>
                             </div>
                           </div>
                           <div className="srch-tab-3c">
@@ -481,6 +536,7 @@ const ComboHotelSearchPage = (props) => {
                             />{" "}
                             <span className="date-icon"></span>
                           </div>
+                          <div className="booking-error-input" id="checkin-error"></div>
                         </div>
                         <div className="srch-tab-right">
                           <label>Check out date</label>
@@ -495,6 +551,7 @@ const ComboHotelSearchPage = (props) => {
                             />{" "}
                             <span className="date-icon"></span>
                           </div>
+                          <div className="booking-error-input" id="checkout-error"></div>
                         </div>
                         <div className="clear"></div>
                       </div>
@@ -509,7 +566,8 @@ const ComboHotelSearchPage = (props) => {
                               type="number"
                               defaultValue={queryParam.get("numberAdult")}
                               min="0"
-                              max="6"
+                              max="7"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -521,7 +579,8 @@ const ComboHotelSearchPage = (props) => {
                               name="numChildren"
                               type="number"
                               defaultValue={queryParam.get("numberChildren")}
-                              max="6"
+                              max="7"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -534,6 +593,7 @@ const ComboHotelSearchPage = (props) => {
                               defaultValue={queryParam.get("numRoom")}
                               min="1"
                               max="30"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -545,22 +605,6 @@ const ComboHotelSearchPage = (props) => {
                       </button>
                     </div>
                   </form>
-                </div>
-
-                <div className="side-block fly-in">
-                  <div className="side-price">
-                    <div className="side-padding">
-                      <div className="side-lbl">Price</div>
-                      <div className="price-ranger">
-                        <div id="slider-range"></div>
-                      </div>
-                      <div className="price-ammounts">
-                        <input type="text" id="ammount-from" readOnly />
-                        <input type="text" id="ammount-to" readOnly />
-                        <div className="clear"></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="side-block fly-in">

@@ -40,7 +40,7 @@ const AdminAirlineProfile = (props) => {
 
         props.getProvince();
         props.getAirline(queryParam.get("id"));
-        
+
         return () => {
             mount = true;
         }
@@ -49,7 +49,7 @@ const AdminAirlineProfile = (props) => {
     useEffect(() => {
         let mount = false;
 
-        if(props.airline.single != null && isInitial){
+        if (props.airline.single != null && isInitial) {
             props.getAllBookingAirline(props.airline.single?.id);
             props.getDailyIncome(props.airline.single?.id);
             props.getRevenue(props.airline.single?.id);
@@ -91,39 +91,11 @@ const AdminAirlineProfile = (props) => {
         e.preventDefault();
         let form = e.target;
 
-        // let data = { ...props.hotel.single };
-        // data.hotelName = form.hotelName.value;
-        // data.email = form.email.value;
-        // data.phone = form.phone.value;
-        // data.avgPriceAtNight = form.avgPriceAtNight.value;
-        // data.contactTitle = form.contactTitle.value;
-        // data.contactName = form.contactName.value;
-        // data.description = form.description.value;
-        // data.location.street = form.street.value;
-        // data.location.province = slProvince;
-        // data.location.district = slDistrict;
-        // data.location.ward = slWard;
-        // data.paymentAtTheHotel = allService.paymentAtHotel;
-        // data.entertaiment = allService.entertainment;
-        // data.freeParking = allService.freeParking;
-        // data.petsAllowed = allService.petAllowed;
-        // data.hotTub = allService.hotTub;
-        // data.swimmingPool = allService.swimmingPool;
-        // data.gym = allService.gym;
-        // data.highSpeedInternet = allService.highSpeedInternet;
-
-        // props.updateHotel(data.id, data);
         setIsSuccess(true);
 
     }
 
     const header = [
-        {
-            name: '#',
-            selector: 'serial',
-            sortable: true,
-            width: '5%'
-        },
         {
             name: 'Booking Code',
             selector: 'bookingCode',
@@ -166,19 +138,7 @@ const AdminAirlineProfile = (props) => {
         },
     ];
 
-    const subHeader = (<thead><tr>
-        <td>#</td>
-        <td>Airline Name</td>
-        <td>Email</td>
-        <td>Phone</td>
-        <td>Contact Person</td>
-        <td>Contact Person Title</td>
-    </tr></thead>);
-
     const customStyles = {
-        background: {
-            default: '#191c24',
-        },
         headCells: {
             style: {
                 fontSize: '16px',
@@ -215,6 +175,7 @@ const AdminAirlineProfile = (props) => {
                 minHeight: '56px',
                 borderTopStyle: 'solid',
                 borderTopWidth: '1px',
+
             },
             pageButtonsStyle: {
                 borderRadius: '50%',
@@ -403,7 +364,7 @@ const AdminAirlineProfile = (props) => {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="row" style={{display:'block'}}>
+                                                                    <div className="row" style={{ display: 'block' }}>
                                                                         <div className="card">
                                                                             <div className="card-body">
                                                                                 <Bar
@@ -447,21 +408,22 @@ const AdminAirlineProfile = (props) => {
                                                             </div>
 
                                                             <div className="tab-pane" id="settings">
-                                                                <AdminAirlineProfileEdit/>
+                                                                <AdminAirlineProfileEdit />
                                                             </div>
 
                                                             <div className="tab-pane" id="change-password">
                                                                 <h6 className="text-center text-warning">BOOKING HISTORY</h6>
-                                                                <DataTable className="table"
-                                                                    customStyles={customStyles}
-                                                                    theme='solarized'
-                                                                    // progressPending={!props.hotel.all}
-                                                                    columns={header}
-                                                                    data={props.airline.allBooking}
-                                                                    pagination
-                                                                    paginationPerPage={5}
-                                                                // subHeaderComponent={subHeader}                                                    
-                                                                />
+                                                                <div className="table-responsive">
+                                                                    <DataTable className="table"
+                                                                        customStyles={customStyles}
+                                                                        theme='solarized'
+                                                                        progressPending={!props.airline.allBooking}
+                                                                        columns={header}
+                                                                        data={props.airline.allBooking}
+                                                                        pagination
+                                                                        paginationPerPage={5}
+                                                                    />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

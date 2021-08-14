@@ -1,5 +1,6 @@
 package com.travelbooking.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -32,11 +33,13 @@ public class FlightBooking {
     private String note;
 
     @Column(name="created_at", nullable = false)
+    @JsonFormat(pattern="yyyy-MM-dd")
     @CreatedDate
     private Instant createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at",nullable = true)
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Instant updatedAt;
 
     @OneToMany

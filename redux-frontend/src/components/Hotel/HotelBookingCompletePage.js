@@ -12,13 +12,14 @@ import { data } from 'jquery';
 
 
 const HotelBookingCompletePage = (props) => {
-    // const user = props.bookRoom?.data?.user;
+    // const user = bookRoom?.data?.user;
     // const hotelBookingRooms = [...props.bookRoom?.data?.hotelBookingDetail?.hotelBookingRooms];
-    // const booking = useSelector((state) => state.bookRoom);
-    // const hotel = useSelector((state) => state.hotels);
-    // const rooms = useSelector((state) => state.room)
-    // const [user, setUser] = useState(booking.data?.user);
-    // const [check,setCheck] = useState(false);
+
+    const booking = useSelector((state) => state.bookRoom);
+    const hotel = useSelector((state) => state.hotels);
+    const rooms = useSelector((state) => state.room)
+    const [user, setUser] = useState(booking.data?.user);
+
     const history = useHistory();
 
     useEffect(() => {
@@ -26,20 +27,20 @@ const HotelBookingCompletePage = (props) => {
 
         importAll();
         // (room, index) => newArr.push({ id: room.id })
-        // if ((!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId")) && check === false) {
-        //     setCheck(true);
-        //     // console.log(user);
-        //     // console.log(hotel);
-        //     // console.log(rooms);
-        //     // var newArr = [];
-        //     // booking.hotelBookingDetail?.hotelBookingRooms?.map((bookingRoom,index) =>
-        //     //     newArr.push({id:bookingRoom?.room?.id})
-        //     // )
-        //         // props.getHotel(booking.hotelBookingDetail?.hotelBookingRooms[0]?.room);
-        //         // props.getRooms(newArr);
-        // } else {
-        //     history.push(`/`);
-        // }
+        if (!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId")) {
+            // console.log(user);
+            // console.log(hotel);
+            // console.log(rooms);
+            // var newArr = [];
+            // booking.hotelBookingDetail?.hotelBookingRooms?.map((bookingRoom,index) =>
+            //     newArr.push({id:bookingRoom?.room?.id})
+            // )
+                // props.getHotel(booking.hotelBookingDetail?.hotelBookingRooms[0]?.room);
+                // props.getRooms(newArr);
+                
+        } else {
+            history.push(`/`);
+        }
 
 
         return () => {
@@ -68,7 +69,9 @@ const HotelBookingCompletePage = (props) => {
                                         <div className="sp-page-p">
                                             <div className="booking-left">
                                                 <h2>Booking Complete</h2>
-                                                {/* <button className="book-btn-r" onClick={ ()=>history.push(`/`)}>
+                                                {/* <button onClick={
+                                                    history.push(`/`)
+                                                }>
                                                     Home Page
                                                 </button> */}
                                                 <div className="comlete-alert">
@@ -83,27 +86,27 @@ const HotelBookingCompletePage = (props) => {
                                                     <div className="complete-info-table">
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">First Name:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.user?.firstName}</div>
+                                                            <div className="complete-info-r">{user?.firstName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Last Name:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.user?.lastName}</div>
+                                                            <div className="complete-info-r">{user?.lastName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">E-Mail Adress:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.user?.email}</div>
+                                                            <div className="complete-info-r">{user?.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Country:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.user?.location?.province?.name}</div>
+                                                            <div className="complete-info-r">{user?.location?.province?.name}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Phone Number:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.user?.phoneNumber}</div>
+                                                            <div className="complete-info-r">{user?.phoneNumber}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -114,29 +117,29 @@ const HotelBookingCompletePage = (props) => {
                                                         <h2>Hotel Information</h2>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Hotel Name:</div>
-                                                            <div className="complete-info-r">{props.hotel.data?.hotelName}</div>
+                                                            <div className="complete-info-r">{hotel?.data?.hotelName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Contact Name:</div>
-                                                            <div className="complete-info-r">{props.hotel.data?.contactName}</div>
+                                                            <div className="complete-info-r">{hotel?.data?.contactName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Phone Number:</div>
-                                                            <div className="complete-info-r">{props.hotel.data?.phone}</div>
+                                                            <div className="complete-info-r">{hotel?.data?.phone}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Email Address:</div>
-                                                            <div className="complete-info-r">{props.hotel.data?.email}</div>
+                                                            <div className="complete-info-r">{hotel?.data?.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
                                                     <div className="complete-info-table">
                                                         <h2>Room Information</h2>
                                                         {
-                                                            props.booking.data?.rooms?.map(room =>
+                                                           rooms?.data?.map(room =>
                                                                 <>
                                                                     <div className="complete-info-i">
                                                                         <div className="complete-info-l">Room Type:</div>
@@ -165,27 +168,27 @@ const HotelBookingCompletePage = (props) => {
                                                         <h2>Booking Information</h2>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Booking code:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.bookingCode}</div>
+                                                            <div className="complete-info-r">{booking.data?.bookingCode}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Number of guest:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.numOfGuest}</div>
+                                                            <div className="complete-info-r">{booking.data?.numOfGuest}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Check in date:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.checkInDate}</div>
+                                                            <div className="complete-info-r">{booking.data?.checkInDate}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Check out date:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.checkOutDate}</div>
+                                                            <div className="complete-info-r">{booking.data?.checkOutDate}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Total Price:</div>
-                                                            <div className="complete-info-r">{props.booking.data?.totalPrice}</div>
+                                                            <div className="complete-info-r">{booking.data?.totalPrice}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -283,9 +286,9 @@ const HotelBookingCompletePage = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        booking: state.bookRoom,
-        hotel: state.hotels,
-        rooms:state.room
+        // booking: state.bookRoom,
+        // hotel: state.hotels,
+        // rooms:state.room
     };
 };
 const mapDispatchToProps = (dispatch) => {

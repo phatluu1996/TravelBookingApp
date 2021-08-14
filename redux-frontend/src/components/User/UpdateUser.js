@@ -143,6 +143,7 @@ const UpdateUser = (props) => {
             data.gender = gender;
             data.dateOfBirth = form.birthday.value;
             data.email = form.email.value;
+            data.phoneNumber = form.phoneNumber.value;
             data.location.street = form.address.value;
             data.location.province = selectProvince;
             data.location.district = selectDistrict;
