@@ -333,7 +333,7 @@ footer {
             <div class="logo"><img src="http://localhost:8080/images/logo.png" alt="Logo" /></div>
             <div class="title">
                 <h1>Flight Itinerary<span class="invoiceVal invoice_num"></span></h1>
-                <p>Booking Date: <span id="invoice_date" th:text="${flightBooking.createdAt}"></span><br/>
+                <p>Booking Date: <span id="invoice_date" th:text="${#dates.format(flightBooking.createdAt,'dd-MM-yyyy')}"></span><br/>
                     Account Name: <span id="gl_date" th:text="${flightBooking.user.account.userName}"></span>
                 </p>
             </div>
@@ -376,17 +376,17 @@ footer {
                         <th>#</th>
                         <th>Passengers</th>
                         <th>Flight</th>
-                        <th>From</th>
-                        <th>To</th>
+                        <th>Date</th>
+                        <th>From-To</th>
                         <th>Ticket number</th>
                     </tr>
                     </thead>
                     <tr th:each="flightDetail : ${flightDetails}">
                         <td class="tableitem" width="10%" th:text="${flightDetailStat.index + 1}"></td>
-                        <td class="tableitem" width="30%" th:text="${flightDetail.passenger.lastname} + ' ' + ${flightDetail.passenger.firstname}"></td>
+                        <td class="tableitem" width="30%" th:text="${flightDetail.passenger.firstname} + ' ' + ${flightDetail.passenger.lastname}"></td>
                         <td class="tableitem" width="15%" th:text="${flightDetail.flight.flightCode}"></td>
-                        <td class="tableitem" width="15%" th:text="${flightDetail.flight.departureCity}"></td>
-                        <td class="tableitem" width="15%" th:text="${flightDetail.flight.arrivalCity}"></td>
+                        <td class="tableitem" width="15%" th:text="${#dates.format(flightDetail.dateOfDeparture,'dd-MM-yyyy')}"></td>
+                        <td class="tableitem" width="15%" th:text="${flightDetail.flight.departureCity} + ' ' + ${flightDetail.flight.arrivalCity}"></td>
                         <td class="tableitem" width="15%" th:text="${flightDetail.passenger.ticketNumber}"></td>
                     </tr>
                 </table>
@@ -401,8 +401,8 @@ footer {
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        <th>Flight</th>
+                        <th>Ticket Numbẻ</th>
                         <th>Unit Price</th>
                         <th>Plus Infant</th>
                         <th>Total Amount</th>
@@ -410,10 +410,10 @@ footer {
                     </thead>
                     <tr th:each="flightDetail : ${flightDetails}">
                         <td width="10%" class="tableitem" th:text="${flightDetailStat.index + 1}"></td>
-                        <td width="20%" class="tableitem" th:text="${flightDetail.flight.airline.airlineName}"></td>
-                        <td width="30%" class="tableitem" th:text="${flightDetail.flight.flightCode}"></td>
+                        <td width="20%" class="tableitem" th:text="${flightDetail.flight.flightCode}"></td>
+                        <td width="30%" class="tableitem" th:text="${flightDetail.passenger.ticketNumber}"></td>
                         <td width="10%" class="tableitem">
-                            <span th:if="${flightDetail.passenger.hasInfant}" th:text="${flightDetail.passenger.price} - ${flightDetail.flight.infant_price} + ' $'"></span>
+                            <span th:if="${flightDetail.passenger.hasInfant}" th:text="${flightDetail.passenger.price}*1.0 - ${flightDetail.flight.infant_price} + ' $'"></span>
                             <span th:unless="${flightDetail.passenger.hasInfant}" th:text="${flightDetail.passenger.price} + ' $'"></span>
                         </td>
                         <td width="10%" class="tableitem" >

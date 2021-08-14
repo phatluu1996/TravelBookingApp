@@ -220,39 +220,6 @@ const AdminAirlineProfile = (props) => {
         return data;
     }
 
-    const onServiceClick = (e) => {
-        let service = { ...allService };
-
-        switch (e.target.name) {
-            case "highSpeedInternet":
-                service.highSpeedInternet = e.target.checked;
-                break;
-            case "entertainment":
-                service.entertainment = e.target.checked;
-                break;
-            case "freeParking":
-                service.freeParking = e.target.checked;
-                break;
-            case "petAllowed":
-                service.petAllowed = e.target.checked;
-                break;
-            case "hotTub":
-                service.hotTub = e.target.checked;
-                break;
-            case "swimmingPool":
-                service.swimmingPool = e.target.checked;
-                break;
-            case "gym":
-                service.gym = e.target.checked;
-                break;
-            case "paymentAtHotel":
-                service.paymentAtHotel = e.target.checked;
-                break;
-            default: console.log(e.target.name); break;
-        }
-
-        setAllService(service);
-    }
 
     const onChangeProvince = (e) => {
         setSlProvince(JSON.parse(e.target.value));
@@ -296,11 +263,11 @@ const AdminAirlineProfile = (props) => {
                                             <div className="row">
                                                 <div className="col-lg-3 col-xl-3">
                                                     <div className="card-box text-center">
-                                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
+                                                        <img src={props.airline.single?.image} className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
 
                                                         <h4 className="mb-0 mt-2" style={{ color: '#fc9003' }}>{props.airline.single?.airlineName}</h4>
                                                         <div className="text-left mt-3">
-                                                            <h6 className="font-13 text-center text-uppercase">Infomation</h6>
+                                                            <h6 className="font-13 text-center text-uppercase">General Infomation</h6>
 
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Contact Name :</strong> <span className="ml-2">{props.airline.single?.contactName}</span></p>
 
@@ -332,13 +299,13 @@ const AdminAirlineProfile = (props) => {
 
                                                             <li className="nav-item">
                                                                 <a href="#change-password" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <FontAwesomeIcon icon={faDollarSign} /> Booking History
+                                                                    <FontAwesomeIcon icon={faDollarSign} /> Booking Data
                                                                 </a>
                                                             </li>
 
                                                             <li className="nav-item">
                                                                 <a href="#settings" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <i className="mdi mdi-settings-outline mr-1"></i>Settings
+                                                                    <i className="mdi mdi-settings-outline mr-1"></i>Profile
                                                                 </a>
                                                             </li>
                                                         </ul>

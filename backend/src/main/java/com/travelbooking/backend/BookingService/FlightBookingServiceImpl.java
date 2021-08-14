@@ -183,7 +183,10 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             Flight returnFlight=returnFlightOptional.get();
 
             BitMatrix bitMatrix_2flight = qrCodeWriter.encode(
-                    "SparrowCode: "+ savedBooking.getBookingCode() + "\n"+
+                    "User: "+ user.getFirstName()+" "+user.getLastName()+"\n"+
+                            "Email: "+ user.getEmail() +"\n"+
+                            "Sparrow Code: "+ savedBooking.getBookingCode() + "\n"+
+                            "Information Flight: "+"\n"+
                             flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
                             flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
                             flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()+"\n"+
@@ -196,7 +199,11 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             flightBookingRepository.save(savedBooking);
             mapAndSaveToPDF(savedBooking, user, new File(qrcodePath));
         } else {
-            BitMatrix bitMatrix = qrCodeWriter.encode("SparrowCode: "+savedBooking.getBookingCode()+"\n"+
+            BitMatrix bitMatrix = qrCodeWriter.encode(
+                    "User: "+ user.getFirstName()+" "+user.getLastName()+"\n"+
+                            "Email: "+ user.getEmail() +"\n"+
+                            "Sparrow Code: "+ savedBooking.getBookingCode() + "\n"+
+                            "Information Flight: "+"\n"+
                             flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
                             flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
                             flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()

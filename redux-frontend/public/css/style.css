@@ -1534,7 +1534,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .flat-adv-b {font-size:14px; color:#3a4142; text-transform:uppercase;font-family:'Montserrat';font-weight:normal;margin-bottom:14px;}
 .flat-adv-c {font-size:14px;color:#626262;line-height:26px;font-family:'Raleway';}
 .testimonials-flat {padding:150px 0px 0px 0px;width:100%;height:350px;margin:0px 0px 93px 0px;background:url(../img/testimonials-s.jpg) center top no-repeat;}
-.testimonials-flat.about-ts {background:url(../img/about-ts.jpg) left top no-repeat;} 
+.testimonials-flat.about-ts {background:url(../img/aboutus/pbg.png) left top no-repeat;width:100%;height:100%} 
 .testimonials-flat .testimonials-b,.testimonials-flat .testimonials-d {color:#fff;	}
 .testimonials-flat .testimonials-holder .bx-prev {background:url(../img/ss-l.png) left top no-repeat;height:21px;width:12px;}
 .testimonials-flat .testimonials-holder .bx-next {background:url(../img/ss-r.png) left top no-repeat;height:21px;width:12px;}
