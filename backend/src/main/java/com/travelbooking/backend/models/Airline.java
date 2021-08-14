@@ -23,7 +23,7 @@ public class Airline {
     @Column(name = "contact_name", columnDefinition = "nvarchar(100)")
     private String contactName;
 
-    @Column(name = "contact_title", columnDefinition = "nvarchar(100)")
+        @Column(name = "contact_title", columnDefinition = "nvarchar(100)")
     private String contactTitle;
 
     @Column(name = "phone")
@@ -32,7 +32,7 @@ public class Airline {
     @Column(name = "mobile")
     private String mobile;
 
-    @Column(name = "fax", nullable = true)
+        @Column(name = "fax", nullable = true)
     private String fax;
 
     @Column(name = "homepage")
