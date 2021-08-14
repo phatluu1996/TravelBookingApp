@@ -1,16 +1,15 @@
 import { faCartPlus, faEdit, faPlus, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { fetchAllHotel } from '../../../actions/actionHotel'
+import { clearHotelState, fetchAllHotel } from '../../../actions/actionHotel'
 import AdminFooter from '../Layout/AdminFooter'
 import AdminNavbar from '../Layout/AdminNavbar'
 import AdminSidebar from '../Layout/AdminSidebar'
 
 const AdminHotel = (props) => {
-
     createTheme('solarized', {
         text: {
             primary: 'white',
@@ -75,15 +74,6 @@ const AdminHotel = (props) => {
             </>
         }
     ];
-
-    const subHeader = (<thead><tr>
-        <td>#</td>
-        <td>Hotel Name</td>
-        <td>Email</td>
-        <td>Phone</td>
-        <td>Contact Person</td>
-        <td>Contact Person Title</td>
-    </tr></thead>);
 
     const customStyles = {
         headCells: {
@@ -151,13 +141,11 @@ const AdminHotel = (props) => {
         },
     };
 
-    useEffect(() => {
-        let mount = false;        
+    useEffect(() => {  
+        props.clearState();
         props.getAllHotels();
-        return () => {
-            mount = true;
-        }
-    }, [])
+    }, []);
+
 
     return (
         <>
@@ -171,19 +159,19 @@ const AdminHotel = (props) => {
                                 <div className="col-lg-12 grid-margin stretch-card">
                                     <div className="card">
                                         <div className="card-body">
-                                            {props.hotel.requesting && <div className="loading" delay-hide="10"></div>}
+                                            {!props.hotel.all && <div className="loading" delay-hide="10"></div>}
                                             <h4 className="card-title">List All Hotels</h4>
                                             <Link className="btn btn-success" to={`/admin-hotel-create`}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
-                                            <div className="table-responsive">
-                                                {props.hotel.data && <DataTable className="table"
+                                            {props.hotel.all && <div className="table-responsive">
+                                                <DataTable className="table"
                                                     customStyles={customStyles}
                                                     theme='solarized'                                                    
-                                                    columns={header} data={props.hotel.data}
+                                                    columns={header} data={props.hotel.all}
                                                     pagination
                                                     paginationPerPage={5}
-                                                    subHeaderComponent={subHeader}                                                    
-                                                />}
-                                            </div>
+                                                    // subHeaderComponent={subHeader}                                                    
+                                                />
+                                            </div>}
                                         </div>
                                     </div>
                                 </div>
@@ -209,6 +197,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getAllHotels: () => {
             dispatch(fetchAllHotel())
+        },
+        clearState: () => {
+            dispatch(clearHotelState())
         }
     };
 };

@@ -215,13 +215,9 @@ const AdminFeedback = (props) => {
                                     <div className="card">
                                         <div className="card-body">
                                             <h4 className="card-title">Feedbacks</h4>
-                                            {props.feedback.requesting && <div className="loading" delay-hide="10"></div>
-                                            // <div class="spinner-border text-primary spinner" role="status">
-                                            //     <span class="sr-only">Sending...</span>
-                                            // </div>
-                                            }
+                                            {props.feedback.requesting && <div className="loading" delay-hide="10"></div>}
                                             <div className="table-responsive">
-                                                {props.feedback.data && <DataTable className="table"
+                                                {props.feedback.data && Array.isArray(props.feedback.data) && <DataTable className="table"
                                                     customStyles={customStyles}
                                                     theme='solarized'
                                                     progressPending={!props.feedback.data}

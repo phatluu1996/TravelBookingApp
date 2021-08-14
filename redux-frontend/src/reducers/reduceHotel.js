@@ -53,7 +53,8 @@ function reducerHotel(state = initialState, action) {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload
+        all: action.payload,
+        one: null
       };
       return state;
 
@@ -131,7 +132,8 @@ function reducerHotel(state = initialState, action) {
         ...state,
         requesting: false,
         success: true,
-        data: action.payload
+        one: action.payload,
+        all: null
       };
       return state;
 
