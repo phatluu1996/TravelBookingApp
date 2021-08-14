@@ -13,11 +13,12 @@ public class HotelBookingDetail {
     private Long id;
     @OneToOne
     @JoinColumn(name = "hotel_booking_id",referencedColumnName = "id")
+    @JsonIgnoreProperties("hotelBookingDetail")
     private HotelBooking hotelBooking;
 
     @OneToMany
     @JoinColumn(name = "hotel_booking_detail_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("hotel_booking_detail")
+    @JsonIgnoreProperties("hotelBookingDetail")
     private List<HotelBookingRoom> hotelBookingRooms;
 
     public HotelBookingDetail() {

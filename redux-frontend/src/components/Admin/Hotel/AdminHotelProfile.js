@@ -156,12 +156,7 @@ const AdminHotelProfile = (props) => {
     }
 
     const header = [
-        {
-            name: '#',
-            selector: 'serial',
-            sortable: true,
-            width: '5%'
-        },
+
         {
             name: 'Booking Code',
             selector: 'bookingCode',
@@ -170,11 +165,6 @@ const AdminHotelProfile = (props) => {
         {
             name: 'Number Of Guest',
             selector: 'numOfGuest',
-            sortable: true
-        },
-        {
-            name: 'Status',
-            selector: 'status',
             sortable: true
         },
         {
@@ -422,7 +412,7 @@ const AdminHotelProfile = (props) => {
 
                                                             <li className="nav-item">
                                                                 <a href="#change-password" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <FontAwesomeIcon icon={faDollarSign} /> Pricing
+                                                                    <FontAwesomeIcon icon={faDollarSign} /> Booking History
                                                                 </a>
                                                             </li>
 
@@ -488,40 +478,45 @@ const AdminHotelProfile = (props) => {
                                                                         </div>
 
                                                                     </div>
-                                                                    <Bar
-                                                                        data={{
-                                                                            labels: barLabel(),
-                                                                            datasets: [
-                                                                                {
-                                                                                    label: "Population (millions)",
-                                                                                    backgroundColor: [
-                                                                                        'rgba(54, 162, 235, 0.5)',
-                                                                                        'rgba(255, 206, 86, 0.5)',
-                                                                                        'rgba(75, 192, 192, 0.5)',
-                                                                                        'rgba(153, 102, 255, 0.5)',
-                                                                                        'rgba(255, 159, 64, 0.5)'
-                                                                                    ],
-                                                                                    borderColor: [
-                                                                                        'rgba(54, 162, 235, 1)',
-                                                                                        'rgba(255, 206, 86, 1)',
-                                                                                        'rgba(75, 192, 192, 1)',
-                                                                                        'rgba(153, 102, 255, 1)',
-                                                                                        'rgba(255, 159, 64, 1)'
-                                                                                    ],
-                                                                                    borderWidth: 1,
-                                                                                    fill: false,
-                                                                                    data: barData()
-                                                                                }
-                                                                            ]
-                                                                        }}
-                                                                        options={{
-                                                                            legend: { display: false },
-                                                                            title: {
-                                                                                display: true,
-                                                                                text: "Predicted world population (millions) in 2050"
-                                                                            }
-                                                                        }}
-                                                                    />
+                                                                    <div className="row" style={{ display: 'block' }}>
+                                                                        <div className="card">
+                                                                            <div className="card-body"></div>
+                                                                            <Bar
+                                                                                data={{
+                                                                                    labels: barLabel(),
+                                                                                    datasets: [
+                                                                                        {
+                                                                                            label: "Population (millions)",
+                                                                                            backgroundColor: [
+                                                                                                'rgba(54, 162, 235, 0.5)',
+                                                                                                'rgba(255, 206, 86, 0.5)',
+                                                                                                'rgba(75, 192, 192, 0.5)',
+                                                                                                'rgba(153, 102, 255, 0.5)',
+                                                                                                'rgba(255, 159, 64, 0.5)'
+                                                                                            ],
+                                                                                            borderColor: [
+                                                                                                'rgba(54, 162, 235, 1)',
+                                                                                                'rgba(255, 206, 86, 1)',
+                                                                                                'rgba(75, 192, 192, 1)',
+                                                                                                'rgba(153, 102, 255, 1)',
+                                                                                                'rgba(255, 159, 64, 1)'
+                                                                                            ],
+                                                                                            borderWidth: 1,
+                                                                                            fill: false,
+                                                                                            data: barData()
+                                                                                        }
+                                                                                    ]
+                                                                                }}
+                                                                                options={{
+                                                                                    legend: { display: false },
+                                                                                    title: {
+                                                                                        display: true,
+                                                                                        text: "Predicted world population (millions) in 2050"
+                                                                                    }
+                                                                                }}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -689,16 +684,15 @@ const AdminHotelProfile = (props) => {
                                                             <div className="tab-pane" id="change-password">
                                                                 <h6 className="text-center text-warning">BOOKING HISTORY</h6>
                                                                 <div className="table-responsive">
-                                                                    {/* <DataTable className="table"
+                                                                    <DataTable className="table"
                                                                         customStyles={customStyles}
                                                                         theme='solarized'
-                                                                        // progressPending={!props.hotel.all}
+                                                                        progressPending={!props.hotel.allBooking}
                                                                         columns={header}
                                                                         data={props.hotel?.allBooking}
                                                                         pagination
-                                                                        paginationPerPage={5}
-                                                                    // subHeaderComponent={subHeader}                                                    
-                                                                    /> */}
+                                                                        paginationPerPage={5}                                                  
+                                                                    />
                                                                 </div>
 
                                                             </div>

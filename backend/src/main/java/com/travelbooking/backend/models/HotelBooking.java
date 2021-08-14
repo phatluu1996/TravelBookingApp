@@ -1,4 +1,5 @@
 package com.travelbooking.backend.models;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,17 +24,21 @@ public class HotelBooking {
     @Column(name = "status")
     private boolean status;
     @Column(name = "check_in_date")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date checkInDate;
     @Column(name = "check_out_date")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date checkOutDate;
     @Column(name = "total_price")
     private Float totalPrice;
     @Column(name="created_at")
+    @JsonFormat(pattern="yyyy-MM-dd")
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate
     @Column(name = "update_at")
-    private Date updateAt;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Instant updateAt;
     @Column(name = "payment_method", columnDefinition = "nvarchar(100)")
     private String paymentMethod;
 
@@ -48,12 +53,13 @@ public class HotelBooking {
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonIgnoreProperties("hotelBooking")
     private User user;
 
     public HotelBooking() {
     }
 
-    public HotelBooking(Long id, String bookingCode, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, Instant createdAt, Date updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
+    public HotelBooking(Long id, String bookingCode, int numOfGuest, boolean status, Date checkInDate, Date checkOutDate, Float totalPrice, Instant createdAt, Instant updateAt, String paymentMethod, boolean retired, HotelBookingDetail hotelBookingDetail, User user) {
         this.id = id;
         this.bookingCode = bookingCode;
         this.numOfGuest = numOfGuest;
@@ -133,11 +139,11 @@ public class HotelBooking {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public Instant getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(Instant updateAt) {
         this.updateAt = updateAt;
     }
 
