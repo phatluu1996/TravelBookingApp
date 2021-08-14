@@ -12,7 +12,7 @@ public class HotelFeedBack {
     private Long id;
     @Column(name = "rating")
     private double rating;
-    @Column(name = "feedback")
+    @Column(name = "feedback" , columnDefinition = "nvarchar(max)")
     private String feedback;
 
 

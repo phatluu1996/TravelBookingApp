@@ -7,82 +7,80 @@ import { useEffect, setState, useState, Component } from "react";
 import { importAll } from "../../utils/JqueryImport";
 import DataTable from "react-data-table-component";
 import { fetchHotelById } from "../../actions/actionHotel";
-import { createHotelFeedBack } from "../../actions/actionHotel";
+import { createHotelFeedBack,getFeedbacks } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
 import Pagination from "./Pagination";
 import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight, faBaby, faCheck, faMale } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faBaby, faCheck, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
 import { getRole, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
 import { clearRoomBookingCached } from "../../actions/actionBookingRoom";
+import { Button,makeStyles } from "@material-ui/core";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
+const useStyle = makeStyles({
+    icon:{
+        display: "block",
+        color: "white",
+        float: "left",
+        margin: "17px 0px 0px 14px",
+        width: "20px",
+        height: "12px"
+    }
+});
 
 const HotelDetailPage = (props) => {
+    const classes = useStyle();
     // const location = useLocation();
 
     const history = useHistory();
     let queryParam = useQuery();
     const [currentImage, setCurrentImage] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [jquery, setJquery] = useState(false);
     const [areaText, setAreaText] = useState(null);
     const [countReview, setCountReview] = useState(0);
 
     const [totalAdult, setTotalAdult] = useState(0);
     const [totalChild, setTotalChild] = useState(0);
-
-    // const [pageNumber, setPageNumber] = useState(1);
-
     const [bookingList, setBookingList] = useState([]);
-
     const [mapCheck, setMapCheck] = useState(new Map());
-
     const [itemsPerPageFB, setItemPerPageFB] = useState(4);
-
     const [pageNumberFB, setPageNumberFB] = useState(1);
-
     const user = sessionStorage.getItem("userId");
+
+
 
     const customStyles = {
         table: {
             style: {
-                // paddingTop: '-50px'
             },
         },
         rows: {
             style: {
-                // minHeight: '72px', // override the row height
             },
         },
         headCells: {
             style: {
                 paddingLeft: "8px",
                 fontSize: "20px", // override the cell padding for head cells
-                // paddingRight: '8px',
             },
         },
         cells: {
             style: {
                 paddingTop: "15px",
-                // paddingLeft: '8px', // override the cell padding for data cells
-                // paddingRight: '8px',
             },
         },
     };
 
     var settings = {
-        // infinite: true,
-        // speed: 500,
-        // slidesToShow: 5,
-        // slidesToScroll: 1,
         prevArrow: <button className="slick-prev"><FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon></button>,
         nextArrow: <button className="slick-next"><FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon></button>,
         slidesToShow: 5,
@@ -107,12 +105,12 @@ const HotelDetailPage = (props) => {
             alert("Please select your room");
             return [];
         } else {
-        //   console.log( `/hotel-booking?id=${props?.hotel?.data?.id}
-        //   &checkInDate=${queryParam.get("checkInDate")}
-        //   &checkOutDate=${queryParam.get("checkOutDate")}
-        //   &roomIds=${bookingList.join(".")}`)  
+            //   console.log( `/hotel-booking?id=${props?.hotel?.data?.id}
+            //   &checkInDate=${queryParam.get("checkInDate")}
+            //   &checkOutDate=${queryParam.get("checkOutDate")}
+            //   &roomIds=${bookingList.join(".")}`)  
             props.clearBookingCached();
-            sessionStorage.setItem("isRoomBooking",true)            
+            sessionStorage.setItem("isRoomBooking", true)
             history.push(
                 `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
@@ -135,8 +133,6 @@ const HotelDetailPage = (props) => {
         setTotalChild(totalC);
         setBookingList(ids);
     };
-
-
 
     const roomDetail = [
         {
@@ -169,15 +165,6 @@ const HotelDetailPage = (props) => {
                                                         Voluptatem quia voluptas sit aspernatur aut odit aut
                                                         fugit, sed quia consequuntur magni dolores eos.
                                                     </p>
-                                                    {/* <div className="cat-icons">
-                                                                                            <span className="cat-icon-01 active"></span>
-                                                                                            <span className="cat-icon-02"></span>
-                                                                                            <span className="cat-icon-03"></span>
-                                                                                            <span className="cat-icon-04"></span>
-                                                                                            <span className="cat-icon-05"></span>
-                                                                                            <span className="cat-icon-06"></span>
-                                                                                            <div className="clear"></div>
-                                                                                        </div> */}
                                                 </div>
                                             </div>
                                             {/* <br className="clear" /> */}
@@ -206,15 +193,13 @@ const HotelDetailPage = (props) => {
         },
     ];
 
-    // const setPageNum = (number) => setPageNumber(number);
-
     const getPagination = (list = [], page, itemsPerPage) => {
         if (!Array.isArray(list) || list.length === 0) {
             return [];
         }
         const startIdx = (page - 1) * itemsPerPage;
-        const endIdx = startIdx + itemsPerPage - 1 + 1;
-
+        const endIdx = (startIdx + itemsPerPage - 1) + 1;
+        list.sort(function(a, b){return b.id - a.id});
         return list.slice(startIdx, endIdx);
     };
 
@@ -232,29 +217,49 @@ const HotelDetailPage = (props) => {
         for (let index = 0; index < reviews.length; index++) {
             avg += reviews[index];
         }
-        // if(areaText){
+       
         const data = {
-            rating: avg / 5,
+            rating: (Math.round((avg/6)*100) / 100),
             feedback: areaText,
             retired: false,
             user: props?.user?.data,
             hotel: props?.hotel?.data,
         };
-        console.log(data);
         props.addFeedBack(data);
-        setLoading(true);
-        // }
     };
-
-    useEffect(() => {
-
-    }, [])
 
     useEffect(() => {
         let mount = false;
 
         props.getUser(user);
         props.getHotel(queryParam.get("id"));
+        props.getFeedbacks(queryParam.get("id"));
+
+        importAll();
+        return () => {
+            mount = true;
+        };
+    }, []);
+
+    useEffect(() => {
+        let mount = false;
+        props.getFeedbacks(queryParam.get("id"));
+        importAll();
+        return () => {
+            mount = true;
+        };
+    }, [props.feedbacks]);
+
+    useEffect(() => {
+        if (Array.isArray(props.hotel?.data?.rooms) &&
+            props.hotel?.data?.rooms.length > 0 &&
+            props.hotel?.data?.rooms[0]?.images[0]?.imagePath) {
+            setCurrentImage(props.hotel.data.rooms[0].images[0].imagePath)
+        }
+    }, [props.hotel]);
+    useEffect(() => {
+        let mount = false;
+
         importAll();
 
         return () => {
@@ -262,31 +267,25 @@ const HotelDetailPage = (props) => {
         };
     }, [isLoading]);
 
-    useEffect(() => {
-        let mount = false;
+    // useEffect(() => {
+    //     let mount = false;
 
-        if (jquery) {
-            importAll();
-            if (props.hotel.data) {
-                setJquery(true);
-                if (mapCheck.size === 0) {
-                    var map = new Map();
+    //     if (jquery) {
+    //         importAll();
+    //         if (props.hotel.data) {
+    //             setJquery(true);
+    //             if (mapCheck.size === 0) {
+    //                 var map = new Map();
+    //                 props.hotel?.data?.rooms?.map((room) => map.set(room.id, false));
+    //                 setMapCheck(map);
+    //             }
+    //         }
+    //     }
 
-                    props.hotel?.data?.rooms?.map((room) => map.set(room.id, false));
-                    setMapCheck(map);
-                }
-            }
-            // let count = 0;
-            // for (let index = 0; index < props.hotel?.data?.feedbackList?.length; index++) {
-            //     count++;
-            // }
-            // setCountReview(count);
-        }
-
-        return () => {
-            mount = true;
-        };
-    });
+    //     return () => {
+    //         mount = true;
+    //     };
+    // });
     return (
         <>
             <Header></Header>
@@ -334,35 +333,28 @@ const HotelDetailPage = (props) => {
 
                                             <div className="mm-tabs-wrapper">
                                                 <div className="tab-item">
-                                                    <div className="tab-gallery-big">
-                                                        <img alt="" src={currentImage} />
+                                                    <div className="tab-gallery-big" style={{ overflow: "hidden" }}>
+                                                        <img
+                                                            style={{}}
+                                                            src={currentImage}
+                                                            alt="A house with two children standing in front of it"
+                                                            onError={event => {
+                                                                event.target.src = `${props.hotel.data?.rooms[0]?.images[0]?.imagePath}`
+                                                                event.onerror = null
+                                                            }}
+                                                        // onLoad={onLoad}
+                                                        />
                                                     </div>
                                                     <div className="tab-gallery-preview" >
-                                                        {/* <div id="gallery">
-                                                            {props.hotel.data?.rooms?.map((room, index) => (
-                                                                <div key={index} className="gallery-i">
-                                                                    <a>
-                                                                        <img
-                                                                            alt={room.images[0]?.imageAlt}
-                                                                            src={room.images[0]?.imagePath}
-                                                                        />
-                                                                    </a>
-                                                                </div>
-                                                            ))}
-                                                        </div> */}
-                                                        {/* <div id="gallery"> */}
-                                                        <Slider {...settings}>
-                                                            {props.hotel.data?.rooms?.map((room, index) => <>
+                                                        <Slider {...settings}  >
+                                                            {props.hotel.data?.rooms?.map((room, index) => <React.Fragment key={index}>
                                                                 {room.images.length > 0 && room.images[0]?.imagePath && <div key={index} className="gallery-i">
                                                                     <a>
                                                                         <img onClick={changeCurrentImgSrc} alt={room.images[0]?.imageAlt} src={room.images[0]?.imagePath} />
                                                                     </a>
                                                                 </div>}
-                                                            </>)}
+                                                            </React.Fragment>)}
                                                         </Slider>
-                                                        {/* </div> */}
-
-
                                                     </div>
                                                 </div>
 
@@ -813,38 +805,62 @@ const HotelDetailPage = (props) => {
                                                                 *Select the number of rooms suitable for the
                                                                 number of people{" "}
                                                             </h2>
-                                                            <h2
+                                                            <Button
                                                                 style={
                                                                     totalAdult <
                                                                         parseInt(queryParam.get("numberAdult"))
-                                                                        ? { color: "red" }
-                                                                        : {}
+                                                                        ? { color: "red", with: 250 }
+                                                                        : { with: 250 }
                                                                 }
-                                                            >
-                                                                <FontAwesomeIcon
+
+                                                                color="red"
+                                                                size="large"
+                                                                // setJquery
+                                                                startIcon={<FontAwesomeIcon
                                                                     icon={faMale}
-                                                                ></FontAwesomeIcon>
-                                                                {totalAdult}/{queryParam.get("numberAdult")}
-                                                            </h2>
-                                                            <h2
-                                                                hidden={
-                                                                    parseInt(queryParam.get("numberChildren")) ===
-                                                                        0
-                                                                        ? true
-                                                                        : false
-                                                                }
-                                                                style={
-                                                                    totalChild <
-                                                                        parseInt(queryParam.get("numberChildren"))
-                                                                        ? { color: "red" }
-                                                                        : {}
-                                                                }
+                                                                ></FontAwesomeIcon>}
+                                                                variant=""
                                                             >
-                                                                <FontAwesomeIcon
-                                                                    icon={faBaby}
-                                                                ></FontAwesomeIcon>
-                                                                {totalChild}/{queryParam.get("numberChildren")}
-                                                            </h2>
+                                                                {totalAdult}/{queryParam.get("numberAdult")}
+                                                            </Button>
+                                                            {parseInt(queryParam.get("numberChildren")) !==
+                                                                0 && <Button
+                                                                    style={
+                                                                        totalChild <
+                                                                            parseInt(queryParam.get("numberChildren"))
+                                                                            ? { color: "red" }
+                                                                            : {}
+                                                                    }
+                                                                    startIcon={
+                                                                        <FontAwesomeIcon
+                                                                            icon={faBaby}
+                                                                        ></FontAwesomeIcon>}
+                                                                    variant=""
+                                                                >
+                                                                    {totalChild}/{queryParam.get("numberChildren")}
+                                                                </Button>}
+                                                                <a 
+                                                                    onClick={(e) => addNewBook()}
+                                                                    className="book-btn"
+                                                                    style={{color:"red"}}
+                                                                >
+                                                                    <span className="book-btn-l">
+                                                                        {totalAdult <
+                                                                        parseInt(queryParam.get("numberAdult")) ||  totalChild <
+                                                                        parseInt(queryParam.get("numberChildren"))
+                                                                        ? 
+                                                                        <FontAwesomeIcon
+                                                                        icon={faTimesCircle}
+                                                                        className={classes.icon}/> 
+                                                                        :  
+                                                                        <FontAwesomeIcon
+                                                                        icon={faCheck}
+                                                                        className={classes.icon} />
+                                                                        }    
+                                                                    </span>
+                                                                    <span className="book-btn-r">Book now</span>
+                                                                    <div className="clear"></div>
+                                                                </a>
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -857,26 +873,6 @@ const HotelDetailPage = (props) => {
                                                                     // Clicked
                                                                     onSelectedRowsChange={handleChange}
                                                                 />
-                                                                <a
-                                                                    onClick={(e) => addNewBook()}
-                                                                    className="book-btn"
-                                                                >
-                                                                    <span className="book-btn-l">
-                                                                        <FontAwesomeIcon
-                                                                            icon={faCheck}
-                                                                            style={{
-                                                                                display: "block",
-                                                                                color: "white",
-                                                                                float: "left",
-                                                                                margin: "17px 0px 0px 14px",
-                                                                                width: "12px",
-                                                                                height: "8px",
-                                                                            }}
-                                                                        />
-                                                                    </span>
-                                                                    <span className="book-btn-r">Book now</span>
-                                                                    <div className="clear"></div>
-                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -930,7 +926,7 @@ const HotelDetailPage = (props) => {
                                                             <div className="reviews-c">
                                                                 <div className="reviews-l">
                                                                     <div className="reviews-total">
-                                                                        {props.hotel.data?.hotelRating}/5.0
+                                                                        {props.hotel.data?.hotelRating}/5
                                                                     </div>
                                                                     <nav className="reviews-total-stars">
                                                                         <ul>
@@ -981,14 +977,11 @@ const HotelDetailPage = (props) => {
                                                                 <div className="reviews-r">
                                                                     <div className="reviews-rb">
                                                                         <div className="reviews-percents">
-                                                                            <label>4.7 out of 5 stars</label>
+                                                                            <label>{props.hotel.data?.hotelRating}/5 stars</label>
                                                                             <div className="reviews-percents-i">
                                                                                 <span
                                                                                     style={{
-                                                                                        width: `${(props.hotel.data?.hotelRating *
-                                                                                            100) /
-                                                                                            5
-                                                                                            }%`,
+                                                                                        width: `${Math.ceil((props.hotel.data?.hotelRating *100) /5)}%`,
                                                                                     }}
                                                                                 ></span>
                                                                             </div>
@@ -1110,7 +1103,7 @@ const HotelDetailPage = (props) => {
                                                                 <h2>Guest Reviews</h2>
                                                                 <div className="guest-reviews-row">
                                                                     {getPagination(
-                                                                        props.hotel?.data?.hotelFeedBacks,
+                                                                        props.feedbacks?.data,
                                                                         pageNumberFB,
                                                                         itemsPerPageFB
                                                                     ).map((feedback) => (
@@ -1199,7 +1192,9 @@ const HotelDetailPage = (props) => {
                                                                 </div>
                                                                 <Pagination
                                                                     itemsPerPage={itemsPerPageFB}
-                                                                    listItem={props?.hotel?.data?.rooms?.length}
+                                                                    listItem={Array.isArray(props?.hotel?.data?.hotelFeedBacks)
+                                                                             && props?.hotel?.data?.hotelFeedBacks.length > 0?
+                                                                             props?.hotel?.data?.hotelFeedBacks.length:""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
                                                                 <div
@@ -1213,7 +1208,7 @@ const HotelDetailPage = (props) => {
                                                                         <textarea
                                                                             id="feedbackTxt"
                                                                             value={areaText}
-                                                                            onDurationChange={(e) =>
+                                                                            onChange={(e) =>
                                                                                 setAreaText(e.target.value)
                                                                             }
                                                                             name="feedbackTxt"
@@ -1341,7 +1336,7 @@ const HotelDetailPage = (props) => {
                                     <div className="h-help-email">sparrow@mail.com</div>
                                 </div>
 
-                                <div className="h-liked">
+                                {/* <div className="h-liked">
                                     <div className="h-liked-lbl">You May Also Like</div>
                                     <div className="h-liked-row">
                                         <div className="h-liked-item">
@@ -1521,7 +1516,7 @@ const HotelDetailPage = (props) => {
                                             <div className="clear"></div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="h-reasons">
                                     <div className="h-liked-lbl">Reasons to Book with us</div>
@@ -1610,6 +1605,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         hotel: state.hotels,
         user: state.user,
+        feedbacks:state.hotelFeedback,
     };
 };
 
@@ -1617,10 +1613,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getHotel: (id) => dispatch(fetchHotelById(id)),
         addFeedBack: (data) => dispatch(createHotelFeedBack(data)),
-        getUser: (id) => {
-            dispatch(getUser(id));
-        },
-        clearBookingCached : () => dispatch(clearRoomBookingCached())
+        getUser: (id) => {dispatch(getUser(id));},
+        getFeedbacks: (id) => {dispatch(getFeedbacks(id))},
+        clearBookingCached: () => dispatch(clearRoomBookingCached())
     };
 };
 

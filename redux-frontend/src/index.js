@@ -12,6 +12,8 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 
+
+
 const enhancers = [];
 enhancers.push(applyMiddleware(thunk));
 const composeEnhancers =
@@ -19,13 +21,13 @@ const composeEnhancers =
         window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
     compose;
 const store = createStore(reducers, composeEnhancers(...enhancers));
-
+// const theme = createMuiTheme();
 const history = createBrowserHistory();
 
 ReactDOM.render(
     <Router history={history}>
         <Provider store={store}>
-            <App id="main-app"/>
+         <App id="main-app"/>
         </Provider>
     </Router>,
     document.getElementById('root')
