@@ -12457,23 +12457,36 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','bachpham'), --password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','hoanguyen'), --password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','ngocle'), --password: 12345
-('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','phatluu') --password: 12345
---Image
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','phatluu'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','minhhang'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','trungkien'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','quantrung'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','tuanvu'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','ngoctrang'),--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thaovy')--password: 12345
 
--- INSERT INTO [dbo].[image]
--- ([alt]
---     ,[path]
---     ,[hotel_id]
---     ,[room_id])
--- VALUES
---     ('','http://localhost:8080/storage/jpg/hotel1.jpg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/hotel2.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room1.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room4.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room5.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room2.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room6.jpeg' ,null,null),
---     ('','http://localhost:8080/storage/jpeg/room3.jpeg' ,null,null)
+--lOCATION HOTEL
+INSERT INTO [dbo].[location]
+([postal_code]
+    ,[retired]
+    ,[street]
+    ,[province_id]
+    ,[district_id]
+    ,[ward_id])
+VALUES
+    ('70000',0,N'Lưu Qúy Kỳ',9,127,1904), -- A Tran Boutique
+    ('70000',0,N'City, khu phố 1',13,178,2501), -- Anantara Mui Ne Resor
+    ('70000',0,N'2 Đ. Trần Phú',14,185,2592), -- Dalat Palace Heritage Hotel
+    ('70000',0,N'FLC Ha Long Bay Golf Club',18,231,3196), -- FLC Halong Bay Golf Club & Luxury Resort
+    ('70000',0,N'105 Võ Nguyên Giáp, Street',3,60,950), -- Furama Resort Danang
+    ('70000',0,N'01 Dong Khoi Street',1,10,129),-- Hotel Majestic Saigon
+    ('70000',0,N'44 Ngõ Hàng Hành',2,37,578), -- Imperial Hotel & Spa (HA NOI)
+    ('70000',0,N'03 Võ Văn Kiệt',3,61,958), -- Stella Maris Beach Danang
+    ('70000',0,N'số 7 và 8, KDL Hồ Tuyền Lâm',14,185,2592), -- Swiss-Belresort Tuyen Lam Dalat
+    ('70000',0,N'263 Lê Hồng Phong',10,145,2123) -- Malibu Hotel
+
+
+
 
 --Hotel
 INSERT INTO [dbo].[hotel]
@@ -12499,9 +12512,16 @@ INSERT INTO [dbo].[hotel]
     ,[account_id]
     ,[location_id])
 VALUES
-    (0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/9/2020','','hoa@gmail.com',1,1,1,1,1,'The Herriott Hotel & Suite',4.7,10,0,1,'0945877490',0,1,27,1),
-    (0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2020','','bach@gmail.com',1,0,1,0,0,'Raon Danang Beach Hotel',3.5,10,0,1,'0945877490',0,1,28,3),
-    (0,N'Lưu Trọng Phát',N'Giám Đốc','11/9/2020','','phat@gmail.com',1,1,1,0,0,'Cicilia Danang Hotels & Spa',5,10,0,1,'0945877490',0,1,29,5)
+    (0,N'Nguyễn Vũ Hoàng Hóa',N'Giám Đốc','11/9/2020','','hoa@gmail.com',1,1,1,1,1,'A Tran Boutique',4.7,10,0,1,'0945877490',0,1,27,26),
+    (0,N'Phạm Xuân Bách',N'Giám Đốc','11/9/2020','','bach@gmail.com',1,0,1,0,0,'Anantara Mui Ne Resor',3.5,10,0,1,'0945877490',0,1,28,27),
+    (0,N'Lưu Trọng Phát',N'Giám Đốc','11/9/2020','','phat@gmail.com',1,1,1,0,0,'Dalat Palace Heritage Hotel',5,10,0,1,'0945877490',0,1,29,28),
+    (0,N'Lê Nguyễn Minh Ngọc',N'Giám Đốc','11/9/2020','','ngoc@gmail.com',1,1,1,0,0,'FLC Halong Bay Golf Club & Luxury Resort',5,10,0,1,'0945877490',0,1,30,29),
+    (0,N'Đào Thị Minh Hằng',N'Giám Đốc','11/9/2020','','hang@gmail.com',1,1,1,0,0,'Furama Resort Danang',5,10,0,1,'0945877490',0,1,31,30),
+    (0,N'Nguyễn Trung Kiên',N'Giám Đốc','11/9/2020','','kien@gmail.com',1,1,1,0,0,'Hotel Majestic Saigon',5,10,0,1,'0945877490',0,1,32,31),
+    (0,N'Quang Trung',N'Giám Đốc','11/9/2020','','trungTheKing@gmail.com',1,1,1,0,0,'Imperial Hotel & Spa (HA NOI)',5,10,0,1,'0945877490',0,1,33,32),
+    (0,N'Nguyễn Lê Tuấn Vũ',N'Giám Đốc','11/9/2020','','vu@gmail.com',1,1,1,0,0,'Stella Maris Beach Danang',5,10,0,1,'0945877490',0,1,34,33),
+    (0,N'Ngọc Thiên Trang',N'Giám Đốc','11/9/2020','','trang@gmail.com',1,1,1,0,0,'Swiss-Belresort Tuyen Lam Dalat',5,10,0,1,'0945877490',0,1,35,34),
+    (0,N'Hoàng Thảo Vy',N'Giám Đốc','11/9/2020','','vy@gmail.com',1,1,1,0,0,'Swiss-Belresort Tuyen Lam Dalat',5,10,0,1,'0945877490',0,1,36,35)
 
 --Room
 INSERT INTO [dbo].[room]
@@ -12516,33 +12536,57 @@ INSERT INTO [dbo].[room]
     ,[hotel_id]
     ,[booking_room_id])
 VALUES
-    ('11/9/2021',2,1,30,0,101,0,N'Normal',1,null),
-    ('11/7/2021',2,2,40,0,102,0,N'Normal',1,null),
-    ('2/8/2021',2,1,30,0,103,0,N'Normal',1,null),
-    ('11/9/2021',3,2,40,0,201,0,N'Normal',1,null),
-    (null,3,1,30,0,202,0,N'Normal',1,null),
-    (null,3,2,40,0,203,0,N'Normal',1,null),
-    ('11/9/2021',5,2,30,0,301,0,N'VIP',1,null),
-    ('2/8/2021',5,2,40,0,302,0,N'VIP',1,null),
-    (null,3,2,30,0,303,0,N'VIP',1,null),
-    ('11/9/2021',2,1,30,0,101,0,N'Normal',2,null),
-    ('11/7/2021',2,2,40,0,102,0,N'Normal',2,null),
-    ('2/8/2021',2,1,30,0,103,0,N'Normal',2,null),
-    ('11/9/2021',3,2,40,0,201,0,N'Normal',2,null),
-    (null,3,1,30,0,202,0,N'Normal',2,null),
-    (null,3,2,40,0,203,0,N'Normal',2,null),
-    ('11/9/2021',5,2,30,0,301,0,N'VIP',2,null),
-    ('2/8/2021',5,2,40,0,302,0,N'VIP',2,null),
-    (null,3,2,30,0,303,0,N'VIP',2,null),
-    ('11/9/2021',2,1,30,0,101,0,N'Normal',3,null),
-    ('11/7/2021',2,2,40,0,102,0,N'Normal',3,null),
-    ('2/8/2021',2,1,30,0,103,0,N'Normal',3,null),
-    ('11/9/2021',3,2,40,0,201,0,N'Normal',3,null),
-    (null,3,1,30,0,202,0,N'Normal',3,null),
-    (null,3,2,40,0,203,0,N'Normal',3,null),
-    ('11/9/2021',5,2,30,0,301,0,N'VIP',3,null),
-    ('2/8/2021',5,2,40,0,302,0,N'VIP',3,null),
-    (null,3,2,30,0,303,0,N'VIP',3,null)
+    ('11/9/2021',1,1,30,0,101,0,N'Small',1,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',1,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',1,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',1,null),
+    (null,5,3,150,0,301,0,N'VIP',1,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',2,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',2,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',2,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',2,null),
+    (null,5,3,150,0,301,0,N'VIP',2,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',3,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',3,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',3,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',3,null),
+    (null,5,3,150,0,301,0,N'VIP',3,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',4,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',4,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',4,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',4,null),
+    (null,5,3,150,0,301,0,N'VIP',4,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',5,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',5,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',5,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',5,null),
+    (null,5,3,150,0,301,0,N'VIP',5,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',6,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',6,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',6,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',6,null),
+    (null,5,3,150,0,301,0,N'VIP',6,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',7,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',7,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',7,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',7,null),
+    (null,5,3,150,0,301,0,N'VIP',7,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',8,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',8,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',8,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',8,null),
+    (null,5,3,150,0,301,0,N'VIP',8,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',9,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',9,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',9,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',9,null),
+    (null,5,3,150,0,301,0,N'VIP',9,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',10,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',10,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',10,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',10,null),
+    (null,5,3,150,0,301,0,N'VIP',10,null)
+
 
 
 -- --FeedBack
@@ -12553,29 +12597,53 @@ INSERT INTO [dbo].[hotel_feedback]
     ,[user_id]
     ,[hotel_id])
 VALUES
-    ('Phòng tốt , giá hợp lý',5,0,15,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,16,1),
-    ('Phòng tốt , giá hợp lý',4.5,0,15,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,17,1),
-    ('Phòng tốt , giá hợp lý',2.5,0,15,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,18,1),
-    ('Phòng tốt , giá hợp lý',3.5,0,19,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,20,1),
-    ('Phòng tốt , giá hợp lý',5,0,17,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,18,2),
-    ('Phòng tốt , giá hợp lý',4.5,0,7,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,8,2),
-    ('Phòng tốt , giá hợp lý',2.5,0,7,2),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,9,2),
-    ('Phòng tốt , giá hợp lý',3.5,0,9,1),
-    ('Phòng tốt , Đầy đủ tiện nghi',5,0,11,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,13,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,10,3),
-    ('Phòng tốt , giá hợp lý',4,0,14,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,15,3),
-    ('Phòng tốt ,dịch vụ tạm dược',3,0,15,3),
-    ('Phòng tốt , giá hợp lý',4,0,14,3),
-    ('Phòng tốt , giá hợp lý',4.5,0,19,3)
+    (N'Phòng tốt , giá hợp lý',5,0,15,1),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,16,1),
+    (N'Phòng tốt , giá hợp lý',4.5,0,15,1),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,17,1),
+    (N'Phòng tốt , giá hợp lý',2.5,0,15,1),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,18,1),
+    (N'Phòng tốt , giá hợp lý',3.5,0,19,1),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,20,1),
+    (N'Phòng tốt , giá hợp lý',5,0,17,2),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,18,2),
+    (N'Phòng tốt , giá hợp lý',4.5,0,7,2),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,8,2),
+    (N'Phòng tốt , giá hợp lý',2.5,0,7,2),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,9,2),
+    (N'Phòng tốt , giá hợp lý',3.5,0,9,1),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,11,3),
+    (N'Phòng tốt , giá hợp lý',4.5,0,13,3),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,10,3),
+    (N'Phòng tốt , giá hợp lý',4,0,14,3),
+    (N'Phòng tốt , giá hợp lý',4.5,0,15,3),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,15,3),
+    (N'Phòng tốt , giá hợp lý',4,0,14,3),
+    (N'Phòng tốt , giá hợp lý',4.5,0,19,3),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,11,3),
+    (N'Phòng tốt , giá hợp lý',4.5,0,13,3),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,10,3),
+    (N'Phòng tốt , giá hợp lý',4,0,14,3),
+    (N'Phòng tốt , giá hợp lý',4.5,0,15,3),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,15,3),
+    (N'Phòng tốt , giá hợp lý',4,0,14,4),
+    (N'Phòng tốt , giá hợp lý',4.5,0,19,4),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,11,4),
+    (N'Phòng tốt , giá hợp lý',4.5,0,13,4),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,10,4),
+    (N'Phòng tốt , giá hợp lý',4,0,14,4),
+    (N'Phòng tốt , giá hợp lý',4.5,0,15,5),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,15,5),
+    (N'Phòng tốt , giá hợp lý',4,0,14,5),
+    (N'Phòng tốt , giá hợp lý',4.5,0,19,5),
+    (N'Phòng tốt , Đầy đủ tiện nghi',5,0,11,6),
+    (N'Phòng tốt , giá hợp lý',4.5,0,13,6),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,10,6),
+    (N'Phòng tốt , giá hợp lý',4,0,14,6),
+    (N'Phòng tốt , giá hợp lý',4.5,0,15,7),
+    (N'Phòng tốt ,dịch vụ tạm dược',3,0,15,7),
+    (N'Phòng tốt , giá hợp lý',4,0,14,7),
+    (N'Phòng tốt , giá hợp lý',4.5,0,19,7)
 
 --Image
 INSERT INTO [dbo].[image]
@@ -12584,14 +12652,79 @@ INSERT INTO [dbo].[image]
     ,[hotel_id]
     ,[room_id])
 VALUES
-    ('','http://localhost:8080/storage/jpg/hotel1.jpg',1,null),
-    ('','http://localhost:8080/storage/jpeg/hotel2.jpeg',1,null),
-    ('','http://localhost:8080/storage/jpeg/room1.jpeg' ,null,1),
-    ('','http://localhost:8080/storage/jpeg/room4.jpeg' ,null,2),
-    ('','http://localhost:8080/storage/jpeg/room5.jpeg' ,null,3),
-    ('','http://localhost:8080/storage/jpeg/room2.jpeg' ,null,4),
-    ('','http://localhost:8080/storage/jpeg/room6.jpeg' ,null,5),
-    ('','http://localhost:8080/storage/jpeg/room3.jpeg' ,null,6)
+    ('','http://localhost:8080/storage/jpg/A_Tran_Boutique_Hotel8.jpg',1,null),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel7.webp',1,null),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel1.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel2.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Anantara_Mui_Ne_Resor.webp',2,null),
+    ('','http://localhost:8080/storage/webp/Anantara_Mui_Ne_Resor2.webp',2,null),
+    ('','http://localhost:8080/storage/webp/Anantara_Mui_Ne_Resort3.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel1.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/A_Tran_Boutique_Hotel3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Anantara_Mui_Ne_Resort4.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Anantara_Mui_Ne_Resort5.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel_.webp',3,null),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel_2.webp',3,null),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel_6.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel1.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel4.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Dalat_Palace_Heritage_Hotel7.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort.webp',4,null),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort7.webp',4,null),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort1.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort2.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort5.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort7.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danan.webp',5,null),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang6.webp',5,null),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang1.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang2.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang4.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Furama_Resort_Danang5.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigo.webp',6,null),
+    ('','http://localhost:8080/storage/jpg/Hotel_Majestic_Saigon10.jpg',6,null),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigon1.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigon2.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigon3.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigon4.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Hotel_Majestic_Saigon8.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi.webp',7,null),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi.webp',7,null),
+    ('','http://localhost:8080/storage/webp/Imperial_Hotel_&_Spa_(HA_NOI).webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Imperial_Hotel_&_Spa_(HA_NOI)3.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Imperial_Hotel_&_Spa_(HA_NOI)4.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Imperial_Hotel_&_Spa_(HA_NOI)7.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Imperial_Hotel_&_Spa_(HA_NOI)10.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Stella_Maris_Beach_Danang.webp',8,null),
+    ('','http://localhost:8080/storage/webp/Stella_Maris_Beach_Danang5.webp',8,null),
+    ('','http://localhost:8080/storage/webp/Stella_Maris_Beach_Danang1.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Stella_Maris_Beach_Danang2.webp' ,null,2),
+    ('','http://localhost:8080/storage/jpg/Stella_Maris_Beach_Danang6.jpg' ,null,3),
+    ('','http://localhost:8080/storage/jpg/Stella_Maris_Beach_Danang8.jpg' ,null,4),
+    ('','http://localhost:8080/storage/webp/Stella_Maris_Beach_Danang4.webp' ,null,5),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat.webp',9,null),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat1.webp',9,null),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat2.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat3.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat5.webp' ,null,3),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat6.webp' ,null,4),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat7.webp' ,null,5),
+    ('','http://localhost:8080/storage/jpg/Malibu_Hotel_(VUNG_TAU)10.jpg',10,null),
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)7.webp',10,null),
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)8.webp' ,null,1),
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)4.webp' ,null,2),
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel.webp' ,null,3),
+    ('','http://localhost:8080/storage/jpg/Malibu_Hotel_(VUNG_TAU)11.jpg' ,null,4),
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)4.webp' ,null,5)
+
+
+
 
 
 
