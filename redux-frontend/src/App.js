@@ -46,9 +46,14 @@ import ComboStepWizard from './components/Combo/ComboStepWizard';
 import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 import ComboBookingCompletePage from './components/Combo/ComboBookingCompletePage';
 import AdminFeedback from './components/Admin/Feedback/AdminFeedback';
+import { createTheme } from '@material-ui/core';
+import { ThemeProvider } from 'styled-components';
 
 
 const App = (props) => {
+const theme = createTheme();
+
+
   const [user, setuser] = useState(null);
   useEffect(() => {
     if (props.oath.data) {
@@ -61,6 +66,8 @@ const App = (props) => {
   }, [props])
 
   return (
+    <ThemeProvider theme={theme}>
+      
     <BrowserRouter>
       <Switch>
         <PublicRoute restricted={false} component={Home} path="/" exact />
@@ -117,6 +124,7 @@ const App = (props) => {
 
       </Switch>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
