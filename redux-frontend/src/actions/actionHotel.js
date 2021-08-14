@@ -201,6 +201,30 @@ export const createHotelFeedBack = (data) => async dispatch => {
     }
 }
 
+export const GET_HOTEL_FEEDBACK_SUCCESS = "GET_HOTEL_FEEDBACK_SUCCESS";
+export const GET_HOTEL_FEEDBACK_REQUEST = "GET_HOTEL_FEEDBACK_REQUEST";
+export const GET_HOTEL_FEEDBACK_ERROR = "GET_HOTEL_FEEDBACK_ERROR";
+
+
+export const getFeedbacks = (id) => async dispatch => {
+    try {
+        dispatch({ type: GET_HOTEL_FEEDBACK_REQUEST });
+        const url = `${ROOT_URL}/api/hotelFeedBack/${id}`;
+        const response = await axios.get(url)
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_HOTEL_FEEDBACK_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_HOTEL_FEEDBACK_ERROR,
+            message: error
+        });
+    }
+}
+
 export const UPDATE_PROFILE_HOTEL_REQUEST = "UPDATE_PROFILE_HOTEL_REQUEST";
 export const UPDATE_PROFILE_HOTEL_SUCCESS = "UPDATE_PROFILE_HOTEL_SUCCESS";
 export const UPDATE_PROFILE_HOTEL_ERROR = "UPDATE_PROFILE_HOTEL_ERROR";
