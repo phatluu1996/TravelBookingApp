@@ -11,21 +11,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
 import { clearFlightBookingCached } from "../../actions/actionBookingFlight";
 import { getRole, ROLE_USER } from "../../utils";
+import FlightSearchPage from "./FlightSearchPage";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-const FlightSearchPage = (props) => {
+const FlightSearchPage2 = (props) => {
     const history = useHistory();
     let queryParam = useQuery();
-    const [queryFilter, setQueryFilter] = useState();
+    const queryString = require('query-string');
+    const [filter, setFilter] = useState(queryString.parse(props.location.search));
     const [seatClassType, setSeatClassType] = useState("ECONOMY");
     const [isListView, setIsListView] = useState(true);
     const [includePriceRange, setIncludePriceRange] = useState(false);
-    const [departFlight, setDepartFlight] = useState(null);
-    const [returnFlight, setReturnFlight] = useState(null);
     const [flightTab, setFlightTab] = useState(true);  //true : departure tab , //false : return tab
+    const [departFlight, setDepartFlight] = useState(null);
+    const [returnFlight, setReturnFlight] = useState(null)
+    const [errFlt, setErrFlt] = useState({
+        from: '',
+        to: '',
+        departureDate: '',
+        returnDate: ''
+    })
+
     const province = {
         properties: [
             {
@@ -115,6 +124,10 @@ const FlightSearchPage = (props) => {
         ]
     }
 
+    const toQueryString = (obj) => {
+        return new URLSearchParams(obj).toString();
+    }
+
     const provinceLabel = (code) => {
         return province.properties.find(item => item.value === code)?.label;
     }
@@ -164,139 +177,113 @@ const FlightSearchPage = (props) => {
         let mount = false;
         importAll();
         document.getElementById("scroll-top").click();
-
-        if (!queryParam.get("from") && !queryParam.get("to") && !queryParam.get("departureDate") && !queryParam.get("returnDate") && !queryParam.get("seatClass") && !queryParam.get("adult") && !queryParam.get("child") && !queryParam.get("infant") && !queryParam.get("page") && !queryParam.get("sortDir") && !queryParam.get("sortBy") && !queryParam.get("priceFrom") && !queryParam.get("priceTo")) {
-            document.location.href = "/";
+        if (queryParam.toString().length == 0) {
+            history.push("/");
         } else {
             if (!props.flight) {
-                props.getFlight(queryParam.get("from"), queryParam.get("to"), queryParam.get("adult"), queryParam.get("child"), queryParam.get("infant"), queryParam.get("departureDate"), queryParam.get("returnDate"), queryParam.get("seatClass"), queryParam.get("priceFrom"), queryParam.get("priceTo"), 1, queryParam.get("sortBy"), queryParam.get("sortDir"));
-                console.log(props.flights);
+                performSearch(filter);
             }
-            let filter = {
-                from: queryParam.get("from"),
-                to: queryParam.get("to"),
-                departureDate: queryParam.get("departureDate"),
-                returnDate: queryParam.get("returnDate"),
-                seatClass: queryParam.get("seatClass"),
-                adult: queryParam.get("adult"),
-                child: queryParam.get("child"),
-                infant: queryParam.get("infant"),
-                priceFrom: queryParam.get("priceFrom"),
-                priceTo: queryParam.get("priceTo"),
-                page: 1,
-                sortBy: queryParam.get("sortBy"),
-                sortDir: queryParam.get("sortDir")
-            }
-            setQueryFilter(filter);
-            setSeatClassType(queryParam.get("seatclassName"));
+
+            setSeatClassType(filter?.seatclassName);
         }
 
         return () => {
             mount = true;
         }
-    }, [])
+    }, []);
+
+    const performSearch = (filter, shouldSetState = false) => {
+        if (shouldSetState) {
+            setFilter(filter)
+        }
+        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatclassName, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
+        window.history.pushState({}, null, `/flight-round-list?${toQueryString(filter)}`);
+    }
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(props.flights);
+
         var form = e.target;
 
+        if (validateFlt(form, "hotel-flight-search")) {
 
-        document.getElementById("page").value = "1";
-        document.getElementById("sortBy").value = "id";
-        document.getElementById("sortDir").value = "asc";
+            document.getElementById("page").value = "1";
+            document.getElementById("sortBy").value = "id";
+            document.getElementById("sortDir").value = "asc";
 
-        var minPrice = 0;
-        var maxPrice = 3000;
+            var minPrice = 0;
+            var maxPrice = 3000;
 
-        if (includePriceRange) {
-            minPrice = getAmount(form.priceFrom.value);
-            maxPrice = getAmount(form.priceTo.value);
-        }
+            if (includePriceRange) {
+                minPrice = getAmount(form.priceFrom.value);
+                maxPrice = getAmount(form.priceTo.value);
+            }
 
 
-        var filter = {
-            from: form.from.value,
-            to: form.to.value,
-            departureDate: form.departureDate.value,
-            returnDate: form.returnDate.value,
-            seatClass: form.seatClass.value,
-            adult: form.adult.value,
-            child: form.child.value,
-            infant: form.infant.value,
-            priceFrom: minPrice,
-            priceTo: maxPrice,
-            page: 1,
-            sortBy: "id",//queryParam.get("sortBy"),
-            sortDir: "asc"//queryParam.get("sortDir")
-        };
-        setFlightTab(true);
-        setDepartFlight(null);
-        setQueryFilter(filter);
-        setSeatClassType(form.seatClass.value);
-        if (!filter.returnDate) {
-            history.push(`/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
-        } else {
-            props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-            window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+            var f = { ...filter };
+            f.from = form.from.value
+            f.to = form.to.value
+            f.departureDate = form.departureDate.value
+            f.returnDate = form.returnDate.value
+            f.seatclassName = form.seatClass.value
+            f.adult = form.adult.value
+            f.child = form.child.value
+            f.infant = form.infant.value
+            f.priceFrom = minPrice
+            f.priceTo = maxPrice
+            f.page = 1
+            f.sortBy = "id"
+            f.sortDir = "asc"
+            setSeatClassType(form.seatClass.value);
+            performSearch(f, true);
+            setFlightTab(true);
+            setDepartFlight(null);
         }
     }
+
 
     const setPage = (e) => {
         var index = e.target.value;
         if (!index) {
             index = e.currentTarget.text;
-            // document.getElementById("scroll-top").click();
             document.getElementById("page").value = index;
         }
-        var filter = { ...queryFilter };
-        filter.page = parseInt(index);
-        setQueryFilter(filter);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, parseInt(index), filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${parseInt(index)}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        var f = { ...filter };
+        f.page = parseInt(index);
+        performSearch(f, true);
     }
 
     const setPageByIndex = (index) => {
-        // document.getElementById("scroll-top").click();
         document.getElementById("page").value = index;
-        var filter = { ...queryFilter };
-        filter.page = parseInt(index);
-        setQueryFilter(filter);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, parseInt(index), filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${parseInt(index)}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        var f = { ...filter };
+        f.page = parseInt(index);
+        performSearch(f, true);
     }
 
     const setNextPage = (index) => {
-        // document.getElementById("scroll-top").click();
-        var filter = { ...queryFilter };
-        filter.page = parseInt(index);
-        setQueryFilter(filter);
-        props.getFlight(queryFilter.from, queryFilter.to, queryFilter.adult, queryFilter.child, queryFilter.infant, queryFilter.departureDate, queryFilter.returnDate, queryFilter.seatClass, queryFilter.priceFrom, queryFilter.priceTo, parseInt(index), queryFilter.sortBy, queryFilter.sortDir);
-        window.history.pushState({}, null, `/flight-round-list?from=${queryFilter.from}&to=${queryFilter.to}&adult=${queryFilter.adult}&child=${queryFilter.child}&infant=${queryFilter.infant}&departureDate=${queryFilter.departureDate}&returnDate=${queryFilter.returnDate}&seatClass=${queryFilter.seatClass}&priceFrom=${queryFilter.priceFrom}&priceTo=${queryFilter.priceTo}&page=${parseInt(index)}&sortBy=${queryFilter.sortBy}&sortDir=${queryFilter.sortDir}`)
+        var f = { ...filter };
+        f.page = parseInt(index);
+        performSearch(f, true);
     }
 
     const onChangeSortBy = (e) => {
-        var filter = { ...queryFilter };
-        filter.sortBy = e.target.value;
-        filter.page = 1;
-        setQueryFilter(filter);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        var f = { ...filter };
+        f.sortBy = e.target.value;
+        f.page = 1;
+        performSearch(f, true);
     }
 
     const onChangeSortDir = (e) => {
-        var filter = { ...queryFilter };
-        filter.sortDir = e.target.value;
-        filter.page = 1;
-        setQueryFilter(filter);
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClass, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
-        window.history.pushState({}, null, `/flight-round-list?from=${filter.from}&to=${filter.to}&adult=${filter.adult}&child=${filter.child}&infant=${filter.infant}&departureDate=${filter.departureDate}&returnDate=${filter.returnDate}&seatClass=${filter.seatClass}&priceFrom=${filter.priceFrom}&priceTo=${filter.priceTo}&page=${filter.page}&sortBy=${filter.sortBy}&sortDir=${filter.sortDir}`)
+        var f = { ...filter };
+        f.sortDir = e.target.value;
+        f.page = 1;
+        performSearch(f, true);
     }
 
     const toggleDetails = (e) => {
         if ($(e.currentTarget).is('.open')) {
-            $(e.currentTarget).removeClass('open');
+            $(e.currentTarget).remove('open');
             $(e.currentTarget).closest('.alt-flight').find('.alt-details').slideUp();
         } else {
             $(e.currentTarget).addClass('open');
@@ -311,10 +298,10 @@ const FlightSearchPage = (props) => {
 
     const getSeatAmount = (flight) => {
         if (flight.flightBookingDetails.length == 0) {
-            return seatClassType === "ECONOMY" ? flight.economyCapacity : flight.businessCapacity;
+            return filter.seatclassName === "ECONOMY" ? flight.economyCapacity : flight.businessCapacity;
         }
         var bookingByType = [];
-        if (seatClassType === "ECONOMY") {
+        if (filter.seatclassName === "ECONOMY") {
             bookingByType = flight.flightBookingDetails.filter(item => item.priceType === 0);
             return flight.economyCapacity - bookingByType.length;
         } else {
@@ -324,30 +311,33 @@ const FlightSearchPage = (props) => {
     }
 
     const flightPrice = (flight) => {
-        var price = seatClassType === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
+        var price = filter.seatclassName === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
         return price;
     }
 
     const handleSelectDepartFlight = (flight) => {
         props.clearBooking();
         setDepartFlight(flight);
-        setFlightTab(false);
-        setPageByIndex(1);
+        if (!departFlight) {
+            setFlightTab(false);
+            setPageByIndex(1);
+        }
     }
 
-    const handleGoToBooking = (flight) => {
+    const handleSelectReturnFlight = (flight) => {
         props.clearBooking();
-        if(getRole() == ROLE_USER){
+        setReturnFlight(flight);
+        props.clearBooking();
+        if (getRole() == ROLE_USER) {
             sessionStorage.setItem("isBooking", true);
             history.push("/round-flight-booking?departureDate=" + queryParam.get("departureDate") +
                 "&adult=" + queryParam.get("adult") + "&child=" + queryParam.get("child") +
-                "&seatClass=" + seatClassType + "&fid=" + departFlight.id +"&rfid="+flight.id
+                "&seatClass=" + seatClassType + "&fid=" + departFlight.id + "&rfid=" + flight.id
                 + "&returnDate=" + queryParam.get("returnDate")
             );
         } else {
             $('.header-account a').click();
         }
-
     }
 
     const changeTab = (tab) => {
@@ -359,20 +349,96 @@ const FlightSearchPage = (props) => {
         setIncludePriceRange(!includePriceRange);
     }
 
+    const validateFlt = (form, formSelector) => {
+        var err = { ...errFlt };
+        if (!form.from.value) {
+            err.from = 'Departure City cannot be empty';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
+        } else {
+            err.from = '';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid")
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
+        }
+
+        if (!form.to.value) {
+            err.to = 'Arrival City cannot be empty';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
+        } else {
+            err.to = '';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
+        }
+
+        if (form.from.value && form.to.value) {
+            if (form.from.value === form.to.value) {
+                err.to = 'Arrival City must be different then Departure City';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+
+                err.from = 'Departure City must be different then Arrival City';
+                form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
+            } else {
+                err.from = '';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+                err.to = '';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
+            }
+        }
+
+        if (!form.departureDate.value) {
+            err.departureDate = 'Departure Date cannot be empty';
+            form.departureDate.parentElement.classList.add("is-invalid");
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+        } else {
+            err.departureDate = '';
+            form.departureDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+        }
+
+        if (form.departureDate.value && form.returnDate.value) {
+            if (form.departureDate.value >= form.returnDate.value) {
+                err.departureDate = 'Departure Date must be smaller than return date';
+                form.departureDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+
+                err.returnDate = 'Return Date must be larger than departure date';
+                form.returnDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            } else {
+                err.returnDate = '';
+                form.departureDate.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+                form.returnDate.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            }
+        }
+
+        if (err.from || err.to || err.departureDate) {
+            setErrFlt(err);
+            return false;
+        }
+        return true;
+    }
+
     return (<>
         <Header></Header>
         <div className="main-cont">
             <div className="body-wrapper">
                 <div className="wrapper-padding">
                     <div className="page-head">
-                        <div className="page-title">Flights - <span>round way trip</span></div>
+                        <div className="page-title">Flight - <span>Flight Select</span></div>
                         <div className="breadcrumbs">
                             <Link to="/">Home</Link> / <span>Flight Search Result</span>
                         </div>
                         <div className="clear"></div>
                     </div>
                     {/* Sidebar */}
-                    <form className="two-colls" onSubmit={handleSubmit}>
+                    <form className="hotel-flight-search two-colls" onSubmit={handleSubmit}>
                         <div className="two-colls-left">
 
                             <div className="srch-results-lbl fly-in">
@@ -393,13 +459,13 @@ const FlightSearchPage = (props) => {
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i alt-departure">
                                                     <b>Date</b>
-                                                    <span>{queryFilter?.departureDate}</span>
+                                                    <span>{filter?.departureDate}</span>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i">
                                                     <b>Route</b>
-                                                    <label><strong>{queryFilter?.from + " - " + queryFilter?.to}</strong></label>
+                                                    <label><strong>{filter?.from + " - " + filter?.to}</strong></label>
                                                 </div>
                                                 <div className="clear"></div>
                                             </div>
@@ -423,13 +489,13 @@ const FlightSearchPage = (props) => {
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i alt-arrival">
                                                     <b>Date</b>
-                                                    <span>{queryFilter?.returnDate}</span>
+                                                    <span>{filter?.returnDate}</span>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-3c transformed mt-1">
                                                 <div className="alt-data-i">
                                                     <b>Route</b>
-                                                    <label><strong>{queryFilter?.to + " - " + queryFilter?.from}</strong></label>
+                                                    <label><strong>{filter?.to + " - " + filter?.from}</strong></label>
                                                 </div>
                                                 <div className="clear"></div>
                                             </div>
@@ -447,17 +513,19 @@ const FlightSearchPage = (props) => {
                                             <div className="srch-tab-left transformed">
                                                 <label>From</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="from" id="departure-city" defaultValue={queryParam.get("from")}>
+                                                    <select className="custom-select" name="from" id="departure-city" defaultValue={filter.from}>
                                                         {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                     </select>
+                                                    <div className="booking-error-input" id="from-error"></div>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="to" id="arrival-city" defaultValue={queryParam.get("to")}>
+                                                    <select className="custom-select" name="to" id="arrival-city" defaultValue={filter.to}>
                                                         {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                     </select>
+                                                    <div className="booking-error-input" id="to-error"></div>
                                                 </div>
                                             </div>
                                             <div className="clear"></div>
@@ -467,11 +535,13 @@ const FlightSearchPage = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left">
                                                 <label>Departure</label>
-                                                <div className="input-a"><input name="departureDate" type="text" className="date-departure-flight-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("departureDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={filter.departureDate} /> <span className="date-icon"></span></div>
+                                                <div className="booking-error-input" id="departureDate-error"></div>
                                             </div>
                                             <div className="srch-tab-right">
                                                 <label>Return</label>
-                                                <div className="input-a"><input name="returnDate" type="text" className="date-departure-flight-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("returnDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={filter.returnDate} /> <span className="date-icon"></span></div>
+                                                <div className="booking-error-input" id="returnDate-error"></div>
                                             </div>
                                             <div className="clear"></div>
                                         </div>
@@ -481,14 +551,14 @@ const FlightSearchPage = (props) => {
                                             <div className="srch-tab-left transformed">
                                                 <label>Seat Class</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={queryParam.get("seatClass")}>
+                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={filter.seatclassName}>
                                                         {seatClass.properties.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Adult</label>
-                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" /></div>
+                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -496,11 +566,11 @@ const FlightSearchPage = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
-                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6" /></div>
+                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Infant</label>
-                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="6" /></div>
+                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -517,11 +587,11 @@ const FlightSearchPage = (props) => {
                                             <div className="clear"></div>
                                             <div className="srch-tab-left transformed">
                                                 <label>From Price</label>
-                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={filter.priceFrom ? filter.priceFrom : 0} min="0" max="3000" /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To Price</label>
-                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={filter.priceTo ? filter.priceTo : 3000} min="0" max="3000" /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -542,23 +612,23 @@ const FlightSearchPage = (props) => {
                                     <div className="catalog-head fly-in">
                                         <label>Sort results by:</label>
                                         <div className="search-select">
-                                            <select id="sortBy" defaultValue={queryFilter?.sortBy} onChange={onChangeSortBy}>
+                                            <select id="sortBy" defaultValue={filter?.sortBy} onChange={onChangeSortBy}>
                                                 <option value="id">Index</option>
-                                                <option value={seatClassType === "ECONOMY" ? "economyPrice" : "businessPrice"}>Price</option>
+                                                <option value={filter.seatclassName === "ECONOMY" ? "economyPrice" : "businessPrice"}>Price</option>
                                                 <option value="departureTime">Depart Time</option>
                                                 <option value="arrivalTime">Arrive Time</option>
                                             </select>
                                         </div>
                                         <label>Direction:</label>
                                         <div className="search-select">
-                                            <select id="sortDir" defaultValue={queryFilter?.sortDir} onChange={onChangeSortDir}>
+                                            <select id="sortDir" defaultValue={filter?.sortDir} onChange={onChangeSortDir}>
                                                 <option value="asc">ASC</option>
                                                 <option value="desc">DESC</option>
                                             </select>
                                         </div>
                                         <label>Page:</label>
                                         <div className="search-select">
-                                            <select id="page" onChange={setPage} defaultValue={queryFilter?.page}>
+                                            <select id="page" onChange={setPage} defaultValue={filter?.page}>
                                                 {[...Array(props?.flights?.data?.totalPages)].map((item, index) => (<option key={index + 1} value={index + 1}>{index + 1}</option>))}
                                             </select>
                                         </div>
@@ -570,7 +640,7 @@ const FlightSearchPage = (props) => {
 
                                     <div className="catalog-row alternative" hidden={!flightTab}>
                                         {props.flights?.data?.content?.map(flight =>
-                                            <div className="alt-flight fly-in" key={flight.id}>
+                                            <div className={departFlight?.id == flight.id ? "alt-flight fly-in selected" : "alt-flight fly-in"} key={flight.id}>
                                                 <div className="alt-flight-a">
                                                     <div className="alt-flight-l">
                                                         <div className="alt-flight-lb">
@@ -623,7 +693,7 @@ const FlightSearchPage = (props) => {
                                                             onClick={(e) =>
                                                                 handleSelectDepartFlight(flight)}
                                                         >
-                                                            SELECT NOW
+                                                            SELECT
                                                         </a>
                                                     </div>
                                                     <div className="clear"></div>
@@ -642,7 +712,7 @@ const FlightSearchPage = (props) => {
                                                         <b>Description</b>
                                                         <span>
                                                             {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
-                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+                                                            <FontAwesomeIcon color="#4a90a4" title={(filter.seatclassName == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
 
                                                         </span>
                                                     </div>
@@ -657,7 +727,7 @@ const FlightSearchPage = (props) => {
                                     </div>
                                     <div className="catalog-row alternative" hidden={flightTab}>
                                         {props.flights?.returnData?.content?.map(flight =>
-                                            <div className="alt-flight fly-in" key={flight.id}>
+                                            <div className={returnFlight?.id == flight.id ? "alt-flight fly-in selected" : "alt-flight fly-in"} key={flight.id}>
                                                 <div className="alt-flight-a">
                                                     <div className="alt-flight-l">
                                                         <div className="alt-flight-lb">
@@ -708,9 +778,9 @@ const FlightSearchPage = (props) => {
                                                         <div className="flt-i-price-b">avg/person</div>
                                                         <a className="cat-list-btn"
                                                             onClick={(e) =>
-                                                                handleGoToBooking(flight)}
+                                                                handleSelectReturnFlight(flight)}
                                                         >
-                                                            SELECT NOW
+                                                            SELECT
                                                         </a>
                                                     </div>
                                                     <div className="clear"></div>
@@ -729,7 +799,7 @@ const FlightSearchPage = (props) => {
                                                         <b>Description</b>
                                                         <span>
                                                             {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
-                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+                                                            <FontAwesomeIcon color="#4a90a4" title={(filter.seatclassName == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
 
                                                         </span>
                                                     </div>
@@ -748,45 +818,49 @@ const FlightSearchPage = (props) => {
                                     <div className="clear"></div>
                                     {flightTab ? (<>
                                         {
-                                            props.flights.data && (<div className="pagination">
-                                                <a >{"<"}</a>
+                                            props.flights.data?.content?.length > 0 && (<div className="pagination">
+
                                                 {
                                                     props?.flights?.data?.first ? (<>
                                                         <a className="active">1</a>
                                                         {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                        {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}
+                                                        {props?.flights?.data?.totalPages >= 2 && <a >{">"}</a>}</>)
                                                         : props?.flights?.data?.last ? (<>
+                                                            <a >{"<"}</a>
                                                             {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 2}</a>}
                                                             {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 1}</a>}
                                                             <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                             : (<>
+                                                                <a >{"<"}</a>
                                                                 <a onClick={setPage}>{props?.flights?.data?.number}</a>
                                                                 <a className="active">{props?.flights?.data?.number + 1}</a>
-                                                                <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                                                <a onClick={setPage}>{props?.flights?.data?.number + 2}</a>
+                                                                <a >{">"}</a></>)
                                                 }
-                                                <a >{">"}</a>
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>
                                     ) : (<>
                                         {
-                                            props.flights.returnData && (<div className="pagination">
-                                                <a >{"<"}</a>
+                                            props.flights.returnData.content?.length > 0 && (<div className="pagination">
                                                 {
                                                     props?.flights?.returnData?.first ? (<>
                                                         <a className="active">1</a>
                                                         {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                        {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>3</a>}
+                                                        {props?.flights?.data?.totalPages >= 2 && <a >{">"}</a>}</>)
                                                         : props?.flights?.returnData?.last ? (<>
+                                                            <a >{"<"}</a>
                                                             {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 2}</a>}
                                                             {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 1}</a>}
                                                             <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                             : (<>
+                                                                <a >{"<"}</a>
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number}</a>
                                                                 <a className="active">{props?.flights?.returnData?.number + 1}</a>
-                                                                <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a></>)
-                                                }
-                                                <a >{">"}</a>
+                                                                <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a>
+                                                                <a >{">"}</a></>)}
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>
@@ -823,4 +897,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlightSearchPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FlightSearchPage2);

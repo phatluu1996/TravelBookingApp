@@ -6,9 +6,8 @@ import Footer from "../Layout/Footer";
 import { connect } from "react-redux";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { fetchHotel } from "../../actions/actionHotel";
+import $ from 'jquery';
 import { importAll } from "../../utils/JqueryImport";
-import Pagination from "./Pagination";
-// import { useQuery } from "../../utils/QueryParam";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -17,10 +16,10 @@ function useQuery() {
 const HotelSearchPage = (props) => {
   const history = useHistory();
   let queryParam = useQuery();
-  const [queryFilter, setQueryFilter] = useState();
+  const queryString = require('query-string');
+  const [filter, setFilter] = useState(queryString.parse(props.location.search));
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
-  const [itemsList, setItemsList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const [page, setPage] = useState(1);
@@ -28,9 +27,27 @@ const HotelSearchPage = (props) => {
   const [sortDir, setSortDir] = useState("asc");
 
   const [selectWard, setSelectWard] = useState(null);
-  const provinceLabel = (code) => {
-    // return province.properties.find(item => item.value === code)?.label;
-  };
+
+  const [errHlt, setErrHlt] = useState({
+    province: '',
+    checkin: '',
+    checkout: ''
+  })
+
+  const [preferences, setPreferences] = useState({
+    swimmingPool: false,
+    hotTub: false,
+    internet: false,
+    freeParking: false,
+    entertainment: false,
+    gym: false
+  });
+
+  const onChangePreferences = (e, attribute) => {
+    var pref = { ...preferences };
+    pref[attribute] = !pref[attribute];
+    setPreferences(pref);
+  }
 
   const onChangeProvince = (e) => {
     document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = "--";
@@ -69,6 +86,10 @@ const HotelSearchPage = (props) => {
       )
     );
   };
+
+  const toQueryString = (obj) => {
+    return new URLSearchParams(obj).toString();
+  }
 
   const getTimeDiff = (_startTime, _endTime, type) => {
     let startTime = new Date(_startTime.replace(/-/g, "/"));
@@ -136,6 +157,30 @@ const HotelSearchPage = (props) => {
   const getPagination = (list = [], page, itemsPerPage, by, dir) => {
     if (!Array.isArray(list) || list.length === 0) {
       return [];
+    }
+
+    if (preferences.entertainment) {
+      list = list.filter(item => item.entertaiment);
+    }
+
+    if (preferences.freeParking) {
+      list = list.filter(item => item.freeParking);
+    }
+
+    if (preferences.gym) {
+      list = list.filter(item => item.gym);
+    }
+
+    if (preferences.hotTub) {
+      list = list.filter(item => item.hotTub);
+    }
+
+    if (preferences.internet) {
+      list = list.filter(item => item.highSpeedInternet);
+    }
+
+    if (preferences.swimmingPool) {
+      list = list.filter(item => item.swimmingPool);
     }
 
     var sortList = list.sort((a, b) => {
@@ -210,56 +255,28 @@ const HotelSearchPage = (props) => {
     var pattern = /(\d{2}).(\d{2}).(\d{4})/;
     var dt = new Date(st.replace(pattern, '$3-$2-$1'));
     return dt;
-}
+  }
 
   useEffect(() => {
     let mount = false;
-
     importAll();
     props.getProvince();
 
     // (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom)
-    if (
-      !queryParam.get("province") &&
-      !queryParam.get("district") &&
-      !queryParam.get("ward") &&
-      !queryParam.get("numberAdult") &&
-      !queryParam.get("numberChildren") &&
-      !queryParam.get("checkInDate") &&
-      !queryParam.get("numRoom")
-    ) {
-      document.location.href = "/";
+    if (queryParam.toString().length == 0) {
+      history.push("/");
     } else {
-      if (!props.hotel) {
-        props.getHotels(
-          queryParam.get("province"),
-          queryParam.get("district"),
-          queryParam.get("ward"),
-          queryParam.get("numberAdult"),
-          queryParam.get("numberChildren"),
-          queryParam.get("checkInDate"),
-          queryParam.get("numRoom")
-        );
-      }
       setPage(1);
-      let filter = {
-        province: queryParam.get("province"),
-        district: queryParam.get("district"),
-        ward: queryParam.get("ward"),
-        numberAdult: queryParam.get("numberAdult"),
-        numberChildren: queryParam.get("numberChildren"),
-        checkInDate:queryParam.get("checkInDate"),
-        numRoom: queryParam.get("numRoom"),
-      };
-      // setListItem(getPagination(props.hotels.data));
-      setQueryFilter(filter);
+      if (!props.hotel) {
+        performSearch(filter);
+      }
     }
     return () => {
       mount = true;
     };
   }, []);
 
-  
+
 
   useEffect(() => {
     let mount = false;
@@ -269,21 +286,28 @@ const HotelSearchPage = (props) => {
       var _ward = _district ? _district.wards.find(item => item.id == queryParam.get("ward")) : null;
 
       if (_province) {
-        document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+        if (document.querySelector("#provinces").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
+        }
         document.querySelector("#provinces").value = queryParam.get("province");
         setSelectProvince(_province);
       }
 
 
       if (_district) {
-        document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+        if (document.querySelector("#districts").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
+        }
         document.querySelector("#districts").value = queryParam.get("district");
         setSelectDistrict(_district)
       }
 
 
       if (_ward) {
-        document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+        if (document.querySelector("#wards").parentElement.querySelector(".customSelectInner")) {
+          document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = _ward.name;
+        }
+
         document.querySelector("#wards").value = queryParam.get("ward");
         setSelectWard(_ward);
       }
@@ -293,6 +317,14 @@ const HotelSearchPage = (props) => {
       mount = true;
     }
   }, [props.provinces.data])
+
+  const performSearch = (filter, shouldSetState = false) => {
+    if (shouldSetState) {
+      setFilter(filter)
+    }
+    props.getHotels(filter.province, filter.district, filter.ward, filter.numberAdult, filter.numberChildren, filter.checkInDate, filter.numRoom);
+    window.history.pushState({}, null, `/hotel-list?${toQueryString(filter)}`);
+  }
 
   const getNextDate = (e) => {
     const tomorrow = new Date(e);
@@ -307,28 +339,90 @@ const HotelSearchPage = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(props.hotels);
-    var form = e.target;
-    const today = new Date();
 
-    props.getHotels(
-      form.provinces.value,
-      form.districts.value,
-      form.wards.value,
-      form.numAdult.value,
-      form.numChildren.value,
-      form.checkInDate.value == ""
-        ? getNextDate(today)
-        : form.checkInDate.value,
-      form.numRoom.value
-    );
-    setPage(1);
+    var form = e.target;
+
+    if (validateHtl(form, "hotel-flight-search")) {
+      const today = new Date();
+      var filter = { ...props.filter };
+      filter.province = form.provinces.value;
+      filter.district = form.districts.value;
+      filter.ward = form.wards.value;
+      filter.numberAdult = form.numAdult.value;
+      filter.numberChildren = form.numChildren.value;
+      filter.checkInDate = form.checkInDate.value;
+      filter.checkOutDate = queryParam.get("checkOutDate");
+      filter.numRoom = queryParam.get("numRoom");
+      performSearch(filter, true);
+    }
+
   };
 
+  const handleSelectHotel = (hotel) => {
+    history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${filter.checkInDate}&checkOutDate=${filter.checkOutDate}&numberAdult=${filter.numberAdult}&numberChildren=${filter.numberChildren}`)
+  }
 
 
   const totalPages = () => {
     return Math.ceil(props?.hotels?.data?.length / itemsPerPage);
+  }
+
+  const validateHtl = (form, formSelector) => {
+    var err = { ...errHlt }
+    if (form.provinces.value === "0") {
+      err.province = 'Province cannot be empty';
+      form.provinces.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+      $(`.${formSelector} #province-error`)[0].innerText = err.province;
+    } else {
+      err.province = '';
+      form.provinces.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+      $(`.${formSelector} #province-error`)[0].innerText = err.province;
+    }
+
+    if (!form.checkInDate.value) {
+      err.checkin = 'Checkin date cannot be empty';
+      form.checkInDate.parentElement.classList.add("is-invalid");
+      $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+    } else {
+      err.checkin = '';
+      form.checkInDate.parentElement.classList.remove("is-invalid");
+      $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+    }
+
+    if (!form.checkOutDate.value) {
+      err.checkout = 'Checkout date cannot be empty';
+      form.checkOutDate.parentElement.classList.add("is-invalid");
+      $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+    } else {
+      err.checkout = '';
+      form.checkOutDate.parentElement.classList.remove("is-invalid");
+      $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+    }
+
+    if (form.checkInDate.value && form.checkOutDate.value) {
+      if (form.checkInDate.value >= form.checkOutDate.value) {
+        err.checkin = 'Check in date must be smaller than check out date';
+        form.checkInDate.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+
+        err.checkout = 'Check out date must be larger than check in date';
+        form.checkOutDate.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+      } else {
+        err.checkin = '';
+        form.checkInDate.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+        err.checkout = '';
+        form.checkOutDate.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+      }
+    }
+
+    if (err.province || err.checkin || err.checkout) {
+      setErrHlt(err);
+      return false;
+    }
+    return true;
   }
 
   return (
@@ -338,12 +432,9 @@ const HotelSearchPage = (props) => {
         <div className="body-wrapper">
           <div className="wrapper-padding">
             <div className="page-head">
-              <div className="page-title">
-                Hotels - <span>detail style</span>
-              </div>
+              <div className="page-title">Hotel - <span>Hotel Select</span></div>
               <div className="breadcrumbs">
-                <a href="#">Home</a> / <a href="#">Hotel</a> /{" "}
-                <span>detail style</span>
+                <Link to="/">Home</Link> / <span>Hotel Search Result</span>
               </div>
               <div className="clear"></div>
             </div>
@@ -354,7 +445,7 @@ const HotelSearchPage = (props) => {
                 </div>
 
                 <div className="side-block fly-in">
-                  <form className="side-block-search" onSubmit={handleSubmit} autoComplete="off">
+                  <form className="hotel-flight-search side-block-search" onSubmit={handleSubmit} autoComplete="off">
                     <div className="page-search-p">
                       <div className="srch-tab-line">
                         <div className="rsch-tab-line no-margin-bottom">
@@ -377,6 +468,7 @@ const HotelSearchPage = (props) => {
                                   </option>
                                 ))}
                               </select>
+                              <div className="booking-error-input" id="province-error"></div>
                             </div>
                           </div>
                           <div className="srch-tab-3c">
@@ -440,6 +532,7 @@ const HotelSearchPage = (props) => {
                             />{" "}
                             <span className="date-icon"></span>
                           </div>
+                          <div className="booking-error-input" id="checkin-error"></div>
                         </div>
                         <div className="srch-tab-right">
                           <label>Check out date</label>
@@ -454,6 +547,7 @@ const HotelSearchPage = (props) => {
                             />{" "}
                             <span className="date-icon"></span>
                           </div>
+                          <div className="booking-error-input" id="checkout-error"></div>
                         </div>
                         <div className="clear"></div>
                       </div>
@@ -468,7 +562,8 @@ const HotelSearchPage = (props) => {
                               type="number"
                               defaultValue={queryParam.get("numberAdult")}
                               min="0"
-                              max="6"
+                              max="7"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -480,7 +575,8 @@ const HotelSearchPage = (props) => {
                               name="numChildren"
                               type="number"
                               defaultValue={queryParam.get("numberChildren")}
-                              max="6"
+                              max="7"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -493,6 +589,7 @@ const HotelSearchPage = (props) => {
                               defaultValue={queryParam.get("numRoom")}
                               min="1"
                               max="30"
+                              onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
                         </div>
@@ -507,126 +604,43 @@ const HotelSearchPage = (props) => {
                 </div>
 
                 <div className="side-block fly-in">
-                  <div className="side-price">
-                    <div className="side-padding">
-                      <div className="side-lbl">Price</div>
-                      <div className="price-ranger">
-                        <div id="slider-range"></div>
-                      </div>
-                      <div className="price-ammounts">
-                        <input type="text" id="ammount-from" readOnly />
-                        <input type="text" id="ammount-to" readOnly />
-                        <div className="clear"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="side-block fly-in">
-                  <div className="side-stars">
-                    <div className="side-padding">
-                      <div className="side-lbl">Star rating</div>
-                      <div className="star-rating-l">Choose Rating</div>
-                      <div className="star-rating-r">
-                        {/* <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-b.png"></a>
-                <a href="#"><img alt="" src="img/rating-a.png"></a> */}
-                      </div>
-                      <div className="clear"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="side-block fly-in">
-                  <div className="side-stars">
-                    <div className="side-padding">
-                      <div className="side-lbl">Accomodation type</div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          All (823)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Hotel (326)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Resort (141)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Residence (241)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Villas (324)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Apartment (214)
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="side-block fly-in">
                   <div className="side-stars">
                     <div className="side-padding">
                       <div className="side-lbl">Preferences</div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Bathroom (823)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "swimmingPool")} />
+                          Swimming pool
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Cable TV (326)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "hotTub")} />
+                          Hot Tub
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Bed & breakfast (141)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "internet")} />
+                          High speed internet
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Apartment (241)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "freeParking")} />
+                          Free Parking
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Mini bar (324)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "entertainment")} />
+                          Entertainments
                         </label>
                       </div>
                       <div className="checkbox">
                         <label>
-                          <input type="checkbox" value="" />
-                          Wi - fi (214)
-                        </label>
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" value="" />
-                          Pets allowed (64)
+                          <input type="checkbox" onChange={(e) => onChangePreferences(e, "gym")} />
+                          Gym
                         </label>
                       </div>
                     </div>
@@ -662,16 +676,9 @@ const HotelSearchPage = (props) => {
                     </div>
 
                     <div className="catalog-row with-text">
-                      {getPagination(
-                        props.hotels.data,
-                        page,
-                        itemsPerPage,
-                        sortBy,
-                        sortDir
-                      ).map((hotel) => (
-                        <div  className="offer-slider-i catalog-i fly-in">
-                          {/* <input hidden='true' name="hotelId" defaultValue={hotel.id} /> */}
-                          <a href="#" className="offer-slider-img">
+                      {getPagination(props.hotels.data, page, itemsPerPage, sortBy, sortDir).map((hotel) => (
+                        <div key={hotel.id} className="offer-slider-i catalog-i fly-in">
+                          <a className={hotel.id == props.selectHotel?.id ? "offer-slider-img selected" : "offer-slider-img"}>
                             <img alt="" name="hotelImage" src={hotel?.images[0]?.imagePath} />
                             <span className="offer-slider-overlay">
                               <span className="offer-slider-btn">
@@ -680,7 +687,7 @@ const HotelSearchPage = (props) => {
                               <span></span>
                             </span>
                           </a>
-                          <div className="offer-slider-txt">
+                          <div className={hotel.id == props.selectHotel?.id ? "offer-slider-txt selected" : "offer-slider-txt"}>
                             <div className="offer-slider-link">
                               <a href="#" name="hotelName" >{hotel.hotelName}</a>
                             </div>
@@ -720,12 +727,9 @@ const HotelSearchPage = (props) => {
                             <div className="offer-slider-devider"></div>
                             <div className="clear"></div>
                             <div className="offer-slider-lead">
-                              {/* {hotel.rooms[0].roomType} */}
                             </div>
-                            <a onClick={() =>
-                              history.push(`/hotel-detail?id=${hotel.id}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&numberAdult=${queryParam.get("numberAdult")}&numberChildren=${queryParam.get("numberChildren")}`)
-                            } className="cat-list-btn" >
-                              Book now
+                            <a onClick={() => handleSelectHotel(hotel)} className="cat-list-btn" >
+                              SELECT
                             </a>
                           </div>
                         </div>
@@ -733,18 +737,13 @@ const HotelSearchPage = (props) => {
                     </div>
 
                     <div className="clear"></div>
-                    {/* <Pagination
-                      itemsPerPage={itemsPerPage}
-                      listItem={props.hotels?.data?.length}
-                      setPageNum={setPage}
-                    /> */}
-                    {props.hotels.data?.length > 0 && (<div className="pagination">
+                    {getPagination(props.hotels.data, page, itemsPerPage, sortBy, sortDir)?.length > 0 ? (<div className="pagination">
                       {
                         page == 1 ? (<>
                           <a className="active">1</a>
                           {totalPages() >= 2 && <a onClick={(e) => setPage(2)}>2</a>}
                           {totalPages() >= 3 && <a onClick={(e) => setPage(3)}>3</a>}
-                          <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
+                          {totalPages() >= 2 && <a onClick={(e) => setPage(page + 1)}>{">"}</a>}</>)
                           : page == totalPages() ? (<>
                             <a onClick={(e) => setPage(page - 1)}>{"<"}</a>
                             {totalPages() >= 3 && <a onClick={(e) => setPage(totalPages() - 2)}>{totalPages() - 2}</a>}
@@ -758,7 +757,9 @@ const HotelSearchPage = (props) => {
                               <a onClick={(e) => setPage(page + 1)}>{">"}</a></>)
                       }
                       <div className="clear"></div>
-                    </div>)}
+                    </div>) : (
+                      <h1 className="text-center">NO RESULTS FOUND</h1>
+                    )}
                   </div>
                 </div>
                 <br className="clear" />

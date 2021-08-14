@@ -23,6 +23,13 @@ const ComboFlightSearchPage2 = (props) => {
     const [isListView, setIsListView] = useState(true);
     const [includePriceRange, setIncludePriceRange] = useState(false);
     const [flightTab, setFlightTab] = useState(true);  //true : departure tab , //false : return tab
+    const [errFlt, setErrFlt] = useState({
+        from: '',
+        to: '',
+        departureDate: '',
+        returnDate: ''
+    })
+
     const province = {
         properties: [
             {
@@ -169,7 +176,6 @@ const ComboFlightSearchPage2 = (props) => {
         } else {
             var filter = props.filter;
             if (!props.flight) {
-                //props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClassName, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
                 performSearch(filter);
             }
 
@@ -195,8 +201,7 @@ const ComboFlightSearchPage2 = (props) => {
 
         var form = e.target;
 
-        if (validate(form)) {
-
+        if (validateFlt(form, "hotel-flight-search")) {
 
             document.getElementById("page").value = "1";
             document.getElementById("sortBy").value = "id";
@@ -225,7 +230,7 @@ const ComboFlightSearchPage2 = (props) => {
             filter.page = 1
             filter.sortBy = "id"
             filter.sortDir = "asc"
-            props.setFilter(filter);
+            // props.setFilter(filter);
             setSeatClassType(form.seatClass.value);
             performSearch(filter, true);
             setFlightTab(true);
@@ -233,9 +238,6 @@ const ComboFlightSearchPage2 = (props) => {
         }
     }
 
-    const validate = (form) => {
-        
-    }
 
     const setPage = (e) => {
         var index = e.target.value;
@@ -277,7 +279,7 @@ const ComboFlightSearchPage2 = (props) => {
 
     const toggleDetails = (e) => {
         if ($(e.currentTarget).is('.open')) {
-            $(e.currentTarget).removeClass('open');
+            $(e.currentTarget).remove('open');
             $(e.currentTarget).closest('.alt-flight').find('.alt-details').slideUp();
         } else {
             $(e.currentTarget).addClass('open');
@@ -332,8 +334,83 @@ const ComboFlightSearchPage2 = (props) => {
         setIncludePriceRange(!includePriceRange);
     }
 
+    const validateFlt = (form, formSelector) => {
+        var err = { ...errFlt };
+        if (!form.from.value) {
+            err.from = 'Departure City cannot be empty';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
+        } else {
+            err.from = '';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid")
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
+        }
+
+        if (!form.to.value) {
+            err.to = 'Arrival City cannot be empty';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
+        } else {
+            err.to = '';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
+        }
+
+        if (form.from.value && form.to.value) {
+            if (form.from.value === form.to.value) {
+                err.to = 'Arrival City must be different then Departure City';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+
+                err.from = 'Departure City must be different then Arrival City';
+                form.from.parentElement.getElementsByTagName("span")[0].classList.add("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
+            } else {
+                err.from = '';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+                err.to = '';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
+            }
+        }
+
+        if (!form.departureDate.value) {
+            err.departureDate = 'Departure Date cannot be empty';
+            form.departureDate.parentElement.classList.add("is-invalid");
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+        } else {
+            err.departureDate = '';
+            form.departureDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+        }
+
+        if (form.departureDate.value && form.returnDate.value) {
+            if (form.departureDate.value >= form.returnDate.value) {
+                err.departureDate = 'Departure Date must be smaller than return date';
+                form.departureDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+
+                err.returnDate = 'Return Date must be larger than departure date';
+                form.returnDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            } else {
+                err.returnDate = '';
+                form.departureDate.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
+                form.returnDate.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            }
+        }
+
+        if (err.from || err.to || err.departureDate) {
+            setErrFlt(err);
+            return false;
+        }
+        return true;
+    }
+
     return (<>
-        <Header></Header>
         <div className="main-cont">
             <div className="body-wrapper">
                 <div className="wrapper-padding">
@@ -349,7 +426,7 @@ const ComboFlightSearchPage2 = (props) => {
                         <div className="clear"></div>
                     </div>
                     {/* Sidebar */}
-                    <form className="two-colls" onSubmit={handleSubmit}>
+                    <form className="hotel-flight-search two-colls" onSubmit={handleSubmit}>
                         <div className="two-colls-left">
 
                             <div className="srch-results-lbl fly-in">
@@ -424,17 +501,19 @@ const ComboFlightSearchPage2 = (props) => {
                                             <div className="srch-tab-left transformed">
                                                 <label>From</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="from" id="departure-city" defaultValue={queryParam.get("from")}>
+                                                    <select className="custom-select" name="from" id="departure-city" defaultValue={props.filter.from}>
                                                         {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                     </select>
+                                                    <div className="booking-error-input" id="from-error"></div>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="to" id="arrival-city" defaultValue={queryParam.get("to")}>
+                                                    <select className="custom-select" name="to" id="arrival-city" defaultValue={props.filter.to}>
                                                         {province.properties.map(province => <option key={province.value} value={province.value}>{province.label} {province.value ? "(" + province.value + ")" : ""}</option>)}
                                                     </select>
+                                                    <div className="booking-error-input" id="to-error"></div>
                                                 </div>
                                             </div>
                                             <div className="clear"></div>
@@ -444,11 +523,13 @@ const ComboFlightSearchPage2 = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left">
                                                 <label>Departure</label>
-                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("departureDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={props.filter.departureDate} /> <span className="date-icon"></span></div>
+                                                <div className="booking-error-input" id="departureDate-error"></div>
                                             </div>
                                             <div className="srch-tab-right">
                                                 <label>Return</label>
-                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={queryParam.get("returnDate")} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={props.filter.returnDate} /> <span className="date-icon"></span></div>
+                                                <div className="booking-error-input" id="returnDate-error"></div>
                                             </div>
                                             <div className="clear"></div>
                                         </div>
@@ -458,14 +539,14 @@ const ComboFlightSearchPage2 = (props) => {
                                             <div className="srch-tab-left transformed">
                                                 <label>Seat Class</label>
                                                 <div className="select-wrapper">
-                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={queryParam.get("seatClass")}>
+                                                    <select className="custom-select" name="seatClass" id="seatClass" defaultValue={props.filter.seatclassName}>
                                                         {seatClass.properties.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Adult</label>
-                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" /></div>
+                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -473,11 +554,11 @@ const ComboFlightSearchPage2 = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
-                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="6" /></div>
+                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Infant</label>
-                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="6" /></div>
+                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -494,11 +575,11 @@ const ComboFlightSearchPage2 = (props) => {
                                             <div className="clear"></div>
                                             <div className="srch-tab-left transformed">
                                                 <label>From Price</label>
-                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={queryParam.get("priceFrom") ? queryParam.get("priceFrom") : 0} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceFrom" type="number" defaultValue={props.filter.priceFrom ? props.filter.priceFrom : 0} min="0" max="3000" /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>To Price</label>
-                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={queryParam.get("priceTo") ? queryParam.get("priceTo") : 3000} min="0" max="3000" /></div>
+                                                <div className="input-a"><input name="priceTo" type="number" defaultValue={props.filter.priceTo ? props.filter.priceTo : 3000} min="0" max="3000" /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -521,7 +602,7 @@ const ComboFlightSearchPage2 = (props) => {
                                         <div className="search-select">
                                             <select id="sortBy" defaultValue={props.filter?.sortBy} onChange={onChangeSortBy}>
                                                 <option value="id">Index</option>
-                                                <option value={seatClassType === "ECONOMY" ? "economyPrice" : "businessPrice"}>Price</option>
+                                                <option value={props.filter.seatclassName === "ECONOMY" ? "economyPrice" : "businessPrice"}>Price</option>
                                                 <option value="departureTime">Depart Time</option>
                                                 <option value="arrivalTime">Arrive Time</option>
                                             </select>
@@ -619,7 +700,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                         <b>Description</b>
                                                         <span>
                                                             {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
-                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+                                                            <FontAwesomeIcon color="#4a90a4" title={(props.filter.seatclassName == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
 
                                                         </span>
                                                     </div>
@@ -706,7 +787,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                         <b>Description</b>
                                                         <span>
                                                             {(flight.hasEntertainment || true) && <FontAwesomeIcon className="mr-1" title="Has Entertainment" color="#ff7200" icon={faTv} size='2x'></FontAwesomeIcon>}
-                                                            <FontAwesomeIcon color="#4a90a4" title={(seatClassType == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
+                                                            <FontAwesomeIcon color="#4a90a4" title={(props.filter.seatclassName == 'ECONOMY' ? ("Economy Baggage: " + flight.economyBaggage) : ("Business Baggage: " + flight.businessBaggage)) + "kg"} icon={faSuitcase} size='2x'></FontAwesomeIcon>
 
                                                         </span>
                                                     </div>
@@ -726,44 +807,48 @@ const ComboFlightSearchPage2 = (props) => {
                                     {flightTab ? (<>
                                         {
                                             props.flights.data?.content?.length > 0 && (<div className="pagination">
-                                                <a >{"<"}</a>
+
                                                 {
                                                     props?.flights?.data?.first ? (<>
                                                         <a className="active">1</a>
                                                         {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                        {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>3</a>}
+                                                        {props?.flights?.data?.totalPages >= 2 && <a >{">"}</a>}</>)
                                                         : props?.flights?.data?.last ? (<>
+                                                            <a >{"<"}</a>
                                                             {props?.flights?.data?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 2}</a>}
                                                             {props?.flights?.data?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.data?.totalPages - 1}</a>}
                                                             <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                             : (<>
+                                                                <a >{"<"}</a>
                                                                 <a onClick={setPage}>{props?.flights?.data?.number}</a>
                                                                 <a className="active">{props?.flights?.data?.number + 1}</a>
-                                                                <a onClick={setPage}>{props?.flights?.data?.number + 2}</a></>)
+                                                                <a onClick={setPage}>{props?.flights?.data?.number + 2}</a>
+                                                                <a >{">"}</a></>)
                                                 }
-                                                <a >{">"}</a>
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>
                                     ) : (<>
                                         {
                                             props.flights.returnData.content?.length > 0 && (<div className="pagination">
-                                                <a>{"<"}</a>
                                                 {
                                                     props?.flights?.returnData?.first ? (<>
                                                         <a className="active">1</a>
                                                         {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>2</a>}
-                                                        {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>3</a>}</>)
+                                                        {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>3</a>}
+                                                        {props?.flights?.data?.totalPages >= 2 && <a >{">"}</a>}</>)
                                                         : props?.flights?.returnData?.last ? (<>
+                                                            <a >{"<"}</a>
                                                             {props?.flights?.returnData?.totalPages >= 3 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 2}</a>}
                                                             {props?.flights?.returnData?.totalPages >= 2 && <a onClick={setPage}>{props?.flights?.returnData?.totalPages - 1}</a>}
                                                             <a className="active">{props?.flights?.data?.totalPages}</a></>)
                                                             : (<>
+                                                                <a >{"<"}</a>
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number}</a>
                                                                 <a className="active">{props?.flights?.returnData?.number + 1}</a>
-                                                                <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a></>)
-                                                }
-                                                <a>{">"}</a>
+                                                                <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a>
+                                                                <a >{">"}</a></>)                                                }
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>
@@ -779,7 +864,6 @@ const ComboFlightSearchPage2 = (props) => {
                 </div>
             </div>
         </div>
-        <Footer></Footer>
     </>);
 
 }
