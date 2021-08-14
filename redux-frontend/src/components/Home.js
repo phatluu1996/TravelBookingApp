@@ -631,7 +631,7 @@ const Home = (props) => {
                                                         <div className="input-a">
                                                             <input
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-departure-flight-inpt"
                                                                 name="departureDate"
                                                                 id="departureDate"
                                                                 placeholder="mm/dd/yy"
@@ -646,7 +646,7 @@ const Home = (props) => {
                                                         <div className="input-a">
                                                             <input
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-departure-flight-inpt"
                                                                 name="returnDate"
                                                                 id="returnDate"
                                                                 placeholder="mm/dd/yy"

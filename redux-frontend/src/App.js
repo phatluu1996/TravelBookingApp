@@ -53,7 +53,7 @@ const App = (props) => {
     if (props.oath.data) {
       setuser(props.oath.data);
       if (props.oath.data && props.oath.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
-        setUserSession(props.oath.data.accessToken, props.oath.data.username, props.oath.data.header, props.oath.data.id, props.oath.data.roles[0]);
+        setUserSession(props.oath.data.accessToken, props.oath.data.username, props.oath.data.header, props.oath.data.id, props.oath.data?.roles[0]);
       }
     }
 
