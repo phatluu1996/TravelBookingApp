@@ -49,7 +49,10 @@ public class HotelFeedBackController {
         }
         return ResponseEntity.ok().body(result);
     }
-//    public List<HotelFeedBack> getFeedbacksByHotelId(Long id){
-//        return (List<HotelFeedBack>) hotelFeedBackRepository.getAllByHotelId(id);
-//    }
+    //http://localhost:8080/api/hotelFeedBack/{id}
+    @GetMapping("/hotelFeedBack/{id}")
+    public List<HotelFeedBack> getFeedbacksByHotelId(@PathVariable Long id){
+        Specification<?> spec = HotelFeedBackSpecification.createSpecification(id,Boolean.FALSE);
+        return hotelFeedBackRepository.findAll(spec);
+    }
 }

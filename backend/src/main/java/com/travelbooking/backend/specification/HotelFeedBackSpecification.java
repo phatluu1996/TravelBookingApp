@@ -13,6 +13,7 @@ public class HotelFeedBackSpecification {
                         .and(isRetired(retired)));
     }
 
+
     public static Specification<HotelFeedBack> findList(Long id) {
         return (hotelFeedBackRoot, cq, cb) ->cb.equal(hotelFeedBackRoot.get("hotel"), id);
     }
