@@ -8,7 +8,7 @@ public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "fb_name", columnDefinition = "nvarchar(150)")
     private String name;
     @Column(name = "fb_email")
@@ -23,7 +23,7 @@ public class FeedBack {
     public FeedBack() {
     }
 
-    public FeedBack(int id, String name, String email, String subTitle, String message, String reply) {
+    public FeedBack(Long id, String name, String email, String subTitle, String message, String reply) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -32,11 +32,11 @@ public class FeedBack {
         this.reply = reply;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
