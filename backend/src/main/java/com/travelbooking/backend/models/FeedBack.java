@@ -17,23 +17,19 @@ public class FeedBack {
     private String subTitle;
     @Column(name = "fb_message", columnDefinition = "nvarchar(max)")
     private String message;
+    @Column(name = "fb_reply", columnDefinition = "nvarchar(max)")
+    private String reply;
 
     public FeedBack() {
     }
 
-    public FeedBack(int id, String name, String email, String subTitle, String message) {
+    public FeedBack(int id, String name, String email, String subTitle, String message, String reply) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.subTitle = subTitle;
         this.message = message;
-    }
-
-    public FeedBack(String name, String email, String subTitle, String message) {
-        this.name = name;
-        this.email = email;
-        this.subTitle = subTitle;
-        this.message = message;
+        this.reply = reply;
     }
 
     public int getId() {
@@ -74,5 +70,13 @@ public class FeedBack {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }

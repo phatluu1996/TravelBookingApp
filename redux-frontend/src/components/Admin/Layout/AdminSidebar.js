@@ -1,4 +1,4 @@
-import { faChartArea, faHotel, faPlane, faPlaneSlash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChartArea, faHotel, faMailBulk, faPlane, faPlaneSlash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
@@ -49,17 +49,6 @@ const AdminSidebar = () => {
                                         <p className="preview-subject ellipsis mb-1 text-small">Change Password</p>
                                     </div>
                                 </a>
-                                <div className="dropdown-divider"></div>
-                                <a href="#" className="dropdown-item preview-item">
-                                    <div className="preview-thumbnail">
-                                        <div className="preview-icon bg-dark rounded-circle">
-                                            <i className="mdi mdi-calendar-today text-success"></i>
-                                        </div>
-                                    </div>
-                                    <div className="preview-item-content">
-                                        <p className="preview-subject ellipsis mb-1 text-small">To-do list</p>
-                                    </div>
-                                </a>
                             </div>
                         </div>
                     </li>
@@ -98,6 +87,14 @@ const AdminSidebar = () => {
                                 <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
                             </span>
                             <span className="menu-title">Airlines</span>
+                        </Link>                        
+                    </li>
+                    <li className="nav-item menu-items">
+                        <Link className="nav-link" to="/admin-feedback-manage">
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faMailBulk} color="#ffab00"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Feedback</span>
                         </Link>                        
                     </li></>}
                 </ul>

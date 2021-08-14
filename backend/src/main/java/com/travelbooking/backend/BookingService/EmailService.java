@@ -49,6 +49,18 @@ public class EmailService {
         System.out.printf("An email has been sent to " + to);
     }
 
+    public void replyFeedback(String to, @DefaultValue(value = "") String from, String subject, String text){
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setFrom(from == null ? emailFrom : from);
+            messageHelper.setTo(to);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text, true);
+        };
+        getJavaMailSender().send(messagePreparator);
+        System.out.printf("An email has been sent to " + to);
+    }
+
     public void sendSimpleMessage(String to, @DefaultValue(value = "") String from, String subject, String text, String attachmentName, File attachment, File qrcode) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());

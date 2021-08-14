@@ -45,6 +45,7 @@ import ComboBookingPage from './components/Combo/ComboBookingPage';
 import ComboStepWizard from './components/Combo/ComboStepWizard';
 import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 import ComboBookingCompletePage from './components/Combo/ComboBookingCompletePage';
+import AdminFeedback from './components/Admin/Feedback/AdminFeedback';
 
 
 const App = (props) => {
@@ -77,6 +78,7 @@ const App = (props) => {
 
         <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminDashboard} path="/admin-dashboard" />
         <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminManageUser} path="/admin-user-manage" />
+        <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminFeedback} path="/admin-feedback-manage" />
 
         <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminHotel} path="/admin-hotel-manage" />
         <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminHotelCreate} path="/admin-hotel-create" />

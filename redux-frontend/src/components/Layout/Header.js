@@ -81,50 +81,7 @@ const Header = (props) => {
                                     <a className="has-child" >
                                         HOME
                                     </a>
-                                </li>                                
-                                {/* <li>
-                                    <a className="has-child" >
-                                        Flights
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="flight_round_trip.html">Flights round trip</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_one_way.html">flights one way trip</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_alternative.html">
-                                                flights alternative style
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_detail.html">Flights detail page</a>
-                                        </li>
-                                        <li>
-                                            <a href="flight_booking.html">Flights booking page</a>
-                                        </li>
-                                        <li>
-                                            <a href="booking_complete.html">booking complete</a>
-                                        </li>
-                                    </ul>
-                                </li> */}
-                                {/* <li>
-                                    <a className="has-child" >
-                                        Airline
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="/airline">Airline Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="/create-flight">Create Flight</a>
-                                        </li>
-                                        <li>
-                                            <a href="/list-flight">List Flights</a>
-                                        </li>
-                                    </ul>
-                                </li> */}
+                                </li>
                             </ul>
                         </nav>
                     </div>
