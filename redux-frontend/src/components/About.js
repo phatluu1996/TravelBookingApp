@@ -113,7 +113,7 @@ const About = () => {
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <div className="testimonials-d">Albert Dowson, Company Director</div>
+                                        <div className="testimonials-d">Phat Luu, Team Leader</div>
                                     </div>
                                     <div className="testimonials-i">
                                         <div className="testimonials-a"><img alt="" src="img/testimonials-02.png" /></div>
@@ -129,7 +129,7 @@ const About = () => {
                                                 </ul>
                                             </nav>
                                         </div>
-                                        <div className="testimonials-d">Albert Dowson, Company Director</div>
+                                        <div className="testimonials-d">Phat Luu, Team Leaderr</div>
                                     </div>
 
                                 </div>
@@ -162,10 +162,10 @@ const About = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <img alt="" src="img/about-01.jpg" />
+                                                <img alt="" src="img/aboutus/bach.jpg" />
                                             </div>
-                                            <div className="about-photo-lbl">Mark jonson</div>
-                                            <div className="about-photo-sublbl">Director</div>
+                                            <div className="about-photo-lbl">Bach Pham</div>
+                                            <div className="about-photo-sublbl">Sub Leader</div>
                                         </div>
                                     </div>
                                     <div className="tree-colls-i">
@@ -186,10 +186,10 @@ const About = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <img alt="" src="img/about-02.jpg" />
+                                                <img alt="" src="img/aboutus/ngoc.jpg" />
                                             </div>
-                                            <div className="about-photo-lbl">sara lee</div>
-                                            <div className="about-photo-sublbl">Manager</div>
+                                            <div className="about-photo-lbl">Ngoc Le</div>
+                                            <div className="about-photo-sublbl">Team member</div>
                                         </div>
                                     </div>
                                     <div className="tree-colls-i">
@@ -212,8 +212,8 @@ const About = () => {
                                                 </div>
                                                 <img alt="" src="img/about-03.jpg" />
                                             </div>
-                                            <div className="about-photo-lbl">Stiven Fox</div>
-                                            <div className="about-photo-sublbl">Manager</div>
+                                            <div className="about-photo-lbl">Hoa Nguyen</div>
+                                            <div className="about-photo-sublbl">Team Member</div>
                                         </div>
                                     </div>
                                 </div>
@@ -234,22 +234,22 @@ const About = () => {
                                     <div className="tree-colls-i">
                                         <div className="about-percent why-we-item">
                                             <div className="why-we-img"><img alt="" src="img/why-we-01.png" /></div>
-                                            <div className="why-we-lbl">Excellent trip planning</div>
-                                            <div className="why-we-txt">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui. voluptatem sequi nesciunt.</div>
+                                            <div className="why-we-lbl">Awesome design </div>
+                                            <div className="why-we-txt">We always tried our best to provide you with the best services.</div>
                                         </div>
                                     </div>
                                     <div className="tree-colls-i">
                                         <div className="about-percent why-we-item">
                                             <div className="why-we-img"><img alt="" src="img/why-we-02.png" /></div>
-                                            <div className="why-we-lbl">Best tour pricing</div>
-                                            <div className="why-we-txt">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui. voluptatem sequi nesciunt.</div>
+                                            <div className="why-we-lbl">Easy Booking</div>
+                                            <div className="why-we-txt">Search and compare flights from dosmetic airlines with many routes in Viet Nam.</div>
                                         </div>
                                     </div>
                                     <div className="tree-colls-i">
                                         <div className="about-percent why-we-item">
                                             <div className="why-we-img"><img alt="" src="img/why-we-03.png" /></div>
-                                            <div className="why-we-lbl">We love our clients</div>
-                                            <div className="why-we-txt">Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui. voluptatem sequi nesciunt.</div>
+                                            <div className="why-we-lbl">Customer support</div>
+                                            <div className="why-we-txt">We are now carving our path to be the best Lifestyle WebApp for our users.</div>
                                         </div>
                                     </div>
                                 </div>
