@@ -1,13 +1,7 @@
 package com.travelbooking.backend.controller;
 
-import com.travelbooking.backend.models.Account;
-import com.travelbooking.backend.models.Airline;
-import com.travelbooking.backend.models.Hotel;
-import com.travelbooking.backend.models.User;
-import com.travelbooking.backend.repository.AccountRepository;
-import com.travelbooking.backend.repository.AirlineRepository;
-import com.travelbooking.backend.repository.HotelRepository;
-import com.travelbooking.backend.repository.UserRepository;
+import com.travelbooking.backend.models.*;
+import com.travelbooking.backend.repository.*;
 import com.travelbooking.backend.security.jwt.JwtUtils;
 import com.travelbooking.backend.security.payload.request.LoginRequest;
 import com.travelbooking.backend.security.payload.request.SignupRequest;
@@ -45,6 +39,9 @@ public class AuthController {
 
     @Autowired
     HotelRepository hotelRepository;
+
+    @Autowired
+    LocationRepository locationRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -160,8 +157,11 @@ public class AuthController {
                                 .ok()
                                 .body(new MessageResponse("Email is already in use!",false));
                     }else {
+                        Location location = new Location();
+                        Location newLoc = locationRepository.save(location);
                         user.setEmail(signUpRequest.getEmail());
                         user.setAccount(account);
+                        user.setLocation(newLoc);
                         accountRepository.save(account);
                         userRepository.save(user);
                     }

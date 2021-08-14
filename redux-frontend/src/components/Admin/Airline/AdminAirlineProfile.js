@@ -485,7 +485,7 @@ const AdminAirlineProfile = (props) => {
 
                                                             <div className="tab-pane" id="change-password">
                                                                 <h6 className="text-center text-warning">BOOKING HISTORY</h6>
-                                                                <DataTable className="table"
+                                                                {/* <DataTable className="table"
                                                                     customStyles={customStyles}
                                                                     theme='solarized'
                                                                     // progressPending={!props.hotel.all}
@@ -494,7 +494,7 @@ const AdminAirlineProfile = (props) => {
                                                                     pagination
                                                                     paginationPerPage={5}
                                                                 // subHeaderComponent={subHeader}                                                    
-                                                                />
+                                                                /> */}
                                                             </div>
                                                         </div>
                                                     </div>

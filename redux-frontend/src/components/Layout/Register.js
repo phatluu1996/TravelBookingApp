@@ -149,14 +149,14 @@ function Register(props) {
         var mount = false;
         importAll();
         if (props.auth.form === 'signup') {
-            if (props.auth.data && isRequest) {
-                if (props.auth.data.success) {
+            if (props.auth.signupData && isRequest) {
+                if (props.auth.signupData.success) {
                     setStatuSignup(true);
-                    setMessageSignup(props.auth.data.message);
+                    setMessageSignup(props.auth.signupData.message);
                     document.location.href = "http://localhost:3000/";
                 } else {
                     setStatuSignup(false);
-                    setMessageSignup(props.auth.data.message);
+                    setMessageSignup(props.auth.signupData.message);
                 }
             } else {
                 setStatuSignup(false);
