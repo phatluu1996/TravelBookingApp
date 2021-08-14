@@ -24,7 +24,7 @@ const reducers = combineReducers({
 	bookFlight: reducerBookingFlight,
 	auth: reducerAuth,
 	hotelFeedback: reducerHotelFeedBack,
-	feedback: reducerFeedback,
+	feedback:reducerFeedback,
 	room:reducerRoom,
 	bookRoom:reducerBookingRoom
 });
