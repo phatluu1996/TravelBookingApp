@@ -11,7 +11,8 @@ import reducerAuth from './reduceAuth';
 import reducerRoom from './reducerRoom';
 import reducerBookingRoom from './reducerBookingRoom';
 import reducerHotelFeedBack from './reducerHotelFeedBack';
-import reducerFeedBack from './reducerFeedBack';
+import reducerFeedback from './reducerFeedback';
+
 
 const reducers = combineReducers({
 	flight : reducerFlight,
@@ -23,7 +24,7 @@ const reducers = combineReducers({
 	bookFlight: reducerBookingFlight,
 	auth: reducerAuth,
 	hotelFeedback: reducerHotelFeedBack,
-	feedback: reducerFeedBack,
+	feedback: reducerFeedback,
 	room:reducerRoom,
 	bookRoom:reducerBookingRoom
 });

@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component';
 import ReactModal from 'react-modal';
 import { connect } from 'react-redux';
-import { clearFeedbackState, fetchFeedback } from '../../../actions/actionFeedback';
+import { clearFeedbackState, fetchFeedback, replyFeedback } from '../../../actions/actionFeedback';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
+import $ from 'jquery';
 
 const AdminFeedback = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -138,7 +139,7 @@ const AdminFeedback = (props) => {
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -165,11 +166,11 @@ const AdminFeedback = (props) => {
                                         <textarea required rows="7" class="form-control" id="reply" name="reply">{feedback.reply}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2" data-dismiss="modal">Reply</button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2">Reply</button>
+                                        <button id={"close-"+index} type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
                                     </div>
                                 </form>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,7 +194,12 @@ const AdminFeedback = (props) => {
                 message: form.message.value
             }
             props.replyFeedback(id, data);
+            form.getElementsByTagName("button")[1].click()
         }
+    }
+
+    const clearState = () => {
+        props.clearState();
     }
 
     return (
@@ -209,6 +215,11 @@ const AdminFeedback = (props) => {
                                     <div className="card">
                                         <div className="card-body">
                                             <h4 className="card-title">Feedbacks</h4>
+                                            {props.feedback.requesting && <div className="loading" delay-hide="10"></div>
+                                            // <div class="spinner-border text-primary spinner" role="status">
+                                            //     <span class="sr-only">Sending...</span>
+                                            // </div>
+                                            }
                                             <div className="table-responsive">
                                                 {props.feedback.data && <DataTable className="table"
                                                     customStyles={customStyles}
@@ -221,9 +232,6 @@ const AdminFeedback = (props) => {
                                                 // subHeaderComponent={subHeader}
                                                 />}
                                             </div>
-                                            {props.feedback.requesting && <div class="spinner-border text-primary" role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>}
                                         </div>
                                     </div>
                                 </div>
@@ -250,8 +258,8 @@ const mapDispatchToProps = (dispatch) => {
         getFeedbacks: () => {
             dispatch(fetchFeedback());
         },
-        replyFeedback: () => {
-            dispatch()
+        replyFeedback: (id, data) => {
+            dispatch(replyFeedback(id, data))
         },
         clearState: () => {
             dispatch(clearFeedbackState());

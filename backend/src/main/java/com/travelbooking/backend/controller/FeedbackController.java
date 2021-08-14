@@ -41,12 +41,13 @@ public class FeedbackController {
     //http://localhost:8080/api/feedback/{id}
     @PutMapping("/feedback/{id}")
     public ResponseEntity<FeedBack> replyFeedback(@RequestBody FeedBack feedBack, @PathVariable Long id){
+        feedBack.setId(id);
         FeedBack result = feedbackRepository.save(feedBack);
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("fname", result.getName());
         emailMap.put("reply", result.getReply());
         String templateHtml = emailService.templateResolve("reply_feedback", emailMap);
-        emailService.sendSimpleMessage(result.getEmail(),null, "Reply feedback: "+result.getSubTitle(), templateHtml);
+        emailService.sendSimpleMessage(result.getEmail(),null, "Reply feedback", templateHtml);
         return ResponseEntity.ok().body(result);
     }
 
