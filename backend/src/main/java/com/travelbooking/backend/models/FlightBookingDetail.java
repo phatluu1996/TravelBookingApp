@@ -22,6 +22,7 @@ public class FlightBookingDetail {
 
     @ManyToOne
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("flightBookingDetails")
     private FlightBooking flightBooking;
 
     @OneToOne
