@@ -188,10 +188,13 @@ export const createHotelFeedBack = (data) => async dispatch => {
         dispatch({ type: CREATE_HOTEL_FEEDBACK_REQUEST });
         const url = `${ROOT_URL}/api/hotelFeedBack`;
         const response = await axios.post(url, data)
-        const responseBody = await response.data;
-        dispatch({
-            type: CREATE_HOTEL_FEEDBACK_SUCCESS
-        });
+        if(response.status === 200){
+           console.log(response.data);
+            dispatch({
+                type: CREATE_HOTEL_FEEDBACK_SUCCESS,
+                payload:response.data
+            }); 
+        }
     } catch (error) {
         console.error(error);
         dispatch({
@@ -211,10 +214,10 @@ export const getFeedbacks = (id) => async dispatch => {
         dispatch({ type: GET_HOTEL_FEEDBACK_REQUEST });
         const url = `${ROOT_URL}/api/hotelFeedBack/${id}`;
         const response = await axios.get(url)
-        const responseBody = await response.data;
+        // const responseBody = await response.data;
         dispatch({
             type: GET_HOTEL_FEEDBACK_SUCCESS,
-            payload: responseBody
+            payload: response.data
         });
     } catch (error) {
         console.error(error);

@@ -70,7 +70,7 @@ const HotelDetailPage = (props) => {
         headCells: {
             style: {
                 paddingLeft: "8px",
-                fontSize: "20px", // override the cell padding for head cells
+                fontSize: "20px",
             },
         },
         cells: {
@@ -105,17 +105,11 @@ const HotelDetailPage = (props) => {
             alert("Please select your room");
             return [];
         } else {
-            //   console.log( `/hotel-booking?id=${props?.hotel?.data?.id}
-            //   &checkInDate=${queryParam.get("checkInDate")}
-            //   &checkOutDate=${queryParam.get("checkOutDate")}
-            //   &roomIds=${bookingList.join(".")}`)  
             props.clearBookingCached();
             sessionStorage.setItem("isRoomBooking", true)
             history.push(
                 `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
-
-            // console.log(bookingList);
         }
     };
     const handleChange = (e) => {
@@ -226,6 +220,7 @@ const HotelDetailPage = (props) => {
             hotel: props?.hotel?.data,
         };
         props.addFeedBack(data);
+        setIsLoading(true);
     };
 
     useEffect(() => {
@@ -239,16 +234,8 @@ const HotelDetailPage = (props) => {
         return () => {
             mount = true;
         };
-    }, []);
+    }, [isLoading],props.feedbacks);
 
-    useEffect(() => {
-        let mount = false;
-        props.getFeedbacks(queryParam.get("id"));
-        importAll();
-        return () => {
-            mount = true;
-        };
-    }, [props.feedbacks]);
 
     useEffect(() => {
         if (Array.isArray(props.hotel?.data?.rooms) &&
@@ -257,16 +244,6 @@ const HotelDetailPage = (props) => {
             setCurrentImage(props.hotel.data.rooms[0].images[0].imagePath)
         }
     }, [props.hotel]);
-    useEffect(() => {
-        let mount = false;
-
-        importAll();
-
-        return () => {
-            mount = true;
-        };
-    }, [isLoading]);
-
     // useEffect(() => {
     //     let mount = false;
 
@@ -692,7 +669,6 @@ const HotelDetailPage = (props) => {
 
                                                                 <div className="clear"></div>
                                                             </div>
-                                                            {/* <div className="facilities"> */}
                                                             <h2>Facilities of Hotel</h2>
                                                             <ul className="preferences-list">
                                                                 <li
@@ -705,7 +681,6 @@ const HotelDetailPage = (props) => {
                                                                 >
                                                                     High-speed Internet
                                                                 </li>
-                                                                {/* <li className="conf-room" hidden={props.hotel.data.highSpeedInternet?true:false}>Conference room</li> */}
                                                                 <li
                                                                     className="play-place"
                                                                     hidden={
@@ -714,12 +689,6 @@ const HotelDetailPage = (props) => {
                                                                 >
                                                                     Play Place
                                                                 </li>
-                                                                {/* <li className="restourant" hidden={props.hotel.data.highSpeedInternet?true:false}>Restourant</li> */}
-                                                                {/* <li className="bar" hidden={props.hotel.data.highSpeedInternet?true:false}>Bar</li> */}
-                                                                {/* <li className="doorman" hidden={props.hotel.data.highSpeedInternet?true:false}>Doorman</li> */}
-                                                                {/* <li className="kitchen" hidden={props.hotel.data.highSpeedInternet?true:false}>Kitchen</li> */}
-                                                                {/* <li className="spa" hidden={props.hotel.data.highSpeedInternet?true:false}>Spa services</li> */}
-                                                                {/* <li className="bike" hidden={props.hotel.data.highSpeedInternet?true:false}>Bike Rental</li> */}
                                                                 <li
                                                                     className="entertaiment"
                                                                     hidden={
@@ -771,30 +740,9 @@ const HotelDetailPage = (props) => {
                                                                 >
                                                                     Pets allowed
                                                                 </li>
-                                                                {/* <li className="handicap" hidden={props.hotel.data.highSpeedInternet?true:false}>Handicap</li> */}
-                                                                {/* <li className="secure" hidden={props.hotel.data.highSpeedInternet?true:false}>Secure </li> */}
                                                             </ul>
                                                             <div className="clear"></div>
                                                             <div className="preferences-devider"></div>
-                                                            {/* <table>
-                                                                    <tr>
-                                                                        <td className="facilities-a">Food & Drink</td>
-                                                                        <td className="facilities-b">Breakfast in the Room</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td className="facilities-a">Internet</td>
-                                                                        <td className="facilities-b"><span className="facility-label">Free! WiFi is available in all areas and is free of charge.</span></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td className="facilities-a">Parking</td>
-                                                                        <td className="facilities-b">Vending Machine (drinks), 24-Hour Front Desk, Express Check-in/Check-out</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td className="facilities-a">Languages</td>
-                                                                        <td className="facilities-b">Italian, French, Spanish, English, Arabic</td>
-                                                                    </tr>
-                                                                </table> */}
-                                                            {/* </div> */}
                                                         </div>
                                                     </div>
 
@@ -823,6 +771,7 @@ const HotelDetailPage = (props) => {
                                                             >
                                                                 {totalAdult}/{queryParam.get("numberAdult")}
                                                             </Button>
+                                                            
                                                             {parseInt(queryParam.get("numberChildren")) !==
                                                                 0 && <Button
                                                                     style={
@@ -1198,11 +1147,10 @@ const HotelDetailPage = (props) => {
                                                                     setPageNum={setPageNumberFB}
                                                                 />
                                                                 <div
-                                                                    hidden={user ? false : true}
+                                                                    hidden={user||isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
                                                                     <h2>Live Review</h2>
-
                                                                     <label>Your Review:</label>
                                                                     <div className="textarea-a">
                                                                         <textarea
