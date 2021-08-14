@@ -18,9 +18,9 @@ const About = () => {
                 <div className="inner-page">
                     <div className="inner-breadcrumbs">
                         <div className="content-wrapper">
-                            <div className="page-title">About</div>
+                            <div className="page-title">About Us</div>
                             <div className="breadcrumbs">
-                                <Link to="/">Home</Link> / <span>About</span>
+                                <Link to="/">Home</Link> / <span>About us</span>
                             </div>
                             <div className="clear"></div>
                         </div>
@@ -29,28 +29,29 @@ const About = () => {
                     <div className="about-content">
                         <div className="content-wrapper">
                             <header className="page-lbl fly-in">
-                                <div className="offer-slider-lbl">about our company</div>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit</p>
+                                <div className="offer-slider-lbl">About our website</div>
+                                <p>for those who were too busy to go to ticket office!</p>
                             </header>
                             <div className="tree-colls fly-in">
                                 <div className="tree-colls-i about-text">
-                                    <p><span className="paragraph">Q</span>erspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque lauda erspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et</p>
+                                    <p><span className="paragraph">D</span>uring the period of information technology and computer development people can search and find anything at home vie internet connection and use online services. Therefore, we are developing a service “Book any flight, any hotel online with more conveniences” named Travel Booking App. Travel Booking App is a group of people who wants to</p>
+
                                 </div>
                                 <div className="tree-colls-i about-text">
-                                    <p>doloremque laudantium, totam rem. Aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta. sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>
+                                    <p>develop an online site where the users who are too busy to think of how they can purchase ticket online for traveling and this is also a marketing channel for hotels and airlines who will supply products for sale. It will provide users and suppliers the following features.</p>
                                 </div>
                                 <div className="tree-colls-i about-text">
                                     <div className="about-percent">
-                                        <label>tours - 87%</label>
-                                        <div data-percentage="87" className="about-percent-a"><span></span></div>
+                                        <label>Hotels - 87%</label>
+                                        <div data-percentage="87" className="about-percent-a"><span style={{width:"87%"}}></span></div>
                                     </div>
                                     <div className="about-percent">
-                                        <label>work with clients - 47%</label>
-                                        <div data-percentage="47" className="about-percent-a"><span></span></div>
+                                        <label>Fly with us - 80%</label>
+                                        <div data-percentage="80%" className="about-percent-a"><span style={{width:"80%"}}></span></div>
                                     </div>
                                     <div className="about-percent">
-                                        <label>hotels - 70%</label>
-                                        <div data-percentage="70" className="about-percent-a"><span></span></div>
+                                        <label>Happy with us - 96%</label>
+                                        <div data-percentage="96" className="about-percent-a"><span style={{width:"96%"}}></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -63,32 +64,32 @@ const About = () => {
                             <div className="content-wrapper">
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='4560' data-delay='3' data-increment="15">0</b>
-                                    <span>tours</span>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='4560' data-delay='3' data-increment="1">0</b>
+                                    <span>Happy clients</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='190' data-delay='3' data-increment="2">0</b>
-                                    <span>happy clients</span>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='190' data-delay='3' data-increment="1">0</b>
+                                    <span>Total bookings</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='842' data-delay='2' data-increment="3">0</b>
-                                    <span>holes reviews</span>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='842' data-delay='2' data-increment="1">0</b>
+                                    <span>Reviews</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='98' data-delay='3' data-increment="2">0</b>
-                                    <span>company offices</span>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='98' data-delay='3' data-increment="1">0</b>
+                                    <span>Hotels Partner</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='452' data-delay='3' data-increment="2">0</b>
-                                    <span>awwards win</span>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='5' data-delay='1' data-increment="1">0</b>
+                                    <span>Airlines Partner</span>
                                 </div>
 
                             </div>
@@ -100,8 +101,8 @@ const About = () => {
                                 <div id="testimonials-slider">
 
                                     <div className="testimonials-i">
-                                        <div className="testimonials-a"><img alt="" src="img/testimonials-02.png" /></div>
-                                        <div className="testimonials-b">"Qerspeciatis unde omnis iste natus doxes sit voluptatem accusantium doloremque laudantium, totam aperiam<br />eaque ipsa quae ab illo inventore veritatis et quasi architecto"</div>
+                                        <div className="testimonials-a"><img alt="" src="img/aboutus/p2.jpg" style={{height:'60px',width:'60px',borderRadius:'30px'}} /></div>
+                                        <div className="testimonials-b" style={{color:'black',fontWeight:'30px'}}>"Qerspeciatis unde omnis iste natus doxes sit voluptatem accusantium doloremque laudantium, totam aperiam<br />eaque ipsa quae ab illo inventore veritatis et quasi architecto"</div>
                                         <div className="testimonials-c">
                                             <nav>
                                                 <ul>
@@ -210,7 +211,7 @@ const About = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <img alt="" src="img/about-03.jpg" />
+                                                <img alt="" src="img/aboutus/hoa.jpg" />
                                             </div>
                                             <div className="about-photo-lbl">Hoa Nguyen</div>
                                             <div className="about-photo-sublbl">Team Member</div>
