@@ -41,10 +41,11 @@ public class FileUploadController {
 
 
 	@PostMapping("/upload-file")
-	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file // file hình
+	public ResponseEntity<Object> fileUpload( MultipartFile file // file hình
 	) throws IOException {
 		Image image = new Image();
 		HashMap<String, String> fileObject = new HashMap<>();
+
 		try {
 
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";

@@ -7,7 +7,7 @@ const initialState = {
     data: null
   }
 
-function reducerHotelFeedBack(state = initialState, action) {
+function reducerHotelFeedback(state = initialState, action) {
     switch (action.type) {
         case CREATE_HOTEL_FEEDBACK_REQUEST:
           return {
@@ -59,4 +59,4 @@ function reducerHotelFeedBack(state = initialState, action) {
       }
   };
   
-  export default reducerHotelFeedBack;
+  export default reducerHotelFeedback;

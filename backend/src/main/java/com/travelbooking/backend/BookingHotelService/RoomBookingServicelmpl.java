@@ -114,7 +114,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);
         String templateHtml = emailService.templateResolve("thankyouemail", emailMap);
-        emailService.sendSimpleMessage(user.getEmail(),null, "Hotel Itinerary", templateHtml, "Invoice.pdf", pdfAttachment, qrcode);
+        emailService.sendSimpleMessage(user.getEmail(),null, "Hotel Invoice", templateHtml, "Invoice.pdf", pdfAttachment, qrcode);
         qrcode.delete();
         pdfAttachment.delete();
     }
