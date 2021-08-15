@@ -7,6 +7,7 @@ import Footer from '../Layout/Footer'
 import Header from '../Layout/Header'
 import ComboFlightSearchPage from './ComboFlightSearchPage'
 import ComboFlightSearchPage2 from './ComboFlightSearchPage2'
+import ComboHotelDetailPage from './ComboHotelDetailPage'
 import ComboHotelSearchPage from './ComboHotelSearchPage'
 
 function useQuery() {
@@ -17,6 +18,7 @@ const ComboStepWizard = (props) => {
     const [departFlight, setDepartFlight] = useState(null);
     const [returnFlight, setReturnFlight] = useState(null);
     const [hotel, setHotel] = useState(null);
+    const [rooms, setRooms] = useState(null);
     const queryString = require('query-string');
     const [filter, setFilter] = useState(queryString.parse(props.location.search));
 
@@ -32,10 +34,10 @@ const ComboStepWizard = (props) => {
     return (<>
         <Header></Header>
         <StepWizard>
-            {!filter.returnDate ? (<ComboFlightSearchPage departFlight={departFlight} setDepartFlight={setDepartFlight} filter={filter} setFilter={setFilter}></ComboFlightSearchPage>)
-            :(<ComboFlightSearchPage2 departFlight={departFlight} setDepartFlight={setDepartFlight} returnFlight={returnFlight} setReturnFlight={setReturnFlight} filter={filter} setFilter={setFilter}></ComboFlightSearchPage2>)}
-            <ComboHotelSearchPage selectHotel={hotel} setSelectHotel={setHotel} filter={filter} setFilter={setFilter}></ComboHotelSearchPage>
-            
+            {/* <ComboFlightSearchPage departFlight={departFlight} setDepartFlight={setDepartFlight} filter={filter} setFilter={setFilter}></ComboFlightSearchPage> */}
+            <ComboFlightSearchPage2 departFlight={departFlight} setDepartFlight={setDepartFlight} returnFlight={returnFlight} setReturnFlight={setReturnFlight} filter={filter} setFilter={setFilter}></ComboFlightSearchPage2>
+            <ComboHotelSearchPage selectHotel={hotel} setSelectHotel={setHotel} filter={filter} setFilter={setFilter} departFlight={departFlight} returnFlight={returnFlight}></ComboHotelSearchPage>
+            <ComboHotelDetailPage selectHotel={hotel} selectRooms={rooms} setSelectRooms={setRooms} filter={filter} fid={departFlight?.id} rid={returnFlight?.id}></ComboHotelDetailPage>            
         </StepWizard>
         <Footer></Footer>
     </>)

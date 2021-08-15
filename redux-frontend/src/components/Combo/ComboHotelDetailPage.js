@@ -10,7 +10,7 @@ import { fetchHotelById } from "../../actions/actionHotel";
 import { createHotelFeedBack, getFeedbacks } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
-import Pagination from "./Pagination";
+import Pagination from "../Hotel/Pagination";
 import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faBaby, faCheck, faChild, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +21,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
 import { clearRoomBookingCached } from "../../actions/actionBookingRoom";
 import { Button, makeStyles } from "@material-ui/core";
+import { getHotelById } from "../../actions/actionStepWizard";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -36,7 +37,7 @@ const useStyle = makeStyles({
     }
 });
 
-const HotelDetailPage = (props) => {
+const ComboHotelDetailPage = (props) => {
     const history = useHistory();
     let queryParam = useQuery();
     const [currentImage, setCurrentImage] = useState(null);
@@ -86,24 +87,44 @@ const HotelDetailPage = (props) => {
         setCurrentImage(e.target.src);
     };
 
-    const addNewBook = (e) => {
+    const goToBooking = (e) => {
         if (getRole() != ROLE_USER) {
             $(".header-account a").click();
         } else if (totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))
         ) {
-            alert("Select the number of rooms suitable for the number of people");        
+            // alert("Select the number of rooms suitable for the number of people");        
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
-            alert("Please select your room");
+            // alert("Please select your room");
             return [];
         } else {
             props.clearBookingCached();
-            sessionStorage.setItem("isRoomBooking", true);
-            history.push(
-                `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
-            );
+            sessionStorage.setItem("isComboBooking", true);
+            $("#trigger-confirmation").click();
         }
+
     };
+
+    const confirmBooking = () => {
+        console.log(props.filter);
+        var filter = props.filter;
+        var departureDate = filter.departureDate;
+        var returnDate = filter.returnDate;
+        var adult = filter.adult;
+        var child = filter.child;
+        var infant = filter.infant;
+        var seatClass = filter.seatclassName;
+        var fid = props.fid;
+        var rfit = props.rid;
+        var id = props.selectHotel.id;
+        var numberChildren = filter.numberChildren;
+        var numberAdult = filter.numberAdult;
+        var checkin = filter.checkInDate;
+        var checkout = filter.checkOutDate;
+        var roomId = bookingList.join(".");
+        history.push(`/combo-booking?departureDate=${departureDate}&adult=${adult}&child=${child}&infant=${infant}&seatClass=${seatClass}&fid=${fid}&rfid=${rfit}&returnDate=${returnDate}&id=${id}&numberChildren=${numberChildren}&numberAdult=${numberAdult}&checkInDate=${checkin}&checkOutDate=${checkout}&roomIds=${roomId}`)
+    }
+
     const handleChange = (e) => {
         var totalA = 0;
         var totalC = 0;
@@ -223,13 +244,19 @@ const HotelDetailPage = (props) => {
     }, [])
 
     useEffect(() => {
+        if (props.selectHotel) {
+            props.getHotel(props.selectHotel.id);
+            props.getFeedbacks(props.selectHotel.id);
+
+        }
+    }, [props.selectHotel])
+
+    useEffect(() => {
         let mount = false;
         props.getUser(user);
-        props.getHotel(queryParam.get("id"));
-        props.getFeedbacks(queryParam.get("id"));
-
-        importAll();
-
+        // props.getHotel(queryParam.get("id"));
+        // props.getFeedbacks(queryParam.get("id"));
+        // importAll();
         return () => {
             mount = true;
         };
@@ -264,17 +291,15 @@ const HotelDetailPage = (props) => {
     // });
     return (
         <>
-            <Header></Header>
             <div className="main-cont">
                 <div className="body-wrapper">
                     <div className="wrapper-padding">
                         <div className="page-head">
-                            <div className="page-title">
-                                Hotels - <span>Detail</span>
-                            </div>
+                            <Link className="wizard-btn mr-1" to="/">Cancel</Link>
+                            <button className="wizard-btn mr-1" onClick={() => props.goToStep(2)}>Back</button>
+                            {/* <button className={props.selectRooms ? "wizard-btn" : "wizard-btn disable"} disabled={!props.selectRooms} onClick={() => props.goToStep(4)}>Next</button> */}
                             <div className="breadcrumbs">
-                                <a href="#">Home</a> / <a href="#">Hotel</a> /{" "}
-                                <span>Detail</span>
+                                <Link to="/">Home</Link> / <span>Flight + Hotel</span>
                             </div>
                             <div className="clear"></div>
                         </div>
@@ -501,46 +526,19 @@ const HotelDetailPage = (props) => {
                                                                 number of people{" "}
                                                             </h2>
                                                             <Button style={totalAdult < parseInt(queryParam.get("numberAdult")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
-                                                                color="red" size="large" startIcon={<FontAwesomeIcon icon={faMale} ></FontAwesomeIcon>} variant="" >
+                                                                size="large" startIcon={<FontAwesomeIcon icon={faMale} ></FontAwesomeIcon>} >
                                                                 {totalAdult}/{queryParam.get("numberAdult")}
                                                             </Button>
 
                                                             {parseInt(queryParam.get("numberChildren")) !== 0 &&
                                                                 <Button style={totalChild < parseInt(queryParam.get("numberChildren")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
-                                                                    startIcon={<FontAwesomeIcon icon={faChild}></FontAwesomeIcon>} variant="" >
+                                                                    startIcon={<FontAwesomeIcon icon={faChild}></FontAwesomeIcon>} >
                                                                     {totalChild}/{queryParam.get("numberChildren")}
                                                                 </Button>}
                                                             <Button style={(totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
-                                                                color="red" size="large" variant="" onClick={addNewBook}>
-                                                                {/* {totalAdult <
-                                                                    parseInt(queryParam.get("numberAdult")) || totalChild <
-                                                                    parseInt(queryParam.get("numberChildren"))
-                                                                    ?
-                                                                    <FontAwesomeIcon
-                                                                        icon={faTimesCircle} />
-                                                                    :
-                                                                    <FontAwesomeIcon icon={faCheck}/>
-                                                                } */}
+                                                                size="large" onClick={goToBooking}>
                                                                 BOOK NOW
                                                             </Button>
-                                                            {/* <a onClick={(e) => addNewBook()} className="book-btn" style={{ color: "red" }}>
-                                                                <span className="book-btn-l">
-                                                                    {totalAdult <
-                                                                        parseInt(queryParam.get("numberAdult")) || totalChild <
-                                                                        parseInt(queryParam.get("numberChildren"))
-                                                                        ?
-                                                                        <FontAwesomeIcon
-                                                                            icon={faTimesCircle}
-                                                                            className={classes.icon} />
-                                                                        :
-                                                                        <FontAwesomeIcon
-                                                                            icon={faCheck}
-                                                                            className={classes.icon} />
-                                                                    }
-                                                                </span>
-                                                                <span className="book-btn-r">Book now</span>
-                                                                <div className="clear"></div>
-                                                            </a> */}
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -556,51 +554,6 @@ const HotelDetailPage = (props) => {
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {/* <div className="content-tabs-i">
-                                                        <h2>Hotel Facilities</h2>
-                                                        <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
-                                                        <ul className="preferences-list">
-                                                            <li className="internet">High-speed Internet</li>
-                                                            <li className="conf-room">Conference room</li>
-                                                            <li className="play-place">Play Place</li>
-                                                            <li className="restourant">Restourant</li>
-                                                            <li className="bar">Bar</li>
-                                                            <li className="doorman">Doorman</li>
-                                                            <li className="kitchen">Kitchen</li>
-                                                            <li className="spa">Spa services</li>
-                                                            <li className="bike">Bike Rental</li>
-                                                            <li className="entertaiment">Entertaiment</li>
-                                                            <li className="hot-tub">Hot Tub</li>
-                                                            <li className="pool">Swimming Pool</li>
-                                                            <li className="parking">Free parking</li>
-                                                            <li className="gym">Gym</li>
-                                                            <li className="tv">TV</li>
-                                                            <li className="pets">Pets allowed</li>
-                                                            <li className="handicap">Handicap</li>
-                                                            <li className="secure">Secure </li>
-                                                        </ul>
-                                                        <div className="clear"></div>
-                                                        <div className="preferences-devider"></div>
-                                                        <h2>Alternative Style</h2>
-                                                        <p>Quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt eque porro quisqua.</p>
-                                                        <ul className="preferences-list-alt">
-                                                            <li className="internet">High-speed Internet</li>
-                                                            <li className="parking">Free parking</li>
-                                                            <li className="gym">Gym</li>
-                                                            <li className="restourant">Restourant</li>
-                                                            <li className="pets">Pets allowed</li>
-                                                            <li className="pool">Swimming Pool</li>
-                                                            <li className="kitchen">Kitchen</li>
-                                                            <li className="conf-room">Conference room</li>
-                                                            <li className="bike">Bike Rental</li>
-                                                            <li className="entertaiment">Entertaiment</li>
-                                                            <li className="bar">Bar</li>
-                                                            <li className="secure">Secure</li>
-                                                        </ul>
-                                                        <div className="clear"></div>
-                                                    </div> */}
-
                                                     <div className="content-tabs-i">
                                                         <div className="reviews-a">
                                                             <div className="reviews-c">
@@ -666,105 +619,6 @@ const HotelDetailPage = (props) => {
                                                             </div>
                                                             <div className="clear"></div>
 
-                                                            {/* <div className="reviews-devider"></div> */}
-                                                            {/* 
-                                                            <div className="hotel-reviews">
-                                                                <h2>Hotel Facilities</h2>
-                                                                <div className="hotel-reviews-row">
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Cleanlines</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Price</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Sleep Quality</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Service & Stuff</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Location</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-
-                                                                    <div className="hotel-reviews-i">
-                                                                        <div className="hotel-reviews-left">Comfort</div>
-                                                                        <nav className="hotel-reviews-right">
-                                                                            <ul>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-b.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                                <li><a href="#"><img alt="" src="img/sstar-a.png" /></a></li>
-                                                                            </ul>
-                                                                        </nav>
-                                                                        <div className="clear"></div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div> */}
-
                                                             <div className="hotel-reviews-devider"></div>
 
                                                             <div className="guest-reviews">
@@ -775,7 +629,7 @@ const HotelDetailPage = (props) => {
                                                                         pageNumberFB,
                                                                         itemsPerPageFB
                                                                     ).map((feedback) => (
-                                                                        <div className="guest-reviews-i">
+                                                                        <div className="guest-reviews-i" key={feedback.id}>
                                                                             <div className="guest-reviews-a">
                                                                                 <div className="guest-reviews-l">
                                                                                     <div className="guest-reviews-img">
@@ -874,7 +728,7 @@ const HotelDetailPage = (props) => {
                                                                     <div className="textarea-a">
                                                                         <textarea
                                                                             id="feedbackTxt"
-                                                                            value={areaText}
+                                                                            defaultValue={areaText}
                                                                             onChange={(e) =>
                                                                                 setAreaText(e.target.value)
                                                                             }
@@ -992,10 +846,10 @@ const HotelDetailPage = (props) => {
                                             natus error sit voluptatem.
                                         </p>
                                     </div>
-                                    <a href="#book-room" onClick={(e) => $("#book-room").click()} class="wishlist-btn">
-                                        <span class="wishlist-btn-l"><i></i></span>
-                                        <span class="wishlist-btn-r">Book Now</span>
-                                        <div class="clear"></div>
+                                    <a href="#book-room" onClick={(e) => $("#book-room").click()} className="wishlist-btn">
+                                        <span className="wishlist-btn-l"><i></i></span>
+                                        <span className="wishlist-btn-r">Book Now</span>
+                                        <div className="clear"></div>
                                     </a>
                                 </div>
 
@@ -1085,13 +939,36 @@ const HotelDetailPage = (props) => {
                     </div>
                 </div>
             </div>
-            <Footer></Footer>
+            <button id="trigger-confirmation" type="button" className="btn btn-primary" data-toggle="modal" data-target="#confirmation" hidden>
+                TriggerModal
+            </button>
+            <div className="bootstrap-scope">
+                <div className="modal fade" id="confirmation" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content sparrow">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Final Confirm</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p>You will be redirect to booking site , are you sure ?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-success" onClick={confirmBooking}>Yes</button>
+                                <button type="button" className="btn btn-danger" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
 const mapStateToProps = (state, ownProps) => {
     return {
-        hotel: state.hotels,
+        hotel: state.hotel,
         user: state.user,
         feedbacks: state.hotelFeedback,
     };
@@ -1099,7 +976,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getHotel: (id) => dispatch(fetchHotelById(id)),
+        getHotel: (id) => dispatch(getHotelById(id)),
         addFeedBack: (data) => dispatch(createHotelFeedBack(data)),
         getUser: (id) => { dispatch(getUser(id)); },
         getFeedbacks: (id) => { dispatch(getFeedbacks(id)) },
@@ -1107,4 +984,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HotelDetailPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ComboHotelDetailPage);

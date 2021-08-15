@@ -15,10 +15,8 @@ function useQuery() {
 const ComboHotelSearchPage = (props) => {
   const history = useHistory();
   let queryParam = useQuery();
-  const [queryFilter, setQueryFilter] = useState();
   const [selectProvince, setSelectProvince] = useState(null);
   const [selectDistrict, setSelectDistrict] = useState(null);
-  const [itemsList, setItemsList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const [page, setPage] = useState(1);
@@ -446,6 +444,69 @@ const ComboHotelSearchPage = (props) => {
               <div className="two-colls-left">
                 <div className="srch-results-lbl fly-in">
                   <span>{props.hotels?.data?.length} results found.</span>
+                </div>
+                <div className="side-block fly-in">
+                  <div className="srch-tab-line">
+                    <div className="side-block-search">
+                      <div className="page-search-p">
+                        <div className="srch-tab-3c">
+                          <div className="alt-data-i">
+                            {/* <span className="circle">Depart</span> */}
+                            <img width="80" height="60" src={props.departFlight?.airline?.image}/>
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+
+                        <div className="srch-tab-3c transformed mt-1">
+                          <div className="alt-data-i alt-col">
+                            <b>Depart Date</b>
+                            <span>{props.filter?.departureDate}</span><br/>
+                            <span>{props.departFlight?.departureTime}-{props.departFlight?.arrivalTime}</span>
+                          </div>
+                        </div>
+                        <div className="srch-tab-3c transformed mt-1">
+                          <div className="alt-data-i">
+                            <b>Route</b>
+                            <label><strong>{props.filter?.from + " - " + props.filter?.to}</strong></label>
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+                        <div className="clear"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="side-block fly-in">
+                  <div className="srch-tab-line">
+                    <div className="side-block-search">
+                      <div className="page-search-p">
+                        <div className="srch-tab-3c">
+                          <div className="alt-data-i">
+                            {/* <span className="circle">Return</span> */}
+                            <img width="80" height="60" src={props.returnFlight?.airline?.image}/>
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+
+                        <div className="srch-tab-3c transformed mt-1">
+                          <div className="alt-data-i alt-col">
+                            <b>Return Date</b>
+                            <span>{props.filter?.returnDate}</span><br/>
+                            <span>{props.returnFlight?.departureTime}-{props.returnFlight?.arrivalTime}</span>
+                          </div>
+                        </div>
+                        <div className="srch-tab-3c transformed mt-1">
+                          <div className="alt-data-i">
+                            <b>Route</b>
+                            <label><strong>{props.filter?.to + " - " + props.filter?.from}</strong></label>
+                            {/* <b>{props.filter.seatclassName == "ECONOMY" ? props.returnFlight?.economyPrice :  props.returnFlight?.businessPrice}</b> */}
+                          </div>
+                          <div className="clear"></div>
+                        </div>
+                        <div className="clear"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="side-block fly-in">

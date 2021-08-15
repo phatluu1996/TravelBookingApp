@@ -191,7 +191,7 @@ const ComboFlightSearchPage2 = (props) => {
         if (shouldSetState) {
             props.setFilter(filter)
         }
-        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatClassName, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
+        props.getFlight(filter.from, filter.to, filter.adult, filter.child, filter.infant, filter.departureDate, filter.returnDate, filter.seatclassName, filter.priceFrom, filter.priceTo, filter.page, filter.sortBy, filter.sortDir);
         window.history.pushState({}, null, `/combo-list?${toQueryString(filter)}`);
     }
 
@@ -294,10 +294,10 @@ const ComboFlightSearchPage2 = (props) => {
 
     const getSeatAmount = (flight) => {
         if (flight.flightBookingDetails.length == 0) {
-            return props.filter.seatClassName === "ECONOMY" ? flight.economyCapacity : flight.businessCapacity;
+            return props.filter.seatclassName === "ECONOMY" ? flight.economyCapacity : flight.businessCapacity;
         }
         var bookingByType = [];
-        if (props.filter.seatClassName === "ECONOMY") {
+        if (props.filter.seatclassName === "ECONOMY") {
             bookingByType = flight.flightBookingDetails.filter(item => item.priceType === 0);
             return flight.economyCapacity - bookingByType.length;
         } else {
@@ -307,7 +307,7 @@ const ComboFlightSearchPage2 = (props) => {
     }
 
     const flightPrice = (flight) => {
-        var price = props.filter.seatClassName === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
+        var price = props.filter.seatclassName === "ECONOMY" ? flight.economyPrice : flight.businessPrice;
         return price;
     }
 
@@ -430,7 +430,7 @@ const ComboFlightSearchPage2 = (props) => {
                         <div className="two-colls-left">
 
                             <div className="srch-results-lbl fly-in">
-                                Round way Flight
+                                ROUND FLIGHT: {props.flights?.returnData?.totalElements + props.flights?.data?.totalElements} results found.
                             </div>
 
                             <div className={flightTab ? "side-block fly-in selected" : "side-block fly-in"} onClick={() => changeTab(true)}>

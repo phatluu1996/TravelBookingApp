@@ -1762,6 +1762,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .alt-data-i span {font-family:'Open Sans'; font-weight:bold; font-size:12px; color:#4a90a4;}
 .alt-departure {background:url(../img/alt-depart.png) left center no-repeat; margin-right:26px; padding:0px 0px 0px 23px;}
 .alt-arrival {background:url(../img/alt-return.png) left center no-repeat; margin-right:27px; padding:0px 0px 0px 23px;}
+.alt-col {margin-right:20px; padding:0px 0px 0px 10px;width: 100%;}
 .alt-time {background:url(../img/alt-time.png) left center no-repeat; margin-right:20px; padding:0px 0px 0px 23px;}
 .alt-center-c .flight-line-b {line-height:15px; margin-top:-1px; margin-right:32px;}
 .alt-details {display:none; padding:23px 21px 25px 21px; border-top:1px solid #e8e8e8;}
@@ -1771,7 +1772,7 @@ nav ul,nav ul li {margin:0px;padding:0px;list-style:none;}
 .alt-details-i span {color:#a0a0a0; font-size:11px;}
 
 span.circle {
-  background: #008dff;
+  background: #0d0d0d;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -3498,6 +3499,10 @@ span.circle {
 
 .mt-1{
   margin-top: 10px;
+}
+
+.pt-1{
+  padding-top: 30px;
 }
 
 

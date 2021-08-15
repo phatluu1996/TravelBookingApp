@@ -62,7 +62,7 @@ const ComboBookingPage = (props) => {
 
   const [date, setDateCalculate] = useState(0);
   const [dataConfirm, setDataConfirm] = useState(null);
-  
+
   const [hasInfant, setHasInfant] = useState([
     {
       infant: false,
@@ -279,7 +279,7 @@ const ComboBookingPage = (props) => {
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();
-    var totalHotelPrice = calculatePrice()*0.9;
+    var totalHotelPrice = calculatePrice() * 0.9;
     var newArr = [];
     props.rooms?.data.map((room, index) => newArr.push({ id: room.id }));
     if (validateForm(e)) {
@@ -404,7 +404,7 @@ const ComboBookingPage = (props) => {
 
   useEffect(() => {
     if (completeBooking.data && props.bookRoomData.data && checkout) {
-      sessionStorage.removeItem("isBooking");
+      sessionStorage.removeItem("isComboBooking");
       history.push({ pathname: "/combo-booking-complete" });
     }
     if (flights.data) {
@@ -694,22 +694,20 @@ const ComboBookingPage = (props) => {
                                     </label>
                                     <div
                                       name="gender"
-                                      className={`form-control sex-type ${
-                                        isMale[i].gender === "true"
+                                      className={`form-control sex-type ${isMale[i].gender === "true"
                                           ? "chosen"
                                           : ""
-                                      }`}
+                                        }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       M
                                     </div>
                                     <div
                                       name="gender"
-                                      className={`form-control sex-type ${
-                                        isMale[i].gender === "false"
+                                      className={`form-control sex-type ${isMale[i].gender === "false"
                                           ? "chosen"
                                           : ""
-                                      }`}
+                                        }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       F
@@ -752,7 +750,7 @@ const ComboBookingPage = (props) => {
                                 <div className="clear"></div>
 
                                 {inputListPassenger.length - 1 === i && (
-                                  <>
+                                  <div hidden={true}>
                                     <a
                                       id="removePassengerbutton"
                                       onClick={() => {
@@ -778,7 +776,7 @@ const ComboBookingPage = (props) => {
                                       ></FontAwesomeIcon>
                                       Add Passenger
                                     </a>
-                                  </>
+                                  </div>
                                 )}
                                 <div className="checkbox">
                                   <label>
@@ -856,7 +854,7 @@ const ComboBookingPage = (props) => {
                                                   amount: {
                                                     currency: "USD",
                                                     value:
-                                                      totalFlightPrice + calculatePrice()*0.9,
+                                                      totalFlightPrice + calculatePrice() * 0.9,
                                                   },
                                                 },
                                               ],
@@ -1074,7 +1072,7 @@ const ComboBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={props.hotel?.image} style={{ width: "95px", height: "60px" }}/>
+                        <img alt="" src={props.hotel?.data?.images[0]?.imagePath} style={{ width: "95px", height: "60px" }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -1095,9 +1093,9 @@ const ComboBookingPage = (props) => {
                                   (item, index) =>
                                     // {
                                     index + 1 >
-                                    Math.ceil(
-                                      props.hotel?.data?.hotelRating?.rating
-                                    ) ? (
+                                      Math.ceil(
+                                        props.hotel?.data?.hotelRating?.rating
+                                      ) ? (
                                       <li key={index}>
                                         <a>
                                           <img alt="" src="img/star-a.png" />
@@ -1118,7 +1116,7 @@ const ComboBookingPage = (props) => {
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                             
+
                             </a>
                           </div>
                           <div className="clear"></div>
@@ -1181,7 +1179,7 @@ const ComboBookingPage = (props) => {
                     <div className="chk-total">
                       <div className="chk-total-l">Final Price</div>
                       <div className="chk-total-r">
-                        {`${calculatePrice()*0.9}`}$
+                        {`${calculatePrice() * 0.9}`}$
                       </div>
                       <div className="clear"></div>
                     </div>

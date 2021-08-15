@@ -11709,6 +11709,21 @@ div.bootstrap-scope .modal-content {
   outline: 0;
 }
 
+div.bootstrap-scope .modal-content.sparrow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #f7f7f7 !important;
+  background-clip: padding-box;
+  border: none;
+  border-radius: 0.3rem;
+  outline: 0;
+  color: black !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+}
+
 div.bootstrap-scope .modal-backdrop {
   position: fixed;
   top: 0;
