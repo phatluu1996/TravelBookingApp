@@ -9,9 +9,24 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { getUser } from "../../actions/actionUser";
 import { connect, useSelector } from 'react-redux';
 import { data } from 'jquery';
+import { keys } from '@material-ui/core/styles/createBreakpoints';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBackward } from '@fortawesome/free-solid-svg-icons';
+import { Button, makeStyles } from "@material-ui/core";
 
 
+const useStyle = makeStyles({
+    icon: {
+        display: "block",
+        color: "white",
+        float: "left",
+        margin: "17px 0px 0px 14px",
+        width: "20px",
+        height: "12px"
+    }
+});
 const HotelBookingCompletePage = (props) => {
+    const classes = useStyle();
     // const user = bookRoom?.data?.user;
     // const hotelBookingRooms = [...props.bookRoom?.data?.hotelBookingDetail?.hotelBookingRooms];
 
@@ -26,23 +41,12 @@ const HotelBookingCompletePage = (props) => {
         let mount = false;
 
         importAll();
-        // (room, index) => newArr.push({ id: room.id })
-        if (!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId")) {
-            // console.log(user);
-            // console.log(hotel);
-            // console.log(rooms);
-            // var newArr = [];
-            // booking.hotelBookingDetail?.hotelBookingRooms?.map((bookingRoom,index) =>
-            //     newArr.push({id:bookingRoom?.room?.id})
-            // )
-                // props.getHotel(booking.hotelBookingDetail?.hotelBookingRooms[0]?.room);
-                // props.getRooms(newArr);
-                
-        } else {
+
+        if (!sessionStorage.getItem("isRoomBooking") || sessionStorage.getItem("userId") && hotel?.data == null) {
             history.push(`/`);
+        } else {
+            sessionStorage.removeItem("isRoomBooking");
         }
-
-
         return () => {
             mount = true;
         }
@@ -69,11 +73,19 @@ const HotelBookingCompletePage = (props) => {
                                         <div className="sp-page-p">
                                             <div className="booking-left">
                                                 <h2>Booking Complete</h2>
-                                                {/* <button onClick={
-                                                    history.push(`/`)
-                                                }>
-                                                    Home Page
-                                                </button> */}
+                                                <a
+                                                    onClick={(e) => history.push(`/`)}
+                                                    className="book-btn"
+
+                                                >
+                                                    <span className="book-btn-l">
+                                                        <FontAwesomeIcon
+                                                            icon={faBackward}
+                                                            className={classes.icon} />
+                                                    </span>
+                                                    <span className="book-btn-r">Back to homepage</span>
+                                                    <div className="clear"></div>
+                                                </a>
                                                 <div className="comlete-alert">
                                                     <div className="comlete-alert-a">
                                                         <b>Thank You. Your Order is Confirmed.</b>
@@ -138,9 +150,11 @@ const HotelBookingCompletePage = (props) => {
                                                     </div>
                                                     <div className="complete-info-table">
                                                         <h2>Room Information</h2>
+
                                                         {
-                                                           rooms?.data?.map(room =>
-                                                                <>
+                                                            rooms?.data?.map((room, index) =>
+
+                                                                <React.Fragment key={room?.id}>
                                                                     <div className="complete-info-i">
                                                                         <div className="complete-info-l">Room Type:</div>
                                                                         <div className="complete-info-r">{room?.roomType}</div>
@@ -153,16 +167,18 @@ const HotelBookingCompletePage = (props) => {
                                                                     </div>
                                                                     <div className="complete-info-i">
                                                                         <div className="complete-info-l">Room Price:</div>
-                                                                        <div className="complete-info-r">{room?.price}</div>
+                                                                        <div className="complete-info-r">{room?.price}$</div>
                                                                         <div className="clear"></div>
                                                                     </div>
-                                                                </>
+                                                                    <div className="complete-devider"></div>
+                                                                </React.Fragment>
+
                                                             )
                                                         }
 
                                                     </div>
 
-                                                    <div className="complete-devider"></div>
+
 
                                                     <div className="complete-info-table">
                                                         <h2>Booking Information</h2>
@@ -188,7 +204,7 @@ const HotelBookingCompletePage = (props) => {
                                                         </div>
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Total Price:</div>
-                                                            <div className="complete-info-r">{booking.data?.totalPrice}</div>
+                                                            <div className="complete-info-r">{booking.data?.totalPrice}$</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                     </div>
@@ -296,7 +312,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         // getBooking: (id) => dispatch(getBooking(id)),
         getHotel: (data) => dispatch(getHotel(data)),
-        getRooms:(data) => dispatch(getRooms(data)),
+        getRooms: (data) => dispatch(getRooms(data)),
     };
 
 };

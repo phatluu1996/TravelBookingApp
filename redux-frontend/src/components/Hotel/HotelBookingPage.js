@@ -173,7 +173,7 @@ const HotelBookingPage = (props) => {
             var data =
             {
                 user: props.user?.data,
-                // hotel:props.hotel?.data,
+                nightCount:date,
                 rooms: newArr,
                 dateBooking: new Date(),
                 checkInDate: new Date(dateConvert(queryParam.get("checkInDate"))),
@@ -225,7 +225,7 @@ const HotelBookingPage = (props) => {
 
     useEffect(() => {
         if (props.bookRoomData?.data && checkout) {
-            sessionStorage.removeItem("isRoomBooking");
+            setCheckout(false)
             history.push("/hotel-booking-complete");
         }
         if (checkout && !isComplete) {
@@ -333,6 +333,7 @@ const HotelBookingPage = (props) => {
                                                     <div className="booking-complete">
                                                         <button className="booking-complete-btn" type="submit">Validate</button>
                                                     </div>
+                                                    {checkout && <div className="loading" delay-hide="10"></div>}
                                                     {/* </form> */}
                                                     <ReactModal
                                                         isOpen={modalIsOpen}
@@ -409,7 +410,7 @@ const HotelBookingPage = (props) => {
                                 <div className="checkout-coll">
                                     <div className="checkout-head">
                                         <div className="checkout-headl">
-                                            <a href="#"><img alt="" src="img/check-img.png" /></a>
+                                            <a href="#"><img style={{maxWidth:94,maxHeight:75}} alt="" src={props.hotel?.data?.images[0]?.imagePath} /></a>
                                         </div>
                                         <div className="checkout-headr">
                                             <div className="checkout-headrb">
