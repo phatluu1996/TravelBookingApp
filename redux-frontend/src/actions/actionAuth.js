@@ -108,8 +108,6 @@ export const signup = (firstname, lastname, username, email, password) => async 
     }
 }
 
-
-
 export const changePassword = (data) => async dispatch =>{
     try {
         dispatch({ type: CHANGE_PASSWORD_REQUEST });
@@ -129,6 +127,87 @@ export const changePassword = (data) => async dispatch =>{
     } catch (error) {
         dispatch({
             type: CHANGE_PASSWORD_ERROR,
+            message: error
+        });
+    }
+}
+
+export const SEND_EMAIL_FORGET_REQUEST = "SEND_EMAIL_FORGET_REQUEST";
+export const SEND_EMAIL_FORGET_SUCCESS = "SEND_EMAIL_FORGET_SUCCESS";
+export const SEND_EMAIL_FORGET_ERROR = "SEND_EMAIL_FORGET_ERROR";
+
+export const sendEmailForget = (email) => async dispatch =>{
+    try {
+        dispatch({ type: SEND_EMAIL_FORGET_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json"
+            }
+        });
+        const response = await httpAuth.post(`/auth/forgetPassword`,email);
+        const responseBody = await response.data;
+        dispatch({
+            type: SEND_EMAIL_FORGET_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: SEND_EMAIL_FORGET_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_ACC_FORGET_REQUEST = "GET_ACC_FORGET_REQUEST";
+export const GET_ACC_FORGET_SUCCESS = "GET_ACC_FORGET_SUCCESS";
+export const GET_ACC_FORGET_ERROR = "GET_ACC_FORGET_ERROR";
+
+export const getAccountForget = (id, token) => async dispatch =>{
+    try {
+        dispatch({ type: GET_ACC_FORGET_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json"
+            }
+        });
+        const response = await httpAuth.get(`/auth/getAccountForget/${id}/${token}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_ACC_FORGET_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: GET_ACC_FORGET_ERROR,
+            message: error
+        });
+    }
+}
+
+export const CHANGE_PASS_FG_REQUEST = "CHANGE_PASS_FG_REQUEST";
+export const CHANGE_PASS_FG_SUCCESS = "CHANGE_PASS_FG_SUCCESS";
+export const CHANGE_PASS_FG_ERROR = "CHANGE_PASS_FG_ERROR";
+
+export const changePassForget = (data) => async dispatch =>{
+    try {
+        dispatch({ type: CHANGE_PASS_FG_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json"
+            }
+        });
+        const response = await httpAuth.post(`/auth/changePasswordForget`,data);
+        const responseBody = await response.data;
+        dispatch({
+            type: CHANGE_PASS_FG_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: CHANGE_PASS_FG_ERROR,
             message: error
         });
     }

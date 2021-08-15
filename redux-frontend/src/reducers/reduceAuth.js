@@ -3,7 +3,10 @@ import {
   LOGIN_USER_ERROR, LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS,
   SIGNUP_USER_REQUEST, SIGNUP_USER_SUCCESS, SIGNUP_USER_ERROR,
   SIGNOUT_USER_REQUEST, SIGNOUT_USER_SUCCESS, SIGNOUT_USER_ERROR,
-  CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_ERROR
+  CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_ERROR,
+  SEND_EMAIL_FORGET_REQUEST, SEND_EMAIL_FORGET_SUCCESS, SEND_EMAIL_FORGET_ERROR,
+  GET_ACC_FORGET_REQUEST, GET_ACC_FORGET_SUCCESS, GET_ACC_FORGET_ERROR,
+  CHANGE_PASS_FG_REQUEST, CHANGE_PASS_FG_SUCCESS, CHANGE_PASS_FG_ERROR
 } from "../actions/actionAuth";
 
 const initialState = {
@@ -12,7 +15,7 @@ const initialState = {
   success: false,
   message: null,
   data: null,
-  account:null
+  account: null
 }
 
 const reducerAuth = (state = initialState, action) => {
@@ -42,33 +45,33 @@ const reducerAuth = (state = initialState, action) => {
       };
       return state;
 
-//---------------------------------------------------
-      case SIGNOUT_USER_REQUEST:
-        return {
-          ...state,
-          requesting: true
-        };
-  
-      case SIGNOUT_USER_SUCCESS:
-        state = {
-          ...state,
-          requesting: false,
-          success: true,
-          data: null,
-          account:null,
-          form: null
-        };
-        return state;
-  
-      case SIGNOUT_USER_ERROR:
-        state = {
-          ...state,
-          requesting: false,
-          message: action.message,
-        };
-        return state;
+    //---------------------------------------------------
+    case SIGNOUT_USER_REQUEST:
+      return {
+        ...state,
+        requesting: true
+      };
 
-//------------------------------------------
+    case SIGNOUT_USER_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        data: null,
+        account: null,
+        form: null
+      };
+      return state;
+
+    case SIGNOUT_USER_ERROR:
+      state = {
+        ...state,
+        requesting: false,
+        message: action.message,
+      };
+      return state;
+
+    //------------------------------------------
     case SIGNUP_USER_REQUEST:
       return {
         ...state,
@@ -95,12 +98,12 @@ const reducerAuth = (state = initialState, action) => {
       };
       return state;
 
-//---------------------------------------------------
-      case CHANGE_PASSWORD_REQUEST:
+    //---------------------------------------------------
+    case CHANGE_PASSWORD_REQUEST:
       return {
         ...state,
         requesting: true,
-        form:''
+        form: ''
       };
 
     case CHANGE_PASSWORD_SUCCESS:
@@ -123,7 +126,93 @@ const reducerAuth = (state = initialState, action) => {
       };
       return state;
 
-//-----------------------------------------------------
+    //-----------------------------------------------------
+
+    case SEND_EMAIL_FORGET_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case SEND_EMAIL_FORGET_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        forgetPass: action.payload,
+        form: 'forgetPassword'
+      };
+      return state;
+
+    case SEND_EMAIL_FORGET_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'forgetPassword'
+      };
+      return state;
+
+    //-----------------------------------------------------
+    //-----------------------------------------------------
+
+    case GET_ACC_FORGET_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case GET_ACC_FORGET_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        accountForget: action.payload,
+        form: 'getAccountForget'
+      };
+      return state;
+
+    case GET_ACC_FORGET_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'getAccountForget'
+      };
+      return state;
+
+    //-----------------------------------------------------
+    case CHANGE_PASS_FG_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case CHANGE_PASS_FG_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        accountForget:"",
+        result: action.payload,
+        form: 'changePasswordForget'
+      };
+      return state;
+
+    case CHANGE_PASS_FG_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'changePasswordForget'
+      };
+      return state;
     default:
       return state;
   }

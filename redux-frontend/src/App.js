@@ -46,6 +46,7 @@ import ComboStepWizard from './components/Combo/ComboStepWizard';
 import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 import ComboBookingCompletePage from './components/Combo/ComboBookingCompletePage';
 import AdminFeedback from './components/Admin/Feedback/AdminFeedback';
+import ChangePasswordFoget from './components/Layout/ChangePasswordForget';
 import { createTheme } from '@material-ui/core';
 import { ThemeProvider } from 'styled-components';
 
@@ -58,7 +59,7 @@ const App = (props) => {
   useEffect(() => {
     if (props.oath.data) {
       setuser(props.oath.data);
-      if (props.oath.data && props.oath.success && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
+      if (props.oath.data && props.oath.success && props.oath.data.accessToken && !sessionStorage.getItem("user") && !sessionStorage.getItem("userToken")) {
         setUserSession(props.oath.data.accessToken, props.oath.data.username, props.oath.data.header, props.oath.data.id, props.oath.data?.roles[0]);
       }
     }
@@ -118,6 +119,8 @@ const App = (props) => {
 
           <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
           <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
+          
+          <PublicRoute restricted={false} component={ChangePasswordFoget} path="/resetPassword" />
 
           <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
           <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
