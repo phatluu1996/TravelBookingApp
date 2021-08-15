@@ -385,3 +385,8 @@ export const getHotelByRoom = (data) => async dispatch => {
         });
     }
 }
+
+export const CLEAR_HOTEL_STATE = "CLEAR_HOTEL_STATE"
+export const clearHotelState = () => async dispatch => {
+    dispatch({ type: CLEAR_HOTEL_STATE });
+}
