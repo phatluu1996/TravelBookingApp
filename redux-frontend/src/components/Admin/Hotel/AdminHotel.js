@@ -148,8 +148,6 @@ const AdminHotel = (props) => {
 
     const removeHotel = (id) => {
         props.removeHotel(id);
-        props.clearState();
-        props.getAllHotels();
     }
 
     return (

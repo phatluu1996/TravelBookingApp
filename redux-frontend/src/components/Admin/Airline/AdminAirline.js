@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { fetchAllAirline } from '../../../actions/actionAirline'
+import { fetchAllAirline, removeAirline } from '../../../actions/actionAirline'
 import { fetchAllHotel } from '../../../actions/actionHotel'
 import AdminFooter from '../Layout/AdminFooter'
 import AdminNavbar from '../Layout/AdminNavbar'
@@ -71,7 +71,7 @@ const AdminAirline = (props) => {
             cell: airline => <>
                 <Link className="btn btn-success mr-1" to={`/admin-airline-edit?id=${airline["account"]["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
 
-                <button className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+                <button className="btn btn-danger" onClick={() => removeAirline(airline['id'])}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
             </>
         }
     ];
@@ -164,9 +164,6 @@ const AdminAirline = (props) => {
         // },
     };
 
-    useEffect(() => {
-        console.log(props);
-    })
 
     useEffect(() => {
         let mount = false;        
@@ -175,6 +172,10 @@ const AdminAirline = (props) => {
             mount = true;
         }
     }, [])
+
+    const removeAirline = (id) => {
+        props.removeAirline(id);
+    }
 
     return (
         <>
@@ -227,6 +228,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getAllAirlines: () => {
             dispatch(fetchAllAirline())
+        },
+        removeAirline: (id) => {
+            dispatch(removeAirline(id))
         }
     };
 };

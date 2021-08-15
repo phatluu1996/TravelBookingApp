@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import AdminFooter from './Layout/AdminFooter';
 import AdminNavbar from './Layout/AdminNavbar';
 import AdminSidebar from './Layout/AdminSidebar';
-import { getAllUsers } from '../../actions/actionUser';
+import { getAllUsers, removeUser } from '../../actions/actionUser';
 import { importAll } from '../../utils/JqueryImport';
 import DataTable, { createTheme } from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -98,7 +98,7 @@ const AdminManageUser = (props) => {
       cell: user => <>
         <Link className="btn btn-success mr-1" to={`/update-user-detail?id=${user.account.id}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon></Link>
 
-        <button className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button></>,
+        <button className="btn btn-danger" onClick={() => removeUser(user['id'])}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button></>,
 
     }
   ];
@@ -183,10 +183,13 @@ const AdminManageUser = (props) => {
   };
 
 
-
   useEffect(() => {
     props.getAllUsers();
   }, []);
+
+  const removeUser = (id) => {
+    props.removeUser(id);
+  }
 
   return (
     <div className="bootstrap-scope">
@@ -233,6 +236,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllUsers: () => {
       dispatch(getAllUsers())
+    },
+    removeUser: (id) =>{
+      dispatch(removeUser(id))
     }
   };
 };

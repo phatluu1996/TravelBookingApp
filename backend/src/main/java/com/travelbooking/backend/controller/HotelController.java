@@ -133,11 +133,12 @@ public class HotelController {
     }
     //http://localhost:8080/api/hotel/{id}
     @PostMapping("/hotel/{id}")
-    public ResponseEntity<Hotel> removeHotel(@PathVariable Long id) {
+    public ResponseEntity<List<Hotel>> removeHotel(@PathVariable Long id) {
         Hotel hotel = hotelRepository.findById(id).get();
         hotel.setRetired(true);
         Hotel result = hotelRepository.save(hotel);
-        return ResponseEntity.ok().body(result);
+        Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
+        return ResponseEntity.ok().body(hotelRepository.findAll(spec));
     }
 
     @GetMapping("/hotel/countBookingToday/{id}")
