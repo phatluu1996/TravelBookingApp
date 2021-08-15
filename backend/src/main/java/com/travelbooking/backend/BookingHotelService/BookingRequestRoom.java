@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BookingRequestRoom {
     private User user;
-//    private Hotel hotel;
+    private int nightCount;
     private List<Room> rooms;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateBooking;
@@ -27,8 +27,9 @@ public class BookingRequestRoom {
     public BookingRequestRoom() {
     }
 
-    public BookingRequestRoom(User user, List<Room> rooms, Date dateBooking, Date checkInDate, Date checkOutDate, int numberOfGuests, Float totalPrice, String paymentMethod) {
+    public BookingRequestRoom(User user, int nightCount, List<Room> rooms, Date dateBooking, Date checkInDate, Date checkOutDate, int numberOfGuests, Float totalPrice, String paymentMethod) {
         this.user = user;
+        this.nightCount = nightCount;
         this.rooms = rooms;
         this.dateBooking = dateBooking;
         this.checkInDate = checkInDate;
@@ -44,6 +45,14 @@ public class BookingRequestRoom {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getNightCount() {
+        return nightCount;
+    }
+
+    public void setNightCount(int nightCount) {
+        this.nightCount = nightCount;
     }
 
     public List<Room> getRooms() {

@@ -7,7 +7,7 @@ import { useEffect, setState, useState, Component } from "react";
 import { importAll } from "../../utils/JqueryImport";
 import DataTable from "react-data-table-component";
 import { fetchHotelById } from "../../actions/actionHotel";
-import { createHotelFeedBack,getFeedbacks } from "../../actions/actionHotel";
+import { createHotelFeedBack, getFeedbacks } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
 import Pagination from "./Pagination";
@@ -20,13 +20,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
 import { clearRoomBookingCached } from "../../actions/actionBookingRoom";
-import { Button,makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 const useStyle = makeStyles({
-    icon:{
+    icon: {
         display: "block",
         color: "white",
         float: "left",
@@ -88,7 +88,6 @@ const HotelDetailPage = (props) => {
     };
 
     const changeCurrentImgSrc = (e) => {
-        console.log(e.target.src);
         setCurrentImage(e.target.src);
     };
 
@@ -106,7 +105,7 @@ const HotelDetailPage = (props) => {
             return [];
         } else {
             props.clearBookingCached();
-            sessionStorage.setItem("isRoomBooking", true)
+            sessionStorage.setItem("isRoomBooking", true);
             history.push(
                 `/hotel-booking?id=${props?.hotel?.data?.id}&numberChildren=${queryParam.get("numberChildren")}&numberAdult=${queryParam.get("numberAdult")}&checkInDate=${queryParam.get("checkInDate")}&checkOutDate=${queryParam.get("checkOutDate")}&roomIds=${bookingList.join(".")}`
             );
@@ -193,7 +192,7 @@ const HotelDetailPage = (props) => {
         }
         const startIdx = (page - 1) * itemsPerPage;
         const endIdx = (startIdx + itemsPerPage - 1) + 1;
-        list.sort(function(a, b){return b.id - a.id});
+        list.sort(function (a, b) { return b.id - a.id });
         return list.slice(startIdx, endIdx);
     };
 
@@ -211,15 +210,19 @@ const HotelDetailPage = (props) => {
         for (let index = 0; index < reviews.length; index++) {
             avg += reviews[index];
         }
-       
+
         const data = {
-            rating: (Math.round((avg/6)*100) / 100),
+            rating: (Math.round((avg / 6) * 100) / 100),
             feedback: areaText,
             retired: false,
             user: props?.user?.data,
             hotel: props?.hotel?.data,
         };
-        props.addFeedBack(data);
+        if(areaText){
+            props.addFeedBack(data);
+        }else{
+            alert('Please input your feedback!')
+        }     
         setIsLoading(true);
     };
 
@@ -234,7 +237,7 @@ const HotelDetailPage = (props) => {
         return () => {
             mount = true;
         };
-    }, [isLoading],props.feedbacks);
+    }, [isLoading], props.feedbacks);
 
 
     useEffect(() => {
@@ -335,259 +338,7 @@ const HotelDetailPage = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="tab-item">
-                                                    <div id="preloader">
-                                                        <div id="spinner"></div>
-                                                    </div>
-                                                    <div className="tab-map">
-                                                        <div className="contact-map">
-                                                            <div id="map"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div className="tab-item">
-                                                    <div className="calendar-tab">
-                                                        <div className="calendar-tab-select">
-                                                            <label>Select month</label>
-                                                            <select className="custom-select">
-                                                                <option>january 2015</option>
-                                                                <option>january 2015</option>
-                                                                <option>january 2015</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div className="tab-calendar-colls">
-                                                            <div className="tab-calendar-collsl">
-                                                                <div className="tab-calendar-collslb">
-                                                                    <table>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <td>sun</td>
-                                                                                <td>mon</td>
-                                                                                <td>tue</td>
-                                                                                <td>wed</td>
-                                                                                <td>thu</td>
-                                                                                <td>fri</td>
-                                                                                <td>sat</td>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td className="date-passed">
-                                                                                    <span>
-                                                                                        <label></label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-passed">
-                                                                                    <span>
-                                                                                        <label></label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-passed">
-                                                                                    <span>
-                                                                                        <label></label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>1</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>2</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>3</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>4</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>5</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>6</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>7</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>8</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>9</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>10</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>11</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>12</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>13</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>14</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>15</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>16</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>17</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>18</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>19</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>20</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>21</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>22</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>23</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>24</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>25</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span>
-                                                                                        <label>26</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-available">
-                                                                                    <span>
-                                                                                        <label>27</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-available">
-                                                                                    <span>
-                                                                                        <label>28</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-available">
-                                                                                    <span>
-                                                                                        <label>29</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-unavailable">
-                                                                                    <span>
-                                                                                        <label>30</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-unavailable">
-                                                                                    <span>
-                                                                                        <label>31</label>
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td className="date-passed">
-                                                                                    <span>
-                                                                                        <label></label>
-                                                                                    </span>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <div className="clear"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="tab-calendar-collsr">
-                                                            <div className="tab-calendar-s">
-                                                                <div className="map-symbol passed">
-                                                                    <div className="map-symbol-l"></div>
-                                                                    <div className="map-symbol-r">Date past</div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="map-symbol available">
-                                                                    <div className="map-symbol-l"></div>
-                                                                    <div className="map-symbol-r">available</div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                                <div className="map-symbol unavailable">
-                                                                    <div className="map-symbol-l"></div>
-                                                                    <div className="map-symbol-r">
-                                                                        unavailable
-                                                                    </div>
-                                                                    <div className="clear"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="clear"></div>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <div className="content-tabs">
@@ -771,7 +522,7 @@ const HotelDetailPage = (props) => {
                                                             >
                                                                 {totalAdult}/{queryParam.get("numberAdult")}
                                                             </Button>
-                                                            
+
                                                             {parseInt(queryParam.get("numberChildren")) !==
                                                                 0 && <Button
                                                                     style={
@@ -788,28 +539,28 @@ const HotelDetailPage = (props) => {
                                                                 >
                                                                     {totalChild}/{queryParam.get("numberChildren")}
                                                                 </Button>}
-                                                                <a 
-                                                                    onClick={(e) => addNewBook()}
-                                                                    className="book-btn"
-                                                                    style={{color:"red"}}
-                                                                >
-                                                                    <span className="book-btn-l">
-                                                                        {totalAdult <
-                                                                        parseInt(queryParam.get("numberAdult")) ||  totalChild <
+                                                            <a
+                                                                onClick={(e) => addNewBook()}
+                                                                className="book-btn"
+                                                                style={{ color: "red" }}
+                                                            >
+                                                                <span className="book-btn-l">
+                                                                    {totalAdult <
+                                                                        parseInt(queryParam.get("numberAdult")) || totalChild <
                                                                         parseInt(queryParam.get("numberChildren"))
-                                                                        ? 
+                                                                        ?
                                                                         <FontAwesomeIcon
-                                                                        icon={faTimesCircle}
-                                                                        className={classes.icon}/> 
-                                                                        :  
+                                                                            icon={faTimesCircle}
+                                                                            className={classes.icon} />
+                                                                        :
                                                                         <FontAwesomeIcon
-                                                                        icon={faCheck}
-                                                                        className={classes.icon} />
-                                                                        }    
-                                                                    </span>
-                                                                    <span className="book-btn-r">Book now</span>
-                                                                    <div className="clear"></div>
-                                                                </a>
+                                                                            icon={faCheck}
+                                                                            className={classes.icon} />
+                                                                    }
+                                                                </span>
+                                                                <span className="book-btn-r">Book now</span>
+                                                                <div className="clear"></div>
+                                                            </a>
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -875,50 +626,38 @@ const HotelDetailPage = (props) => {
                                                             <div className="reviews-c">
                                                                 <div className="reviews-l">
                                                                     <div className="reviews-total">
-                                                                        {props.hotel.data?.hotelRating}/5
+                                                                        {props.hotel?.data?.hotelRating}/5
                                                                     </div>
                                                                     <nav className="reviews-total-stars">
                                                                         <ul>
-                                                                            <li>
-                                                                                <a href="#">
-                                                                                    <img
-                                                                                        alt=""
-                                                                                        src="img/r-stars-total-b.png"
-                                                                                    />
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#">
-                                                                                    <img
-                                                                                        alt=""
-                                                                                        src="img/r-stars-total-b.png"
-                                                                                    />
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#">
-                                                                                    <img
-                                                                                        alt=""
-                                                                                        src="img/r-stars-total-b.png"
-                                                                                    />
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#">
-                                                                                    <img
-                                                                                        alt=""
-                                                                                        src="img/r-stars-total-b.png"
-                                                                                    />
-                                                                                </a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#">
-                                                                                    <img
-                                                                                        alt=""
-                                                                                        src="img/r-stars-total-a.png"
-                                                                                    />
-                                                                                </a>
-                                                                            </li>
+                                                                        
+                                                                            {[...Array(5)].map(
+                                                                                (item, index) =>
+                                                                                    // {
+                                                                                    index + 1 >
+                                                                                        Math.ceil(
+                                                                                            props.hotel?.data?.hotelRating
+                                                                                        ) ? (
+                                                                                        <li key={index}>
+                                                                                            <a>
+                                                                                                <img
+                                                                                                    alt=""
+                                                                                                    src="img/star-a.png"
+                                                                                                />
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    ) : (
+                                                                                        <li key={index}>
+                                                                                            <a>
+                                                                                                <img
+                                                                                                    alt=""
+                                                                                                    src="img/star-b.png"
+                                                                                                />
+                                                                                            </a>
+                                                                                        </li>
+                                                                                    )
+                                                                                // }
+                                                                            )}
                                                                         </ul>
                                                                         <div className="clear"></div>
                                                                     </nav>
@@ -930,7 +669,7 @@ const HotelDetailPage = (props) => {
                                                                             <div className="reviews-percents-i">
                                                                                 <span
                                                                                     style={{
-                                                                                        width: `${Math.ceil((props.hotel.data?.hotelRating *100) /5)}%`,
+                                                                                        width: `${Math.ceil((props.hotel.data?.hotelRating * 100) / 5)}%`,
                                                                                     }}
                                                                                 ></span>
                                                                             </div>
@@ -1142,12 +881,12 @@ const HotelDetailPage = (props) => {
                                                                 <Pagination
                                                                     itemsPerPage={itemsPerPageFB}
                                                                     listItem={Array.isArray(props?.hotel?.data?.hotelFeedBacks)
-                                                                             && props?.hotel?.data?.hotelFeedBacks.length > 0?
-                                                                             props?.hotel?.data?.hotelFeedBacks.length:""}
+                                                                        && props?.hotel?.data?.hotelFeedBacks.length > 0 ?
+                                                                        props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
                                                                 <div
-                                                                    hidden={user||isLoading ? false : true}
+                                                                    hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
                                                                     <h2>Live Review</h2>
@@ -1259,7 +998,7 @@ const HotelDetailPage = (props) => {
                                                     )
                                             )}
                                         </ul>
-                                        <div className="h-stars-lbl">{props.hotel?.data?.hotelFeedbacks?.length} reviews</div>
+                                        <div className="h-stars-lbl">{props.feedbacks?.data?.length} reviews</div>
                                         <div className="clear"></div>
                                     </div>
                                     <div className="h-details-text">
@@ -1553,7 +1292,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         hotel: state.hotels,
         user: state.user,
-        feedbacks:state.hotelFeedback,
+        feedbacks: state.hotelFeedback,
     };
 };
 
@@ -1561,8 +1300,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getHotel: (id) => dispatch(fetchHotelById(id)),
         addFeedBack: (data) => dispatch(createHotelFeedBack(data)),
-        getUser: (id) => {dispatch(getUser(id));},
-        getFeedbacks: (id) => {dispatch(getFeedbacks(id))},
+        getUser: (id) => { dispatch(getUser(id)); },
+        getFeedbacks: (id) => { dispatch(getFeedbacks(id)) },
         clearBookingCached: () => dispatch(clearRoomBookingCached())
     };
 };

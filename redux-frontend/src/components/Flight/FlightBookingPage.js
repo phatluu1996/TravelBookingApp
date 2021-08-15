@@ -644,6 +644,8 @@ const FlightBookingPage = (props) => {
                           </div>
                           <ReactModal
                             isOpen={modalIsOpen}
+                            // onAfterOpen={afterOpenModal}
+                            // onRequestClose={closeModal}
                             ariaHideApp={false}
                             preventScroll={true}
                             style={customStyles}

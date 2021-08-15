@@ -54,11 +54,12 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         for (int i = 0; i < bookingRequest.getRooms().size() ; i++) {
 
             HotelBookingRoom hotelBookingRoom = new HotelBookingRoom();
+            Room room = roomRepository.findById(bookingRequest.getRooms().get(i).getId()).get();
+//            System.out.println(room);
             hotelBookingRoom.setHotelBookingDetail(hotelBookingDetail);
-            hotelBookingRoom.setRoom(bookingRequest.getRooms().get(i));
+            hotelBookingRoom.setRoom(room);
             hotelBookingRoomRepository.save(hotelBookingRoom);
             hotelBookingRoomList.add(hotelBookingRoom);
-
         }
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         //Start Booking Room
@@ -70,9 +71,9 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         hotelBooking.setPaymentMethod(bookingRequest.getPaymentMethod());
         hotelBooking.setTotalPrice(bookingRequest.getTotalPrice());
         hotelBooking.setUser(bookingRequest.getUser());
+        hotelBookingDetail.setHotelBookingRooms(hotelBookingRoomList);
         hotelBooking.setHotelBookingDetail(hotelBookingDetail);
         hotelBooking.setRetired(false);
-        hotelBookingDetail.setHotelBookingRooms(hotelBookingRoomList);
         hotelBookingDetailRepository.save(hotelBookingDetail);
         HotelBooking createBkSuccess = hotelBookingRepository.save(hotelBooking);
 
@@ -92,11 +93,10 @@ public class RoomBookingServicelmpl implements RoomBookingService {
                     room.setAvailableTime(bookingRequest.getCheckOutDate());
                     roomRepository.save(room);
             }
-            mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath));
 
-//        HotelBookingDetail hotelBookingDetail2 = hotelBookingDetailRepository.getById(createBkSuccess.getHotelBookingDetail().getId());
-//        hotelBookingDetail2.setHotelBooking(createBkSuccess);
-//        hotelBookingDetailRepository.save(hotelBookingDetail2);
+            createBkSuccess.setTotalPrice(bookingRequest.getTotalPrice() + 10);
+            mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath),bookingRequest.getNightCount());
+
         return createBkSuccess;
     }
 
@@ -105,9 +105,11 @@ public class RoomBookingServicelmpl implements RoomBookingService {
     static final String CD = "0123456789";
     static SecureRandom rnd = new SecureRandom();
 
-    public void mapAndSaveToPDF(HotelBooking hotelBooking, User user, File qrcode) throws Exception{
+    public void mapAndSaveToPDF(HotelBooking hotelBooking, User user, File qrcode , int nightCount) throws Exception{
         Map<String, Object > data = new HashMap<>();
         data.put("hotelBooking", hotelBooking);
+        data.put("nightCount", nightCount);
+//        data.put("hotelBookingRooms", hotelBooking.getHotelBookingDetail().getHotelBookingRooms());
         File pdfAttachment = pdfGenaratorUtil.createPdf("invoicebookingroom",data, ITINERARY_DIR, emailUtil, user);
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);

@@ -6,9 +6,6 @@ const initialState = {
     message: null,
     data: null
   }
-//   export const GET_HOTEL_FEEDBACK_SUCCESS = "GET_HOTEL_FEEDBACK_SUCCESS";
-// export const GET_HOTEL_FEEDBACK_REQUEST = "GET_HOTEL_FEEDBACK_REQUEST";
-// export const GET_HOTEL_FEEDBACK_ERROR = "GET_HOTEL_FEEDBACK_ERROR";
 
 function reducerHotelFeedBack(state = initialState, action) {
     switch (action.type) {
