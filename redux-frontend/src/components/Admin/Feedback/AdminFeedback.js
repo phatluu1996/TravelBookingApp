@@ -105,69 +105,69 @@ const AdminFeedback = (props) => {
     const header = [
         {
             name: '#',
-            selector: 'id',
+            selector: fb => fb['id'],
             sortable: true,
             width: '5%'
         },
         {
             name: 'Name',
-            selector: 'name',
+            selector: fb => fb['name'],
             sortable: true
         },
         {
             name: 'Email',
-            selector: 'email',
+            selector: fb => fb['email'],
             sortable: true
         },
         {
             name: 'Subtitle',
-            selector: 'subTitle',
+            selector: fb => fb['subTitle'],
             sortable: true
         },
         {
             name: 'Message',
-            selector: 'message',
+            selector: fb => fb['message'],
             sortable: true
         },
         {
             name: 'Actions',
             // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
             cell: (feedback, index) => <>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target={"#feedback-" + index} data-whatever="@mdo"><FontAwesomeIcon icon={faReply}></FontAwesomeIcon></button>
-                <div class="modal fade" id={"feedback-" + index} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
+                <button type="button" className="btn btn-primary" data-toggle="modal" data-target={"#feedback-" + index} data-whatever="@mdo"><FontAwesomeIcon icon={faReply}></FontAwesomeIcon></button>
+                <div className="modal fade" id={"feedback-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Feedback</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div className="modal-body">
                                 <form onSubmit={(e) => handleSubmit(e, feedback.id)}>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                        <input type="text" class="form-control" id="name" name="name" readOnly defaultValue={feedback.name} />
+                                    <div className="form-group">
+                                        <label htmlFor="recipient-name" className="col-form-label">Recipient:</label>
+                                        <input type="text" className="form-control" id="name" name="name" readOnly defaultValue={feedback.name} />
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Message:</label>
-                                        <input type="text" class="form-control" id="mail" name="email" readOnly defaultValue={feedback.email} />
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Message:</label>
+                                        <input type="text" className="form-control" id="mail" name="email" readOnly defaultValue={feedback.email} />
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Subtitle:</label>
-                                        <input type="text" class="form-control" id="subtitle" name="subTitle" readOnly defaultValue={feedback.subTitle} />
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Subtitle:</label>
+                                        <input type="text" className="form-control" id="subtitle" name="subTitle" readOnly defaultValue={feedback.subTitle} />
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Message:</label>
-                                        <textarea readOnly rows="7" class="form-control" id="message" name="message">{feedback.message}</textarea>
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Message:</label>
+                                        <textarea readOnly rows="7" className="form-control" id="message" name="message" defaultValue={feedback.message}></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Reply:</label>
-                                        <textarea required rows="7" class="form-control" id="reply" name="reply">{feedback.reply}</textarea>
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Reply:</label>
+                                        <textarea required rows="7" className="form-control" id="reply" name="reply" defaultValue={feedback.reply}></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2">Reply</button>
-                                        <button id={"close-"+index} type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                                    <div className="form-group">
+                                        <button type="submit" className="btn btn-primary btn-sm mr-2">Reply</button>
+                                        <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
                                     </div>
                                 </form>
                             </div>

@@ -1,6 +1,8 @@
+import { faCheck, faEdit, faEye, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { retrieveProvince } from '../../../actions/actionLocation';
 import { getUser, updateUser } from '../../../actions/actionUser';
 import { useQuery } from '../../../utils/QueryParam';
@@ -18,6 +20,7 @@ const UpdateUserDetail = (props) => {
     const [isInitial, setIsInitial] = useState(0);
     const [isRequest, setIsRequest] = useState(null);
     const [responseMessageUpdate, setResponseMessageUpdate] = useState("");
+    const [isEdit, setIsEdit] = useState(false);
     const [validateInput, setValidateInput] = useState({
         firstName: '',
         lastName: '',
@@ -39,7 +42,7 @@ const UpdateUserDetail = (props) => {
 
             data.firstName = form.firstName.value;
             data.lastName = form.lastName.value;
-            data.gender = gender;
+            data.gender = form.gender.value;
             data.dateOfBirth = form.birthday.value;
             data.email = form.email.value;
             data.location.street = form.address.value;
@@ -79,7 +82,7 @@ const UpdateUserDetail = (props) => {
         if (props.dataUser.data?.firstName === form.firstName.value && props.dataUser.data?.lastName === form.lastName.value && props.dataUser.data?.dateOfBirth === form.birthday.value
             && props.dataUser.data?.phoneNumber === form.phoneNumber.value && props.dataUser.data?.email === form.email.value && props.dataUser.data?.location?.street === form.address.value
             && props.dataUser.data?.location?.province.id === selectProvince.id && props.dataUser.data?.location?.district.id === selectDistrict.id && props.dataUser.data?.location?.ward.id === selectWard.id
-            && props.dataUser.data?.location?.postalCode === form.postalCode.value) {
+            && props.dataUser.data?.location?.postalCode === form.postalCode.value && props.dataUser.data?.gender === form.gender.value) {
             setErrUpdate(true);
             setResponseMessageUpdate("No data change.");
             return false;
@@ -119,7 +122,7 @@ const UpdateUserDetail = (props) => {
     useEffect(() => {
         let mount = false;
         if (isInitial === 0 && gender === "" && props.dataUser.data != null) {
-            setGender(props.dataUser.data?.gender);
+            // setGender(props.dataUser.data?.gender);
             setIsInitial(1);
         }
 
@@ -154,6 +157,16 @@ const UpdateUserDetail = (props) => {
         }
     });
 
+    const switchToEditMode = () => {
+        setIsEdit(!isEdit);
+    }
+
+    const stopIfReadonly = (e) => {
+        if(!isEdit){
+            e.preventDefault();
+        }
+    }
+
     return (
         <div className="bootstrap-scope">
             <div className="container-scroller">
@@ -166,19 +179,20 @@ const UpdateUserDetail = (props) => {
                                 <div className="card">
                                     <div className="card-body">
                                         <h4 className="card-title">User Details</h4>
+                                        <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => switchToEditMode()}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
                                         <form className="form-sample" onSubmit={handleSubmit} id="form">
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">First Name</label>
-                                                        <input type="text" className={`form-control ${validateInput.firstName ? "is-invalid" : "is-valid"}`} name="firstName" defaultValue={props.dataUser.data?.firstName} />
+                                                        <input type="text" className={`form-control ${validateInput.firstName ? "is-invalid" : "is-valid"}`} name="firstName" defaultValue={props.dataUser.data?.firstName} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.firstName}</div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Last Name</label>
-                                                        <input type="text" className={`form-control ${validateInput.lastName ? "is-invalid" : "is-valid"}`} name="lastName" defaultValue={props.dataUser.data?.lastName} />
+                                                        <input type="text" className={`form-control ${validateInput.lastName ? "is-invalid" : "is-valid"}`} name="lastName" defaultValue={props.dataUser.data?.lastName} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.lastName}</div>
                                                     </div>
                                                 </div>
@@ -190,14 +204,14 @@ const UpdateUserDetail = (props) => {
                                                         <div className="row">
                                                             <div className="col-sm-5">
                                                                 <div className="form-check">
-                                                                    <label className="form-check-label">
-                                                                        <input type="radio" className="form-check-input" name="gender" id="gender" value="Male" checked={gender === "Male"} onClick={handleGenderCheck} /> Male </label>
+                                                                    <label>
+                                                                        <input type="radio" className="form-check-input" name="gender" id="gender" value="Male" defaultChecked={props.dataUser.data?.gender} readOnly={!isEdit} onChange={stopIfReadonly} onClick={stopIfReadonly}/> Male </label>
                                                                 </div>
                                                             </div>
                                                             <div className="col-sm-5">
                                                                 <div className="form-check">
-                                                                    <label className="form-check-label">
-                                                                        <input type="radio" className="form-check-input" name="gender" id="gender" value="Female" checked={gender === "Female"} onClick={handleGenderCheck} /> Female </label>
+                                                                    <label>
+                                                                        <input type="radio" className="form-check-input" name="gender" id="gender" value="Female" defaultChecked={props.dataUser.data?.gender} readOnly={!isEdit} onChange={stopIfReadonly} onClick={stopIfReadonly}/> Female </label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -206,7 +220,7 @@ const UpdateUserDetail = (props) => {
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Date of Birth</label>
-                                                        <input className={`form-control ${validateInput.birthday ? "is-invalid" : "is-valid"}`} placeholder="dd/mm/yyyy" name="birthday" defaultValue={props.dataUser.data?.dateOfBirth} />
+                                                        <input className={`form-control ${validateInput.birthday ? "is-invalid" : "is-valid"}`} placeholder="dd/mm/yyyy" name="birthday" defaultValue={props.dataUser.data?.dateOfBirth} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.birthday}</div>
                                                     </div>
                                                 </div>
@@ -215,14 +229,14 @@ const UpdateUserDetail = (props) => {
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Email</label>
-                                                        <input className={`form-control ${validateInput.email ? "is-invalid" : "is-valid"}`} placeholder="abc@gmail.com" name="email" defaultValue={props.dataUser.data?.email} />
+                                                        <input className={`form-control ${validateInput.email ? "is-invalid" : "is-valid"}`} placeholder="abc@gmail.com" name="email" defaultValue={props.dataUser.data?.email} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.email}</div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Phone number:</label>
-                                                        <input className={`form-control ${validateInput.phoneNumber ? "is-invalid" : "is-valid"}`} placeholder="abc@gmail.com" name="phoneNumber" defaultValue={props.dataUser.data?.phoneNumber} />
+                                                        <input className={`form-control ${validateInput.phoneNumber ? "is-invalid" : "is-valid"}`} placeholder="abc@gmail.com" name="phoneNumber" defaultValue={props.dataUser.data?.phoneNumber} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.phoneNumber}</div>
                                                     </div>
                                                 </div>
@@ -231,7 +245,7 @@ const UpdateUserDetail = (props) => {
                                                 <div className="col-12">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Address:</label>
-                                                        <input type="text" className={`form-control ${validateInput.address ? "is-invalid" : "is-valid"}`} name="address" defaultValue={props.dataUser.data?.location?.street} />
+                                                        <input type="text" className={`form-control ${validateInput.address ? "is-invalid" : "is-valid"}`} name="address" defaultValue={props.dataUser.data?.location?.street} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.address}</div>
                                                     </div>
                                                 </div>
@@ -242,7 +256,7 @@ const UpdateUserDetail = (props) => {
                                                         <label className="col-form-label">Province*</label>
                                                         <select className={`form-control ${validateInput.province ? "is-invalid" : "is-valid"}`}
                                                             name="province"
-                                                            onChange={onChangeProvince}>
+                                                            onChange={onChangeProvince} readOnly={!isEdit} disabled={!isEdit}>
                                                             <option value={null}>---</option>
                                                             {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)} selected={selectProvince?.id == province?.id}>{province.name}</option>)}
                                                         </select>
@@ -254,7 +268,7 @@ const UpdateUserDetail = (props) => {
                                                         <label className="col-form-label">District*</label>
                                                         <select className={`form-control ${validateInput.district ? "is-invalid" : "is-valid"}`}
                                                             name="district"
-                                                            onChange={onChangeDistrict}>
+                                                            onChange={onChangeDistrict} readOnly={!isEdit} disabled={!isEdit}>
                                                             <option value={null}>---</option>
                                                             {selectProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)} selected={selectDistrict?.id == district?.id}>{district.name}</option>)}
                                                         </select>
@@ -266,8 +280,7 @@ const UpdateUserDetail = (props) => {
                                                         <label className="col-form-label">Ward*</label>
                                                         <select className={`form-control ${validateInput.ward ? "is-invalid" : "is-valid"}`}
                                                             name="ward"
-                                                            onChange={onChangeWard}
-                                                        >
+                                                            onChange={onChangeWard} readOnly={!isEdit} disabled={!isEdit}>
                                                             <option value={null}>---</option>
                                                             {selectDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)} selected={selectWard?.id == ward?.id}>{ward.name}</option>)}
                                                         </select>
@@ -279,17 +292,17 @@ const UpdateUserDetail = (props) => {
                                                 <div className="col-md-6">
                                                     <div className="form-group">
                                                         <label className="col-form-label">Postal Code:</label>
-                                                        <input type="text" className={`form-control ${validateInput.postalCode ? "is-invalid" : "is-valid"}`} name="postalCode" defaultValue={props.dataUser.data?.location?.postalCode} />
+                                                        <input type="text" className={`form-control ${validateInput.postalCode ? "is-invalid" : "is-valid"}`} name="postalCode" defaultValue={props.dataUser.data?.location?.postalCode} readOnly={!isEdit}/>
                                                         <div className="invalid-feedback">{validateInput.postalCode}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="row justify-content-sm-center">
                                                 <div className="col-md-4">
-                                                    <button className="btn btn-lg btn-block btn-success" type="submit">Update</button>
+                                                    <button hidden={!isEdit} className="btn btn-lg btn-block btn-success" type="submit"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <button className="btn btn-lg btn-block btn-danger" type="cancel">Cancel</button>
+                                                    <Link className="btn btn-lg btn-block btn-danger" to="/admin-user-manage"><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></Link>
                                                 </div>
                                             </div>
                                             {errUpdate && responseMessageUpdate && <div class="alert alert-danger mt-2">{responseMessageUpdate}</div>}

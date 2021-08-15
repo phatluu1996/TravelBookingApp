@@ -261,3 +261,8 @@ export const getReportMonthAirline = (id) => async dispatch => {
         });
     }
 }
+
+export const CLEAR_AIRLINE_STATE = "CLEAR_AIRLINE_STATE"
+export const clearAirlineState = () => async dispatch => {
+    dispatch({ type: CLEAR_AIRLINE_STATE });
+}

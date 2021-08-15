@@ -122,10 +122,10 @@ public class HotelController {
     //http://localhost:8080/api/hotel/{id}
     @PutMapping("/hotel/{id}")
     public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {
-
-        hotel.setId(id);
-        Account account = accountRepository.save(hotel.getAccount());
-        Location location = hotel.getLocation();
+//        hotel.setId(id);
+        Account account = new Account(hotel.getAccount());
+        Location location = new Location(hotel.getLocation());
+        accountRepository.save(account);
         locationRepository.save(location);
         Hotel result = hotelRepository.save(hotel);
 

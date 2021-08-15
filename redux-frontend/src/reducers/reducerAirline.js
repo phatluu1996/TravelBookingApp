@@ -1,4 +1,4 @@
-import { CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
+import { CLEAR_AIRLINE_STATE, CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
 import { FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS,
         GET_ALL_BOOKING_AIRLINE_REQUEST, GET_ALL_BOOKING_AIRLINE_SUCCESS, GET_ALL_BOOKING_AIRLINE_ERROR,
         GET_DAILY_INCOME_AIRLINE_REQUEST, GET_DAILY_INCOME_AIRLINE_SUCCESS, GET_DAILY_INCOME_AIRLINE_ERROR,
@@ -26,7 +26,7 @@ function reducerAirline(airline = initialState, action) {
             }
 
         case UPDATE_AIRLINE:
-            return { ...airline, airline: payload, success : true, single: payload };
+            return { ...airline, airline: payload, success : true, all : null, single : null };
 
 
         case FETCH_ALL_AIRLINE_REQUEST:
@@ -40,7 +40,8 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 success: true,
-                all: payload
+                all: payload,
+                single: null
             };
             return airline;
 
@@ -62,7 +63,8 @@ function reducerAirline(airline = initialState, action) {
             airline = {
                 ...airline,
                 requesting: false,
-                success: true
+                success: true,
+                all:null
             };
             return airline;
 
@@ -86,7 +88,8 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 success: true,
-                single: action.payload
+                single: action.payload,
+                all: null
             };
             return airline;
 
@@ -211,6 +214,16 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 message: action.message
+            };
+            return airline;
+
+        case CLEAR_AIRLINE_STATE:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: false,
+                single: null,
+                all: null
             };
             return airline;
 

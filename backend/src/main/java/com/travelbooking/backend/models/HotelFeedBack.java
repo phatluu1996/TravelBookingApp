@@ -22,7 +22,7 @@ public class HotelFeedBack {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnoreProperties("hotelFeedBacks")
-    private  User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", referencedColumnName = "id")

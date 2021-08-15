@@ -157,19 +157,19 @@ const AdminNavbar = (props) => {
                                     </div>
                                 </a>
                                 <div className="dropdown-divider"></div>
-                                <a className="dropdown-item preview-item">
+                                <div className="dropdown-item preview-item">
                                     <div className="preview-thumbnail">
                                         <div className="preview-icon bg-dark rounded-circle">
                                             <i className="mdi mdi-logout text-danger"></i>
                                         </div>
                                     </div>
                                     <Link to="/" className="preview-item-content">
-                                        <a className="preview-subject mb-1">Back</a>
+                                        <div className="preview-subject mb-1">Back</div>
                                     </Link>
                                     {/* <div className="preview-item-content">
                                         <p className="preview-subject mb-1">Log out</p>
                                     </div> */}
-                                </a>
+                                </div>
                                 <div className="dropdown-divider"></div>
                                 <p className="p-3 mb-0 text-center">Advanced settings</p>
                             </div>

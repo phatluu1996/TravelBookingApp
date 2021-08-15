@@ -37,33 +37,33 @@ const AdminAirline = (props) => {
     const header = [
         {
             name: '#',
-            selector: 'id',
+            selector: airline => airline['id'],
             sortable: true,
             width:'5%'
         },
         {
             name: 'Hotel Name',
-            selector: 'airlineName',
+            selector: airline => airline['airlineName'],
             sortable: true
         },
         {
             name: 'Email',
-            selector: 'email',
+            selector: airline => airline['email'],
             sortable: true
         },
         {
             name: 'Phone',
-            selector: 'phone',
+            selector: airline => airline['phone'],
             sortable: true
         },
         {
             name: 'Contact Person',
-            selector: 'contactName',
+            selector: airline => airline['contactName'],
             sortable: true
         },
         {
             name: 'Contact Person Title',
-            selector: 'contactTitle',
+            selector: airline => airline['contactTitle'],
             sortable: true
         },
         {
@@ -71,7 +71,7 @@ const AdminAirline = (props) => {
             cell: airline => <>
                 <Link className="btn btn-success mr-1" to={`/admin-airline-edit?id=${airline["account"]["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
 
-                <Link className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></Link>
+                <button className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
             </>
         }
     ];
@@ -188,20 +188,20 @@ const AdminAirline = (props) => {
                                 <div className="col-lg-12 grid-margin stretch-card">
                                     <div className="card">
                                         <div className="card-body">
-                                            <h4 className="card-title">List All Airlines</h4>
+                                            {!props.airline.all && <div className="loading" delay-hide="10"></div>}
+                                            <h4 className="card-title">Airlines</h4>
                                             <Link className="btn btn-success" to={`/admin-airline-create`}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
-                                            <div className="table-responsive">
+                                            {props.airline.all && <div className="table-responsive">
                                                 <DataTable className="table"
                                                     customStyles={customStyles}
                                                     theme='solarized'
-                                                    progressPending={!props.airline.all}
                                                     columns={header} 
                                                     data={props.airline.all}
                                                     pagination
                                                     paginationPerPage={5}
                                                     subHeaderComponent={subHeader}                                                    
                                                 />
-                                            </div>
+                                            </div>}
                                         </div>
                                     </div>
                                 </div>

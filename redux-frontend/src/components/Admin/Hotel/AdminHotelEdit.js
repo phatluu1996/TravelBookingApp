@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { createHotel, getHotel, updateHotel } from '../../../actions/actionHotel';
+import { clearHotelState, createHotel, getHotel, updateHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
@@ -19,9 +19,6 @@ const AdminHotelEdit = (props) => {
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
-    const [status, setStatus] = useState(false);
-    const [districts, setDistricts] = useState([]);
-    const [wards, setWards] = useState([])
     const [isSuccess, setIsSuccess] = useState(false);
     const [hotel, setHotel] = useState(null);
     const [validateError, setValidateError] = useState({
@@ -70,12 +67,14 @@ const AdminHotelEdit = (props) => {
         let mount = false;
 
         if (props.hotel.success && isSubmit && isSuccess) {
-            setStatus(true);
+            setIsEdit(false);
+            setIsSuccess(false);
+            props.clearState();
         }
 
-        if (status) {
-            history.push("/admin-hotel-manage");
-        }
+        // if (status) {
+        //     history.push("/admin-hotel-manage");
+        // }
 
 
         if (props.province.data && props.hotel.one && !hotel) {
@@ -248,6 +247,23 @@ const AdminHotelEdit = (props) => {
         return "form-control is-invalid";
     }
 
+    const switchToEditMode = () => {
+        setIsEdit(!isEdit);
+        setIsSubmit(false);
+        setValidateError({
+            hotelName: "",
+            email: "",
+            phone: "",
+            contactName: "",
+            contactTitle: "",
+            numberOfRoom: "",
+            street: "",
+            province: "",
+            district: "",
+            ward: ""
+        });
+    }
+
     const goBack = () => {
         history.push("/admin-hotel-manage");
     }
@@ -268,8 +284,8 @@ const AdminHotelEdit = (props) => {
                                         <div className="card">
                                             <div className="card-body">
                                                 <h3 className="card-title mb-3">{isEdit ? "Edit" : "View"} Hotel</h3>
-                                                <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => setIsEdit(!isEdit)}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
-                                                {!(props.province.data && props.hotel.one) && <div className="loading" delay-hide="10"></div>}
+                                                <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => switchToEditMode()}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
+                                                {!(props.province.data && hotel) && <div className="loading" delay-hide="10"></div>}
                                                 {hotel && <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
                                                     <div className="row">
                                                         <div className="col-md-6">
@@ -425,128 +441,10 @@ const mapDispatchToProps = (dispatch) => {
         getProvince: () => {
             dispatch(retrieveProvince());
         },
+        clearState: () => {
+            dispatch(clearHotelState());
+        }
     };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelEdit);
-{/* <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Username*</label>
-                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.hotel.one?.account?.userName} readOnly />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.username}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Password*</label>
-                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.hotel.one?.account?.password} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.password}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Hotel Name*</label>
-                                                                <input type="text" className={formControlClass("hotelName")} name="hotelName" defaultValue={props.hotel.one?.hotelName} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.hotelName}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Phone Number*</label>
-                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={props.hotel.one?.phone} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.phone}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Email*</label>
-                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={props.hotel.one?.email} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.email}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Room Amount*</label>
-                                                                <input type="number" className={formControlClass("numberOfRoom")} min="1" max="50" name="numberOfRoom" defaultValue={props.hotel.one?.numberOfRoom} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.numberOfRoom}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Contact Name*</label>
-                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={props.hotel.one?.contactName} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.contactName}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Contact Title*</label>
-                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={props.hotel.one?.contactTitle} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.contactTitle}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-md-12">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">*Please enter address</label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-12">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Street*</label>
-                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.hotel.one?.location?.street} readOnly={!isEdit} />
-                                                                <div className="valid-feedback"></div>
-                                                                <div className="invalid-feedback">{validateError.street}</div>
-                                                            </div>
-                                                        </div> 
-
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Province*</label>
-                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} defaultValue={slProvince} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value="0">---</option>
-                                                                    {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)}>{province.name}</option>)}
-                                                                </select>
-                                                                <div className="invalid-feedback">{validateError.province}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">District*</label>
-                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} defaultValue={slDistrict} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value="0">---</option>
-                                                                    {slProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)}>{district.name}</option>)}
-                                                                </select>
-                                                                <div className="invalid-feedback">{validateError.district}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <div className="form-group">
-                                                                <label className="col-form-label">Ward*</label>
-                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} defaultValue={slWard} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value="0">---</option>
-                                                                    {slDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)}>{ward.name}</option>)}
-                                                                </select>
-                                                                <div className="invalid-feedback">{validateError.ward}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-3"></div>
-                                                        <div className="col-md-3">
-                                                            {isEdit && <button type="submit" className="btn btn-lg btn-success btn-block"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>}
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <button onClick={goBack} type="reset" className="btn btn-lg btn-danger btn-block"><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
-                                                        </div>
-                                                        <div className="col-md-3"></div>
-                                                    </div>
-                                                </form> */}

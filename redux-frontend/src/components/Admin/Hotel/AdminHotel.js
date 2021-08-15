@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { clearHotelState, fetchAllHotel } from '../../../actions/actionHotel'
+import { clearHotelState, fetchAllHotel, removeHotel } from '../../../actions/actionHotel'
 import AdminFooter from '../Layout/AdminFooter'
 import AdminNavbar from '../Layout/AdminNavbar'
 import AdminSidebar from '../Layout/AdminSidebar'
@@ -35,33 +35,33 @@ const AdminHotel = (props) => {
     const header = [
         {
             name: '#',
-            selector: 'id',
+            selector: hotel => hotel['id'],
             sortable: true,
             width:'5%'
         },
         {
             name: 'Hotel Name',
-            selector: 'hotelName',
+            selector: hotel => hotel['hotelName'],
             sortable: true
         },
         {
             name: 'Email',
-            selector: 'email',
+            selector: hotel => hotel['email'],
             sortable: true
         },
         {
             name: 'Phone',
-            selector: 'phone',
+            selector: hotel => hotel['phone'],
             sortable: true
         },
         {
             name: 'Contact Person',
-            selector: 'contactName',
+            selector: hotel => hotel['contactName'],
             sortable: true
         },
         {
             name: 'Contact Person Title',
-            selector: 'contactTitle',
+            selector: hotel => hotel['contactTitle'],
             sortable: true
         },
         {
@@ -70,7 +70,7 @@ const AdminHotel = (props) => {
             cell: hotel => <>
                 <Link className="btn btn-success mr-1" to={`/admin-hotel-edit?id=${hotel["account"]["id"]}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
 
-                <Link className="btn btn-danger"><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></Link>
+                <button className="btn btn-danger" onClick={() => removeHotel(hotel['id'])}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
             </>
         }
     ];
@@ -146,6 +146,11 @@ const AdminHotel = (props) => {
         props.getAllHotels();
     }, []);
 
+    const removeHotel = (id) => {
+        props.removeHotel(id);
+        props.clearState();
+        props.getAllHotels();
+    }
 
     return (
         <>
@@ -160,8 +165,8 @@ const AdminHotel = (props) => {
                                     <div className="card">
                                         <div className="card-body">
                                             {!props.hotel.all && <div className="loading" delay-hide="10"></div>}
-                                            <h4 className="card-title">List All Hotels</h4>
-                                            <Link className="btn btn-success" to={`/admin-hotel-create`}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
+                                            <h4 className="card-title">Hotels</h4>
+                                            <Link className="btn btn-success" to="/admin-hotel-create"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
                                             {props.hotel.all && <div className="table-responsive">
                                                 <DataTable className="table"
                                                     customStyles={customStyles}
@@ -197,6 +202,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getAllHotels: () => {
             dispatch(fetchAllHotel())
+        },
+        removeHotel: (id) => {
+            dispatch(removeHotel(id))
         },
         clearState: () => {
             dispatch(clearHotelState())

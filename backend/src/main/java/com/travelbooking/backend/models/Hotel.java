@@ -80,7 +80,7 @@ public class Hotel {
 
     @OneToMany
     @JoinColumn(name = "hotel_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("hotel")
+    @JsonIgnoreProperties(value = "hotel", allowSetters=true)
     private List<HotelFeedBack> hotelFeedBacks;
 
     @OneToMany
