@@ -20,6 +20,7 @@
     "loadjs": "^4.2.0",
     "perfect-scrollbar": "^1.5.2",
     "react": "^16.0.0",
+    "react-alert-template-mui": "^1.0.7",
     "react-chartjs-2": "^3.0.4",
     "react-data-table-component": "^7.0.0-rc2",
     "react-dom": "^17.0.2",

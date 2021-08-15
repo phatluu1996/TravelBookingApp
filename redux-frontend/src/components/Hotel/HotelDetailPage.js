@@ -13,7 +13,7 @@ import $, { map } from "jquery";
 import Pagination from "./Pagination";
 import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight, faBaby, faCheck, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowRight, faBaby, faCheck, faChild, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
 import { getRole, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
@@ -37,9 +37,6 @@ const useStyle = makeStyles({
 });
 
 const HotelDetailPage = (props) => {
-    const classes = useStyle();
-    // const location = useLocation();
-
     const history = useHistory();
     let queryParam = useQuery();
     const [currentImage, setCurrentImage] = useState(null);
@@ -55,8 +52,6 @@ const HotelDetailPage = (props) => {
     const [itemsPerPageFB, setItemPerPageFB] = useState(4);
     const [pageNumberFB, setPageNumberFB] = useState(1);
     const user = sessionStorage.getItem("userId");
-
-
 
     const customStyles = {
         table: {
@@ -94,14 +89,12 @@ const HotelDetailPage = (props) => {
     const addNewBook = (e) => {
         if (getRole() != ROLE_USER) {
             $(".header-account a").click();
-        } else if (
-            totalAdult < parseInt(queryParam.get("numberAdult")) ||
-            totalChild < parseInt(queryParam.get("numberChildren"))
+        } else if (totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))
         ) {
-            alert("Select the number of rooms suitable for the number of people");
+            // alert("Select the number of rooms suitable for the number of people");        
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
-            alert("Please select your room");
+            // alert("Please select your room");
             return [];
         } else {
             props.clearBookingCached();
@@ -152,7 +145,7 @@ const HotelDetailPage = (props) => {
                                                         <a href="#">{room?.roomType}</a>
                                                     </div>
                                                     <div className="offer-slider-location">
-                                                        Max Adult: {room?.maxAdult} persons
+                                                        Max Capacity: {room?.maxAdult} adult(s), {room?.maxChildren} children(s)
                                                     </div>
                                                     <p>
                                                         Voluptatem quia voluptas sit aspernatur aut odit aut
@@ -218,22 +211,25 @@ const HotelDetailPage = (props) => {
             user: props?.user?.data,
             hotel: props?.hotel?.data,
         };
-        if(areaText){
+        if (areaText) {
             props.addFeedBack(data);
-        }else{
+        } else {
             alert('Please input your feedback!')
-        }     
+        }
         setIsLoading(true);
     };
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     useEffect(() => {
         let mount = false;
-
         props.getUser(user);
         props.getHotel(queryParam.get("id"));
         props.getFeedbacks(queryParam.get("id"));
 
         importAll();
+
         return () => {
             mount = true;
         };
@@ -351,15 +347,15 @@ const HotelDetailPage = (props) => {
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="#">AVAILABILITY</a>
+                                                                <a id="book-room">AVAILABILITY</a>
                                                             </li>
                                                             {/* <li><a href="#">Preferences</a></li> */}
                                                             <li>
-                                                                <a href="#">reviews</a>
+                                                                <a >reviews</a>
                                                             </li>
                                                             {/* <li><a href="#">THINGS TO DO</a></li> */}
                                                             <li>
-                                                                <a href="#" className="tabs-lamp"></a>
+                                                                <a className="tabs-lamp"></a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -368,6 +364,79 @@ const HotelDetailPage = (props) => {
                                                 </div>
                                                 <div className="content-tabs-body">
                                                     <div className="content-tabs-i">
+                                                        <h2>Facilities of Hotel</h2>
+                                                        <ul className="preferences-list">
+                                                            <li
+                                                                className="internet"
+                                                                hidden={
+                                                                    props.hotel.data?.highSpeedInternet
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                            >
+                                                                High-speed Internet
+                                                            </li>
+                                                            <li
+                                                                className="play-place"
+                                                                hidden={
+                                                                    props.hotel.data?.freeParking ? true : false
+                                                                }
+                                                            >
+                                                                Play Place
+                                                            </li>
+                                                            <li
+                                                                className="entertaiment"
+                                                                hidden={
+                                                                    props.hotel.data?.entertaiment
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                            >
+                                                                Entertaiment
+                                                            </li>
+                                                            <li
+                                                                className="hot-tub"
+                                                                hidden={
+                                                                    props.hotel.data?.hotTub ? true : false
+                                                                }
+                                                            >
+                                                                Hot Tub
+                                                            </li>
+                                                            <li
+                                                                className="pool"
+                                                                hidden={
+                                                                    props.hotel.data?.swimmingPool
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                            >
+                                                                Swimming Pool
+                                                            </li>
+                                                            <li
+                                                                className="parking"
+                                                                hidden={
+                                                                    props.hotel.data?.freeParking ? true : false
+                                                                }
+                                                            >
+                                                                Free parking
+                                                            </li>
+                                                            <li
+                                                                className="gym"
+                                                                hidden={props.hotel.data?.gym ? true : false}
+                                                            >
+                                                                Gym
+                                                            </li>
+                                                            {/* <li className="tv" hidden={props.hotel.data.highSpeedInternet?true:false}>TV</li> */}
+                                                            <li
+                                                                className="pets"
+                                                                hidden={
+                                                                    props.hotel.data?.petsAllowed ? true : false
+                                                                }
+                                                            >
+                                                                Pets allowed
+                                                            </li>
+                                                            <div className="clear"></div>
+                                                        </ul>
                                                         <h2>Hotel Description</h2>
                                                         <p>
                                                             Voluptatem quia voluptas sit aspernatur aut odit
@@ -420,80 +489,7 @@ const HotelDetailPage = (props) => {
 
                                                                 <div className="clear"></div>
                                                             </div>
-                                                            <h2>Facilities of Hotel</h2>
-                                                            <ul className="preferences-list">
-                                                                <li
-                                                                    className="internet"
-                                                                    hidden={
-                                                                        props.hotel.data?.highSpeedInternet
-                                                                            ? true
-                                                                            : false
-                                                                    }
-                                                                >
-                                                                    High-speed Internet
-                                                                </li>
-                                                                <li
-                                                                    className="play-place"
-                                                                    hidden={
-                                                                        props.hotel.data?.freeParking ? true : false
-                                                                    }
-                                                                >
-                                                                    Play Place
-                                                                </li>
-                                                                <li
-                                                                    className="entertaiment"
-                                                                    hidden={
-                                                                        props.hotel.data?.entertaiment
-                                                                            ? true
-                                                                            : false
-                                                                    }
-                                                                >
-                                                                    Entertaiment
-                                                                </li>
-                                                                <li
-                                                                    className="hot-tub"
-                                                                    hidden={
-                                                                        props.hotel.data?.hotTub ? true : false
-                                                                    }
-                                                                >
-                                                                    Hot Tub
-                                                                </li>
-                                                                <li
-                                                                    className="pool"
-                                                                    hidden={
-                                                                        props.hotel.data?.swimmingPool
-                                                                            ? true
-                                                                            : false
-                                                                    }
-                                                                >
-                                                                    Swimming Pool
-                                                                </li>
-                                                                <li
-                                                                    className="parking"
-                                                                    hidden={
-                                                                        props.hotel.data?.freeParking ? true : false
-                                                                    }
-                                                                >
-                                                                    Free parking
-                                                                </li>
-                                                                <li
-                                                                    className="gym"
-                                                                    hidden={props.hotel.data?.gym ? true : false}
-                                                                >
-                                                                    Gym
-                                                                </li>
-                                                                {/* <li className="tv" hidden={props.hotel.data.highSpeedInternet?true:false}>TV</li> */}
-                                                                <li
-                                                                    className="pets"
-                                                                    hidden={
-                                                                        props.hotel.data?.petsAllowed ? true : false
-                                                                    }
-                                                                >
-                                                                    Pets allowed
-                                                                </li>
-                                                            </ul>
                                                             <div className="clear"></div>
-                                                            <div className="preferences-devider"></div>
                                                         </div>
                                                     </div>
 
@@ -504,46 +500,30 @@ const HotelDetailPage = (props) => {
                                                                 *Select the number of rooms suitable for the
                                                                 number of people{" "}
                                                             </h2>
-                                                            <Button
-                                                                style={
-                                                                    totalAdult <
-                                                                        parseInt(queryParam.get("numberAdult"))
-                                                                        ? { color: "red", with: 250 }
-                                                                        : { with: 250 }
-                                                                }
-
-                                                                color="red"
-                                                                size="large"
-                                                                // setJquery
-                                                                startIcon={<FontAwesomeIcon
-                                                                    icon={faMale}
-                                                                ></FontAwesomeIcon>}
-                                                                variant=""
-                                                            >
+                                                            <Button style={totalAdult < parseInt(queryParam.get("numberAdult")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                                color="red" size="large" startIcon={<FontAwesomeIcon icon={faMale} ></FontAwesomeIcon>} variant="" >
                                                                 {totalAdult}/{queryParam.get("numberAdult")}
                                                             </Button>
 
-                                                            {parseInt(queryParam.get("numberChildren")) !==
-                                                                0 && <Button
-                                                                    style={
-                                                                        totalChild <
-                                                                            parseInt(queryParam.get("numberChildren"))
-                                                                            ? { color: "red" }
-                                                                            : {}
-                                                                    }
-                                                                    startIcon={
-                                                                        <FontAwesomeIcon
-                                                                            icon={faBaby}
-                                                                        ></FontAwesomeIcon>}
-                                                                    variant=""
-                                                                >
+                                                            {parseInt(queryParam.get("numberChildren")) !== 0 &&
+                                                                <Button style={totalChild < parseInt(queryParam.get("numberChildren")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                                    startIcon={<FontAwesomeIcon icon={faChild}></FontAwesomeIcon>} variant="" >
                                                                     {totalChild}/{queryParam.get("numberChildren")}
                                                                 </Button>}
-                                                            <a
-                                                                onClick={(e) => addNewBook()}
-                                                                className="book-btn"
-                                                                style={{ color: "red" }}
-                                                            >
+                                                            <Button style={(totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                                color="red" size="large" variant="" onClick={addNewBook}>
+                                                                {/* {totalAdult <
+                                                                    parseInt(queryParam.get("numberAdult")) || totalChild <
+                                                                    parseInt(queryParam.get("numberChildren"))
+                                                                    ?
+                                                                    <FontAwesomeIcon
+                                                                        icon={faTimesCircle} />
+                                                                    :
+                                                                    <FontAwesomeIcon icon={faCheck}/>
+                                                                } */}
+                                                                BOOK NOW
+                                                            </Button>
+                                                            {/* <a onClick={(e) => addNewBook()} className="book-btn" style={{ color: "red" }}>
                                                                 <span className="book-btn-l">
                                                                     {totalAdult <
                                                                         parseInt(queryParam.get("numberAdult")) || totalChild <
@@ -560,7 +540,7 @@ const HotelDetailPage = (props) => {
                                                                 </span>
                                                                 <span className="book-btn-r">Book now</span>
                                                                 <div className="clear"></div>
-                                                            </a>
+                                                            </a> */}
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -630,7 +610,7 @@ const HotelDetailPage = (props) => {
                                                                     </div>
                                                                     <nav className="reviews-total-stars">
                                                                         <ul>
-                                                                        
+
                                                                             {[...Array(5)].map(
                                                                                 (item, index) =>
                                                                                     // {
@@ -1012,6 +992,11 @@ const HotelDetailPage = (props) => {
                                             natus error sit voluptatem.
                                         </p>
                                     </div>
+                                    <a href="#book-room" onClick={(e) => $("#book-room").click()} class="wishlist-btn">
+                                        <span class="wishlist-btn-l"><i></i></span>
+                                        <span class="wishlist-btn-r">Book Now</span>
+                                        <div class="clear"></div>
+                                    </a>
                                 </div>
 
                                 <div className="h-help">
@@ -1022,188 +1007,6 @@ const HotelDetailPage = (props) => {
                                     <div className="h-help-phone">2-800-256-124 23</div>
                                     <div className="h-help-email">sparrow@mail.com</div>
                                 </div>
-
-                                {/* <div className="h-liked">
-                                    <div className="h-liked-lbl">You May Also Like</div>
-                                    <div className="h-liked-row">
-                                        <div className="h-liked-item">
-                                            <div className="h-liked-item-i">
-                                                <div className="h-liked-item-l">
-                                                    <a href="#">
-                                                        <img alt="" src="img/like-01.jpg" />
-                                                    </a>
-                                                </div>
-                                                <div className="h-liked-item-c">
-                                                    <div className="h-liked-item-cb">
-                                                        <div className="h-liked-item-p">
-                                                            <div className="h-liked-title">
-                                                                <a href="#">Andrassy Thai Hotel</a>
-                                                            </div>
-                                                            <div className="h-liked-rating">
-                                                                <nav className="stars">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-a.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div className="clear"></div>
-                                                                </nav>
-                                                            </div>
-                                                            <div className="h-liked-foot">
-                                                                <span className="h-liked-price">850$</span>
-                                                                <span className="h-liked-comment">
-                                                                    avg/night
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div className="clear"></div>
-                                        </div>
-
-                                        <div className="h-liked-item">
-                                            <div className="h-liked-item-i">
-                                                <div className="h-liked-item-l">
-                                                    <a href="#">
-                                                        <img alt="" src="img/like-02.jpg" />
-                                                    </a>
-                                                </div>
-                                                <div className="h-liked-item-c">
-                                                    <div className="h-liked-item-cb">
-                                                        <div className="h-liked-item-p">
-                                                            <div className="h-liked-title">
-                                                                <a href="#">Campanile Cracovie</a>
-                                                            </div>
-                                                            <div className="h-liked-rating">
-                                                                <nav className="stars">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-a.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div className="clear"></div>
-                                                                </nav>
-                                                            </div>
-                                                            <div className="h-liked-foot">
-                                                                <span className="h-liked-price">964$</span>
-                                                                <span className="h-liked-comment">
-                                                                    avg/night
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div className="clear"></div>
-                                        </div>
-
-                                        <div className="h-liked-item">
-                                            <div className="h-liked-item-i">
-                                                <div className="h-liked-item-l">
-                                                    <a href="#">
-                                                        <img alt="" src="img/like-03.jpg" />
-                                                    </a>
-                                                </div>
-                                                <div className="h-liked-item-c">
-                                                    <div className="h-liked-item-cb">
-                                                        <div className="h-liked-item-p">
-                                                            <div className="h-liked-title">
-                                                                <a href="#">Ermin's Hotel</a>
-                                                            </div>
-                                                            <div className="h-liked-rating">
-                                                                <nav className="stars">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-b.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="#">
-                                                                                <img alt="" src="img/star-a.png" />
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <div className="clear"></div>
-                                                                </nav>
-                                                            </div>
-                                                            <div className="h-liked-foot">
-                                                                <span className="h-liked-price">500$</span>
-                                                                <span className="h-liked-comment">
-                                                                    avg/night
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="clear"></div>
-                                                </div>
-                                            </div>
-                                            <div className="clear"></div>
-                                        </div>
-                                    </div>
-                                </div> */}
 
                                 <div className="h-reasons">
                                     <div className="h-liked-lbl">Reasons to Book with us</div>
@@ -1217,11 +1020,11 @@ const HotelDetailPage = (props) => {
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
                                                             <div className="reasons-i-lbl">
-                                                                Awesome design
+                                                                Awesome Price
                                                             </div>
                                                             <p>
-                                                                Voluptatem quia voluptas sit aspernatur aut odit
-                                                                aut fugit, sed quia consequunt.
+                                                                Cheap price every day with special offer for members
+                                                                Book through the app to get the best price with great promotions!
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1240,11 +1043,10 @@ const HotelDetailPage = (props) => {
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
                                                             <div className="reasons-i-lbl">
-                                                                carefylly handcrafted
+                                                                Safe and flexible payment methods
                                                             </div>
                                                             <p>
-                                                                Voluptatem quia voluptas sit aspernatur aut odit
-                                                                aut fugit, sed quia consequunt.
+                                                                Safe online transactions with many options such as payment at convenience stores, bank transfer, credit card to Internet Banking. No transaction fees.
                                                             </p>
                                                         </div>
                                                     </div>
@@ -1263,11 +1065,10 @@ const HotelDetailPage = (props) => {
                                                     <div className="reasons-rb">
                                                         <div className="reasons-p">
                                                             <div className="reasons-i-lbl">
-                                                                sustomer support
+                                                                Real guests, real reviews
                                                             </div>
                                                             <p>
-                                                                Voluptatem quia voluptas sit aspernatur aut odit
-                                                                aut fugit, sed quia consequunt.
+                                                                Over 10,000,000 verified reviews and votes from visitors will help you make the right choice.
                                                             </p>
                                                         </div>
                                                     </div>
