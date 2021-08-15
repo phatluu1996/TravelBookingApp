@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { signin, googleSignin } from '../../../actions/actionAuth';
+import { signin, googleSignin, sendEmailForget } from '../../../actions/actionAuth';
 import { setUserSession, removeUserSession } from '../../../utils';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
@@ -12,9 +12,10 @@ import { CLIENT_ID, APP_ID } from '../../../config/api';
 
 function PopupLogin(props) {
     const history = useHistory();
-    const [errLogin, setErrLogin] = useState(false);
+    const [errLogin, setErrLogin] = useState("");
     const [isRequest, setIsRequest] = useState(false);
-
+    const [forgetPassErr, setForgetPassErr] = useState('');
+    const [isAlert, setIsAlert] = useState("");
 
     const [error, setError] = useState({
         username: '',
@@ -66,7 +67,6 @@ function PopupLogin(props) {
         if (validateForm(e)) {
             props.doSignin(form.username.value, form.password.value);
             setIsRequest(true);
-            // history.push("/")
         }
     }
 
@@ -96,15 +96,36 @@ function PopupLogin(props) {
         closePopup();
     }
 
-
     useEffect(() => {
         var mount = false;
         if (props.auth.form === 'login') {
             if (props.auth.message && isRequest) {
-                setErrLogin(true);
+                setErrLogin("Login Fail! Wrong user name or password.");
             }
+
             if (props.auth.data && props.auth.success) {
-                closePopup();
+                if(props.auth.data?.accessToken){
+                    setErrLogin("");
+                    closePopup();
+                }else{
+                    setErrLogin(props.auth.data?.message);
+                }
+            }
+        }else if(props.auth.form === "forgetPassword" && isAlert == "NO"){
+            if (props.auth.message && isRequest) {
+                alert("Error Server");
+                setIsAlert("YES");
+            }
+
+            if(props.auth.forgetPass && props.auth.success){
+                if(props.auth.forgetPass?.success){
+                    alert(props.auth.forgetPass?.message);
+                    setIsAlert("YES");
+                    setForgetPassErr("");
+                    closePopup();
+                }else{
+                    setForgetPassErr(props.auth.forgetPass?.message);
+                }
             }
         }
 
@@ -113,22 +134,44 @@ function PopupLogin(props) {
         }
     });
 
+    const forgetPasswordSubmit = (e) => {
+        var error = {...forgetPassErr};
+        e.preventDefault();
+        var form = e.target;
+        if(!form.emailForgetPass.value){
+            error = "Email is required";
+        }else{
+            let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!regex.test(form.emailForgetPass.value)) {
+                error = "Email is invalid.";
+            } else { error = ""; }
+        }
+        setIsAlert("NO");
+        if(error == ""){
+            setForgetPassErr("");
+            props.forgetPassword(form.emailForgetPass.value);
+        }else{
+            setForgetPassErr(error);
+            return false;
+        }
+    }
+
     const closePopup = () => {
         $('.autorize-popup').animate({ top: '-300px' }, 300, function () {
             $('.overlay').fadeOut();
         });
     }
 
-
     return (<>
         <div className="overlay"></div>
         <div className="autorize-popup">
             <div className="autorize-tabs">
                 <a href="#" className="autorize-tab-a current">Sign in</a>
-                <a href="#" className="autorize-tab-b"></a>
+                <a href="#" className="autorize-tab-b">Forget Your Password?</a>
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
+            
             <form className="autorize-tab-content" onSubmit={handleSubmit} autoComplete="false">
                 <div className="autorize-padding" style={{ marginTop: '20px' }}>
                     <h6 className="autorize-lbl text-center">WELCOME! SIGN IN YOUR ACCOUNT</h6>
@@ -144,13 +187,11 @@ function PopupLogin(props) {
                         <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                     </div>
                     <div>
-                        {errLogin && <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>
-                            Login Fail! Wrong user name or password.</div>}
+                        <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>{errLogin}</div>
                     </div>
 
                     <div className="autorize-bottom">
                         <button className="authorize-btn" type="submit">Login</button>
-                        <Link to="/" className="authorize-forget-pass">Forgot your password?</Link>
                         <div className="clear"></div>
                     </div>
                     <div className="text-center mt-2">
@@ -168,12 +209,24 @@ function PopupLogin(props) {
                             onSuccess={handleLoginGoogleSuccess}
                             onFailure={handleLoginGoogleFail}
                         />
-                        
                     </div>
                 </div>
             </form>
+            <form className="autorize-tab-content" onSubmit={forgetPasswordSubmit}>
+                <div className="autorize-padding">
+                    <h6 className="autorize-lbl" style={{textAlign:"center"}}>Enter your email to change password</h6>
+                    <div>
+                        <div className="autorize-input-lbl" style={{marginTop:'5px'}}>Email:</div>
+                        <div className="validate-error" style={{marginTop:'5px'}}>{forgetPassErr}</div>
+                        <input type="text" name="emailForgetPass" className={`${forgetPassErr ? 'is-invalid' : ''}`} />
+                    </div>
+                    <footer className="autorize-bottom">
+                        <button className="authorize-btn">Submit</button>
+                        <div className="clear"></div>
+                    </footer>
+                </div>
+            </form>
         </div>
-
     </>);
 }
 const mapStateToProps = (state, ownProps) => {
@@ -189,6 +242,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         doGoogleSignin: (firstname, lastname, username, email, password) => {
             dispatch(googleSignin(firstname, lastname, username, email, password));
+        },
+        forgetPassword: (email) => {
+            dispatch(sendEmailForget(email));
         }
 
     };
