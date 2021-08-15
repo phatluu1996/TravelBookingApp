@@ -383,12 +383,12 @@ footer {
                     </thead>
                     <tr th:each="room : ${hotelBooking.hotelBookingDetail.hotelBookingRooms}">
                         <td width="5%" class="tableitem" th:text="${roomStat.index + 1}"></td>
-                        <td width="20%" class="tableitem" >Hotel Ticket</td>
+                        <td width="10%" class="tableitem" >Hotel Ticket</td>
                         <td width="10%" class="tableitem" th:text="${room.room.roomType}"></td>
                         <td width="25%" class="tableitem" th:text="${hotelBooking.checkInDate} + ' ' + ${hotelBooking.checkOutDate}"></td>
-                        <td width="10%" class="tableitem" th:text="${nightCount}"></td>
-                        <td width="10%" class="tableitem" th:text="${room.room.price + ' $'}"></td>
-                        <td width="20%" class="tableitem" th:text="${room.room.price}*${nightCount} + ' $'"></td>
+                        <td width="5%" class="tableitem" th:text="${nightCount}"></td>
+                        <td width="20%" class="tableitem" th:text="${room.room.price + ' $'}"></td>
+                        <td width="25%" class="tableitem" th:text="${room.room.price}*${nightCount} + ' $'"></td>
                     </tr>
                     <tr>
                         <td width="10%" class="tableitem"></td>

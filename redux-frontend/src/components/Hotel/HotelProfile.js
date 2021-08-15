@@ -36,17 +36,6 @@ const HotelProfile = (props) => {
         return ward+" ,"+district+" ,"+province;
     }
 
-    // const checkGender = ()=> {
-    //     if(user.data){
-    //         if(user.data.gender === "Female"){
-    //             return "Mrs.";
-    //         }else if(user.data.gender === "Male"){
-    //             return "Mr.";
-    //         }else return "";
-    //     }else{
-    //         return "";
-    //     }
-    // }
 
     return (
         <>

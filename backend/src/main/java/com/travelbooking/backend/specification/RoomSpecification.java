@@ -21,6 +21,17 @@ public final class RoomSpecification {
         return Specification.where(isRetired(retired))
                 .and(listRoomWithListId(id));
     }
+    public static Specification<Room> getListRoomByHotelId(Hotel hotel
+            , Boolean retired){
+        return Specification.where(isRetired(retired))
+                .and(listRoomWithHotelId(hotel));
+    }
+
+
+    public static Specification<Room> listRoomWithHotelId(Hotel hotel){
+        return (room,cq,cb)->cb.equal(room.get("hotel"),hotel);
+    }
+
 
     public static Specification<Room> listRoomWithId(Long id){
         return (room,cq,cb) -> {

@@ -49,6 +49,7 @@ import AdminFeedback from './components/Admin/Feedback/AdminFeedback';
 import ChangePasswordFoget from './components/Layout/ChangePasswordForget';
 import { createTheme } from '@material-ui/core';
 import { ThemeProvider } from 'styled-components';
+import AddNewRoom from './components/Room/AddNewRoom';
 
 
 const App = (props) => {
@@ -119,8 +120,12 @@ const App = (props) => {
 
           <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
           <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
-          
           <PublicRoute restricted={false} component={ChangePasswordFoget} path="/resetPassword" />
+
+        <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
+        <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
+        <PublicRoute restricted={false} component={AddNewRoom} path="/admin-room-create" />
+        {/* <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" /> */}
 
           <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
           <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />

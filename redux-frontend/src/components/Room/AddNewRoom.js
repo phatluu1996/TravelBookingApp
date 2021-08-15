@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { getUpdate } from "../../actions/actionHotel";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { createRoom } from "../../actions/actionRoom";
 import { updateLocation } from "../../actions/actionLocation";
 import { importAll } from "../../utils/JqueryImport";
+import AdminFooter from '../Admin/Layout/AdminFooter';
+import AdminNavbar from '../Admin/Layout/AdminNavbar';
+import AdminSidebar from '../Admin/Layout/AdminSidebar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
-const AddNewRoom = (props) => {
-    // const hotel = props.dataHotel;
+
+const AddNewRoom = ({ closeModal, hotel }) => {
+
+
+    // const room = props.room;
     // const provinces = props.province.data;
 
     // const [selectProvince, setSelectProvince] = useState(hotel.location.province);
@@ -17,100 +25,97 @@ const AddNewRoom = (props) => {
     // const [statusSignup, setStatuSignup] = useState(false);
     // const [messageSignup, setMessageSignup] = useState("");
     // const [isRequest, setIsRequest] = useState(false);
-
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [images, setImages] = useState([]);
+    const dispatch = useDispatch();
     const [validateError, setValidateError] = useState({
-        hotelName: "",
-        email: "",
-        phone: "",
-        contactName: "",
-        contactTitle: "",
-        address: "",
-        numberOfRoom: "",
-        avgPriceAtNight: "",
+        roomNumber: "",
+        roomType: "",
+        price: "",
+        maxAdult: "",
+        maxChildren: ""
     });
+    // const goBack = () => {
+    //     history.push("/admin-hotel-manage");
+    // }
+
+
+    const roomCreate = (data) => { dispatch(createRoom(data)) }
+
 
     const handelSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
+        let formData = new FormData();
+        console.log('' + hotel.id);
+        // byte[] bytes = images.f.read(file_upload .toPath());
         if (handleChange(form)) {
-            // let data = {
-            //     ...props.dataHotel
-            // }
-            //     data.hotelName = form.hotelName.value;
-            //     data.email= form.email.value;
-            //     data.phone= form.phone.value;
-            //     data.contactName= form.contactName.value;
-            //     data.contactTitle= form.contactTitle.value;
-            //     data.address = form.address.value;
-            //     data.numberOfRoom= parseInt(form.numOfRoom.value);
-            //     data.avgPriceAtNight= parseFloat(form.avgPriceAtNight.value);
-            //     data.location.street = form.address.value;
-            //     data.location.province = selectProvince;
-            //     data.location.district = selectDistrict;
-            //     data.location.ward = selectWard;
-
-            //     props.getUpdate(hotel.id,data);
+            formData.append('roomNumber', parseInt(form.roomNumber.value));
+            formData.append('hotel','' + hotel.id);
+            formData.append('roomType', form.roomType.value);
+            formData.append('price', parseInt(form.price.value));
+            formData.append('maxAdult', parseInt(form.maxAdult.value));
+            formData.append('maxChildren', parseInt(form.maxChildren.value));
+            formData.append('roomStatus', 0);
+            for (let index = 0; index < images.length; index++) {
+                const image = images[index];
+                formData.append('files',image);
+            }
+            roomCreate(formData);
+            closeModal(false)
         }
     };
+
+    const uploadFiles = (event) => {
+        var files = [];
+        for (let size = 0; size < event.target.files.length; size++) {
+            files.push(event.target.files[size]);
+        }
+        setImages(files);
+    }
+
     const handleChange = (e) => {
 
         const form = e;
         const err = { ...validateError };
-        const pattern =
-            /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
-        const result = pattern.test(form.email.value);
+        // console.log(form.roomNumber.value);
+        // const pattern =
+        //     /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+        // const result = pattern.test(form.email.value);
 
-        if (!form.hotelName.value) {
-            err.hotelName = "Hotel name is required ";
+        if (!form.roomNumber.value) {
+            err.roomNumber = "Room number is required ";
         } else {
-            err.hotelName = "";
+            err.roomNumber = "";
         }
-        if (!form.email.value) {
-            err.email = "Email is required ";
-        } else if (!result) {
-            err.email = "Email is valid";
+        if (!form.roomType.value) {
+            err.roomType = "Room type is required ";
         } else {
-            err.email = "";
+            err.roomType = "";
         }
-        if (!form.phone.value) {
-            err.phone = "Phone is required ";
+        if (!form.price.value) {
+            err.price = "Price is required ";
         } else {
-            err.phone = "";
+            err.price = "";
         }
-        if (!form.contactName.value) {
-            err.contactName = "Contact name is required ";
+        if (!form.maxAdult.value) {
+            err.maxAdult = "Max adult title is required ";
         } else {
-            err.contactName = "";
+            err.maxAdult = "";
         }
-        if (!form.contactTitle.value) {
-            err.contactTitle = "Contact title is required ";
+        if (!form.maxChildren.value) {
+            err.maxChildren = " Max children is required ";
         } else {
-            err.contactTitle = "";
-        }
-        if (!form.address.value) {
-            err.address = " Address is required ";
-        } else {
-            err.address = "";
-        }
-        if (!form.numOfRoom.value) {
-            err.numberOfRoom = " Room quantity is required ";
-        } else {
-            err.numberOfRoom = "";
-        }
-        if (!form.avgPriceAtNight.value) {
-            err.avgPriceAtNight = " Avg Price is required ";
-        } else {
-            err.avgPriceAtNight = "";
+            err.maxChildren = "";
         }
         if (
-            err.hotelName ||
-            err.email ||
+            err.roomNumber ||
+            err.roomType ||
             err.phone ||
-            err.contactName ||
-            err.contactTitle ||
-            err.address ||
-            err.numberOfRoom ||
-            err.avgPriceAtNight
+            err.price ||
+            err.maxAdult ||
+            err.maxChildren
         ) {
             setValidateError(err);
             return false;
@@ -147,290 +152,110 @@ const AddNewRoom = (props) => {
         };
     }, []);
 
-    // const onChangeProvince = (e) => {
-    //     document
-    //         .querySelector("#districts")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     document
-    //         .querySelector("#wards")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     if (e.currentTarget.id === "0") {
-    //         setSelectDistrict(null);
-    //         setSelectProvince(null);
-    //         setSelectWard(null);
-    //     } else {
-    //         // if (!props.province.data) {
-    //             setSelectProvince(
-    //                 props.province.data.find((item) => item.id === parseInt(e.currentTarget.value))
-    //             );
-    //         // }
-    //     }
-    // };
-    // const onChangeDistrict = (e) => {
-    //     document
-    //         .querySelector("#wards")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     if (e.currentTarget.id === "0") {
-    //         setSelectDistrict(null);
-    //         setSelectWard(null);
-    //     } else {
-    //         setSelectDistrict(
-    //             selectProvince.districts.find(
-    //                 (item) => item.id === parseInt(e.currentTarget.value)
-    //             )
-    //         );
-    //     }
-    // };
-    // const onChangeWard = (e) => {
-    //     setSelectWard(
-    //         selectDistrict.wards.find(
-    //             (item) => item.id === parseInt(e.currentTarget.value)
-    //         )
-    //     );
-    // };
+    const formControlClass = (field) => {
+        if (!validateError[field]) {
+            if (isSubmit) {
+                return "form-control is-valid";
+            }
+            return "form-control";
+        }
+        return "form-control is-invalid";
+    }
 
     return (
-        <div>
-            <form onSubmit={handelSubmit}>
-                <div className="booking-form">
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Room Number:</label>
-                            <div
-                                className={`input ${validateError.hotelName ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="hotelName"
-                                    // defaultValue={hotel ? hotel.hotelName : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.hotelName}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label>Price:</label>
-                            <div className="input">
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    // defaultValue={hotel ? hotel.phone : ""}
-                                />
-                            </div>
-                        </div>
+        <>
 
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i booking-form-i-custom ">
-                            <label className="custom-lbl">Room Type:</label>
-                            <div
-                                className={`input ${validateError.email ? "is-invalid" : ""}`}
-                            >
-                                <input
-                                    type="text"
-                                    name="email"
-                                    // defaultValue={hotel ? hotel.email : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">{validateError.email}</div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Max Adult:</label>
-                            <div
-                                className={`input ${validateError.contactName ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="contactName"
-                                    // defaultValue={hotel ? hotel.contactName : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.contactName}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Max Children:</label>
-                            <div
-                                className={`input ${validateError.contactTitle ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="contactTitle"
-                                    // defaultValue={hotel ? hotel.contactTitle : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.contactTitle}
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Number Of Room:</label>
-                            <div
-                                className={`input ${validateError.numberOfRoom ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="numOfRoom"
-                                    // defaultValue={hotel ? hotel.numberOfRoom : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.numberOfRoom}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Avg Price:</label>
-                            <div
-                                className={`input ${validateError.avgPriceAtNight ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="avgPriceAtNight"
-                                    // defaultValue={hotel ? hotel.avgPriceAtNight : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.avgPriceAtNight}
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div style={{ color: "grey", marginBottom: "10px" }}>
-                            <i>*Please enter address</i>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div
-                            className="booking-form-i booking-form-i-custom"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            <label className="custom-lbl">Address:</label>
-                            <div
-                                className={`input ${validateError.address ? "is-invalid" : ""}`}
-                            >
-                                <input
-                                    type="text"
-                                    name="address"
-                                    // defaultValue={hotel ? hotel.location.street : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">{validateError.address}</div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div style={{ marginBottom: "10px", color: "grey" }}>
-                        <i>*Please enter location</i>
-                    </div>
-                    <div>
-                        <div className="srch-tab-line no-margin-bottom">
-                            {/* <div className="srch-tab-3c">
-                                <label>Province</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        onChange={onChangeProvince}
-                                        className="custom-select"
-                                        name="provinces"
-                                        id="provinces"
-                                        defaultValue={hotel.location.province.id}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {props.province.data?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+            <div className="bootstrap-scope">
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={handelSubmit} className="form-sample" autoComplete="false">
+                            <div className="row">
+                                <div className="col-sm">
+                                    <h3 className="card-title ">New room</h3>
                                 </div>
-                            </div> */}
-                            {/* <div className="srch-tab-3c">
-                                <label>District</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        onChange={onChangeDistrict}
-                                        className="custom-select"
-                                        name="districts"
-                                        id="districts"
-                                        defaultValue={hotel?.location.district.id}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {selectProvince?.districts?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                <div className="col col-lg-4">
+                                    {/* <div className="row"> */}
+                                    {/* <div className="col-md-3"> */}
+                                    <button type="submit" onSubmit={handelSubmit} className="btn btn-success"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
+                                    {/* </div>
+                                    <div className="col-md-3"> */}
+                                    <button onClick={e => closeModal(false)} className="btn btn-md btn-danger "><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
+                                    {/* </div> */}
+                                    {/* </div> */}
                                 </div>
-                            </div> */}
-                            {/* <div className="srch-tab-3c">
-                                <label>Ward</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        className="custom-select"
-                                        name="wards"
-                                        id="wards"
-                                        defaultValue={hotel?.location.ward.id}
-                                        onChange={onChangeWard}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {selectDistrict?.wards?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Room Number*</label>
+                                        <input type="number" className={formControlClass("roomNumber")} name="roomNumber" />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.roomNumber}</div>
+                                    </div>
                                 </div>
-                            </div> */}
-                        </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">RoomType*</label>
+                                        <input type="text" className={formControlClass("roomType")} name="roomType" />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.roomType}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Price*</label>
+                                        <input type="number" className={formControlClass("price")} name="price" />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.price}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Max Adult*</label>
+                                        <input type="number" className={formControlClass("maxAdult")} name="maxAdult" />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.maxAdult}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Max Children*</label>
+                                        <input type="number" className={formControlClass("maxChildren")} name="maxChildren" />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.maxChildren}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Image of room</label>
+                                        <input onChange={uploadFiles} type="file" id="files" name="files" multiple />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div className="booking-complete" style={{ float: "left" }}>
-                    <button
-                        className="booking-complete-btn"
-                        type="submit"
-                        style={{ marginTop: "20px" }}
-                    >
-                        Update
-                    </button>
-                </div>
-                <div className="clear"></div>
-            </form>
-        </div>
+            </div>
+
+            {/* </div>
+                        </div> */}
+            {/* <AdminFooter /> */}
+            {/* </div> */}
+            {/* </div> */}
+            {/* </div> */}
+
+            {/* </div > */}
+        </>
     );
 };
 const mapStateToProps = (state, ownProps) => {
-    return {};
+    // return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUpdate: (id, data) => {
-            dispatch(getUpdate(id, data));
-        },
-        getUpdateLocation: (id, data) => {
-            dispatch(updateLocation(id, data));
-        },
+
     };
 };
 
