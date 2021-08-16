@@ -212,3 +212,30 @@ export const changePassForget = (data) => async dispatch =>{
         });
     }
 }
+
+export const CONFIRM_ACCOUNT_REQUEST = "CONFIRM_ACCOUNT_REQUEST";
+export const CONFIRM_ACCOUNT_SUCCESS = "CONFIRM_ACCOUNT_SUCCESS";
+export const CONFIRM_ACCOUNT_ERROR = "CONFIRM_ACCOUNT_ERROR";
+
+export const confirmAccount = (id) => async dispatch =>{
+    try {
+        dispatch({ type: CONFIRM_ACCOUNT_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json"
+            }
+        });
+        const response = await httpAuth.get(`/auth/activateAccount/${id}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: CONFIRM_ACCOUNT_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: CONFIRM_ACCOUNT_ERROR,
+            message: error
+        });
+    }
+}
