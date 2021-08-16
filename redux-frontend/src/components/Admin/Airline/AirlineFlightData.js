@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash,faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { retrieveProvince } from '../../../actions/actionLocation';
@@ -10,16 +10,12 @@ import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
-import { countBookingTodayAirline, getAirline, getAllBookingAirline, getDailyIncomeAirline, getReportMonthAirline, getRevenueAirline } from '../../../actions/actionAirline';
+import { getAirline } from '../../../actions/actionAirline';
 
-const AirlineBookingData = (props) => {
+const AirlineFlightData = (props) => {
 
     let queryParam = useQuery();
-    let history = useHistory();
-    const [isInitial, setIsInitial] = useState(true);
-    const [slProvince, setSlProvince] = useState(null);
-    const [slDistrict, setSlDistrict] = useState(null);
-    const [slWard, setSlWard] = useState(null);
+
 
     useEffect(() => {
         let mount = false;
@@ -34,39 +30,6 @@ const AirlineBookingData = (props) => {
 
     useEffect(() => {
         let mount = false;
-
-        if (props.airline.single != null && isInitial) {
-            props.getAllBookingAirline(props.airline.single?.id);
-            props.getDailyIncome(props.airline.single?.id);
-            props.getRevenue(props.airline.single?.id);
-            props.countBookingToday(props.airline.single?.id);
-            props.getReportMonth(props.airline.single?.id);
-            setIsInitial(false);
-        }
-
-        if (props.province.data && props.airline.single) {
-            var pv = props.airline.single?.location.province;
-            var dt = props.airline.single?.location.district;
-            var w = props.airline.single?.location.ward;
-
-            if (!slProvince) {
-                setSlProvince(pv);
-            } else {
-                pv = slProvince;
-            }
-
-            if (!slDistrict) {
-                setSlDistrict(dt);
-            } else {
-                dt = slDistrict;
-            }
-
-            if (!slWard) {
-                setSlWard(w);
-            } else {
-                w = slWard;
-            }
-        }
 
         return () => {
             mount = true;
@@ -95,62 +58,54 @@ const AirlineBookingData = (props) => {
     });
     const header = [
         {
-            name: 'Id',
+            name: 'id',
             selector: 'id',
             sortable: true,
             width: '5%'
         },
         {
-            name: 'Booking Code',
-            selector: 'bookingCode',
+            name: 'Flight',
+            selector: 'flightCode',
             sortable: true,
-            width: '15%'
         },
         {
-            name: 'Amount',
-            selector: 'totalPrice',
+            name: 'From',
+            selector: 'departureCity',
             sortable: true,
-            width: '10%'
         },
         {
-            name: 'Payment',
-            selector: 'paymentMethod',
+            name: 'To',
+            selector: 'arrivalCity',
             sortable: true,
-            width: '10%'
         },
         {
-            name: 'Created',
-            selector: 'createdAt',
+            name: 'Depart time',
+            selector: 'departureTime',
             sortable: true,
-            width: '15%'
         },
         {
-            name: 'Note',
-            selector: 'note',
+            name: 'Arrival',
+            selector: 'arrivalTime',
             sortable: true,
-            width: '10%'
+        },
+        {
+            name: 'Aircraft',
+            selector: 'aircraftType',
+            sortable: true,
         },
         {
             name: 'Status',
-            
+            selector: 'status',
             sortable: true,
-            width: '10%',
-            cell: booking => booking.status == 1 ? "Confirmed" : "Cancel"
-        },
-        {
-            name: 'User',
-            selector: 'user.account.userName',
-            sortable: true,
-            width: '10%'
         },
         {
             name: 'ACTIONS',
-            cell: booking => <>
-              <Link className="list-btn-sm mr-1" to={`/airline-update-bookingl?id=${booking.id}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+            cell: flight => <>
+              <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${flight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
       
               <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
       
-        }
+          }
     ];
 
     const customStyles = {
@@ -267,14 +222,23 @@ const AirlineBookingData = (props) => {
                                                             <div className="col-lg-12 grid-margin stretch-card">
                                                                 <div className="card">
                                                                     <div className="card-body">
-                                                                        <h4 className="card-title">BOOKING LIST</h4>
+                                                                        <div className="row">
+                                                                        <div className="col-lg-8">
+                                                                            <h4 className="card-title">SCHEDULE FLIGHT DATA</h4>
+                                                                        </div>
+                                                                        <div className="col-lg-4">
+                                                                            <Link to={`/airline-create-flight?id=${queryParam.get("id")}`} className="btn btn-outline-primary">
+                                                                           Add New Flight {"  "} <FontAwesomeIcon className="list-btn-sm-icon mb-1 ml-1" icon={faPlusSquare}/>
+                                                                            </Link>
+                                                                        </div>
+                                                                        </div>
                                                                          <div className="table-responsive">
                                                                                 <DataTable className="table-a"
                                                                                     customStyles={customStyles}
                                                                                     theme='solarized'
-                                                                                    progressPending={!props.airline.allBooking}
+                                                                                    progressPending={!props.airline?.single?.flights}
                                                                                     columns={header}
-                                                                                    data={props.airline.allBooking}
+                                                                                    data={props.airline?.single?.flights}
                                                                                     pagination
                                                                                     paginationPerPage={10}
                                                                                 />
@@ -311,26 +275,12 @@ const mapDispatchToProps = (dispatch) => {
         getProvince: () => {
             dispatch(retrieveProvince());
         },
-        getAllBookingAirline: (id) => {
-            dispatch(getAllBookingAirline(id));
-        },
         getAirline: (id) => {
             dispatch(getAirline(id));
         },
-        getDailyIncome: (id) => {
-            dispatch(getDailyIncomeAirline(id));
-        },
-        getRevenue: (id) => {
-            dispatch(getRevenueAirline(id));
-        },
-        countBookingToday: (id) => {
-            dispatch(countBookingTodayAirline(id));
-        },
-        getReportMonth: (id) => {
-            dispatch(getReportMonthAirline(id));
-        }
+            
     };
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AirlineBookingData);
+export default connect(mapStateToProps, mapDispatchToProps)(AirlineFlightData);

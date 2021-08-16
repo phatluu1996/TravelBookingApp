@@ -12,11 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {
-  createHotel,
-  getHotel,
-  updateHotel,
-} from "../../../actions/actionHotel";
 import { retrieveProvince } from "../../../actions/actionLocation";
 import AdminFooter from "../Layout/AdminFooter";
 import AdminNavbar from "../Layout/AdminNavbar";
@@ -806,7 +801,7 @@ const AirlineUpdateProfile = (props) => {
                                           <button
                                             type="submit"
                                             className="btn btn-lg btn-success btn-block"
-                                          >
+                                          >Submit {"  "}
                                             <FontAwesomeIcon
                                               icon={faCheck}
                                             ></FontAwesomeIcon>

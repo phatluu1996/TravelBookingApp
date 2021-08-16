@@ -11,7 +11,7 @@ import reducerAuth from './reduceAuth';
 import reducerRoom from './reducerRoom';
 import reducerBookingRoom from './reducerBookingRoom';
 import reducerHotelFeedBack from './reducerHotelFeedBack';
-import reducerFeedback from './reducerFeedback';
+import reducerFeedback from './reducerFeedBack';
 
 
 const reducers = combineReducers({
