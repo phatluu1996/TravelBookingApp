@@ -249,7 +249,6 @@ const AdminAirlineProfile = (props) => {
     return (
         <div className="bootstrap-scope">
             <div className="container-scroller">
-                <AdminSidebar />
                 <div className="container-fluid page-body-wrapper">
                     <AdminNavbar />
                     <div className="main-panel">
