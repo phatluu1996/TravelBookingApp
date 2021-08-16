@@ -95,7 +95,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
             }
 
             createBkSuccess.setTotalPrice(bookingRequest.getTotalPrice() + 10);
-            mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath),bookingRequest.getNightCount());
+            mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath),bookingRequest.getNightCount(),bookingRequest.getDateBooking());
 
         return createBkSuccess;
     }
@@ -105,11 +105,11 @@ public class RoomBookingServicelmpl implements RoomBookingService {
     static final String CD = "0123456789";
     static SecureRandom rnd = new SecureRandom();
 
-    public void mapAndSaveToPDF(HotelBooking hotelBooking, User user, File qrcode , int nightCount) throws Exception{
+    public void mapAndSaveToPDF(HotelBooking hotelBooking, User user, File qrcode , int nightCount,Date createDate) throws Exception{
         Map<String, Object > data = new HashMap<>();
         data.put("hotelBooking", hotelBooking);
         data.put("nightCount", nightCount);
-//        data.put("hotelBookingRooms", hotelBooking.getHotelBookingDetail().getHotelBookingRooms());
+        data.put("createDate",createDate);
         File pdfAttachment = pdfGenaratorUtil.createPdf("invoicebookingroom",data, ITINERARY_DIR, emailUtil, user);
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);
