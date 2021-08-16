@@ -3567,6 +3567,7 @@ pen lang: html, css, js(jquery)
   border-bottom: 6px dotted #f2f2f2;
   border-radius: 50%;
   animation: loading 2s infinite;
+  z-index: 1000000;
 }
 .loading:before {
   font-family: 'Lobster', cursive;

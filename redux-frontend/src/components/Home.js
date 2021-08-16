@@ -365,8 +365,14 @@ const Home = (props) => {
         }
 
         if (err.from || err.to || err.departureDate) {
-            setErrFlt(err);
-            return false;
+            if(formSelector === "hotel-flight-search" && err.returnDate){
+                setErrFlt(err);
+                return false;
+            }else{
+                setErrFlt(err);
+                return false;
+            }
+            
         }
         return true;
     }
@@ -476,8 +482,14 @@ const Home = (props) => {
 
 
         if (err.province || err.checkin || err.checkout) {
-            setErrHlt(err);
-            return false;
+            if(formSelector === "hotel-flight-search" && (err.adult || err.child)){
+                setErrHlt(err);
+                return false;
+            }else{
+                setErrHlt(err);
+                return false;
+            }
+            
         }
         return true;
     }

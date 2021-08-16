@@ -806,7 +806,7 @@ const ComboBookingPage = (props) => {
                               COMPLETE BOOKING
                             </button>
                             {checkout && (
-                              <div className="loading" delay-hide="10"></div>
+                              <div className="loading" style={{zIndex:'100001'}} delay-hide="10"></div>
                             )}
                           </div>
                           <ReactModal
