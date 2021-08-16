@@ -115,3 +115,37 @@ export const removeUser = (id) => async dispatch => {
         });
     }
 }
+
+export const CLEAR_USER_STATE = "CLEAR_USER_STATE";
+
+export const clearUserState = () => async dispatch => {
+    dispatch({type : CLEAR_USER_STATE});
+}
+
+// export const UPDATE_USER_PICTURE_REQUEST = "UPDATE_USER_PICTURE_REQUEST";
+// export const UPDATE_USER_PICTURE_SUCCESS = "UPDATE_USER_PICTURE_SUCCESS";
+// export const UPDATE_USER_PICTURE_ERROR = "UPDATE_USER_PICTURE_ERROR";
+
+export const updateUserPicture = (data) => async dispatch =>{
+    try {
+        dispatch({ type: UPDATE_USER_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.post(`/update-profile-picture`,data);
+        const responseBody = await response.data;        
+        dispatch({
+            type: UPDATE_USER_SUCCESS,
+            payload: responseBody
+        });        
+    } catch (error) {
+        dispatch({
+            type: UPDATE_USER_ERROR,
+            message: error
+        });
+    }
+}

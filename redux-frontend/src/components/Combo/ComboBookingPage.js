@@ -885,7 +885,7 @@ const ComboBookingPage = (props) => {
                 <div className="checkout-coll">
                   <div className="checkout-head">
                     <div className="checkout-headl">
-                      <a href="#">
+                      <a >
                         <img
                           alt=""
                           src={flights?.data?.airline?.image}
@@ -898,7 +898,7 @@ const ComboBookingPage = (props) => {
                         <div className="checkout-headrp">
                           <div className="chk-left">
                             <div className="chk-lbl">
-                              <a href="#">
+                              <a >
                                 {flights?.data?.departureCity} -{" "}
                                 {flights?.data?.arrivalCity} -{" "}
                                 {flights?.data?.flightCode}
@@ -952,7 +952,7 @@ const ComboBookingPage = (props) => {
                             </div>
                           </div>
                           <div className="chk-right">
-                            <a href="#"></a>
+                            <a ></a>
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -962,7 +962,7 @@ const ComboBookingPage = (props) => {
                   </div>
                   <div className="checkout-head">
                     <div className="checkout-headl">
-                      <a href="#">
+                      <a >
                         <img
                           alt=""
                           src={flights?.returnData?.airline?.image}
@@ -975,7 +975,7 @@ const ComboBookingPage = (props) => {
                         <div className="checkout-headrp">
                           <div className="chk-left">
                             <div className="chk-lbl">
-                              <a href="#">
+                              <a >
                                 {flights?.returnData?.departureCity} -{" "}
                                 {flights?.returnData?.arrivalCity} -{"  "}
                                 {flights?.returnData?.flightCode}
@@ -1025,7 +1025,7 @@ const ComboBookingPage = (props) => {
                             </div>
                           </div>
                           <div className="chk-right">
-                            <a href="#"></a>
+                            <a ></a>
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -1095,8 +1095,8 @@ const ComboBookingPage = (props) => {
                 <div className="checkout-coll">
                   <div className="checkout-head">
                     <div className="checkout-headl">
-                      <a href="#">
-                        <img alt="" src={props.hotel?.data?.images[0]?.imagePath} style={{ width: "95px", height: "60px" }} />
+                      <a >
+                        <img alt="" src={props.hotel?.data?.images[0] ? props.hotel?.data?.images[0]?.imagePath : ""} style={{ width: "95px", height: "60px" }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -1104,7 +1104,7 @@ const ComboBookingPage = (props) => {
                         <div className="checkout-headrp">
                           <div className="chk-left">
                             <div className="chk-lbl">
-                              <a href="#">{props.hotel?.data?.hotelName}</a>
+                              <a >{props.hotel?.data?.hotelName}</a>
                             </div>
                             <div className="chk-lbl-a">
                               {props.hotel?.data?.location?.street},
@@ -1139,7 +1139,7 @@ const ComboBookingPage = (props) => {
                             </nav>
                           </div>
                           <div className="chk-right">
-                            <a href="#">
+                            <a >
 
                             </a>
                           </div>

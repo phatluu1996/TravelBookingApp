@@ -16,14 +16,14 @@ const UpdateUser = (props) => {
     const [validateInput, setValidateInput] = useState({
         firstName: '',
         lastName: '',
-        birthday:'',
-        phoneNumber:'',
+        birthday: '',
+        phoneNumber: '',
         email: '',
-        address:'',
-        province:'',
-        district:'',
-        ward:'',
-        postalCode:'',
+        address: '',
+        province: '',
+        district: '',
+        ward: '',
+        postalCode: '',
         errLogic: ''
     });
 
@@ -36,7 +36,7 @@ const UpdateUser = (props) => {
 
     useEffect(() => {
         let mount = false;
-        importAll();        
+        importAll();
 
         document
             .querySelector("#provinces")
@@ -53,17 +53,17 @@ const UpdateUser = (props) => {
             .parentElement.querySelector(".customSelectInner").innerHTML = dataUser?.location?.ward?.name;
         document
             .querySelector("#wards").value = dataUser?.location?.ward?.id;
-        
+
         return () => {
             mount = true;
         }
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         var mount = false;
-        if(props.dataUpdate?.form === 'errUpdateUser'){
+        if (props.dataUpdate?.form === 'errUpdateUser') {
             setErrUpdate(true);
-            setResponseMessageUpdate("Update fail. "+props.dataUpdate?.message.response.data.message);
+            setResponseMessageUpdate("Update fail. " + props.dataUpdate?.message?.response?.data?.message);
         }
         if (props.dataUpdate?.form === 'successUpdateUser') {
             if (!props.dataUpdate?.data) {
@@ -72,9 +72,9 @@ const UpdateUser = (props) => {
             if (props.dataUpdate?.data && props.dataUpdate?.success) {
                 setErrUpdate(false);
                 setResponseMessageUpdate("Update successfuly!");
-            }else if(props.dataUpdate?.data && !props.dataUpdate?.success){
-                console.log(props.dataUpdate?.message.response.data.message);
-                setResponseMessageUpdate(props.dataUpdate?.data.message);
+            } else if (props.dataUpdate?.data && !props.dataUpdate?.success) {
+                console.log(props.dataUpdate?.message?.response?.data?.message);
+                setResponseMessageUpdate(props.dataUpdate?.data?.message);
             }
         }
 
@@ -108,7 +108,7 @@ const UpdateUser = (props) => {
         document
             .querySelector("#wards")
             .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-        if (e.currentTarget.id === "0"  || e.currentTarget.value === '0') {
+        if (e.currentTarget.id === "0" || e.currentTarget.value === '0') {
             setSelectDistrict(null);
             setSelectWard(null);
         } else {
@@ -121,7 +121,7 @@ const UpdateUser = (props) => {
         }
     };
     const onChangeWard = (e) => {
-        if (e.currentTarget.id === "0"  || e.currentTarget.value === '0') {
+        if (e.currentTarget.id === "0" || e.currentTarget.value === '0') {
             setSelectWard(null);
         } else {
             setSelectWard(
@@ -135,20 +135,32 @@ const UpdateUser = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         var form = e.target;
-        if(validateForm(e)){
-            let data = {...dataUser};
-
+        if (validateForm(e)) {
+            let data = { ...dataUser };
+            if(!data.location){
+                var location = {
+                    street: form.address.value,
+                    province: selectProvince,
+                    district: selectDistrict,
+                    ward: selectWard,
+                    postalCode: form.postalCode.value
+                }
+                data.location = location;
+            }else{
+                data.location.street = form.address.value;
+                data.location.province = selectProvince;
+                data.location.district = selectDistrict;
+                data.location.ward = selectWard;
+                data.location.postalCode = form.postalCode.value;    
+            }
+            
             data.firstName = form.firstName.value;
             data.lastName = form.lastName.value;
             data.gender = gender;
             data.dateOfBirth = form.birthday.value;
             data.email = form.email.value;
             data.phoneNumber = form.phoneNumber.value;
-            data.location.street = form.address.value;
-            data.location.province = selectProvince;
-            data.location.district = selectDistrict;
-            data.location.ward = selectWard;
-            data.location.postalCode = form.postalCode.value;
+            
 
             props.updateUser(data);
             setIsRequest(true);
@@ -159,36 +171,36 @@ const UpdateUser = (props) => {
         var form = e.target;
         let submitErr = { ...validateInput };
 
-        if (!form.firstName.value) {submitErr.firstName = "First name is required!"} else {submitErr.firstName = "";}
-        if (!form.lastName.value) {submitErr.lastName = "Last name is required!"} else {submitErr.lastName = "";}
-        if (!form.birthday.value) {submitErr.birthday = "Birthday is required!"} else {submitErr.birthday = "";}
-        if (!form.phoneNumber.value) {submitErr.phoneNumber = "Phone number is required!"} else {submitErr.phoneNumber = "";}
-        if (!form.email.value) {submitErr.email = "Email is required!"} else {submitErr.email = "";}
-        if (!form.address.value) {submitErr.address = "Address is required!"} else {submitErr.address = "";}
-        if (!selectProvince) {submitErr.province = "Province";} else {submitErr.province = "";}
-        if (!selectDistrict) {submitErr.district = "District";} else {submitErr.district = "";}
-        if (!selectWard) {submitErr.ward = "Ward";} else {submitErr.ward = "";}
-        if (!form.postalCode.value) {submitErr.postalCode = "Postal Code is required!"} else {submitErr.postalCode = "";}
-        
-        if(     submitErr.firstName || submitErr.lastName || submitErr.birthday || submitErr.phoneNumber
-            ||  submitErr.email || submitErr.address || submitErr.province || submitErr.district 
-            ||  submitErr.ward || submitErr.postalCode){
+        if (!form.firstName.value) { submitErr.firstName = "First name is required!" } else { submitErr.firstName = ""; }
+        if (!form.lastName.value) { submitErr.lastName = "Last name is required!" } else { submitErr.lastName = ""; }
+        if (!form.birthday.value) { submitErr.birthday = "Birthday is required!" } else { submitErr.birthday = ""; }
+        if (!form.phoneNumber.value) { submitErr.phoneNumber = "Phone number is required!" } else { submitErr.phoneNumber = ""; }
+        if (!form.email.value) { submitErr.email = "Email is required!" } else { submitErr.email = ""; }
+        if (!form.address.value) { submitErr.address = "Address is required!" } else { submitErr.address = ""; }
+        if (!selectProvince) { submitErr.province = "Province"; } else { submitErr.province = ""; }
+        if (!selectDistrict) { submitErr.district = "District"; } else { submitErr.district = ""; }
+        if (!selectWard) { submitErr.ward = "Ward"; } else { submitErr.ward = ""; }
+        if (!form.postalCode.value) { submitErr.postalCode = "Postal Code is required!" } else { submitErr.postalCode = ""; }
+
+        if (submitErr.firstName || submitErr.lastName || submitErr.birthday || submitErr.phoneNumber
+            || submitErr.email || submitErr.address || submitErr.province || submitErr.district
+            || submitErr.ward || submitErr.postalCode) {
             setValidateInput(submitErr);
             return false;
         }
 
-        if( dataUser.firstName === form.firstName.value && dataUser.lastName === form.lastName.value && dataUser.dateOfBirth === form.birthday.value 
-            && dataUser.phoneNumber === form.phoneNumber.value && dataUser.email === form.email.value && dataUser.location?.street === form.address.value 
+        if (dataUser.firstName === form.firstName.value && dataUser.lastName === form.lastName.value && dataUser.dateOfBirth === form.birthday.value
+            && dataUser.phoneNumber === form.phoneNumber.value && dataUser.email === form.email.value && dataUser.location?.street === form.address.value
             && dataUser.location?.province.id === selectProvince.id && dataUser.location?.district.id === selectDistrict.id && dataUser.location?.ward.id === selectWard.id
-            && dataUser.location?.postalCode === form.postalCode.value){
-                setErrUpdate(true);
-                setResponseMessageUpdate("No data change.");
-                return false;
-            }
+            && dataUser.location?.postalCode === form.postalCode.value) {
+            setErrUpdate(true);
+            setResponseMessageUpdate("No data change.");
+            return false;
+        }
         return true;
     }
 
-    return ( 
+    return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="booking-form">
@@ -200,8 +212,8 @@ const UpdateUser = (props) => {
                             <div className={`input ${validateInput.firstName ? 'is-invalid' : ''}`} ><input type="text" name="firstName" defaultValue={dataUser?.firstName} /></div>
                         </div>
                         <div className="booking-form-i">
-                            <label className="autorize-input-lbl" style={{marginTop:0}}>Last Name:</label>
-                            <div className="validate-error" style={{marginTop:0}}>{validateInput.lastName}</div>
+                            <label className="autorize-input-lbl" style={{ marginTop: 0 }}>Last Name:</label>
+                            <div className="validate-error" style={{ marginTop: 0 }}>{validateInput.lastName}</div>
                             <div className="clear"></div>
                             <div className={`input ${validateInput.lastName ? 'is-invalid' : ''}`}><input type="text" name="lastName" defaultValue={dataUser?.lastName} /></div>
                         </div>
@@ -217,7 +229,7 @@ const UpdateUser = (props) => {
                                 <div className="clear"></div>
                             </div>
 
-                            <div className="srch-tab-left"style={{ minWidth:'240px' }}>
+                            <div className="srch-tab-left" style={{ minWidth: '240px' }}>
                                 <label className='autorize-input-lbl'>Date of birth:</label>
                                 <div className="validate-error" style={{ margin: "0" }}>{validateInput.birthday}</div>
                                 <div className="clear"></div>
@@ -225,9 +237,11 @@ const UpdateUser = (props) => {
                                     <input
                                         type="text"
                                         className="date-inpt"
-                                        placeholder="mm/dd/yyyy"
+                                        placeholder="dd/mm/yyyy"
                                         name="birthday"
                                         defaultValue={dataUser?.dateOfBirth}
+                                        autoComplete="off"
+                             
                                     />
                                     <span className="date-icon"></span>
                                 </div>
@@ -332,8 +346,8 @@ const UpdateUser = (props) => {
                                 </div>
                             </div>
                         </div>
-                        {(validateInput.province || validateInput.district || validateInput.ward) && 
-                        <div className="booking-error-input">Province, District and Ward is required</div>}
+                        {(validateInput.province || validateInput.district || validateInput.ward) &&
+                            <div className="booking-error-input">Province, District and Ward is required</div>}
                     </div>
                     <div style={{ marginBottom: "10px", color: 'grey' }}><i>*Please enter Address to booking flight or hotel.</i></div>
                     <div>
@@ -349,7 +363,7 @@ const UpdateUser = (props) => {
                 <div className="booking-complete" style={{ float: 'left' }}>
                     <button className="booking-complete-btn" type="submit" style={{ marginTop: '0' }}>Update</button>
                 </div>
-                <div style={{color: errUpdate ? "red" : "green", paddingLeft:'20px',float:'left'}}>{responseMessageUpdate}</div>
+                <div style={{ color: errUpdate ? "red" : "green", paddingLeft: '20px', float: 'left' }}>{responseMessageUpdate}</div>
                 <div className="clear"></div>
             </form>
         </div>
@@ -364,7 +378,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateUser: (data) =>{
+        updateUser: (data) => {
             dispatch(updateUser(data));
         }
     };

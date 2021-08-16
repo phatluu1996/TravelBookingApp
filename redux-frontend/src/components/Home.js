@@ -422,7 +422,7 @@ const Home = (props) => {
                         }
 
                         if (form.checkOutDate.value > form.returnDate.value) {
-                            err.checkout = 'Check out date must be higher than check in date';
+                            err.checkout = 'Check out date cannot be higher than return date';
                             form.checkOutDate.parentElement.classList.add("is-invalid");
                             $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
                         } else {
@@ -587,7 +587,7 @@ const Home = (props) => {
                                                                 name="checkInDate"
                                                                 id="checkInDate"
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-inpt min-today"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
                                                             />{" "}
@@ -602,7 +602,7 @@ const Home = (props) => {
                                                                 name="checkOutDate"
                                                                 id="checkOutDate"
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-inpt min-today"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
                                                             />{" "}
@@ -878,7 +878,7 @@ const Home = (props) => {
                                                         <div className="input-a">
                                                             <input
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-inpt min-today"
                                                                 name="departureDate"
                                                                 // id="departureDate"
                                                                 placeholder="mm/dd/yy"
@@ -893,7 +893,7 @@ const Home = (props) => {
                                                         <div className="input-a">
                                                             <input
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-inpt min-today"
                                                                 name="returnDate"
                                                                 // id="returnDate"
                                                                 placeholder="mm/dd/yy"
@@ -1047,7 +1047,7 @@ const Home = (props) => {
                                                                 name="checkInDate"
                                                                 // id="checkInDate"
                                                                 type="text"
-                                                                className="date-inpt"
+                                                                className="date-inpt min-today"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
                                                             />{" "}
@@ -1062,8 +1062,8 @@ const Home = (props) => {
                                                                 name="checkOutDate"
                                                                 // id="checkOutDate"
                                                                 type="text"
-                                                                className="date-inpt"
-                                                                placeholder="mm/dd/yy"
+                                                                className="date-inpt min-today"
+                                                                placeholder="mm/dd/yy"                                                                
                                                                 autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>

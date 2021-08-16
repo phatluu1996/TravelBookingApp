@@ -2342,7 +2342,15 @@ export const customOtherTags = () => {
 
 
     //TODO fix
-    $('.date-inpt').datepicker({ dateFormat: 'dd/mm/yy' }).val();
+    // $('.date-inpt').datepicker({ dateFormat: 'dd/mm/yy'}).val();
+    $('.date-inpt').each(function(){
+        var input = $(this);
+        if(input.hasClass("min-today")){
+            $(this).datepicker({ dateFormat: 'dd/mm/yy', constrainInput: false, showOtherMonths: true, minDate : new Date()}).val();
+        }else{
+            $(this).datepicker({ dateFormat: 'dd/mm/yy', constrainInput: false, showOtherMonths: true}).val();
+        }
+    })
     $('.date-departure-flight-inpt').datepicker({ dateFormat: 'dd/mm/yy', minDate: '0' }).val();
     $('.date-booking-inpt').datepicker({ dateFormat: 'yy/mm/dd', maxDate: '0' }).val();
     $('.date-card-expired-inpt').datepicker({ dateFormat: 'yy-mm-dd', minDate: '0' }).val();

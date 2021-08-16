@@ -54,14 +54,14 @@ public class UserController {
 
         if(defaultUser.getId().equals(user.getId())){
             if(defaultUser.getEmail().equals(user.getEmail())){
-                accountRepository.save(account);
                 locationRepository.save(location);
+                accountRepository.save(account);
                 User result = userRepository.save(user);
                 return ResponseEntity.ok().body(result);
             }else {
                 if(!userRepository.existsByEmail(user.getEmail())){
-                    accountRepository.save(account);
                     locationRepository.save(location);
+                    accountRepository.save(account);
                     User result = userRepository.save(user);
                     return ResponseEntity.ok().body(result);
                 }else return ResponseEntity.badRequest().body(new MessageResponse("Email is already in use.", false));

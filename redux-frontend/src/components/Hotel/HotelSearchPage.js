@@ -526,7 +526,7 @@ const HotelSearchPage = (props) => {
                               id="checkInDate"
                               name="checkInDate"
                               type="text"
-                              className="date-inpt"
+                              className="date-inpt min-today"
                               placeholder="mm/dd/yy"
                               defaultValue={queryParam.get("checkInDate")}
                             />{" "}
@@ -541,7 +541,7 @@ const HotelSearchPage = (props) => {
                               id="checkOutDate"
                               name="checkOutDate"
                               type="text"
-                              className="date-inpt"
+                              className="date-inpt min-today"
                               placeholder="mm/dd/yy"
                               defaultValue={queryParam.get("checkOutDate")}
                             />{" "}
