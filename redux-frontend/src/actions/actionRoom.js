@@ -121,11 +121,11 @@ export const REMOVE_ROOM_REQUEST = "REMOVE_ROOM_REQUEST";
 export const REMOVE_ROOM_SUCCESS = "REMOVE_ROOM_SUCCESS";
 export const REMOVE_ROOM_ERROR = "REMOVE_ROOM_ERROR";
 
-export const removeRoom = (id,data) => async dispatch => {
+export const removeRoom = (id,hotelId) => async dispatch => {
     try {
         dispatch({ type: REMOVE_ROOM_REQUEST });
-        const url = `${ROOT_URL}/api/removeRoom/${id}`;
-        const response = await axios.put(url,data)
+        const url = `${ROOT_URL}/api/removeRoom/${id}/${hotelId}`;
+        const response = await axios.post(url,data)
         const responseBody = await response.data;
         dispatch({
             type: REMOVE_ROOM_SUCCESS,
