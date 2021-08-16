@@ -11,8 +11,8 @@ import reducerRoom from './reducerRoom';
 import reducerBookingRoom from './reducerBookingRoom';
 import reducerHotelFeedBack from './reducerHotelFeedBack';
 import reducerWizard from './reducerWizard';
-import reducerFeedback from './reducerFeedback';
 import reducerImage from './reducerImage';
+import reducerFeedback from './reducerFeedBack';
 
 
 
