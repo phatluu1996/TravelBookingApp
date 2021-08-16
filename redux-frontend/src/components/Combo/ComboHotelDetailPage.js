@@ -90,8 +90,8 @@ const ComboHotelDetailPage = (props) => {
     const goToBooking = (e) => {
         if (getRole() != ROLE_USER) {
             $(".header-account a").click();
-        } else if (totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))
-        ) {
+        } else if (totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren))
+        {
             // alert("Select the number of rooms suitable for the number of people");        
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
@@ -254,9 +254,6 @@ const ComboHotelDetailPage = (props) => {
     useEffect(() => {
         let mount = false;
         props.getUser(user);
-        // props.getHotel(queryParam.get("id"));
-        // props.getFeedbacks(queryParam.get("id"));
-        // importAll();
         return () => {
             mount = true;
         };
@@ -525,17 +522,17 @@ const ComboHotelDetailPage = (props) => {
                                                                 *Select the number of rooms suitable for the
                                                                 number of people{" "}
                                                             </h2>
-                                                            <Button style={totalAdult < parseInt(queryParam.get("numberAdult")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                            <Button style={totalAdult < parseInt(props.filter.numberAdult) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
                                                                 size="large" startIcon={<FontAwesomeIcon icon={faMale} ></FontAwesomeIcon>} >
-                                                                {totalAdult}/{queryParam.get("numberAdult")}
+                                                                {totalAdult}/{props.filter.numberAdult}
                                                             </Button>
 
-                                                            {parseInt(queryParam.get("numberChildren")) !== 0 &&
-                                                                <Button style={totalChild < parseInt(queryParam.get("numberChildren")) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                            {parseInt(props.filter.numberChildren) !== 0 &&
+                                                                <Button style={totalChild < parseInt(props.filter.numberChildren) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
                                                                     startIcon={<FontAwesomeIcon icon={faChild}></FontAwesomeIcon>} >
-                                                                    {totalChild}/{queryParam.get("numberChildren")}
+                                                                    {totalChild}/{props.filter.numberChildren}
                                                                 </Button>}
-                                                            <Button style={(totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
+                                                            <Button style={(totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren)) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
                                                                 size="large" onClick={goToBooking}>
                                                                 BOOK NOW
                                                             </Button>

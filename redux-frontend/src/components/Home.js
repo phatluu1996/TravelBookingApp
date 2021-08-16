@@ -30,6 +30,8 @@ const Home = (props) => {
     const [selectProvince, setSelectProvince] = useState(null);
     const [selectDistrict, setSelectDistrict] = useState(null);
     const [selectWard, setSelectWard] = useState(null);
+    const [adultAmount, setAdultAmount] = useState(1);
+    const [childAmount, setChildAmount] = useState(0);
     const [errFlt, setErrFlt] = useState({
         from: '',
         to: '',
@@ -39,7 +41,9 @@ const Home = (props) => {
     const [errHlt, setErrHlt] = useState({
         province: '',
         checkin: '',
-        checkout: ''
+        checkout: '',
+        child: '',
+        adult: ''
     })
     const history = useHistory();
 
@@ -444,6 +448,29 @@ const Home = (props) => {
                 }
             }
 
+        }
+
+        if (formSelector === "hotel-flight-search") {
+            //chilren-error //adult-error
+            if (form.child.value + form.infant.value < form.childRenHotel.value) {
+                err.child = 'Hotel child cannot be higher than total flight child and infant';
+                form.childRenHotel.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #chilren-error`)[0].innerText = err.child;
+            } else {
+                err.child = '';
+                form.childRenHotel.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #chilren-error`)[0].innerText = err.child;
+            }
+
+            if (form.adult.value < form.adultHotel.value) {
+                err.adult = 'Hotel adult cannot be higher than flight adult';
+                form.adultHotel.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
+            }else{
+                err.adult = '';
+                form.adultHotel.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
+            }
         }
 
 
@@ -895,7 +922,6 @@ const Home = (props) => {
                                                                 type="text"
                                                                 className="date-inpt min-today"
                                                                 name="returnDate"
-                                                                // id="returnDate"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
                                                             />{" "}
@@ -926,7 +952,7 @@ const Home = (props) => {
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-3c">
-                                                        <label>Adult</label>
+                                                        <label>Flight Adult</label>
                                                         <div className="input-a">
                                                             <input
                                                                 name="adult"
@@ -939,7 +965,7 @@ const Home = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-3c">
-                                                        <label>Child</label>
+                                                        <label>Flight Child</label>
 
                                                         <div className="input-a">
                                                             <input
@@ -953,7 +979,7 @@ const Home = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-3c">
-                                                        <label>Infant</label>
+                                                        <label>Flight Infant</label>
 
                                                         <div className="input-a">
                                                             <input
@@ -1063,7 +1089,7 @@ const Home = (props) => {
                                                                 // id="checkOutDate"
                                                                 type="text"
                                                                 className="date-inpt min-today"
-                                                                placeholder="mm/dd/yy"                                                                
+                                                                placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
                                                             />{" "}
                                                             <span className="date-icon"></span>
@@ -1077,7 +1103,7 @@ const Home = (props) => {
                                             <div className="search-large-i">
                                                 <div className="srch-tab-line no-margin-bottom">
                                                     <div className="srch-tab-3c">
-                                                        <label>Rooms</label>
+                                                        <label>Hotel Rooms</label>
 
                                                         <div className="input-a">
                                                             <input
@@ -1092,7 +1118,7 @@ const Home = (props) => {
                                                         </div>
                                                     </div>
                                                     <div className="srch-tab-3c">
-                                                        <label>adult</label>
+                                                        <label>Hotel adult</label>
                                                         <div className="input-a">
                                                             <input
                                                                 id="adultHotel"
@@ -1104,11 +1130,11 @@ const Home = (props) => {
                                                                 max="7"
                                                             />
                                                         </div>
-
+                                                        <div className="booking-error-input" id="adult-error"></div>
                                                     </div>
 
                                                     <div className="srch-tab-3c">
-                                                        <label>Child</label>
+                                                        <label>Hotel Child</label>
                                                         <div className="input-a">
                                                             <input
                                                                 id="childRenHotel"
@@ -1117,10 +1143,10 @@ const Home = (props) => {
                                                                 onKeyPress={(e) => e.preventDefault()}
                                                                 defaultValue={0}
                                                                 min="0"
-                                                                max="7"
+                                                                max="14"
                                                             />
                                                         </div>
-
+                                                        <div className="booking-error-input" id="chilren-error"></div>
                                                     </div>
                                                     <div className="clear"></div>
                                                 </div>

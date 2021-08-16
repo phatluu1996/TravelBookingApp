@@ -546,7 +546,7 @@ const ComboFlightSearchPage2 = (props) => {
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Adult</label>
-                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="adult" type="number" defaultValue={props.filter.adult} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -554,11 +554,11 @@ const ComboFlightSearchPage2 = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
-                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="child" type="number" defaultValue={props.filter.child} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Infant</label>
-                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="infant" type="number" defaultValue={props.filter.infant} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>

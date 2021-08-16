@@ -53,6 +53,7 @@ const ComboBookingPage = (props) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [returnTotalPrice, setReturnTotalPrice] = useState(0);
+  const [totalInfantPrice, setTotalInfantPrice] = useState(0);
   const [totalFlightPrice, setTotalFlightPrice] = useState(0);
 
   const [checkout, setCheckout] = useState(false);
@@ -274,7 +275,10 @@ const ComboBookingPage = (props) => {
     // e.preventDefault();
     const checkinfant = [...hasInfant];
     checkinfant[index].infant = !checkinfant[index].infant;
-    setHasInfant(checkinfant);
+    var totalInfant = 0;
+    checkinfant?.map(item => {totalInfant = totalInfant + parseInt(item.infant ? flights.data?.infant_price : 0)});
+    setHasInfant(checkinfant);    
+    setTotalInfantPrice(totalInfant*2);
   };
 
   const handleBookingSubmit = (e) => {
@@ -1060,6 +1064,13 @@ const ComboBookingPage = (props) => {
                         <span className="chk-l">TOTAL RETURN FLIGHT PRICE</span>
                         <span className="chk-r">
                           {queryParam.get("seatClass") === "ECONOMY" ? flights.returnData?.economyPrice : flights.returnData?.businessPrice}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">TOTAL INFANT FLIGHT PRICE</span>
+                        <span className="chk-r">
+                          {totalInfantPrice}$
                         </span>
                         <div className="clear"></div>
                       </div>
