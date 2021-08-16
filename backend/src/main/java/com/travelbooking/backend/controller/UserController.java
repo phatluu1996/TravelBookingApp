@@ -1,19 +1,13 @@
 package com.travelbooking.backend.controller;
 
-import com.travelbooking.backend.models.Account;
-import com.travelbooking.backend.models.Hotel;
-import com.travelbooking.backend.models.Location;
-import com.travelbooking.backend.models.User;
-import com.travelbooking.backend.repository.AccountRepository;
-import com.travelbooking.backend.repository.LocationRepository;
-import com.travelbooking.backend.repository.UserRepository;
+import com.travelbooking.backend.models.*;
+import com.travelbooking.backend.repository.*;
 import com.travelbooking.backend.security.payload.response.MessageResponse;
 import com.travelbooking.backend.specification.DBSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +21,10 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    HotelBookingRepository hotelBookingRepository;
+    @Autowired
+    FlightBookingRepository flightBookingRepository;
     @Autowired
     LocationRepository locationRepository;
     @Autowired
@@ -92,5 +90,21 @@ public class UserController {
         User result = userRepository.save(user);
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return ResponseEntity.ok().body(userRepository.findAll(spec));
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user/flight-booking-history/{id}")
+    public ResponseEntity<?> getFlightBookingHistory(@PathVariable Long id){
+        User user = userRepository.getByAccountId(id);
+        List<FlightBooking> list = flightBookingRepository.getFlightBookingsByUser(user);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user/hotel-booking-history/{id}")
+    public ResponseEntity<?> getHotelBookingHistory(@PathVariable Long id){
+        User user = userRepository.getByAccountId(id);
+        List<HotelBooking> list = hotelBookingRepository.getHotelBookingsByUser(user);
+        return ResponseEntity.ok().body(list);
     }
 }
