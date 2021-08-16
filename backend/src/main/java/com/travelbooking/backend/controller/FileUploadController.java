@@ -50,32 +50,39 @@ public class FileUploadController {
 
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PostMapping(value = "/update-profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> updateProfilePicture(@RequestParam MultipartFile file, @RequestParam Long id) throws IOException {
+	public ResponseEntity<User> updateProfilePicture(@RequestParam MultipartFile file, @RequestParam Long id) throws IOException {
 		User user = userRepository.getById(id);
 		Account updateAcc = user.getAccount();
 		try{
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + "profile/";
+			String FILE_TARGET_DIRECTORY = "target/classes/static/storage/profile/";
 			File directory = new File(FILE_DIRECTORY);
-			// Create a folder if not exist
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
 			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
-			File myFile = new File(convertFileName);
-			myFile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(myFile);
-			fos.write(file.getBytes());
-			fos.close();
+			String convertFileNameForTargetFile = ( FILE_TARGET_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
 
-			updateAcc.setThumbnail(getFileUrl(myFile)); //Set directory
-//			updateAcc.setThumbnail(myFile.getName());
+			File myFile = new File(convertFileName);
+			File myTargetFile = new File(convertFileNameForTargetFile);
+
+			myFile.createNewFile();
+			myTargetFile.createNewFile();
+
+			FileOutputStream fos = new FileOutputStream(myFile);
+			FileOutputStream fos1 = new FileOutputStream(myTargetFile);
+			fos.write(file.getBytes());
+			fos1.write(file.getBytes());
+			fos.close();
+			fos1.close();
+
+			updateAcc.setThumbnail(getFileUrl(myFile));
 			Account result = accountRepository.save(updateAcc);
-			TimeUnit.SECONDS.sleep(1);
-			return ResponseEntity.ok(userRepository.findById(user.getId()));
 		} catch (Exception e) {
 //			return new ResponseEntity("Upload failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-			return ResponseEntity.ok(user);
+			return ResponseEntity.ok().body(user);
 		}
+		return ResponseEntity.ok().body(userRepository.findById(user.getId()).get());
 	}
 
 	@RequestMapping(value = "/profile/{name}", method = RequestMethod.GET,

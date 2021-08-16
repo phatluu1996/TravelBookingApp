@@ -32,14 +32,14 @@ public class FlightBooking {
     @Column(name = "note", nullable = true, columnDefinition = "nvarchar(max)")
     private String note;
 
-    @Column(name="created_at", nullable = false)
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @Column(name="created_at", nullable = true)
+//    @JsonFormat(pattern="yyyy-MM-dd")
     @CreatedDate
     private Instant createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at",nullable = true)
-    @JsonFormat(pattern="yyyy-MM-dd")
+//    @JsonFormat(pattern="yyyy-MM-dd")
     private Instant updatedAt;
 
     @OneToMany

@@ -32,12 +32,12 @@ public class HotelBooking {
     @Column(name = "total_price")
     private Float totalPrice;
     @Column(name="created_at")
-    @JsonFormat(pattern="yyyy-MM-dd")
+//    @JsonFormat(pattern="yyyy-MM-dd")
     @CreatedDate
     private Instant createdAt;
     @LastModifiedDate
     @Column(name = "update_at")
-    @JsonFormat(pattern="yyyy-MM-dd")
+//    @JsonFormat(pattern="yyyy-MM-dd")
     private Instant updateAt;
     @Column(name = "payment_method", columnDefinition = "nvarchar(100)")
     private String paymentMethod;

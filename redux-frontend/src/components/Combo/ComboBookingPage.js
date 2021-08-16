@@ -1096,7 +1096,7 @@ const ComboBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a >
-                        <img alt="" src={props.hotel?.data?.images[0] ? props.hotel?.data?.images[0]?.imagePath : ""} style={{ width: "95px", height: "60px" }} />
+                        <img alt="" src={props.hotel?.data?.images?.length > 0 ? props.hotel?.data?.images[0]?.imagePath : ""} style={{ width: "95px", height: "60px" }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -1114,7 +1114,7 @@ const ComboBookingPage = (props) => {
                             <nav className="chk-stars">
                               <ul>
                                 {[...Array(5)].map(
-                                  (item, index) =>
+                                  (index) =>
                                     // {
                                     index + 1 >
                                       Math.ceil(
