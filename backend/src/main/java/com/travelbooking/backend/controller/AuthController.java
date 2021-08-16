@@ -184,6 +184,18 @@ public class AuthController {
                             .body(new MessageResponse("Role is not found.",false));
             }
         }
+
+        StringBuilder linkReset = new StringBuilder();
+        linkReset.append("http://localhost:3000/activateAccount?id=");
+        linkReset.append(account.getId());
+
+        Map<String, Object> emailMap = new HashMap<>();
+        emailMap.put("username", signUpRequest.getUserFirstName()+" "+signUpRequest.getUserLastName());
+        emailMap.put("changePasswordlink", linkReset.toString());
+
+        String templateHtml = emailService.templateResolve("confirm_account", emailMap);
+        emailService.sendSimpleMessage(signUpRequest.getEmail(), null, "Confirm account", templateHtml);
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!", true));
     }
 
@@ -265,6 +277,22 @@ public class AuthController {
             }
         }else {
             return ResponseEntity.ok().body(new MessageResponse("We don't have an account with this email!", false));
+        }
+    }
+
+    @GetMapping("/activateAccount/{id}")
+    public ResponseEntity<?> activateAccount (@PathVariable Long id){
+        if(accountRepository.existsById(id)){
+            Account account = accountRepository.getAccountById(id);
+            if(account.isRetired()){
+                account.setRetired(false);
+                accountRepository.save(account);
+                return ResponseEntity.ok().body(new MessageResponse("Successfully! Your account was activated.", true));
+            }else {
+                return ResponseEntity.ok().body(new MessageResponse("Your account's already been activated.", false));
+            }
+        }else {
+            return ResponseEntity.ok().body(new MessageResponse("Wrong! Please check email again.", false));
         }
     }
 

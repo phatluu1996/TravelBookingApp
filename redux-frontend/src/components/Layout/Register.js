@@ -151,8 +151,7 @@ function Register(props) {
         if (props.auth.form === 'signup') {
             if (props.auth.signupData && isRequest) {
                 if (props.auth.signupData.success) {
-                    setStatuSignup(true);
-                    setMessageSignup(props.auth.signupData.message);
+                    alert(props.auth.signupData.message+", Please check your email to activate your account.");
                     document.location.href = "http://localhost:3000/";
                 } else {
                     setStatuSignup(false);

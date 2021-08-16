@@ -6,7 +6,8 @@ import {
   CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_ERROR,
   SEND_EMAIL_FORGET_REQUEST, SEND_EMAIL_FORGET_SUCCESS, SEND_EMAIL_FORGET_ERROR,
   GET_ACC_FORGET_REQUEST, GET_ACC_FORGET_SUCCESS, GET_ACC_FORGET_ERROR,
-  CHANGE_PASS_FG_REQUEST, CHANGE_PASS_FG_SUCCESS, CHANGE_PASS_FG_ERROR
+  CHANGE_PASS_FG_REQUEST, CHANGE_PASS_FG_SUCCESS, CHANGE_PASS_FG_ERROR,
+  CONFIRM_ACCOUNT_REQUEST, CONFIRM_ACCOUNT_SUCCESS, CONFIRM_ACCOUNT_ERROR
 } from "../actions/actionAuth";
 
 const initialState = {
@@ -213,6 +214,35 @@ const reducerAuth = (state = initialState, action) => {
         form: 'changePasswordForget'
       };
       return state;
+
+//-----------------------------------------------------
+    case CONFIRM_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case CONFIRM_ACCOUNT_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        confirmAccount: action.payload,
+        form: 'confirmAcount'
+      };
+      return state;
+
+    case CONFIRM_ACCOUNT_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'confirmAcount'
+      };
+      return state;
+
     default:
       return state;
   }
