@@ -63,7 +63,7 @@ const UpdateUser = (props) => {
         var mount = false;
         if (props.dataUpdate?.form === 'errUpdateUser') {
             setErrUpdate(true);
-            setResponseMessageUpdate("Update fail. " + props.dataUpdate?.message.response.data.message);
+            setResponseMessageUpdate("Update fail. " + props.dataUpdate?.message?.response?.data?.message);
         }
         if (props.dataUpdate?.form === 'successUpdateUser') {
             if (!props.dataUpdate?.data) {
@@ -73,8 +73,8 @@ const UpdateUser = (props) => {
                 setErrUpdate(false);
                 setResponseMessageUpdate("Update successfuly!");
             } else if (props.dataUpdate?.data && !props.dataUpdate?.success) {
-                console.log(props.dataUpdate?.message.response.data.message);
-                setResponseMessageUpdate(props.dataUpdate?.data.message);
+                console.log(props.dataUpdate?.message?.response?.data?.message);
+                setResponseMessageUpdate(props.dataUpdate?.data?.message);
             }
         }
 

@@ -67,6 +67,8 @@ export const googleSignin = (firstname, lastname, username, email, password) => 
     }
 }
 
+
+
 export const signout = () => async dispatch =>{
     try {
         dispatch({ type: SIGNOUT_USER_REQUEST });       

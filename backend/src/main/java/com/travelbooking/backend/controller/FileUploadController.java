@@ -12,18 +12,22 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 
+import com.travelbooking.backend.models.Account;
 import com.travelbooking.backend.models.Image;
+import com.travelbooking.backend.models.User;
+import com.travelbooking.backend.repository.AccountRepository;
 import com.travelbooking.backend.repository.ImageRepository;
+import com.travelbooking.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin
 @RestController
@@ -37,6 +41,54 @@ public class FileUploadController {
 
 	@Autowired
 	ImageRepository imageRepository;
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	AccountRepository accountRepository;
+
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@PostMapping(value = "/update-profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> updateProfilePicture(@RequestParam MultipartFile file, @RequestParam Long id) throws IOException {
+		User user = userRepository.getById(id);
+		Account updateAcc = user.getAccount();
+		try{
+			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + "profile/";
+			File directory = new File(FILE_DIRECTORY);
+			// Create a folder if not exist
+			if (!directory.exists()) {
+				directory.mkdirs();
+			}
+			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
+			File myFile = new File(convertFileName);
+			myFile.createNewFile();
+			FileOutputStream fos = new FileOutputStream(myFile);
+			fos.write(file.getBytes());
+			fos.close();
+
+			updateAcc.setThumbnail(getFileUrl(myFile)); //Set directory
+//			updateAcc.setThumbnail(myFile.getName());
+			Account result = accountRepository.save(updateAcc);
+			TimeUnit.SECONDS.sleep(1);
+			return ResponseEntity.ok(userRepository.findById(user.getId()));
+		} catch (Exception e) {
+//			return new ResponseEntity("Upload failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.ok(user);
+		}
+	}
+
+	@RequestMapping(value = "/profile/{name}", method = RequestMethod.GET,
+			produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<InputStreamResource> getImage(@PathVariable String name) throws IOException {
+
+		ClassPathResource imgFile = new ClassPathResource("static/storage/profile/"+name);
+
+		return ResponseEntity
+				.ok()
+				.contentType(MediaType.IMAGE_PNG)
+				.body(new InputStreamResource(imgFile.getInputStream()));
+	}
 
 
 

@@ -7,7 +7,7 @@ import HotelBookingHistory from './HotelBookingHistory';
 import UpdateUser from './UpdateUser';
 
 import { connect, useSelector } from 'react-redux';
-import { getUser } from '../../actions/actionUser';
+import { getUser, updateUserPicture } from '../../actions/actionUser';
 import { retrieveProvince } from '../../actions/actionLocation';
 import { getToken, getUserId } from '../../utils';
 
@@ -38,8 +38,26 @@ const UserProfile = (props) => {
 
     const openImageDialog = (e) => {
         var input = e.currentTarget;
-        console.log(input);
+        input.querySelector("input").click();
     }
+
+    const onChangeUserProfilePicture = (e) => {
+        if(e.target.files.length > 0){
+            if(isFileImage(e.target.files[0])){
+                const fileData = new FormData();
+                fileData.append('id', props.user.data.id);
+                fileData.append('file', e.target.files[0]);
+                props.uploadProfilePicture(fileData);
+            }else{
+                alert("Selected file is not an image extension");
+            }
+        }
+    }
+
+    const isFileImage = (file) => {
+        return file && file['type'].split('/')[0] === 'image';
+    }
+
     return (
         <>
             <body >
@@ -54,7 +72,7 @@ const UserProfile = (props) => {
                                             <div className="page-search-p">
                                                 <div className="checkout-head">
                                                     <div className="checkout-headl">
-                                                        <img alt="" src={props.user.data?.account?.thumbnail ?  props.user.data.account.thumbnail :"img/check-img-01.jpg"} />
+                                                        <img width="93" height="75" alt="" src={props.user.data?.account?.thumbnail ?  props.user.data.account.thumbnail :"img/check-img-01.jpg"} />
                                                     </div>
                                                     <div className="checkout-headr">
                                                         <div className="checkout-headrb">
@@ -62,8 +80,8 @@ const UserProfile = (props) => {
                                                                 <div className="chk-left" style={{ marginTop: '25px' }}>
                                                                     <div className="chk-lbl-a"><h3>{props.user.data ? props.user.data.lastName : ""} {props.user.data ? props.user.data.firstName : ""}</h3></div>
                                                                 </div>
-                                                                <div type='file' class="chk-right" title="Change user Profile picture" onClick={openImageDialog}>
-                                                                    <input type="file" id="changeThumbnail" hidden={true}/>
+                                                                <div type='file' className="chk-right" title="Change user Profile picture" onClick={openImageDialog}>
+                                                                    <input type="file" id="changeThumbnail" hidden={true} onChange={onChangeUserProfilePicture}/>
                                                                     <a><img alt="" src="img/chk-edit.png" /></a>
                                                                 </div>
                                                                 <div className="clear"></div>
@@ -183,6 +201,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getProvince: () => {
             dispatch(retrieveProvince());
+        },
+        uploadProfilePicture : (id, file) => {
+            dispatch(updateUserPicture(id, file));
         }
     };
 };
