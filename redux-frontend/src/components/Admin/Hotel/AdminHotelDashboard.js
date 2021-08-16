@@ -14,8 +14,9 @@ import AdminSidebar from '../Layout/AdminSidebar';
 import { Bar } from "react-chartjs-2";
 import ReactModal from 'react-modal';
 import AddNewRoom from '../../Room/AddNewRoom';
+import AdminHotelSidebar from './Layout/AdminHotelSidebar';
 
-const AdminHotelProfile = (props) => {
+const AdminHotelDashboard = (props) => {
     const dispatch = useDispatch();
     let queryParam = useQuery();
     let history = useHistory();
@@ -445,6 +446,7 @@ const AdminHotelProfile = (props) => {
     return (
         <div className="bootstrap-scope">
             <div className="container-scroller">
+                <AdminHotelSidebar />
                 <div className="container-fluid">
                     <AdminNavbar />
                     <div className="main-panel">
@@ -880,4 +882,4 @@ const mapDispatchToProps = (dispatch) => {
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelDashboard);
