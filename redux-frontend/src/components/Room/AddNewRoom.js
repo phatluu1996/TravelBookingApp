@@ -306,10 +306,15 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <input className="form-control" disabled={componentStatus === "View Room" ? true : false} onChange={uploadFiles} type="file" id="files" name="files" multiple />
                                     </div>
                                 </div>
-                                <div className="row">
-                                        <button hidden={componentStatus === "View Room" ? true : false} className="btn btn-danger"
+                                <div className="col-12">
+                                    <div className="row">
+                                    <div className="col-sm-10"></div>
+                                        <div className="col-sm-2">
+                                        <button hidden={componentStatus === "View Room" ? true : false} className="btn btn-danger" 
                                             onClick={() => removeImage()}
                                         ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+                                        </div>
+                                    </div>
                                 </div>
                                 {
                                     componentStatus === "Create Room"
