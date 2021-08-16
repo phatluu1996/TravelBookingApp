@@ -13,6 +13,9 @@ import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,16 +46,27 @@ public class UploadFileServiceImpl implements  UploadImageService{
             try {
                 Image image = new Image();
                 String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";
+                String FILE_TARGET_DIRECTORY = "target/classes/static/storage/" + getFileExtension(file) + "/";
                 File directory = new File(FILE_DIRECTORY);
                 if (!directory.exists()) {
                     directory.mkdirs();
                 }
                 String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
+                String convertFileNameForTargetFile = ( FILE_TARGET_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
+
                 File myFile = new File(convertFileName);
+                File myTargetFile = new File(convertFileNameForTargetFile);
+
                 myFile.createNewFile();
+                myTargetFile.createNewFile();
+
                 FileOutputStream fos = new FileOutputStream(myFile);
+                FileOutputStream fos1 = new FileOutputStream(myTargetFile);
                 fos.write(file.getBytes());
+                fos1.write(file.getBytes());
                 fos.close();
+                fos1.close();
+
 
                 image.imageAlt = file.getOriginalFilename();
                 image.imagePath =  getFileUrl(myFile);
