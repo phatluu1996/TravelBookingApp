@@ -1,4 +1,4 @@
-import { faBath, faDesktop, faDollarSign, faDumbbell, faEdit, faHome, faMoneyCheckAlt, faParking, faPaw, faPlus, faRestroom, faSwimmer, faTachometerAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBath, faDesktop, faDollarSign, faDumbbell, faEdit, faEye, faHome, faMoneyCheckAlt, faParking, faPaw, faPlus, faRestroom, faSwimmer, faTachometerAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
@@ -26,6 +26,8 @@ const AdminHotelProfile = (props) => {
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
     const [modalIsOpen,setModelStatus] = useState(false);
+    const [room,setRoom] = useState(null);
+    const [componentStatus,setComponentStatus] = useState(null);
     
     const [allService, setAllService] = useState({
         highSpeedInternet: false,
@@ -240,18 +242,34 @@ const AdminHotelProfile = (props) => {
             name: 'Actions',
             // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
             cell: (room,index) => <React.Fragment key={index}>
-                <Link className="btn btn-success mr-1"
-                //  to={`/admin-hotel-edit?id=${hotel["account"]["id"]}`}
-                 ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </Link>
-
+                 <button className="btn btn-success mr-1"
+                    onClick={() => modalStatus("View",room)}
+                 ><FontAwesomeIcon icon={faEye}></FontAwesomeIcon> </button>
+                <button className="btn btn-success mr-1"
+                    onClick={() => modalStatus("Edit",room)}
+                 ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </button>
                 <button className="btn btn-danger" 
-                // onClick={() => removeHotel(hotel['id'])}
+                    // onClick={() => modalStatus("View",room)}
                 ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
             </React.Fragment>
         }
     ];
+    const modalStatus= (string,room) => {
+        setModelStatus(true)
+        switch(string){
+            case"Edit":
+                setRoom(room);
+                return setComponentStatus("Edit Room");
+            case"View":
+                setRoom(room);
+                return setComponentStatus("View Room");
+            default:
+                return setComponentStatus("Create Room");
+        }
 
-    const closeModal = (status) => setModelStatus(status)
+    };
+
+    const closeModal = (status) => setModelStatus(status);
 
     const subHeader = (<thead><tr>
         <td>#</td>
@@ -768,7 +786,7 @@ const AdminHotelProfile = (props) => {
                                                             </div>
                                                             <div className="tab-pane" id="room-manager">
                                                                 <h6 className="text-center text-warning">Room Manager</h6>
-                                                                <Link className="btn btn-success" onClick={() =>setModelStatus(true)}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
+                                                                <Link className="btn btn-success" onClick={() =>modalStatus()}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
                                                                 <div className="table-responsive">
                                                                     <DataTable className="table"
                                                                         customStyles={customStyles}
@@ -785,9 +803,15 @@ const AdminHotelProfile = (props) => {
                                                                     //  onAfterOpen={afterOpenModal}
                                                                     //  onRequestClose={closeModal}
                                                                      style={classes}
-                                                                     contentLabel="Example Modal"
+                                                                     contentLabel="Room Manager Modal"
                                                                 >
-                                                                  <AddNewRoom closeModal={closeModal} hotel={props.hotel?.one}/>
+                                                                  <AddNewRoom 
+                                                                closeModal={closeModal} 
+                                                                customStyles={customStyles}
+                                                                componentStatus={componentStatus}
+                                                                room={room}
+                                                                hotel={props.hotel?.one}
+                                                                />
                                                                 </ReactModal>
                                                             </div>
                                                         </div>
