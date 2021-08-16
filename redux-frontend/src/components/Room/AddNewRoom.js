@@ -7,27 +7,17 @@ import AdminFooter from '../Admin/Layout/AdminFooter';
 import AdminNavbar from '../Admin/Layout/AdminNavbar';
 import AdminSidebar from '../Admin/Layout/AdminSidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimesCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import DataTable from "react-data-table-component";
 
 
-const AddNewRoom = ({ closeModal, hotel }) => {
+const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
 
-
-    // const room = props.room;
-    // const provinces = props.province.data;
-
-    // const [selectProvince, setSelectProvince] = useState(hotel.location.province);
-    // const [selectDistrict, setSelectDistrict] = useState(hotel.location.district);
-    // const [selectWard, setSelectWard] = useState(hotel.location.ward);
-    // const [allDistrict, setAllDistrict] = useState(null);
-
-    // const [allWard, setAllWard] = useState(null);
-    // const [statusSignup, setStatuSignup] = useState(false);
-    // const [messageSignup, setMessageSignup] = useState("");
-    // const [isRequest, setIsRequest] = useState(false);
+    // const [room,setRoom] = useState(room);
     const [isSubmit, setIsSubmit] = useState(false);
     const [status, setStatus] = useState(false);
-    const [images, setImages] = useState([]);
+    const [selectItem,setSelectItem] = useState([]);
+    const [images, setImages] = useState(room && room?.images.length && Array.isArray(room?.images)> 0 ?room?.images:[]);
     const dispatch = useDispatch();
     const [validateError, setValidateError] = useState({
         roomNumber: "",
@@ -36,14 +26,108 @@ const AddNewRoom = ({ closeModal, hotel }) => {
         maxAdult: "",
         maxChildren: ""
     });
-    // const goBack = () => {
-    //     history.push("/admin-hotel-manage");
-    // }
 
+    const customStyles = {
+        headCells: {
+            style: {
+                fontSize: '11px',
+                fontWeight: 'bold',
+                color: 'white',
+                // paddingLeft: 'px',
+                // paddingRight: '-8px',
+            },
+            activeSortStyle: {
+                color: '#ff7200',
+                '&:focus': {
+                    outline: 'none',
+                },
+                '&:hover:not(:focus)': {
+                    color: '#ff7200',
+                },
+            },
+            inactiveSortStyle: {
+                '&:focus': {
+                    outline: 'none',
+                    color: '#ff7200',
+                },
+                '&:hover': {
+                    color: '#ff7200',
+                },
+            },
+        },
+        pagination: {
+            style: {
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: 200,
+                minHeight: '56px',
+                borderTopStyle: 'solid',
+                borderTopWidth: '1px',
+
+            },
+            pageButtonsStyle: {
+                borderRadius: '50%',
+                height: '40px',
+                width: '40px',
+                padding: '8px',
+                margin: 'px',
+                cursor: 'pointer',
+                transition: '0.4s',
+                color: '#007bff',
+                fill: '#007bff',
+                backgroundColor: 'transparent',
+                '&:disabled': {
+                    cursor: 'unset',
+                    color: '#007bff',
+                    fill: 'white',
+                },
+                '&:hover:not(:disabled)': {
+                    backgroundColor: 'white',
+                },
+                '&:focus': {
+                    outline: 'white',
+                    backgroundColor: 'white',
+                },
+            },
+        },
+    };
+
+    const imageHeader = [
+
+        {
+            name: 'Image Path',
+            selector: 'imagePath',
+            sortable: true
+        },
+        {
+            name: 'Image Picture',
+            cell: (image, index) =>
+                <React.Fragment key={index}>
+                    <img style={{ maxWidth: 94, maxHeight: 75 }} alt="" src={image?.imagePath} />
+                </React.Fragment>
+        }
+        // {
+        //     name: 'Actions',
+        //     cell: (image, index) =>
+        //         <React.Fragment key={index}>
+        //             <button className="btn btn-danger"
+        //                 onClick={() => removeImage(image)}
+        //             ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+        //         </React.Fragment>
+        // }
+    ];
+
+    const removeImage = image => {
+        var arr = [...images];
+        arr.sort(image);
+        console.log(image);
+    }
 
     const roomCreate = (data) => { dispatch(createRoom(data)) }
 
-
+    const checkBoxHandel = (e) =>{
+            console.log(e);
+    }
     const handelSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -52,7 +136,7 @@ const AddNewRoom = ({ closeModal, hotel }) => {
         // byte[] bytes = images.f.read(file_upload .toPath());
         if (handleChange(form)) {
             formData.append('roomNumber', parseInt(form.roomNumber.value));
-            formData.append('hotel','' + hotel.id);
+            formData.append('hotel', '' + hotel.id);
             formData.append('roomType', form.roomType.value);
             formData.append('price', parseInt(form.price.value));
             formData.append('maxAdult', parseInt(form.maxAdult.value));
@@ -60,7 +144,7 @@ const AddNewRoom = ({ closeModal, hotel }) => {
             formData.append('roomStatus', 0);
             for (let index = 0; index < images.length; index++) {
                 const image = images[index];
-                formData.append('files',image);
+                formData.append('files', image);
             }
             roomCreate(formData);
             closeModal(false)
@@ -123,30 +207,9 @@ const AddNewRoom = ({ closeModal, hotel }) => {
         return true;
     };
 
-    // const handleGenderClick = (e) => {
-    //     e.preventDefault();
-    //     if (e.currentTarget.innerHTML === "F") {
-    //         setIsMale("Female");
-    //     } else { setIsMale("Male"); }
-    // }
 
     useEffect(() => {
         let mount = false;
-        // importAll();
-        // props.getProvince();
-
-        // document
-        //     .querySelector("#provinces")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.province.name;
-        // document
-        //     .querySelector("#districts")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.district.name;
-        // document
-        //     .querySelector("#wards")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.ward.name;
         return () => {
             mount = true;
         };
@@ -164,24 +227,17 @@ const AddNewRoom = ({ closeModal, hotel }) => {
 
     return (
         <>
-
             <div className="bootstrap-scope">
                 <div className="card">
                     <div className="card-body">
                         <form onSubmit={handelSubmit} className="form-sample" autoComplete="false">
                             <div className="row">
                                 <div className="col-sm">
-                                    <h3 className="card-title ">New room</h3>
+                                    <h3 className="card-title ">{componentStatus}</h3>
                                 </div>
                                 <div className="col col-lg-4">
-                                    {/* <div className="row"> */}
-                                    {/* <div className="col-md-3"> */}
-                                    <button type="submit" onSubmit={handelSubmit} className="btn btn-success"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
-                                    {/* </div>
-                                    <div className="col-md-3"> */}
+                                    <button type="submit" disabled={componentStatus === "View Room" ? true : false} onSubmit={handelSubmit} className="btn btn-success"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
                                     <button onClick={e => closeModal(false)} className="btn btn-md btn-danger "><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
-                                    {/* </div> */}
-                                    {/* </div> */}
                                 </div>
                             </div>
 
@@ -189,7 +245,11 @@ const AddNewRoom = ({ closeModal, hotel }) => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label className="col-form-label">Room Number*</label>
-                                        <input type="number" className={formControlClass("roomNumber")} name="roomNumber" />
+                                        <input
+                                            type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("roomNumber")} name="roomNumber"
+                                            defaultValue={room ? room.roomNumber : ""}
+                                        />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.roomNumber}</div>
                                     </div>
@@ -197,7 +257,11 @@ const AddNewRoom = ({ closeModal, hotel }) => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label className="col-form-label">RoomType*</label>
-                                        <input type="text" className={formControlClass("roomType")} name="roomType" />
+                                        <input type="text"
+                                            disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("roomType")} name="roomType"
+                                            defaultValue={room ? room.roomType : ""}
+                                        />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.roomType}</div>
                                     </div>
@@ -205,7 +269,11 @@ const AddNewRoom = ({ closeModal, hotel }) => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label className="col-form-label">Price*</label>
-                                        <input type="number" className={formControlClass("price")} name="price" />
+                                        <input type="number"
+                                            disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("price")} name="price"
+                                            defaultValue={room ? room.price : ""}
+                                        />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.price}</div>
                                     </div>
@@ -213,7 +281,10 @@ const AddNewRoom = ({ closeModal, hotel }) => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label className="col-form-label">Max Adult*</label>
-                                        <input type="number" className={formControlClass("maxAdult")} name="maxAdult" />
+                                        <input type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("maxAdult")} name="maxAdult"
+                                            defaultValue={room ? room.maxAdult : ""}
+                                        />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.maxAdult}</div>
                                     </div>
@@ -221,42 +292,60 @@ const AddNewRoom = ({ closeModal, hotel }) => {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label className="col-form-label">Max Children*</label>
-                                        <input type="number" className={formControlClass("maxChildren")} name="maxChildren" />
+                                        <input type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("maxChildren")} name="maxChildren"
+                                            defaultValue={room ? room.maxChildren : ""}
+                                        />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.maxChildren}</div>
                                     </div>
                                 </div>
                                 <div className="col-md-6">
                                     <div className="form-group">
-                                        <label className="col-form-label">Image of room</label>
-                                        <input onChange={uploadFiles} type="file" id="files" name="files" multiple />
+                                        <label className="col-form-label">Add Image</label>
+                                        <input className="form-control" disabled={componentStatus === "View Room" ? true : false} onChange={uploadFiles} type="file" id="files" name="files" multiple />
                                     </div>
                                 </div>
+                                <div className="row">
+                                        <button hidden={componentStatus === "View Room" ? true : false} className="btn btn-danger"
+                                            onClick={() => removeImage()}
+                                        ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+                                </div>
+                                {
+                                    componentStatus === "Create Room"
+                                        ? <></> :
+                                        <DataTable className="table"
+                                            // overflowY
+                                            onSelectedRowsChange={checkBoxHandel}
+                                            selectableRows={componentStatus === "View Room" ? false : true}
+                                            style={{ maxWidth: '500px' }}
+                                            customStyles={customStyles}
+                                            theme='solarized'
+                                            progressPending={!images}
+                                            columns={imageHeader}
+                                            data={images}
+                                            pagination
+                                            paginationPerPage={3}
+                                        />
+                                }
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-
-            {/* </div>
-                        </div> */}
-            {/* <AdminFooter /> */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* </div> */}
-
-            {/* </div > */}
         </>
     );
 };
-const mapStateToProps = (state, ownProps) => {
-    // return {};
-};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
+export default AddNewRoom;
 
-    };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddNewRoom);
+{/* <DataTable className="table"
+customStyles={customStyles}
+theme='solarized'
+progressPending={!props.rooms?.data}
+columns={roomHeader}
+data={Array.isArray(props.rooms?.data) && props.rooms?.data.length > 0?props.rooms?.data:""}
+pagination
+paginationPerPage={5}
+/> */}

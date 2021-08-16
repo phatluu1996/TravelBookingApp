@@ -163,8 +163,6 @@ const HotelDetailPage = (props) => {
                                             <div className="available-price-c">
                                                 {room?.roomStatus}
                                             </div>
-                                            {/* <CheckBox checked={mapCheck?.get(room.id)} onChange={handleChange(room.id)} /> */}
-                                            {/* <CheckBox checked={mapCheck?.get(room.id)} onClick={e=>handleChange(room.id)} /> */}
                                         </div>
                                     </div>
                                     <div className="clear"></div>
@@ -243,25 +241,6 @@ const HotelDetailPage = (props) => {
             setCurrentImage(props.hotel.data.rooms[0].images[0].imagePath)
         }
     }, [props.hotel]);
-    // useEffect(() => {
-    //     let mount = false;
-
-    //     if (jquery) {
-    //         importAll();
-    //         if (props.hotel.data) {
-    //             setJquery(true);
-    //             if (mapCheck.size === 0) {
-    //                 var map = new Map();
-    //                 props.hotel?.data?.rooms?.map((room) => map.set(room.id, false));
-    //                 setMapCheck(map);
-    //             }
-    //         }
-    //     }
-
-    //     return () => {
-    //         mount = true;
-    //     };
-    // });
     return (
         <>
             <Header></Header>
@@ -296,8 +275,6 @@ const HotelDetailPage = (props) => {
                                                 </div>
                                                 <div className="h-tabs-right">
                                                     <a
-                                                    //    onClick={
-                                                    //       history.push("/hotel-list")}
                                                     >
                                                         <i></i>
                                                         <span>more hotels</span>
@@ -512,35 +489,9 @@ const HotelDetailPage = (props) => {
                                                                 </Button>}
                                                             <Button style={(totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))) ? { color: "white", backgroundColor: "red" } : { color: "white", backgroundColor: "green" }}
                                                                 color="red" size="large" variant="" onClick={addNewBook}>
-                                                                {/* {totalAdult <
-                                                                    parseInt(queryParam.get("numberAdult")) || totalChild <
-                                                                    parseInt(queryParam.get("numberChildren"))
-                                                                    ?
-                                                                    <FontAwesomeIcon
-                                                                        icon={faTimesCircle} />
-                                                                    :
-                                                                    <FontAwesomeIcon icon={faCheck}/>
-                                                                } */}
                                                                 BOOK NOW
                                                             </Button>
-                                                            {/* <a onClick={(e) => addNewBook()} className="book-btn" style={{ color: "red" }}>
-                                                                <span className="book-btn-l">
-                                                                    {totalAdult <
-                                                                        parseInt(queryParam.get("numberAdult")) || totalChild <
-                                                                        parseInt(queryParam.get("numberChildren"))
-                                                                        ?
-                                                                        <FontAwesomeIcon
-                                                                            icon={faTimesCircle}
-                                                                            className={classes.icon} />
-                                                                        :
-                                                                        <FontAwesomeIcon
-                                                                            icon={faCheck}
-                                                                            className={classes.icon} />
-                                                                    }
-                                                                </span>
-                                                                <span className="book-btn-r">Book now</span>
-                                                                <div className="clear"></div>
-                                                            </a> */}
+                                                           
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -557,49 +508,7 @@ const HotelDetailPage = (props) => {
                                                         </div>
                                                     </div>
 
-                                                    {/* <div className="content-tabs-i">
-                                                        <h2>Hotel Facilities</h2>
-                                                        <p>Voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt. </p>
-                                                        <ul className="preferences-list">
-                                                            <li className="internet">High-speed Internet</li>
-                                                            <li className="conf-room">Conference room</li>
-                                                            <li className="play-place">Play Place</li>
-                                                            <li className="restourant">Restourant</li>
-                                                            <li className="bar">Bar</li>
-                                                            <li className="doorman">Doorman</li>
-                                                            <li className="kitchen">Kitchen</li>
-                                                            <li className="spa">Spa services</li>
-                                                            <li className="bike">Bike Rental</li>
-                                                            <li className="entertaiment">Entertaiment</li>
-                                                            <li className="hot-tub">Hot Tub</li>
-                                                            <li className="pool">Swimming Pool</li>
-                                                            <li className="parking">Free parking</li>
-                                                            <li className="gym">Gym</li>
-                                                            <li className="tv">TV</li>
-                                                            <li className="pets">Pets allowed</li>
-                                                            <li className="handicap">Handicap</li>
-                                                            <li className="secure">Secure </li>
-                                                        </ul>
-                                                        <div className="clear"></div>
-                                                        <div className="preferences-devider"></div>
-                                                        <h2>Alternative Style</h2>
-                                                        <p>Quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui voluptatem sequi nesciunt eque porro quisqua.</p>
-                                                        <ul className="preferences-list-alt">
-                                                            <li className="internet">High-speed Internet</li>
-                                                            <li className="parking">Free parking</li>
-                                                            <li className="gym">Gym</li>
-                                                            <li className="restourant">Restourant</li>
-                                                            <li className="pets">Pets allowed</li>
-                                                            <li className="pool">Swimming Pool</li>
-                                                            <li className="kitchen">Kitchen</li>
-                                                            <li className="conf-room">Conference room</li>
-                                                            <li className="bike">Bike Rental</li>
-                                                            <li className="entertaiment">Entertaiment</li>
-                                                            <li className="bar">Bar</li>
-                                                            <li className="secure">Secure</li>
-                                                        </ul>
-                                                        <div className="clear"></div>
-                                                    </div> */}
+                                                    
 
                                                     <div className="content-tabs-i">
                                                         <div className="reviews-a">
