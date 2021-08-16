@@ -52,7 +52,6 @@ public class FileUploadController {
 	@PostMapping(value = "/update-profile-picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<User> updateProfilePicture(@RequestParam MultipartFile file, @RequestParam Long id) throws IOException {
 		User user = userRepository.getById(id);
-		Account updateAcc = user.getAccount();
 		try{
 			String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + "profile/";
 			String FILE_TARGET_DIRECTORY = "target/classes/static/storage/profile/";
@@ -60,8 +59,8 @@ public class FileUploadController {
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
-			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
-			String convertFileNameForTargetFile = ( FILE_TARGET_DIRECTORY + file.getOriginalFilename() ).replaceAll("\\s+", "_");
+			String convertFileName = (FILE_DIRECTORY + file.getOriginalFilename() + "_"+id ).replaceAll("\\s+", "_");
+			String convertFileNameForTargetFile = ( FILE_TARGET_DIRECTORY + file.getOriginalFilename() + "_"+id  ).replaceAll("\\s+", "_");
 
 			File myFile = new File(convertFileName);
 			File myTargetFile = new File(convertFileNameForTargetFile);
@@ -76,13 +75,14 @@ public class FileUploadController {
 			fos.close();
 			fos1.close();
 
-			updateAcc.setThumbnail(getFileUrl(myFile));
-			Account result = accountRepository.save(updateAcc);
+			user.getAccount().setThumbnail(getFileUrl(myFile));
+			User result = userRepository.save(user);
+			return ResponseEntity.ok().body(result);
 		} catch (Exception e) {
 //			return new ResponseEntity("Upload failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return ResponseEntity.ok().body(user);
 		}
-		return ResponseEntity.ok().body(userRepository.findById(user.getId()).get());
+
 	}
 
 	@RequestMapping(value = "/profile/{name}", method = RequestMethod.GET,
