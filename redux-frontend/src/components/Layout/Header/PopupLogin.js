@@ -1,12 +1,13 @@
 import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { signin, googleSignin, sendEmailForget } from '../../../actions/actionAuth';
+import { signin, googleSignin, sendEmailForget, clearAuthState } from '../../../actions/actionAuth';
 import { setUserSession, removeUserSession } from '../../../utils';
 import $ from 'jquery';
 import { Link, useHistory } from 'react-router-dom';
 import GoogleLogin, { useGoogleLogout } from 'react-google-login';
 
 import { CLIENT_ID, APP_ID } from '../../../config/api';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 
 
@@ -118,12 +119,14 @@ function PopupLogin(props) {
 
             if (props.auth.forgetPass && props.auth.success) {
                 if (props.auth.forgetPass?.success) {
+                    props.clearState();
                     alert(props.auth.forgetPass?.message);
                     setIsAlert("YES");
                     setForgetPassErr("");
                     closePopup();
                 } else {
                     setForgetPassErr(props.auth.forgetPass?.message);
+                    props.clearState();
                 }
             }
         }
@@ -162,7 +165,9 @@ function PopupLogin(props) {
     }
 
     return (<>
+        
         <div className="overlay"></div>
+        {props.auth.requesting && !props.auth.forgetPass && <div className="loading" style={{zIndex:"10001"}} delay-hide="10"></div>}
         <div className="autorize-popup">
             <div className="autorize-tabs">
                 <a href="#" className="autorize-tab-a current">Sign in</a>
@@ -242,6 +247,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         forgetPassword: (email) => {
             dispatch(sendEmailForget(email));
+        },
+        clearState: () => {
+            dispatch(clearAuthState());
         }
 
     };

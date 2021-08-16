@@ -6,7 +6,8 @@ import {
   SEND_EMAIL_FORGET_REQUEST, SEND_EMAIL_FORGET_SUCCESS, SEND_EMAIL_FORGET_ERROR,
   GET_ACC_FORGET_REQUEST, GET_ACC_FORGET_SUCCESS, GET_ACC_FORGET_ERROR,
   CHANGE_PASS_FG_REQUEST, CHANGE_PASS_FG_SUCCESS, CHANGE_PASS_FG_ERROR,
-  CONFIRM_ACCOUNT_REQUEST, CONFIRM_ACCOUNT_SUCCESS, CONFIRM_ACCOUNT_ERROR
+  CONFIRM_ACCOUNT_REQUEST, CONFIRM_ACCOUNT_SUCCESS, CONFIRM_ACCOUNT_ERROR,
+  CLEAR_AUTH_STATE
 } from "../actions/actionAuth";
 
 const initialState = {
@@ -239,6 +240,16 @@ const reducerAuth = (state = initialState, action) => {
         requesting: false,
         message: action.message,
         form: 'confirmAcount'
+      };
+      return state;
+
+      case CLEAR_AUTH_STATE:
+      state = {
+        ...state,
+        requesting: false,
+        success: false,
+        forgetPass: null,
+        form: null
       };
       return state;
 
