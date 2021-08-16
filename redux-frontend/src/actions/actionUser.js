@@ -115,3 +115,9 @@ export const removeUser = (id) => async dispatch => {
         });
     }
 }
+
+export const CLEAR_USER_STATE = "CLEAR_USER_STATE";
+
+export const clearUserState = () => async dispatch => {
+    dispatch({type : CLEAR_USER_STATE});
+}

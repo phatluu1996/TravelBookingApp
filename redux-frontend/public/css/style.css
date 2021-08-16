@@ -181,6 +181,7 @@ input,select,button,textarea {outline:none;}
 .autorize-tab-b {display:block;float:left;width:303px;height:27px;text-decoration:none;font-family: 'Raleway';font-weight:600;font-size:13px;text-transform:uppercase;color:#fff;background:#141d1e;padding-top:12px;padding-left:20px;}
 .autorize-tabs a.current {color:#292828;background:#fff;cursor:default;} 
 .autorize-close {display:block;width:39px;height:39px;float:right;background:url(../img/popup-close.png) left top no-repeat;}
+.autorize-bottom.center{padding-left: 35%;}
 .autorize-close:hover {
 	background-position:left -39px;
 }

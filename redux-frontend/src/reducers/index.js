@@ -1,4 +1,3 @@
-//reducers/index.js
 import {combineReducers} from 'redux'
 import reducerFlight from './reducerFlight'
 import reducerUser from './reducerUser';
@@ -12,7 +11,8 @@ import reducerRoom from './reducerRoom';
 import reducerBookingRoom from './reducerBookingRoom';
 import reducerHotelFeedBack from './reducerHotelFeedBack';
 import reducerWizard from './reducerWizard';
-import reducerFeedback from './reducerFeedBack';
+import reducerFeedback from './reducerFeedback';
+
 
 
 const reducers = combineReducers({

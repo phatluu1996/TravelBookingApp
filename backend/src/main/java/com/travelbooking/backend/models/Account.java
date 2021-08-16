@@ -1,6 +1,7 @@
 package com.travelbooking.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -96,5 +97,13 @@ public class Account {
 
     public void setResetPassword(String resetPassword) {
         this.resetPassword = resetPassword;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

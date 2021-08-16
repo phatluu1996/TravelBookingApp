@@ -535,12 +535,12 @@ const FlightSearchPage2 = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left">
                                                 <label>Departure</label>
-                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={filter.departureDate} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="departureDate" type="text" className="date-inpt min-today" placeholder="mm/dd/yy" defaultValue={filter.departureDate} /> <span className="date-icon"></span></div>
                                                 <div className="booking-error-input" id="departureDate-error"></div>
                                             </div>
                                             <div className="srch-tab-right">
                                                 <label>Return</label>
-                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt" placeholder="mm/dd/yy" defaultValue={filter.returnDate} /> <span className="date-icon"></span></div>
+                                                <div className="input-a"><input name="returnDate" type="text" className="date-inpt min-today" placeholder="mm/dd/yy" defaultValue={filter.returnDate} /> <span className="date-icon"></span></div>
                                                 <div className="booking-error-input" id="returnDate-error"></div>
                                             </div>
                                             <div className="clear"></div>

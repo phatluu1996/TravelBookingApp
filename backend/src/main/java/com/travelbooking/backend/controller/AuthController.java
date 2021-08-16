@@ -201,23 +201,28 @@ public class AuthController {
 
     @PostMapping("/ggsignin")
     public ResponseEntity<?> googleSignin(@Valid @RequestBody SignupRequest signUpRequest) {
+        String password = signUpRequest.getEmail();
         if (!accountRepository.existsByUserName(signUpRequest.getEmail())) {
             Account account = new Account(signUpRequest.getEmail(),
                     encoder.encode(signUpRequest.getEmail())
             );
+            Location location = new Location();
             account.setRole("USER");
             User user = new User();
+//            user.setDateOfBirth();
             user.setFirstName(signUpRequest.getUserFirstName());
             user.setLastName(signUpRequest.getUserLastName());
             user.setEmail(signUpRequest.getEmail());
             user.setAccount(account);
+            user.setLocation(location);
+
+            locationRepository.save(location);
             accountRepository.save(account);
             userRepository.save(user);
-
         }
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), signUpRequest.getEmail()));
+                new UsernamePasswordAuthenticationToken(signUpRequest.getUsername(), password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);

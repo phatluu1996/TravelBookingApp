@@ -8,6 +8,7 @@ import { faArrowUp, faCogs, faMedkit, faScrewdriver, faSignOutAlt, faUserAlt, fa
 import { signout } from "../../actions/actionAuth";
 import { connect } from "react-redux";
 import { getUser, getUserFullName } from "../../utils";
+import { clearUserState } from "../../actions/actionUser";
 
 const Header = (props) => {
     const history = useHistory();
@@ -16,6 +17,7 @@ const Header = (props) => {
     const signout = () => {
         setUser(null);
         props.doSignout();
+        props.clearState();
         removeUserSession();
         const auth2 = window.gapi.auth2.getAuthInstance()
         if (auth2 != null) {//If signin with google
@@ -58,8 +60,7 @@ const Header = (props) => {
                                 <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>
                             </div>
                         </div>
-
-                        <div className="header-curency">
+                        {/* <div className="header-curency">
                             <a >USD</a>
                             <div className="curency-drop">
                                 <div>
@@ -69,7 +70,7 @@ const Header = (props) => {
                                     <a >VND</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="clear"></div>
                     </div>
                 </div>
@@ -181,6 +182,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         doSignout: () => {
             dispatch(signout());
+        },
+        clearState: () => {
+            dispatch(clearUserState());
         }
     };
 };

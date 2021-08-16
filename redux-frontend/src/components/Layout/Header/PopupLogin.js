@@ -71,21 +71,20 @@ function PopupLogin(props) {
     }
 
     const handleLoginGoogleSuccess = (res) => {
-       var user = res.profileObj;
+        var user = res.profileObj;
+        console.log(res);
         props.doGoogleSignin(user.givenName, user.familyName, user.email, user.email, user.email);
         setIsRequest(true);
-        history.push("/")
-        closePopup();
     }
 
     const handleLogoutGoogleSuccess = (res) => {
         const auth2 = window.gapi.auth2.getAuthInstance()
         if (auth2 != null) {
             auth2.signOut().then(
-                auth2.disconnect().then(res=>{
+                auth2.disconnect().then(res => {
                     removeUserSession();
                     props.onSubmitUser(null);
-                })                
+                })
             )
         }
         closePopup();
@@ -93,7 +92,7 @@ function PopupLogin(props) {
 
     const handleLoginGoogleFail = (res) => {
         console.log('Login Fail', res);
-        closePopup();
+        // closePopup();
     }
 
     useEffect(() => {
@@ -104,26 +103,26 @@ function PopupLogin(props) {
             }
 
             if (props.auth.data && props.auth.success) {
-                if(props.auth.data?.accessToken){
+                if (props.auth.data?.accessToken) {
                     setErrLogin("");
                     closePopup();
-                }else{
+                } else {
                     setErrLogin(props.auth.data?.message);
                 }
             }
-        }else if(props.auth.form === "forgetPassword" && isAlert == "NO"){
+        } else if (props.auth.form === "forgetPassword" && isAlert == "NO") {
             if (props.auth.message && isRequest) {
                 alert("Error Server");
                 setIsAlert("YES");
             }
 
-            if(props.auth.forgetPass && props.auth.success){
-                if(props.auth.forgetPass?.success){
+            if (props.auth.forgetPass && props.auth.success) {
+                if (props.auth.forgetPass?.success) {
                     alert(props.auth.forgetPass?.message);
                     setIsAlert("YES");
                     setForgetPassErr("");
                     closePopup();
-                }else{
+                } else {
                     setForgetPassErr(props.auth.forgetPass?.message);
                 }
             }
@@ -135,22 +134,22 @@ function PopupLogin(props) {
     });
 
     const forgetPasswordSubmit = (e) => {
-        var error = {...forgetPassErr};
+        var error = { ...forgetPassErr };
         e.preventDefault();
         var form = e.target;
-        if(!form.emailForgetPass.value){
+        if (!form.emailForgetPass.value) {
             error = "Email is required";
-        }else{
+        } else {
             let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             if (!regex.test(form.emailForgetPass.value)) {
                 error = "Email is invalid.";
             } else { error = ""; }
         }
         setIsAlert("NO");
-        if(error == ""){
+        if (error == "") {
             setForgetPassErr("");
             props.forgetPassword(form.emailForgetPass.value);
-        }else{
+        } else {
             setForgetPassErr(error);
             return false;
         }
@@ -171,26 +170,26 @@ function PopupLogin(props) {
                 <a href="#" className="autorize-close"></a>
                 <div className="clear"></div>
             </div>
-            
+
             <form className="autorize-tab-content" onSubmit={handleSubmit} autoComplete="false">
                 <div className="autorize-padding" style={{ marginTop: '20px' }}>
                     <h6 className="autorize-lbl text-center">WELCOME! SIGN IN YOUR ACCOUNT</h6>
                     <div>
-                        <div className="autorize-input-lbl" style={{marginTop:'15px'}}>Username:</div>
-                        <div className="validate-error" style={{marginTop:'15px'}}>{error.username}</div>
+                        <div className="autorize-input-lbl" style={{ marginTop: '15px' }}>Username:</div>
+                        <div className="validate-error" style={{ marginTop: '15px' }}>{error.username}</div>
                         <input type="text" name="username" onChange={handleChange} className={`${error.username ? 'is-invalid' : ''}`} />
                     </div>
 
                     <div>
-                        <div className="autorize-input-lbl" style={{marginTop:'15px'}}>Password:</div>
-                        <div className="validate-error" style={{marginTop:'15px'}}>{error.password}</div>
+                        <div className="autorize-input-lbl" style={{ marginTop: '15px' }}>Password:</div>
+                        <div className="validate-error" style={{ marginTop: '15px' }}>{error.password}</div>
                         <input type="password" name="password" onChange={handleChange} className={`${error.password ? 'is-invalid' : ''}`} />
                     </div>
                     <div>
                         <div style={{ color: 'red', marginLeft: '10px', marginTop: '15px', fontSize: '13px' }}>{errLogin}</div>
                     </div>
 
-                    <div className="autorize-bottom">
+                    <div className="autorize-bottom center">
                         <button className="authorize-btn" type="submit">Login</button>
                         <div className="clear"></div>
                     </div>
@@ -198,8 +197,6 @@ function PopupLogin(props) {
                         <h6 className="autorize-lbl">OR SIGN UP AND SIGN IN WITH: </h6>
                     </div>
                     <div className="autorize-bottom text-center mt-1">
-
-
                         <GoogleLogin
                             render={renderProps => (
                                 <button className="list-btn-sm mr-1" onClick={renderProps.onClick} disabled={renderProps.disabled} type="submit"><a className="team-gp list-btn-sm-icon" ></a></button>
@@ -214,10 +211,10 @@ function PopupLogin(props) {
             </form>
             <form className="autorize-tab-content" onSubmit={forgetPasswordSubmit}>
                 <div className="autorize-padding">
-                    <h6 className="autorize-lbl" style={{textAlign:"center"}}>Enter your email to change password</h6>
+                    <h6 className="autorize-lbl" style={{ textAlign: "center" }}>Enter your email to change password</h6>
                     <div>
-                        <div className="autorize-input-lbl" style={{marginTop:'5px'}}>Email:</div>
-                        <div className="validate-error" style={{marginTop:'5px'}}>{forgetPassErr}</div>
+                        <div className="autorize-input-lbl" style={{ marginTop: '5px' }}>Email:</div>
+                        <div className="validate-error" style={{ marginTop: '5px' }}>{forgetPassErr}</div>
                         <input type="text" name="emailForgetPass" className={`${forgetPassErr ? 'is-invalid' : ''}`} />
                     </div>
                     <footer className="autorize-bottom">
