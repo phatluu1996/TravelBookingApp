@@ -15,7 +15,7 @@ import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faBaby, faCheck, faChild, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
-import { getRole, ROLE_USER } from "../../utils";
+import { getRole, getToken, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
@@ -715,7 +715,7 @@ const ComboHotelDetailPage = (props) => {
                                                                         props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                {getUser() && <div
+                                                                {getToken() && <div
                                                                     hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
