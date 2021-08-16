@@ -90,8 +90,7 @@ const ComboHotelDetailPage = (props) => {
     const goToBooking = (e) => {
         if (getRole() != ROLE_USER) {
             $(".header-account a").click();
-        } else if (totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren))
-        {
+        } else if (totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren)) {
             // alert("Select the number of rooms suitable for the number of people");        
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
@@ -716,7 +715,7 @@ const ComboHotelDetailPage = (props) => {
                                                                         props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                <div
+                                                                {getUser() && <div
                                                                     hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
@@ -785,7 +784,7 @@ const ComboHotelDetailPage = (props) => {
                                                                     >
                                                                         Submit Review
                                                                     </button>
-                                                                </div>
+                                                                </div>}
                                                             </div>
                                                         </div>
                                                     </div>
