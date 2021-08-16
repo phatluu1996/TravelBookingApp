@@ -12,7 +12,7 @@ import reducerBookingRoom from './reducerBookingRoom';
 import reducerHotelFeedBack from './reducerHotelFeedBack';
 import reducerWizard from './reducerWizard';
 import reducerImage from './reducerImage';
-import reducerFeedback from './reducerFeedBack';
+import reducerFeedback from './reducerFeedback';
 
 
 
