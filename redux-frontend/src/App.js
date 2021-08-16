@@ -60,6 +60,7 @@ import { ThemeProvider } from 'styled-components';
 import AddNewRoom from './components/Room/AddNewRoom';
 import ConfirmRegister from './components/Layout/ConfirmRegister';
 import AdminHotelDashboard from './components/Admin/Hotel/AdminHotelDashboard';
+import AdminHotelUpdate from './components/Admin/Hotel/AdminHotelUpdate';
 
 
 const App = (props) => {
@@ -147,6 +148,7 @@ const App = (props) => {
          {/* Hoa */}
         {/* Hotel Management */}
         <PublicRoute restricted={false} component={AdminHotelDashboard} path="/hotel-dashboard" />
+        <PublicRoute restricted={false} component={AdminHotelUpdate} path="/hotel-update" />
         
         <PublicRoute restricted={false} component={AddNewRoom} path="/admin-room-create" />
         <PublicRoute restricted={false} component={ConfirmRegister} path="/activateAccount" />
