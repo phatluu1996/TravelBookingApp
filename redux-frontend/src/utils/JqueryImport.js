@@ -2140,11 +2140,11 @@ export const customOtherTags = () => {
                 $('.overlay').fadeOut();
             });
         }
-        // else {
-        // 	var $index = $(this).index();
-        // 	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
-        // 	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
-        // }
+        else {
+        	var $index = $(this).index();
+        	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
+        	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
+        }
         return false;
     });
 
@@ -2168,11 +2168,11 @@ export const customOtherTags = () => {
                 $('.overlay2').fadeOut();
             });
         }
-        // else {
-        // 	var $index = $(this).index();
-        // 	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
-        // 	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
-        // }
+        else {
+        	var $index = $(this).index();
+        	$('.autorize-tabs a').removeClass('current').eq($index).addClass('current');
+        	$('.autorize-tab-content').hide().eq($index).fadeIn().find('input:text').eq('0').focus();
+        }
         return false;
     });
 

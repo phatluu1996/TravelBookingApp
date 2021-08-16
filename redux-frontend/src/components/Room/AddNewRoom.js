@@ -1,116 +1,205 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
-import { getUpdate } from "../../actions/actionHotel";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { createRoom } from "../../actions/actionRoom";
 import { updateLocation } from "../../actions/actionLocation";
 import { importAll } from "../../utils/JqueryImport";
+import AdminFooter from '../Admin/Layout/AdminFooter';
+import AdminNavbar from '../Admin/Layout/AdminNavbar';
+import AdminSidebar from '../Admin/Layout/AdminSidebar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimesCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import DataTable from "react-data-table-component";
 
-const AddNewRoom = (props) => {
-    // const hotel = props.dataHotel;
-    // const provinces = props.province.data;
 
-    // const [selectProvince, setSelectProvince] = useState(hotel.location.province);
-    // const [selectDistrict, setSelectDistrict] = useState(hotel.location.district);
-    // const [selectWard, setSelectWard] = useState(hotel.location.ward);
-    // const [allDistrict, setAllDistrict] = useState(null);
+const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
 
-    // const [allWard, setAllWard] = useState(null);
-    // const [statusSignup, setStatuSignup] = useState(false);
-    // const [messageSignup, setMessageSignup] = useState("");
-    // const [isRequest, setIsRequest] = useState(false);
-
+    // const [room,setRoom] = useState(room);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [selectItem,setSelectItem] = useState([]);
+    const [images, setImages] = useState(room && room?.images.length && Array.isArray(room?.images)> 0 ?room?.images:[]);
+    const dispatch = useDispatch();
     const [validateError, setValidateError] = useState({
-        hotelName: "",
-        email: "",
-        phone: "",
-        contactName: "",
-        contactTitle: "",
-        address: "",
-        numberOfRoom: "",
-        avgPriceAtNight: "",
+        roomNumber: "",
+        roomType: "",
+        price: "",
+        maxAdult: "",
+        maxChildren: ""
     });
 
+    const customStyles = {
+        headCells: {
+            style: {
+                fontSize: '11px',
+                fontWeight: 'bold',
+                color: 'white',
+                // paddingLeft: 'px',
+                // paddingRight: '-8px',
+            },
+            activeSortStyle: {
+                color: '#ff7200',
+                '&:focus': {
+                    outline: 'none',
+                },
+                '&:hover:not(:focus)': {
+                    color: '#ff7200',
+                },
+            },
+            inactiveSortStyle: {
+                '&:focus': {
+                    outline: 'none',
+                    color: '#ff7200',
+                },
+                '&:hover': {
+                    color: '#ff7200',
+                },
+            },
+        },
+        pagination: {
+            style: {
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: 200,
+                minHeight: '56px',
+                borderTopStyle: 'solid',
+                borderTopWidth: '1px',
+
+            },
+            pageButtonsStyle: {
+                borderRadius: '50%',
+                height: '40px',
+                width: '40px',
+                padding: '8px',
+                margin: 'px',
+                cursor: 'pointer',
+                transition: '0.4s',
+                color: '#007bff',
+                fill: '#007bff',
+                backgroundColor: 'transparent',
+                '&:disabled': {
+                    cursor: 'unset',
+                    color: '#007bff',
+                    fill: 'white',
+                },
+                '&:hover:not(:disabled)': {
+                    backgroundColor: 'white',
+                },
+                '&:focus': {
+                    outline: 'white',
+                    backgroundColor: 'white',
+                },
+            },
+        },
+    };
+
+    const imageHeader = [
+
+        {
+            name: 'Image Path',
+            selector: 'imagePath',
+            sortable: true
+        },
+        {
+            name: 'Image Picture',
+            cell: (image, index) =>
+                <React.Fragment key={index}>
+                    <img style={{ maxWidth: 94, maxHeight: 75 }} alt="" src={image?.imagePath} />
+                </React.Fragment>
+        }
+        // {
+        //     name: 'Actions',
+        //     cell: (image, index) =>
+        //         <React.Fragment key={index}>
+        //             <button className="btn btn-danger"
+        //                 onClick={() => removeImage(image)}
+        //             ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+        //         </React.Fragment>
+        // }
+    ];
+
+    const removeImage = image => {
+        var arr = [...images];
+        arr.sort(image);
+        console.log(image);
+    }
+
+    const roomCreate = (data) => { dispatch(createRoom(data)) }
+
+    const checkBoxHandel = (e) =>{
+            console.log(e);
+    }
     const handelSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
+        let formData = new FormData();
+        console.log('' + hotel.id);
+        // byte[] bytes = images.f.read(file_upload .toPath());
         if (handleChange(form)) {
-            // let data = {
-            //     ...props.dataHotel
-            // }
-            //     data.hotelName = form.hotelName.value;
-            //     data.email= form.email.value;
-            //     data.phone= form.phone.value;
-            //     data.contactName= form.contactName.value;
-            //     data.contactTitle= form.contactTitle.value;
-            //     data.address = form.address.value;
-            //     data.numberOfRoom= parseInt(form.numOfRoom.value);
-            //     data.avgPriceAtNight= parseFloat(form.avgPriceAtNight.value);
-            //     data.location.street = form.address.value;
-            //     data.location.province = selectProvince;
-            //     data.location.district = selectDistrict;
-            //     data.location.ward = selectWard;
-
-            //     props.getUpdate(hotel.id,data);
+            formData.append('roomNumber', parseInt(form.roomNumber.value));
+            formData.append('hotel', '' + hotel.id);
+            formData.append('roomType', form.roomType.value);
+            formData.append('price', parseInt(form.price.value));
+            formData.append('maxAdult', parseInt(form.maxAdult.value));
+            formData.append('maxChildren', parseInt(form.maxChildren.value));
+            formData.append('roomStatus', 0);
+            for (let index = 0; index < images.length; index++) {
+                const image = images[index];
+                formData.append('files', image);
+            }
+            roomCreate(formData);
+            closeModal(false)
         }
     };
+
+    const uploadFiles = (event) => {
+        var files = [];
+        for (let size = 0; size < event.target.files.length; size++) {
+            files.push(event.target.files[size]);
+        }
+        setImages(files);
+    }
+
     const handleChange = (e) => {
 
         const form = e;
         const err = { ...validateError };
-        const pattern =
-            /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
-        const result = pattern.test(form.email.value);
+        // console.log(form.roomNumber.value);
+        // const pattern =
+        //     /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+        // const result = pattern.test(form.email.value);
 
-        if (!form.hotelName.value) {
-            err.hotelName = "Hotel name is required ";
+        if (!form.roomNumber.value) {
+            err.roomNumber = "Room number is required ";
         } else {
-            err.hotelName = "";
+            err.roomNumber = "";
         }
-        if (!form.email.value) {
-            err.email = "Email is required ";
-        } else if (!result) {
-            err.email = "Email is valid";
+        if (!form.roomType.value) {
+            err.roomType = "Room type is required ";
         } else {
-            err.email = "";
+            err.roomType = "";
         }
-        if (!form.phone.value) {
-            err.phone = "Phone is required ";
+        if (!form.price.value) {
+            err.price = "Price is required ";
         } else {
-            err.phone = "";
+            err.price = "";
         }
-        if (!form.contactName.value) {
-            err.contactName = "Contact name is required ";
+        if (!form.maxAdult.value) {
+            err.maxAdult = "Max adult title is required ";
         } else {
-            err.contactName = "";
+            err.maxAdult = "";
         }
-        if (!form.contactTitle.value) {
-            err.contactTitle = "Contact title is required ";
+        if (!form.maxChildren.value) {
+            err.maxChildren = " Max children is required ";
         } else {
-            err.contactTitle = "";
-        }
-        if (!form.address.value) {
-            err.address = " Address is required ";
-        } else {
-            err.address = "";
-        }
-        if (!form.numOfRoom.value) {
-            err.numberOfRoom = " Room quantity is required ";
-        } else {
-            err.numberOfRoom = "";
-        }
-        if (!form.avgPriceAtNight.value) {
-            err.avgPriceAtNight = " Avg Price is required ";
-        } else {
-            err.avgPriceAtNight = "";
+            err.maxChildren = "";
         }
         if (
-            err.hotelName ||
-            err.email ||
+            err.roomNumber ||
+            err.roomType ||
             err.phone ||
-            err.contactName ||
-            err.contactTitle ||
-            err.address ||
-            err.numberOfRoom ||
-            err.avgPriceAtNight
+            err.price ||
+            err.maxAdult ||
+            err.maxChildren
         ) {
             setValidateError(err);
             return false;
@@ -118,320 +207,150 @@ const AddNewRoom = (props) => {
         return true;
     };
 
-    // const handleGenderClick = (e) => {
-    //     e.preventDefault();
-    //     if (e.currentTarget.innerHTML === "F") {
-    //         setIsMale("Female");
-    //     } else { setIsMale("Male"); }
-    // }
 
     useEffect(() => {
         let mount = false;
-        // importAll();
-        // props.getProvince();
-
-        // document
-        //     .querySelector("#provinces")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.province.name;
-        // document
-        //     .querySelector("#districts")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.district.name;
-        // document
-        //     .querySelector("#wards")
-        //     .parentElement.querySelector(".customSelectInner").innerHTML =
-        //     hotel?.location.ward.name;
         return () => {
             mount = true;
         };
     }, []);
 
-    // const onChangeProvince = (e) => {
-    //     document
-    //         .querySelector("#districts")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     document
-    //         .querySelector("#wards")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     if (e.currentTarget.id === "0") {
-    //         setSelectDistrict(null);
-    //         setSelectProvince(null);
-    //         setSelectWard(null);
-    //     } else {
-    //         // if (!props.province.data) {
-    //             setSelectProvince(
-    //                 props.province.data.find((item) => item.id === parseInt(e.currentTarget.value))
-    //             );
-    //         // }
-    //     }
-    // };
-    // const onChangeDistrict = (e) => {
-    //     document
-    //         .querySelector("#wards")
-    //         .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-    //     if (e.currentTarget.id === "0") {
-    //         setSelectDistrict(null);
-    //         setSelectWard(null);
-    //     } else {
-    //         setSelectDistrict(
-    //             selectProvince.districts.find(
-    //                 (item) => item.id === parseInt(e.currentTarget.value)
-    //             )
-    //         );
-    //     }
-    // };
-    // const onChangeWard = (e) => {
-    //     setSelectWard(
-    //         selectDistrict.wards.find(
-    //             (item) => item.id === parseInt(e.currentTarget.value)
-    //         )
-    //     );
-    // };
+    const formControlClass = (field) => {
+        if (!validateError[field]) {
+            if (isSubmit) {
+                return "form-control is-valid";
+            }
+            return "form-control";
+        }
+        return "form-control is-invalid";
+    }
 
     return (
-        <div>
-            <form onSubmit={handelSubmit}>
-                <div className="booking-form">
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Room Number:</label>
-                            <div
-                                className={`input ${validateError.hotelName ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="hotelName"
-                                    // defaultValue={hotel ? hotel.hotelName : ""}
-                                />
+        <>
+            <div className="bootstrap-scope">
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={handelSubmit} className="form-sample" autoComplete="false">
+                            <div className="row">
+                                <div className="col-sm">
+                                    <h3 className="card-title ">{componentStatus}</h3>
+                                </div>
+                                <div className="col col-lg-4">
+                                    <button type="submit" disabled={componentStatus === "View Room" ? true : false} onSubmit={handelSubmit} className="btn btn-success"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>
+                                    <button onClick={e => closeModal(false)} className="btn btn-md btn-danger "><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
+                                </div>
                             </div>
-                            <div className="booking-error-input">
-                                {validateError.hotelName}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label>Price:</label>
-                            <div className="input">
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    // defaultValue={hotel ? hotel.phone : ""}
-                                />
-                            </div>
-                        </div>
 
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i booking-form-i-custom ">
-                            <label className="custom-lbl">Room Type:</label>
-                            <div
-                                className={`input ${validateError.email ? "is-invalid" : ""}`}
-                            >
-                                <input
-                                    type="text"
-                                    name="email"
-                                    // defaultValue={hotel ? hotel.email : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">{validateError.email}</div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Max Adult:</label>
-                            <div
-                                className={`input ${validateError.contactName ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="contactName"
-                                    // defaultValue={hotel ? hotel.contactName : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.contactName}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Max Children:</label>
-                            <div
-                                className={`input ${validateError.contactTitle ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="contactTitle"
-                                    // defaultValue={hotel ? hotel.contactTitle : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.contactTitle}
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Number Of Room:</label>
-                            <div
-                                className={`input ${validateError.numberOfRoom ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="numOfRoom"
-                                    // defaultValue={hotel ? hotel.numberOfRoom : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.numberOfRoom}
-                            </div>
-                        </div>
-                        <div className="booking-form-i">
-                            <label className="custom-lbl">Avg Price:</label>
-                            <div
-                                className={`input ${validateError.avgPriceAtNight ? "is-invalid" : ""
-                                    }`}
-                            >
-                                <input
-                                    type="text"
-                                    name="avgPriceAtNight"
-                                    // defaultValue={hotel ? hotel.avgPriceAtNight : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">
-                                {validateError.avgPriceAtNight}
-                            </div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div style={{ color: "grey", marginBottom: "10px" }}>
-                            <i>*Please enter address</i>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div>
-                        <div
-                            className="booking-form-i booking-form-i-custom"
-                            style={{ marginBottom: "10px" }}
-                        >
-                            <label className="custom-lbl">Address:</label>
-                            <div
-                                className={`input ${validateError.address ? "is-invalid" : ""}`}
-                            >
-                                <input
-                                    type="text"
-                                    name="address"
-                                    // defaultValue={hotel ? hotel.location.street : ""}
-                                />
-                            </div>
-                            <div className="booking-error-input">{validateError.address}</div>
-                        </div>
-                        <div className="clear"></div>
-                    </div>
-                    <div style={{ marginBottom: "10px", color: "grey" }}>
-                        <i>*Please enter location</i>
-                    </div>
-                    <div>
-                        <div className="srch-tab-line no-margin-bottom">
-                            {/* <div className="srch-tab-3c">
-                                <label>Province</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        onChange={onChangeProvince}
-                                        className="custom-select"
-                                        name="provinces"
-                                        id="provinces"
-                                        defaultValue={hotel.location.province.id}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {props.province.data?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Room Number*</label>
+                                        <input
+                                            type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("roomNumber")} name="roomNumber"
+                                            defaultValue={room ? room.roomNumber : ""}
+                                        />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.roomNumber}</div>
+                                    </div>
                                 </div>
-                            </div> */}
-                            {/* <div className="srch-tab-3c">
-                                <label>District</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        onChange={onChangeDistrict}
-                                        className="custom-select"
-                                        name="districts"
-                                        id="districts"
-                                        defaultValue={hotel?.location.district.id}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {selectProvince?.districts?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">RoomType*</label>
+                                        <input type="text"
+                                            disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("roomType")} name="roomType"
+                                            defaultValue={room ? room.roomType : ""}
+                                        />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.roomType}</div>
+                                    </div>
                                 </div>
-                            </div> */}
-                            {/* <div className="srch-tab-3c">
-                                <label>Ward</label>
-                                <div className="select-wrapper">
-                                    <select
-                                        className="custom-select"
-                                        name="wards"
-                                        id="wards"
-                                        defaultValue={hotel?.location.ward.id}
-                                        onChange={onChangeWard}
-                                    >
-                                        <option key={0} value={0}>
-                                            --
-                                        </option>
-                                        {selectDistrict?.wards?.map((item) => (
-                                            <option key={item.id} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))}
-                                    </select>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Price*</label>
+                                        <input type="number"
+                                            disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("price")} name="price"
+                                            defaultValue={room ? room.price : ""}
+                                        />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.price}</div>
+                                    </div>
                                 </div>
-                            </div> */}
-                        </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Max Adult*</label>
+                                        <input type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("maxAdult")} name="maxAdult"
+                                            defaultValue={room ? room.maxAdult : ""}
+                                        />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.maxAdult}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Max Children*</label>
+                                        <input type="number" disabled={componentStatus === "View Room" ? true : false}
+                                            className={formControlClass("maxChildren")} name="maxChildren"
+                                            defaultValue={room ? room.maxChildren : ""}
+                                        />
+                                        <div className="valid-feedback"></div>
+                                        <div className="invalid-feedback">{validateError.maxChildren}</div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label className="col-form-label">Add Image</label>
+                                        <input className="form-control" disabled={componentStatus === "View Room" ? true : false} onChange={uploadFiles} type="file" id="files" name="files" multiple />
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="row">
+                                    <div className="col-sm-10"></div>
+                                        <div className="col-sm-2">
+                                        <button hidden={componentStatus === "View Room" ? true : false} className="btn btn-danger" 
+                                            onClick={() => removeImage()}
+                                        ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {
+                                    componentStatus === "Create Room"
+                                        ? <></> :
+                                        <DataTable className="table"
+                                            // overflowY
+                                            onSelectedRowsChange={checkBoxHandel}
+                                            selectableRows={componentStatus === "View Room" ? false : true}
+                                            style={{ maxWidth: '500px' }}
+                                            customStyles={customStyles}
+                                            theme='solarized'
+                                            progressPending={!images}
+                                            columns={imageHeader}
+                                            data={images}
+                                            pagination
+                                            paginationPerPage={3}
+                                        />
+                                }
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div className="booking-complete" style={{ float: "left" }}>
-                    <button
-                        className="booking-complete-btn"
-                        type="submit"
-                        style={{ marginTop: "20px" }}
-                    >
-                        Update
-                    </button>
-                </div>
-                <div className="clear"></div>
-            </form>
-        </div>
+            </div>
+        </>
     );
 };
-const mapStateToProps = (state, ownProps) => {
-    return {};
-};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getUpdate: (id, data) => {
-            dispatch(getUpdate(id, data));
-        },
-        getUpdateLocation: (id, data) => {
-            dispatch(updateLocation(id, data));
-        },
-    };
-};
+export default AddNewRoom;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddNewRoom);
+
+{/* <DataTable className="table"
+customStyles={customStyles}
+theme='solarized'
+progressPending={!props.rooms?.data}
+columns={roomHeader}
+data={Array.isArray(props.rooms?.data) && props.rooms?.data.length > 0?props.rooms?.data:""}
+pagination
+paginationPerPage={5}
+/> */}

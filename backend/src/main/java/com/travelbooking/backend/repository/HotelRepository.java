@@ -8,4 +8,5 @@ public interface  HotelRepository extends JpaRepository<Hotel,Long>,JpaSpecifica
     Boolean existsByEmail(String email);
     Hotel getByAccountId(Long id);
     Boolean existsByAccount_Id(Long id);
+    Hotel getByEmail(String email);
 }

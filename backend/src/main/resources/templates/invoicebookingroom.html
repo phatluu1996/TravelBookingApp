@@ -374,19 +374,21 @@ footer {
                     <tr>
                         <th>#</th>
                         <th>Title</th>
+                        <th>Room Type</th>
                         <th>Description</th>
-                        <th>Quantity</th>
+                        <th>Night Stay</th>
                         <th>Unit Price</th>
                         <th>Total Amount</th>
                     </tr>
                     </thead>
-                    <tr th:each="hotelRoom : ${hotelBooking.hotelBookingDetail.hotelBookingRooms}">
-                        <td width="10%" class="tableitem" th:text="${hotelRoomStat.index + 1}"></td>
-                        <td width="20%" class="tableitem" >Hotel Ticket</td>
-                        <td width="30%" class="tableitem" th:text="${hotelRoom.room.roomType} + ' ' + ${hotelBooking.checkInDate} + ' ' + ${hotelBooking.checkOutDate}"></td>
-                        <td width="10%" class="tableitem" th:text="${hotelRoomStat.count}"></td>
-                        <td width="10%" class="tableitem" th:text="${hotelRoom.room.price + ' $'}"></td>
-                        <td width="20%" class="tableitem" th:text="${hotelRoom.room.price}*${hotelRoomStat.count} + ' $'"></td>
+                    <tr th:each="room : ${hotelBooking.hotelBookingDetail.hotelBookingRooms}">
+                        <td width="5%" class="tableitem" th:text="${roomStat.index + 1}"></td>
+                        <td width="10%" class="tableitem" >Hotel Ticket</td>
+                        <td width="10%" class="tableitem" th:text="${room.room.roomType}"></td>
+                        <td width="25%" class="tableitem" th:text="${hotelBooking.checkInDate} + ' ' + ${hotelBooking.checkOutDate}"></td>
+                        <td width="5%" class="tableitem" th:text="${nightCount}"></td>
+                        <td width="20%" class="tableitem" th:text="${room.room.price + ' $'}"></td>
+                        <td width="25%" class="tableitem" th:text="${room.room.price}*${nightCount} + ' $'"></td>
                     </tr>
                     <tr>
                         <td width="10%" class="tableitem"></td>

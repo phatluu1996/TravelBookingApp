@@ -21,7 +21,7 @@ public class Hotel {
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
-    private int phone;
+    private String phone;
     @Column(name = "contact_name",columnDefinition = "nvarchar(150)")
     private String contactName;
     @Column(name = "contact_title",columnDefinition = "nvarchar(255)")
@@ -80,7 +80,7 @@ public class Hotel {
 
     @OneToMany
     @JoinColumn(name = "hotel_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("hotel")
+    @JsonIgnoreProperties(value = "hotel", allowSetters=true)
     private List<HotelFeedBack> hotelFeedBacks;
 
     @OneToMany
@@ -96,7 +96,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(Long id, String hotelName, String email, int phone, String contactName, String contactTitle, Float hotelRating, String description, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, boolean highSpeedInternet, boolean entertaiment, boolean freeParking, boolean petsAllowed, boolean hotTub, boolean swimmingPool, boolean gym, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
+    public Hotel(Long id, String hotelName, String email, String phone, String contactName, String contactTitle, Float hotelRating, String description, Boolean paymentAtTheHotel, int numberOfRoom, int avgPriceAtNight, boolean highSpeedInternet, boolean entertaiment, boolean freeParking, boolean petsAllowed, boolean hotTub, boolean swimmingPool, boolean gym, Instant createdAt, Boolean retired, Location location, Account account, List<HotelFeedBack> hotelFeedBacks, List<Room> rooms, List<Image> images) {
         this.id = id;
         this.hotelName = hotelName;
         this.email = email;
@@ -148,11 +148,11 @@ public class Hotel {
         this.email = email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -171,7 +171,6 @@ public class Hotel {
     public void setContactTitle(String contactTitle) {
         this.contactTitle = contactTitle;
     }
-
 
     public Float getHotelRating() {
         return hotelRating;

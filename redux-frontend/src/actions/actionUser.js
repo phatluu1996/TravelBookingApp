@@ -86,3 +86,32 @@ export const getAllUsers = () => async dispatch =>{
         });
     }
 }
+
+export const REMOVE_USER_REQUEST = "REMOVE_USER_REQUEST";
+export const REMOVE_USER_SUCCESS = "REMOVE_USER_SUCCESS";
+export const REMOVE_USER_ERROR = "REMOVE_USER_ERROR";
+
+export const removeUser = (id) => async dispatch => {
+    try {
+        dispatch({ type: REMOVE_USER_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.put(`/user/${parseInt(id)}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: REMOVE_USER_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: REMOVE_USER_ERROR,
+            message: error
+        });
+    }
+}

@@ -13,7 +13,6 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 
-
 const enhancers = [];
 enhancers.push(applyMiddleware(thunk));
 const composeEnhancers =

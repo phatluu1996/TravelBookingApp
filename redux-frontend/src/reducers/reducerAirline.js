@@ -1,10 +1,11 @@
-import { CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
-import { FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS,
-        GET_ALL_BOOKING_AIRLINE_REQUEST, GET_ALL_BOOKING_AIRLINE_SUCCESS, GET_ALL_BOOKING_AIRLINE_ERROR,
-        GET_DAILY_INCOME_AIRLINE_REQUEST, GET_DAILY_INCOME_AIRLINE_SUCCESS, GET_DAILY_INCOME_AIRLINE_ERROR,
-        GET_REVENUE_AIRLINE_REQUEST, GET_REVENUE_AIRLINE_SUCCESS, GET_REVENUE_AIRLINE_ERROR,
-        COUNT_BOOKING_TODAY_AIRLINE_REQUEST, COUNT_BOOKING_TODAY_AIRLINE_SUCCESS, COUNT_BOOKING_TODAY_AIRLINE_ERROR,
-        GET_REPORT_MONTH_AIRLINE_REQUEST, GET_REPORT_MONTH_AIRLINE_SUCCESS, GET_REPORT_MONTH_AIRLINE_ERROR
+import { CLEAR_AIRLINE_STATE, CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, REMOVE_AIRLINE_ERROR, REMOVE_AIRLINE_REQUEST, REMOVE_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
+import {
+    FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS,
+    GET_ALL_BOOKING_AIRLINE_REQUEST, GET_ALL_BOOKING_AIRLINE_SUCCESS, GET_ALL_BOOKING_AIRLINE_ERROR,
+    GET_DAILY_INCOME_AIRLINE_REQUEST, GET_DAILY_INCOME_AIRLINE_SUCCESS, GET_DAILY_INCOME_AIRLINE_ERROR,
+    GET_REVENUE_AIRLINE_REQUEST, GET_REVENUE_AIRLINE_SUCCESS, GET_REVENUE_AIRLINE_ERROR,
+    COUNT_BOOKING_TODAY_AIRLINE_REQUEST, COUNT_BOOKING_TODAY_AIRLINE_SUCCESS, COUNT_BOOKING_TODAY_AIRLINE_ERROR,
+    GET_REPORT_MONTH_AIRLINE_REQUEST, GET_REPORT_MONTH_AIRLINE_SUCCESS, GET_REPORT_MONTH_AIRLINE_ERROR
 
 } from "../actions/actionAirline";
 
@@ -26,7 +27,7 @@ function reducerAirline(airline = initialState, action) {
             }
 
         case UPDATE_AIRLINE:
-            return { ...airline, airline: payload, success : true, single: payload };
+            return { ...airline, airline: payload, success: true, all: null, single: null };
 
 
         case FETCH_ALL_AIRLINE_REQUEST:
@@ -40,7 +41,8 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 success: true,
-                all: payload
+                all: payload,
+                single: null
             };
             return airline;
 
@@ -62,7 +64,8 @@ function reducerAirline(airline = initialState, action) {
             airline = {
                 ...airline,
                 requesting: false,
-                success: true
+                success: true,
+                all: null
             };
             return airline;
 
@@ -86,7 +89,8 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 success: true,
-                single: action.payload
+                single: action.payload,
+                all: null
             };
             return airline;
 
@@ -97,7 +101,32 @@ function reducerAirline(airline = initialState, action) {
                 message: action.message
             };
             return airline;
-//------------------------------------------------------------
+        //------------------------------------------------------------
+        case REMOVE_AIRLINE_REQUEST:
+            return {
+                ...airline,
+                requesting: true
+            };
+
+
+        case REMOVE_AIRLINE_SUCCESS:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: true,
+                all: action.payload
+            };
+            return airline;
+
+        case REMOVE_AIRLINE_ERROR:
+            airline = {
+                ...airline,
+                requesting: false,
+                message: action.message
+            };
+            return airline;
+
+        //------------------------------------------------------------
         case GET_ALL_BOOKING_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -120,7 +149,7 @@ function reducerAirline(airline = initialState, action) {
                 message: action.message
             };
             return airline;
-//------------------------------------------------------------
+        //------------------------------------------------------------
         case GET_DAILY_INCOME_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -143,7 +172,7 @@ function reducerAirline(airline = initialState, action) {
                 message: action.message
             };
             return airline;
-//------------------------------------------------------------
+        //------------------------------------------------------------
         case GET_REVENUE_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -166,7 +195,7 @@ function reducerAirline(airline = initialState, action) {
                 message: action.message
             };
             return airline;
-//------------------------------------------------------------
+        //------------------------------------------------------------
         case COUNT_BOOKING_TODAY_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -190,7 +219,7 @@ function reducerAirline(airline = initialState, action) {
             };
             return airline;
 
-//------------------------------------------------------------
+        //------------------------------------------------------------
         case GET_REPORT_MONTH_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -211,6 +240,16 @@ function reducerAirline(airline = initialState, action) {
                 ...airline,
                 requesting: false,
                 message: action.message
+            };
+            return airline;
+
+        case CLEAR_AIRLINE_STATE:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: false,
+                single: null,
+                all: null
             };
             return airline;
 

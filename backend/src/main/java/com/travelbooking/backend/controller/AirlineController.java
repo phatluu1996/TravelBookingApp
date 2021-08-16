@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -94,11 +95,12 @@ public class AirlineController {
 //    }
     //http://localhost:8080/api/airline/{id}
     @PostMapping("/airline/{id}")
-    public ResponseEntity<Airline> removeAirline(@PathVariable Long id) {
+    public ResponseEntity<List<Airline>> removeAirline(@PathVariable Long id) {
         Airline airline = airlineRepository.findById(id).get();
         airline.setRetired(true);
         Airline result = airlineRepository.save(airline);
-        return ResponseEntity.ok().body(result);
+        Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
+        return ResponseEntity.ok().body(airlineRepository.findAll(spec));
     }
 
     @GetMapping("/airline/dailyIncomeAirline/{id}")

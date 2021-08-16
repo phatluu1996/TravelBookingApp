@@ -275,7 +275,7 @@ const Home = (props) => {
                 + "&ward=" + form.wards.value
                 + "&numberAdult=" + form.adultHotel.value
                 + "&numberChildren=" + form.childRenHotel.value
-                + "&checkInDate=" + form.checkOutDate.value
+                + "&checkInDate=" + form.checkInDate.value
                 + "&checkOutDate=" + form.checkOutDate.value
                 + "&numRoom=" + form.roomHotel.value
             );
@@ -292,6 +292,8 @@ const Home = (props) => {
             $(`.${formSelector} #from-error`)[0].innerText = err.from;
         } else {
             err.from = '';
+            form.from.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+            $(`.${formSelector} #from-error`)[0].innerText = err.from;
         }
 
         if (!form.to.value) {
@@ -300,6 +302,8 @@ const Home = (props) => {
             $(`.${formSelector} #to-error`)[0].innerText = err.to;
         } else {
             err.to = '';
+            form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+            $(`.${formSelector} #to-error`)[0].innerText = err.to;
         }
 
         if (form.from.value && form.to.value) {
@@ -313,7 +317,12 @@ const Home = (props) => {
                 $(`.${formSelector} #from-error`)[0].innerText = err.from;
             } else {
                 err.from = '';
+                form.to.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #to-error`)[0].innerText = err.to;
+
                 err.to = '';
+                form.from.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+                $(`.${formSelector} #from-error`)[0].innerText = err.from;
             }
         }
 
@@ -323,15 +332,29 @@ const Home = (props) => {
             $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         } else {
             err.departureDate = '';
+            form.departureDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         }
 
-        if(form.departureDate.value && form.returnDate.value){
-            if(form.departureDate.value >= form.returnDate.value){
-                err.departureDate = 'Departure Date must be smaller than return date';
+        if (formSelector === "hotel-flight-search") {
+            if (!form.returnDate.value) {
+                err.returnDate = 'Return Date cannot be empty';
+                form.returnDate.parentElement.classList.add("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            } else {
+                err.returnDate = '';
+                form.returnDate.parentElement.classList.remove("is-invalid");
+                $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+            }
+        }
+
+        if (form.departureDate.value && form.returnDate.value) {
+            if (form.departureDate.value >= form.returnDate.value) {
+                err.departureDate = 'Departure Date must be lower than return date';
                 form.departureDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
 
-                err.returnDate = 'Return Date must be larger than departure date';
+                err.returnDate = 'Return Date must be higher than departure date';
                 form.returnDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
             }
@@ -352,6 +375,8 @@ const Home = (props) => {
             $(`.${formSelector} #province-error`)[0].innerText = err.province;
         } else {
             err.province = '';
+            form.province.parentElement.getElementsByTagName("span")[0].classList.remove("is-invalid");
+            $(`.${formSelector} #province-error`)[0].innerText = err.province;
         }
 
         if (!form.checkInDate.value) {
@@ -360,6 +385,8 @@ const Home = (props) => {
             $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
         } else {
             err.checkin = '';
+            form.checkInDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
         }
 
         if (!form.checkOutDate.value) {
@@ -368,22 +395,58 @@ const Home = (props) => {
             $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
         } else {
             err.checkout = '';
+            form.checkOutDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
         }
 
         if (form.checkInDate.value && form.checkOutDate.value) {
             if (form.checkInDate.value >= form.checkOutDate.value) {
-                err.checkin = 'Check in date must be smaller than check out date';
+                err.checkin = 'Check in date must be lower than check out date';
                 form.checkInDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
 
-                err.checkout = 'Check out date must be larger than check in date';
+                err.checkout = 'Check out date must be higher than check in date';
                 form.checkOutDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
             } else {
-                err.checkin = '';
-                err.checkout = '';
+                if (formSelector === "hotel-flight-search") {
+                    if (form.departureDate.value && form.returnDate.value) {
+                        if (form.checkInDate.value < form.departureDate.value) {
+                            err.checkin = 'Check in date cannot be lower than check out date';
+                            form.checkInDate.parentElement.classList.add("is-invalid");
+                            $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+                        } else {
+                            err.checkin = '';
+                            form.checkInDate.parentElement.classList.remove("is-invalid");
+                            $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+                        }
+
+                        if (form.checkOutDate.value > form.returnDate.value) {
+                            err.checkout = 'Check out date must be higher than check in date';
+                            form.checkOutDate.parentElement.classList.add("is-invalid");
+                            $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+                        } else {
+                            err.checkout = '';
+                            form.checkOutDate.parentElement.classList.remove("is-invalid");
+                            $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+                        }
+                    } else {
+
+                    }
+                } else {
+                    err.checkin = '';
+                    form.checkInDate.parentElement.classList.remove("is-invalid");
+                    $(`.${formSelector} #checkin-error`)[0].innerText = err.checkin;
+
+                    err.checkout = '';
+                    form.checkOutDate.parentElement.classList.remove("is-invalid");
+                    $(`.${formSelector} #checkout-error`)[0].innerText = err.checkout;
+                }
             }
+
         }
+
+
 
         if (err.province || err.checkin || err.checkout) {
             setErrHlt(err);
@@ -401,7 +464,16 @@ const Home = (props) => {
 
                         <div className="swiper-container">
                             <div className="swiper-wrapper">
-
+                                <div className="swiper-slide">
+                                    <div className="slide-section slide-b" style={{ background: "url(img/sider-03.jpg) center no-repeat" }}>
+                                        <div className="mp-slider-lbl">
+                                            Booking flight with your friends
+                                        </div>
+                                        <div className="mp-slider-lbl-a">
+                                            Make Your Life Better and Bright! You must trip with Us!
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="swiper-slide">
                                     <div className="slide-section" style={{ background: "url(img/sider-01.jpg) center center no-repeat", }}>
                                         <div className="mp-slider-lbl">
@@ -416,16 +488,6 @@ const Home = (props) => {
                                     <div className="slide-section" style={{ background: "url(img/sider-02.jpg) center center no-repeat" }}>
                                         <div className="mp-slider-lbl">
                                             Relax with us. we love our clients
-                                        </div>
-                                        <div className="mp-slider-lbl-a">
-                                            Make Your Life Better and Bright! You must trip with Us!
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="swiper-slide">
-                                    <div className="slide-section slide-b" style={{ background: "url(img/sider-03.jpg) center no-repeat" }}>
-                                        <div className="mp-slider-lbl">
-                                            Booking flight with your friends
                                         </div>
                                         <div className="mp-slider-lbl-a">
                                             Make Your Life Better and Bright! You must trip with Us!

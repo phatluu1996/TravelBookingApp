@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import AdminFooter from './Layout/AdminFooter';
 import AdminNavbar from './Layout/AdminNavbar';
 import AdminSidebar from './Layout/AdminSidebar';
-import { getAllUsers } from '../../actions/actionUser';
+import { getAllUsers, removeUser } from '../../actions/actionUser';
 import { importAll } from '../../utils/JqueryImport';
 import DataTable, { createTheme } from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -59,46 +59,46 @@ const AdminManageUser = (props) => {
   const header = [
     {
       name: 'USER',
-      selector: 'account.userName',
+      selector: user => user['account']['userName'],
       sortable: true,
     },
     {
       name: 'FIRST NAME',
-      selector: 'firstName',
+      selector: user => user['firstName'],
       sortable: true,
     },
     {
       name: 'LAST NAME',
-      selector: 'lastName',
+      selector: user => user['lastName'],
       sortable: true,
     },
     {
       name: 'GENDER',
-      selector: 'gender',
+      selector: user => user['gender'],
       sortable: true,
     },
     {
       name: 'BIRTH DAY',
-      selector: 'dateOfBirth',
+      selector: user => user['dateOfBirth'],
       sortable: true,
     },
     {
       name: 'EMAIL',
-      selector: 'email',
+      selector: user => user['email'],
       sortable: true,
     },
     {
       name: 'PHONE NUMBER',
-      selector: 'phoneNumber',
+      selector: user => user['phoneNumber'],
       sortable: true,
     },
     {
       name: 'ACTIONS',
       // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
       cell: user => <>
-        <Link className="list-btn-sm mr-1" to={`/update-user-detail?id=${user.account.id}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+        <Link className="btn btn-success mr-1" to={`/update-user-detail?id=${user.account.id}`}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon></Link>
 
-        <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
+        <button className="btn btn-danger" onClick={() => removeUser(user['id'])}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button></>,
 
     }
   ];
@@ -183,10 +183,13 @@ const AdminManageUser = (props) => {
   };
 
 
-
   useEffect(() => {
     props.getAllUsers();
   }, []);
+
+  const removeUser = (id) => {
+    props.removeUser(id);
+  }
 
   return (
     <div className="bootstrap-scope">
@@ -199,17 +202,17 @@ const AdminManageUser = (props) => {
               <div className="col-lg-12 grid-margin stretch-card">
                 <div className="card">
                   <div className="card-body">
-                    <h4 className="card-title">List User</h4>
-                    <div className="table-responsive">
+                    <h4 className="card-title">Users</h4>
+                    {!props.users.all && <div className="loading" delay-hide="10"></div>}
+                    {props.users.all && <div className="table-responsive">
                       <DataTable
                         className="table-a"
                         columns={header}
-                        progressPending={!props.users.all}
-                        data={props.users.all ? props.users.all : []}
+                        data={props.users.all}
                         pagination paginationPerPage={5}
                         theme="solarized"
                         customStyles={customStyles} />
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>
@@ -233,6 +236,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllUsers: () => {
       dispatch(getAllUsers())
+    },
+    removeUser: (id) =>{
+      dispatch(removeUser(id))
     }
   };
 };

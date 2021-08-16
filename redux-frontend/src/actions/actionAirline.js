@@ -261,3 +261,31 @@ export const getReportMonthAirline = (id) => async dispatch => {
         });
     }
 }
+
+export const CLEAR_AIRLINE_STATE = "CLEAR_AIRLINE_STATE"
+export const clearAirlineState = () => async dispatch => {
+    dispatch({ type: CLEAR_AIRLINE_STATE });
+}
+
+export const REMOVE_AIRLINE_REQUEST = "REMOVE_AIRLINE_REQUEST";
+export const REMOVE_AIRLINE_SUCCESS = "REMOVE_AIRLINE_SUCCESS";
+export const REMOVE_AIRLINE_ERROR = "REMOVE_AIRLINE_ERROR";
+
+export const removeAirline = (id) => async dispatch => {
+    try {
+        dispatch({ type: REMOVE_AIRLINE_REQUEST });
+        const url = `${ROOT_URL}/api/airline/${parseInt(id)}`;
+    const response = await axios.post(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: REMOVE_AIRLINE_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: REMOVE_AIRLINE_ERROR,
+            message: error
+        });
+    }
+}

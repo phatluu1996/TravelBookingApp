@@ -371,7 +371,7 @@ export const getHotelByRoom = (data) => async dispatch => {
     try {
         dispatch({ type: GET_HOTEL_BY_ROOM_REQUEST });
         const url = `${ROOT_URL}/api/hotelRoom`;
-        const response = await axios.post(url,data);
+    const response = await axios.post(url,data);
         const responseBody = await response.data;
         dispatch({
             type: GET_HOTEL_BY_ROOM_SUCCESS,
@@ -381,6 +381,34 @@ export const getHotelByRoom = (data) => async dispatch => {
         console.error(error);
         dispatch({
             type: GET_HOTEL_BY_ROOM_ERROR,
+            message: error
+        });
+    }
+}
+
+export const CLEAR_HOTEL_STATE = "CLEAR_HOTEL_STATE"
+export const clearHotelState = () => async dispatch => {
+    dispatch({ type: CLEAR_HOTEL_STATE });
+}
+
+export const REMOVE_HOTEL_REQUEST = "REMOVE_HOTEL_REQUEST";
+export const REMOVE_HOTEL_SUCCESS = "REMOVE_HOTEL_SUCCESS";
+export const REMOVE_HOTEL_ERROR = "REMOVE_HOTEL_ERROR";
+
+export const removeHotel = (id) => async dispatch => {
+    try {
+        dispatch({ type: REMOVE_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/hotel/${parseInt(id)}`;
+    const response = await axios.post(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: REMOVE_HOTEL_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: REMOVE_HOTEL_ERROR,
             message: error
         });
     }

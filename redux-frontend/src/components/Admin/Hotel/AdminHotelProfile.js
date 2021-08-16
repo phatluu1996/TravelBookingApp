@@ -1,16 +1,19 @@
-import { faBath, faDesktop, faDollarSign, faDumbbell, faMoneyCheckAlt, faParking, faPaw, faSwimmer, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBath, faDesktop, faDollarSign, faDumbbell, faEdit, faEye, faHome, faMoneyCheckAlt, faParking, faPaw, faPlus, faRestroom, faSwimmer, faTachometerAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getReportHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
+import {getRoomByHotelId} from '../../../actions/actionRoom';
 import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 import { Bar } from "react-chartjs-2";
+import ReactModal from 'react-modal';
+import AddNewRoom from '../../Room/AddNewRoom';
 
 const AdminHotelProfile = (props) => {
 
@@ -22,6 +25,10 @@ const AdminHotelProfile = (props) => {
     const [slProvince, setSlProvince] = useState(null);
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
+    const [modalIsOpen,setModelStatus] = useState(false);
+    const [room,setRoom] = useState(null);
+    const [componentStatus,setComponentStatus] = useState(null);
+    
     const [allService, setAllService] = useState({
         highSpeedInternet: false,
         entertainment: false,
@@ -59,6 +66,7 @@ const AdminHotelProfile = (props) => {
         let mount = false;
 
         props.getHotel(queryParam.get("id"));
+        props.getRoomByHotelId(queryParam.get("id"));
         props.getProvince();
 
         return () => {
@@ -69,11 +77,11 @@ const AdminHotelProfile = (props) => {
     useEffect(() => {
         let mount = false;
 
-        if (props.province.data && props.hotel.single) {
+        if (props.province.data && props.hotel.one) {
 
-            var pv = props.hotel.single.location.province;
-            var dt = props.hotel.single.location.district;
-            var w = props.hotel.single.location.ward;
+            var pv = props.hotel.one.location.province;
+            var dt = props.hotel.one.location.district;
+            var w = props.hotel.one.location.ward;
 
             if (!slProvince) {
                 setSlProvince(pv);
@@ -94,23 +102,23 @@ const AdminHotelProfile = (props) => {
             }
         }
 
-        if (isInitial && props.hotel.single != null) {
+        if (isInitial && props.hotel.one != null) {
             let service = { ...allService };
 
-            props.getDailyIncome(props.hotel.single?.id);
-            props.getBookingToday(props.hotel.single?.id);
-            props.getRevenueCurrent(props.hotel.single?.id);
-            props.getAllBooking(props.hotel.single?.id);
-            props.getReportMonth(props.hotel.single?.id);
+            props.getDailyIncome(props.hotel.one?.id);
+            props.getBookingToday(props.hotel.one?.id);
+            props.getRevenueCurrent(props.hotel.one?.id);
+            props.getAllBooking(props.hotel.one?.id);
+            props.getReportMonth(props.hotel.one?.id);
 
-            service.highSpeedInternet = props.hotel.single?.highSpeedInternet;
-            service.entertainment = props.hotel.single?.entertaiment;
-            service.freeParking = props.hotel.single?.freeParking;
-            service.petAllowed = props.hotel.single?.petsAllowed;
-            service.hotTub = props.hotel.single?.hotTub;
-            service.swimmingPool = props.hotel.single?.swimmingPool;
-            service.gym = props.hotel.single?.gym;
-            service.paymentAtHotel = props.hotel.single?.paymentAtTheHotel;
+            service.highSpeedInternet = props.hotel.one?.highSpeedInternet;
+            service.entertainment = props.hotel.one?.entertaiment;
+            service.freeParking = props.hotel.one?.freeParking;
+            service.petAllowed = props.hotel.one?.petsAllowed;
+            service.hotTub = props.hotel.one?.hotTub;
+            service.swimmingPool = props.hotel.one?.swimmingPool;
+            service.gym = props.hotel.one?.gym;
+            service.paymentAtHotel = props.hotel.one?.paymentAtTheHotel;
 
             setAllService(service);
             setIsInitial(false);
@@ -129,7 +137,7 @@ const AdminHotelProfile = (props) => {
         e.preventDefault();
         let form = e.target;
 
-        let data = { ...props.hotel.single };
+        let data = { ...props.hotel.one };
         data.hotelName = form.hotelName.value;
         data.email = form.email.value;
         data.phone = form.phone.value;
@@ -198,6 +206,70 @@ const AdminHotelProfile = (props) => {
             sortable: true
         },
     ];
+    const roomHeader = [
+
+        {
+            name: 'Room Type',
+            selector: 'roomType',
+            sortable: true
+        },
+        {
+            name: 'Room Number',
+            selector: 'roomNumber',
+            sortable: true
+        },
+        {
+            name: 'Available Time',
+            selector: 'availableTime',
+            sortable: true
+        },
+        {
+            name: 'Price',
+            selector: 'price',
+            sortable: true
+        },
+        {
+            name: 'Max Adult',
+            selector: 'maxAdult',
+            sortable: true
+        },
+        {
+            name: 'Max Children',
+            selector: 'maxChildren',
+            sortable: true
+        },
+        {
+            name: 'Actions',
+            // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
+            cell: (room,index) => <React.Fragment key={index}>
+                 <button className="btn btn-success mr-1"
+                    onClick={() => modalStatus("View",room)}
+                 ><FontAwesomeIcon icon={faEye}></FontAwesomeIcon> </button>
+                <button className="btn btn-success mr-1"
+                    onClick={() => modalStatus("Edit",room)}
+                 ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </button>
+                <button className="btn btn-danger" 
+                    // onClick={() => modalStatus("View",room)}
+                ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+            </React.Fragment>
+        }
+    ];
+    const modalStatus= (string,room) => {
+        setModelStatus(true)
+        switch(string){
+            case"Edit":
+                setRoom(room);
+                return setComponentStatus("Edit Room");
+            case"View":
+                setRoom(room);
+                return setComponentStatus("View Room");
+            default:
+                return setComponentStatus("Create Room");
+        }
+
+    };
+
+    const closeModal = (status) => setModelStatus(status);
 
     const subHeader = (<thead><tr>
         <td>#</td>
@@ -273,6 +345,18 @@ const AdminHotelProfile = (props) => {
             },
         },
     };
+    const classes = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor:'rgb(30 13 13)',
+          width: 500
+        },
+      };
 
     const barLabel = () => {
         var label = [];
@@ -343,17 +427,16 @@ const AdminHotelProfile = (props) => {
     }
 
     const getAddress = () => {
-        let province = props.hotel.single?.location.province.name;
-        let district = props.hotel.single?.location.district.prefix + " " + props.hotel.single?.location.district.name;
-        let ward = props.hotel.single?.location.ward.prefix + " " + props.hotel.single?.location.ward.name;
-        return props.hotel.single?.location.street + ", " + ward + ", " + district + ", " + province;
+        let province = props.hotel.one?.location.province.name;
+        let district = props.hotel.one?.location.district.prefix + " " + props.hotel.one?.location.district.name;
+        let ward = props.hotel.one?.location.ward.prefix + " " + props.hotel.one?.location.ward.name;
+        return props.hotel.one?.location.street + ", " + ward + ", " + district + ", " + province;
     }
 
     return (
         <div className="bootstrap-scope">
             <div className="container-scroller">
-                <AdminSidebar />
-                <div className="container-fluid page-body-wrapper">
+                <div className="container-fluid">
                     <AdminNavbar />
                     <div className="main-panel">
                         <div className="content-wrapper">
@@ -368,35 +451,35 @@ const AdminHotelProfile = (props) => {
                                                     <div className="card-box text-center">
                                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
 
-                                                        <h4 className="mb-0 mt-2" style={{ color: '#fc9003' }}>{props.hotel.single?.hotelName}</h4>
+                                                        <h4 className="mb-0 mt-2" style={{ color: '#fc9003' }}>{props.hotel.one?.hotelName}</h4>
                                                         <div className="text-left mt-3">
                                                             <h6 className="font-13 text-center text-uppercase">Infomation</h6>
 
-                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Name :</strong> <span className="ml-2">{props.hotel.single?.contactName} ({props.hotel.single?.contactTitle})</span></p>
+                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Name :</strong> <span className="ml-2">{props.hotel.one?.contactName} ({props.hotel.one?.contactTitle})</span></p>
 
-                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Email :</strong><span className="ml-2">{props.hotel.single?.email}</span></p>
+                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Email :</strong><span className="ml-2">{props.hotel.one?.email}</span></p>
 
-                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Phone :</strong> <span className="ml-2 ">0{props.hotel.single?.phone}</span></p>
+                                                            <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Phone :</strong> <span className="ml-2 ">0{props.hotel.one?.phone}</span></p>
 
                                                             <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Address :</strong> <span className="ml-2">{getAddress()}</span></p>
 
-                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Total rooms :</strong> <span className="ml-2">{props.hotel.single?.numberOfRoom}</span></p>
+                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Total rooms :</strong> <span className="ml-2">{props.hotel.one?.numberOfRoom}</span></p>
 
-                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Avg Price :</strong> <span className="ml-2">{props.hotel.single?.avgPriceAtNight}</span></p>
+                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Avg Price :</strong> <span className="ml-2">{props.hotel.one?.avgPriceAtNight}</span></p>
 
-                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Description :</strong> <span className="ml-2">{props.hotel.single?.description}</span></p>
+                                                            <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Description :</strong> <span className="ml-2">{props.hotel.one?.description}</span></p>
                                                         </div>
 
                                                         <div className="text-left mt-3">
                                                             <h6 className="font-13 text-center text-uppercase">Service</h6>
-                                                            {props.hotel.single?.paymentAtTheHotel && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faMoneyCheckAlt} /> Payment at Hotel</p>}
-                                                            {props.hotel.single?.highSpeedInternet && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faTachometerAlt} /> High Speed Internet</p>}
-                                                            {props.hotel.single?.entertaiment && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faDesktop} /> Entertainment</p>}
-                                                            {props.hotel.single?.freeParking && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faParking} /> Free Parking</p>}
-                                                            {props.hotel.single?.petsAllowed && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faPaw} /> Pets Allowed</p>}
-                                                            {props.hotel.single?.hotTub && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faBath} /> Hot Tub</p>}
-                                                            {props.hotel.single?.swimmingPool && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faSwimmer} /> Swimming Pool</p>}
-                                                            {props.hotel.single?.gym && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faDumbbell} /> GYM</p>}
+                                                            {props.hotel.one?.paymentAtTheHotel && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faMoneyCheckAlt} /> Payment at Hotel</p>}
+                                                            {props.hotel.one?.highSpeedInternet && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faTachometerAlt} /> High Speed Internet</p>}
+                                                            {props.hotel.one?.entertaiment && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faDesktop} /> Entertainment</p>}
+                                                            {props.hotel.one?.freeParking && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faParking} /> Free Parking</p>}
+                                                            {props.hotel.one?.petsAllowed && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faPaw} /> Pets Allowed</p>}
+                                                            {props.hotel.one?.hotTub && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faBath} /> Hot Tub</p>}
+                                                            {props.hotel.one?.swimmingPool && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faSwimmer} /> Swimming Pool</p>}
+                                                            {props.hotel.one?.gym && <p className="text-muted mb-2 font-13"><FontAwesomeIcon icon={faDumbbell} /> GYM</p>}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -419,6 +502,11 @@ const AdminHotelProfile = (props) => {
                                                             <li className="nav-item">
                                                                 <a href="#settings" data-toggle="tab" aria-expanded="false" className="nav-link">
                                                                     <i className="mdi mdi-settings-outline mr-1"></i>Settings
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item">
+                                                                <a href="#room-manager" data-toggle="tab" aria-expanded="false" className="nav-link">
+                                                                    <FontAwesomeIcon icon={faHome} />  Room Manager
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -527,13 +615,13 @@ const AdminHotelProfile = (props) => {
                                                                         <div className="col-md-6">
                                                                             <div className="form-group">
                                                                                 <label for="hotelName">Hotel Name</label>
-                                                                                <input type="text" className="form-control" id="hotelName" name="hotelName" defaultValue={props.hotel.single?.hotelName} placeholder="Enter hotel name" />
+                                                                                <input type="text" className="form-control" id="hotelName" name="hotelName" defaultValue={props.hotel.one?.hotelName} placeholder="Enter hotel name" />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-md-6">
                                                                             <div className="form-group">
                                                                                 <label for="email">Email</label>
-                                                                                <input type="text" className="form-control" id="email" name='email' defaultValue={props.hotel.single?.email} placeholder="Enter email" />
+                                                                                <input type="text" className="form-control" id="email" name='email' defaultValue={props.hotel.one?.email} placeholder="Enter email" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -541,13 +629,13 @@ const AdminHotelProfile = (props) => {
                                                                         <div className="col-md-6">
                                                                             <div className="form-group">
                                                                                 <label for="phone">Phone</label>
-                                                                                <input type="text" className="form-control" id="phone" name="phone" defaultValue={props.hotel.single?.phone} placeholder="Enter phone" />
+                                                                                <input type="text" className="form-control" id="phone" name="phone" defaultValue={props.hotel.one?.phone} placeholder="Enter phone" />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-md-6">
                                                                             <div className="form-group">
                                                                                 <label for="avgPriceAtNight">Price</label>
-                                                                                <input type="text" className="form-control" id="avgPriceAtNight" name='avgPriceAtNight' defaultValue={props.hotel.single?.avgPriceAtNight} placeholder="Enter price" />
+                                                                                <input type="text" className="form-control" id="avgPriceAtNight" name='avgPriceAtNight' defaultValue={props.hotel.one?.avgPriceAtNight} placeholder="Enter price" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -556,13 +644,13 @@ const AdminHotelProfile = (props) => {
                                                                         <div className="col-md-4">
                                                                             <div className="form-group">
                                                                                 <label for="contactTitle">Title</label>
-                                                                                <input type="text" className="form-control" id="contactTitle" name="contactTitle" defaultValue={props.hotel.single?.contactTitle} placeholder="Enter title" />
+                                                                                <input type="text" className="form-control" id="contactTitle" name="contactTitle" defaultValue={props.hotel.one?.contactTitle} placeholder="Enter title" />
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-md-8">
                                                                             <div className="form-group">
                                                                                 <label for="contactName">Contact name</label>
-                                                                                <input type="text" className="form-control" id="contactName" name='contactName' defaultValue={props.hotel.single?.contactName} placeholder="Enter contact name." />
+                                                                                <input type="text" className="form-control" id="contactName" name='contactName' defaultValue={props.hotel.one?.contactName} placeholder="Enter contact name." />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -571,7 +659,7 @@ const AdminHotelProfile = (props) => {
                                                                         <div className="col-12">
                                                                             <div className="form-group">
                                                                                 <label for="description">Description</label>
-                                                                                <textarea className="form-control" id="description" name="description" rows="4" defaultValue={props.hotel.single?.description} placeholder="Write something..."></textarea>
+                                                                                <textarea className="form-control" id="description" name="description" rows="4" defaultValue={props.hotel.one?.description} placeholder="Write something..."></textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -581,7 +669,7 @@ const AdminHotelProfile = (props) => {
                                                                     <div className="row">
                                                                         <div className="form-group col-md-12">
                                                                             <label for="street">Street</label>
-                                                                            <input type="text" className="form-control" id="street" name="street" defaultValue={props.hotel.single?.location.street} placeholder="Enter street" />
+                                                                            <input type="text" className="form-control" id="street" name="street" defaultValue={props.hotel.one?.location.street} placeholder="Enter street" />
                                                                         </div>
                                                                     </div>
 
@@ -691,10 +779,39 @@ const AdminHotelProfile = (props) => {
                                                                         columns={header}
                                                                         data={props.hotel?.allBooking}
                                                                         pagination
-                                                                        paginationPerPage={5}                                                  
+                                                                        paginationPerPage={5}
                                                                     />
                                                                 </div>
-
+                                                            </div>
+                                                            <div className="tab-pane" id="room-manager">
+                                                                <h6 className="text-center text-warning">Room Manager</h6>
+                                                                <Link className="btn btn-success" onClick={() =>modalStatus()}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
+                                                                <div className="table-responsive">
+                                                                    <DataTable className="table"
+                                                                        customStyles={customStyles}
+                                                                        theme='solarized'
+                                                                        progressPending={!props.rooms?.data}
+                                                                        columns={roomHeader}
+                                                                        data={Array.isArray(props.rooms?.data) && props.rooms?.data.length > 0?props.rooms?.data:""}
+                                                                        pagination
+                                                                        paginationPerPage={5}
+                                                                    />
+                                                                </div>
+                                                                <ReactModal
+                                                                     isOpen={modalIsOpen}
+                                                                    //  onAfterOpen={afterOpenModal}
+                                                                    //  onRequestClose={closeModal}
+                                                                     style={classes}
+                                                                     contentLabel="Room Manager Modal"
+                                                                >
+                                                                  <AddNewRoom 
+                                                                closeModal={closeModal} 
+                                                                customStyles={customStyles}
+                                                                componentStatus={componentStatus}
+                                                                room={room}
+                                                                hotel={props.hotel?.one}
+                                                                />
+                                                                </ReactModal>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -716,7 +833,8 @@ const AdminHotelProfile = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         hotel: state.hotels,
-        province: state.province
+        province: state.province,
+        rooms:state.room
     };
 };
 
@@ -745,6 +863,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getReportMonth: (id) => {
             dispatch(getReportHotel(id));
+        },
+        getRoomByHotelId: (id) => {
+            dispatch(getRoomByHotelId(id));
         }
     };
 

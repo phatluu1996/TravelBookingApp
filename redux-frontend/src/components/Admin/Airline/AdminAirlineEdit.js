@@ -9,7 +9,7 @@ import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 import { useQuery } from '../../../utils/QueryParam';
-import { getAirline, updateAirline } from '../../../actions/actionAirline';
+import { clearAirlineState, getAirline, updateAirline } from '../../../actions/actionAirline';
 
 const AdminAirlineEdit = (props) => {
     let queryParam = useQuery();
@@ -19,8 +19,8 @@ const AdminAirlineEdit = (props) => {
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
-    const [status, setStatus] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [airline, setAirline] = useState(null);
     const [validateError, setValidateError] = useState({
         username: "",
         password: "",
@@ -39,21 +39,21 @@ const AdminAirlineEdit = (props) => {
     });
 
     const onChangeProvince = (e) => {
-        setSlProvince(JSON.parse(e.target.value));
+        setSlProvince(props.province.data.find(pv => pv.id == parseInt(e.target.value)));
         setSlDistrict(null);
         setSlWard(null);
-        e.target.form.district.value = null;
-        e.target.form.ward.value = null;
+        e.target.form.district.value = 0;
+        e.target.form.ward.value = 0;
     }
 
     const onChangeDistrict = (e) => {
-        setSlDistrict(JSON.parse(e.target.value));
+        setSlDistrict(slProvince.districts.find(dt => dt.id == parseInt(e.target.value)));
         setSlWard(null);
-        e.target.form.ward.value = null;
+        e.target.form.ward.value = 0;
     }
 
     const onChangeWard = (e) => {
-        setSlWard(JSON.parse(e.target.value));
+        setSlWard(slDistrict.wards.find(w => w.id == parseInt(e.target.value)));
     }
 
     useEffect(() => {
@@ -70,45 +70,25 @@ const AdminAirlineEdit = (props) => {
     useEffect(() => {
         let mount = false;
 
-        if(props.airline.success && isSubmit && isSuccess){
-            setStatus(true);
+        if(props.airline.success && isSubmit && isSuccess){            
+            setIsEdit(false);
+            setIsSuccess(false);
+            props.clearState();
         }
 
-        if(status){
-            history.push("/admin-airline-manage");
-        }
+        // if(status){
+        //     history.push("/admin-airline-manage");
+        // }
         
-        if(props.province.data && props.airline.single){            // && !slProvince && !slDistrict && !slWard
+        if(props.province.data && props.airline.single && !airline){  
+            setAirline(props.airline.single);
             var pv = props.airline.single.location.province;
             var dt = props.airline.single.location.district;
             var w = props.airline.single.location.ward;
 
-            // setSlProvince(pv);
-            // setSlDistrict(dt);
-            // setSlWard(w);        
-            var form = document.getElementById("form");    
-            if(!slProvince){
-                setSlProvince(pv);
-            }else{
-                pv = slProvince;
-            }
-            
-            if(!slDistrict){
-                setSlDistrict(dt);
-            }else{
-                dt = slDistrict;
-            }
-            
-            if(!slWard){
-                setSlWard(w);
-            }else{
-                w = slWard;
-            }    
-
-            
-            form.province.value = JSON.stringify(pv);
-            form.district.value = JSON.stringify(dt);
-            form.ward.value = JSON.stringify(w);            
+            setSlProvince(pv);
+            setSlDistrict(dt);
+            setSlWard(w);          
         }
 
 
@@ -123,7 +103,7 @@ const AdminAirlineEdit = (props) => {
         var form = e.target;
         if (isValid(form)) {
             //TODO call API
-            let data = {...props.airline.single};
+            let data = {...airline};
             // var data = {
             data.airlineName = form.airlineName.value;
             data.email = form.email.value;
@@ -133,9 +113,9 @@ const AdminAirlineEdit = (props) => {
             data.mobile = form.mobile.value;
             data.fax = form.fax.value;
             data.location.street = form.street.value;
-            data.location.province.id = slProvince.id;
-            data.location.district.id = slDistrict.id;
-            data.location.ward.id = slWard.id;
+            data.location.province = slProvince;
+            data.location.district = slDistrict;
+            data.location.ward = slWard;
             data.account.password = form.password.value;
             data.retired = false;            
             data.homepage = form.homepage.value;
@@ -265,6 +245,27 @@ const AdminAirlineEdit = (props) => {
         return "form-control is-invalid";
     }
 
+    const switchToEditMode = () => {
+        setIsEdit(!isEdit);
+        setIsSubmit(false);
+        setValidateError({
+            username: "",
+            password: "",
+            airlineName: "",
+            email: "",
+            phone: "",
+            mobile: "",
+            fax:"",
+            contactName: "",
+            contactTitle: "",
+            homepage: "",
+            street: "",
+            province: "",
+            district: "",
+            ward: ""
+        });
+    }
+
     const goBack = () => {
         history.push("/admin-airline-manage");
     }
@@ -285,13 +286,14 @@ const AdminAirlineEdit = (props) => {
                                         <div className="card">
                                             <div className="card-body">
                                                 <h3 className="card-title mb-3">{isEdit ? "Edit":"View"} Airline</h3>
-                                                <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => setIsEdit(!isEdit)}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
-                                                <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
+                                                <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => switchToEditMode() }><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
+                                                {!(props.province.data && airline) && <div className="loading" delay-hide="10"></div>}
+                                                {airline && <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Username*</label>
-                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={props.airline.single?.account.userName} readOnly/>
+                                                                <input type="text" className={formControlClass("username")} name="username" defaultValue={airline?.account.userName} readOnly/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.username}</div>
                                                             </div>
@@ -299,7 +301,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Password*</label>
-                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={props.airline.single?.account.password} readOnly={!isEdit}/>
+                                                                <input type="password" className={formControlClass("password")} name="password" defaultValue={airline?.account.password} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.password}</div>
                                                             </div>
@@ -307,7 +309,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Hotel Name*</label>
-                                                                <input type="text" className={formControlClass("airlineName")} name="airlineName" defaultValue={props.airline.single?.airlineName} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("airlineName")} name="airlineName" defaultValue={airline?.airlineName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.airlineName}</div>
                                                             </div>
@@ -315,7 +317,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Phone Number*</label>
-                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={props.airline.single?.phone} readOnly={!isEdit}/>
+                                                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={airline?.phone} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.phone}</div>
                                                             </div>
@@ -323,7 +325,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Mobile*</label>
-                                                                <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" defaultValue={props.airline.single?.mobile} readOnly={!isEdit}/>
+                                                                <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" defaultValue={airline?.mobile} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.mobile}</div>
                                                             </div>
@@ -331,7 +333,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Fax*</label>
-                                                                <input type="tel" className={formControlClass("fax")} min="1" name="fax" defaultValue={props.airline.single?.fax} readOnly={!isEdit}/>
+                                                                <input type="tel" className={formControlClass("fax")} min="1" name="fax" defaultValue={airline?.fax} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.fax}</div>
                                                             </div>
@@ -339,7 +341,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Homepage*</label>
-                                                                <input type="text" className={formControlClass("homepage")} name="homepage" defaultValue={props.airline.single?.homepage} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("homepage")} name="homepage" defaultValue={airline?.homepage} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.homepage}</div>
                                                             </div>
@@ -347,7 +349,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Email*</label>
-                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={props.airline.single?.email} readOnly={!isEdit}/>
+                                                                <input type="email" className={formControlClass("email")} name="email" defaultValue={airline?.email} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.email}</div>
                                                             </div>
@@ -355,7 +357,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Name*</label>
-                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={props.airline.single?.contactName} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={airline?.contactName} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactName}</div>
                                                             </div>
@@ -363,7 +365,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Contact Title*</label>
-                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={props.airline.single?.contactTitle} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={airline?.contactTitle} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.contactTitle}</div>
                                                             </div>
@@ -377,7 +379,7 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-12">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Street*</label>
-                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={props.airline.single?.location.street} readOnly={!isEdit}/>
+                                                                <input type="text" className={formControlClass("street")} name="street" defaultValue={airline?.location.street} readOnly={!isEdit}/>
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.street}</div>
                                                             </div>
@@ -385,9 +387,9 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Province*</label>
-                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value={null}>---</option>
-                                                                    {props.province.data?.map(province => <option key={province.id} value={JSON.stringify(province)}>{province.name}</option>)}
+                                                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} defaultValue={slProvince?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                                    <option value="0">---</option>
+                                                                    {props.province.data?.map(province => <option key={province.id} value={province.id}>{province.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.province}</div>
                                                             </div>
@@ -395,9 +397,9 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">District*</label>
-                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value={null}>---</option>
-                                                                    {slProvince?.districts?.map(district => <option key={district.id} value={JSON.stringify(district)}>{district.name}</option>)}
+                                                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} defaultValue={slDistrict?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                                    <option value="0">---</option>
+                                                                    {slProvince?.districts?.map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.district}</div>
                                                             </div>
@@ -405,9 +407,9 @@ const AdminAirlineEdit = (props) => {
                                                         <div className="col-md-4">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Ward*</label>
-                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} readOnly={!isEdit} disabled={!isEdit}>
-                                                                    <option value={null}>---</option>
-                                                                    {slDistrict?.wards?.map(ward => <option key={ward.id} value={JSON.stringify(ward)}>{ward.name}</option>)}
+                                                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} defaultValue={slWard?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                                    <option value="0">---</option>
+                                                                    {slDistrict?.wards?.map(ward => <option key={ward.id} value={ward.id}>{ward.name}</option>)}
                                                                 </select>
                                                                 <div className="invalid-feedback">{validateError.ward}</div>
                                                             </div>
@@ -421,7 +423,7 @@ const AdminAirlineEdit = (props) => {
                                                         </div>
                                                         <div className="col-md-3"></div>
                                                     </div>
-                                                </form>
+                                                </form>}
                                             </div>
                                         </div>
                                     </div>
@@ -456,6 +458,9 @@ const mapDispatchToProps = (dispatch) => {
         getProvince: () => {
             dispatch(retrieveProvince());
         },
+        clearState: () => {
+            dispatch(clearAirlineState());
+        }
     };
 };
 
