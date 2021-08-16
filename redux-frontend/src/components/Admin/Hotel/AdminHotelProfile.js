@@ -244,25 +244,24 @@ const AdminHotelProfile = (props) => {
             cell: (room,index) => <React.Fragment key={index}>
                  <button className="btn btn-success mr-1"
                     onClick={() => modalStatus("View",room)}
-                 ><FontAwesomeIcon icon={faEye}></FontAwesomeIcon> </button>
+                 >
+                     <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
+                  </button>
                 <button className="btn btn-success mr-1"
                     onClick={() => modalStatus("Edit",room)}
-                 ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </button>
-                {/* <button className="btn btn-danger" 
-                    onClick={(e) => removeRoom(room.id,props.hotel?.one?.id)}
-                ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button> */}
+                 >
+                     <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> 
+                 </button>
+                <button className="btn btn-danger" 
+                    onClick={() => {
+                        dispatch(removeRoom(room.id,props.hotel?.one?.id))
+                    }}
+                >
+                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+                </button>
             </React.Fragment>
         }
     ];
-    // const deleteRoom = (roomId,data) => {dispatch(removeRoom(roomId,data))};
-    
-    // const removeRoom = (roomId,hotelId) =>{
-    //     const data ={
-    //         hotel:hotelId
-    //     };
-    //     deleteRoom(roomId,data);
-        
-    // }
     const modalStatus= (string,room) => {
         setModelStatus(true)
         switch(string){

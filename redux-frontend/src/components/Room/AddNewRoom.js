@@ -251,7 +251,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <input
                                             type="number" disabled={componentStatus === "View Room" ? true : false}
                                             className={formControlClass("roomNumber")} name="roomNumber"
-                                            defaultValue={room ? room.roomNumber : ""}
+                                            defaultValue={componentStatus === "Create Room" ?"":room ? room.roomNumber : ""}
                                         />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.roomNumber}</div>
@@ -263,7 +263,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <input type="text"
                                             disabled={componentStatus === "View Room" ? true : false}
                                             className={formControlClass("roomType")} name="roomType"
-                                            defaultValue={room ? room.roomType : ""}
+                                            defaultValue={componentStatus === "Create Room" ?"":room ? room.roomType : ""}
                                         />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.roomType}</div>
@@ -275,7 +275,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <input type="number"
                                             disabled={componentStatus === "View Room" ? true : false}
                                             className={formControlClass("price")} name="price"
-                                            defaultValue={room ? room.price : ""}
+                                            defaultValue={componentStatus === "Create Room" ?"":room ? room.price : ""}
                                         />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.price}</div>
@@ -286,7 +286,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <label className="col-form-label">Max Adult*</label>
                                         <input type="number" disabled={componentStatus === "View Room" ? true : false}
                                             className={formControlClass("maxAdult")} name="maxAdult"
-                                            defaultValue={room ? room.maxAdult : ""}
+                                            defaultValue={componentStatus === "Create Room" ?"":room ? room.maxAdult : ""}
                                         />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.maxAdult}</div>
@@ -297,7 +297,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                         <label className="col-form-label">Max Children*</label>
                                         <input type="number" disabled={componentStatus === "View Room" ? true : false}
                                             className={formControlClass("maxChildren")} name="maxChildren"
-                                            defaultValue={room ? room.maxChildren : ""}
+                                            defaultValue={componentStatus === "Create Room" ?"":room ? room.maxChildren : ""}
                                         />
                                         <div className="valid-feedback"></div>
                                         <div className="invalid-feedback">{validateError.maxChildren}</div>

@@ -130,9 +130,9 @@ public class RoomController {
             return roomRepository.findAll(spec);
         }
 
-        //http://localhost:8080/api/room/{id}
-        @PutMapping("/removeRoom/{id}")
-        public List<Room> removeRoom(@PathVariable Long id,@RequestParam(required=false,name="hotel") Long hotelId) {
+        //http://localhost:8080/api/removeRoom/{id}
+        @PostMapping("/removeRoom/{id}/{hotelId}")
+        public List<Room> removeRoom(@PathVariable Long id,@PathVariable Long hotelId) {
             Hotel hotel = hotelRepository.findById(hotelId).get();
             Room room = roomRepository.findById(id).get();
             room.setRetired(true);
@@ -140,7 +140,4 @@ public class RoomController {
             Specification<?> spec = RoomSpecification.getListRoomByHotelId(hotel,Boolean.FALSE);
             return roomRepository.findAll(spec);
         }
-
-
-
 }
