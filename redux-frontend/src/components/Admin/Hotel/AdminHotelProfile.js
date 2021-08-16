@@ -2,11 +2,11 @@ import { faBath, faDesktop, faDollarSign, faDumbbell, faEdit, faEye, faHome, faM
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
-import { connect } from 'react-redux';
+import { connect ,dispatch, useDispatch} from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getReportHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
-import {getRoomByHotelId} from '../../../actions/actionRoom';
+import {getRoomByHotelId, removeRoom} from '../../../actions/actionRoom';
 import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
@@ -16,7 +16,7 @@ import ReactModal from 'react-modal';
 import AddNewRoom from '../../Room/AddNewRoom';
 
 const AdminHotelProfile = (props) => {
-
+    const dispatch = useDispatch();
     let queryParam = useQuery();
     let history = useHistory();
     const [isEdit, setIsEdit] = useState(false);
@@ -248,12 +248,21 @@ const AdminHotelProfile = (props) => {
                 <button className="btn btn-success mr-1"
                     onClick={() => modalStatus("Edit",room)}
                  ><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> </button>
-                <button className="btn btn-danger" 
-                    // onClick={() => modalStatus("View",room)}
-                ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
+                {/* <button className="btn btn-danger" 
+                    onClick={(e) => removeRoom(room.id,props.hotel?.one?.id)}
+                ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button> */}
             </React.Fragment>
         }
     ];
+    // const deleteRoom = (roomId,data) => {dispatch(removeRoom(roomId,data))};
+    
+    // const removeRoom = (roomId,hotelId) =>{
+    //     const data ={
+    //         hotel:hotelId
+    //     };
+    //     deleteRoom(roomId,data);
+        
+    // }
     const modalStatus= (string,room) => {
         setModelStatus(true)
         switch(string){
