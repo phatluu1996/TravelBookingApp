@@ -46,6 +46,14 @@ import ComboStepWizard from './components/Combo/ComboStepWizard';
 import AdminAirlineProfile from './components/Admin/Airline/AdminAirlineProfile';
 import ComboBookingCompletePage from './components/Combo/ComboBookingCompletePage';
 import AdminFeedback from './components/Admin/Feedback/AdminFeedback';
+
+import AirlineDashboard from './components/Admin/Airline/AirlineDashboard';
+import AirlineUpdateProfile from './components/Admin/Airline/AirlineUpdateProfile';
+import AirlineBookingData from './components/Admin/Airline/AirlineBookingData';
+import AirlineFlightData from './components/Admin/Airline/AirlineFlightData';
+import AirlineCreateFlight from './components/Admin/Airline/AirlineCreateFlight';
+import AirlineUpdateFlight from './components/Admin/Airline/AirlineUpdateFlight';
+
 import ChangePasswordFoget from './components/Layout/ChangePasswordForget';
 import { createTheme } from '@material-ui/core';
 import { ThemeProvider } from 'styled-components';
@@ -124,6 +132,17 @@ const App = (props) => {
 
         <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
         <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
+        
+        {/* Ngoc */}
+        {/* Airline Management */}
+        <PublicRoute restricted={false} component={AirlineDashboard} path="/airline-dashboard" />
+        <PublicRoute restricted={false} component={AirlineUpdateProfile} path="/airline-update-profile" />
+        <PublicRoute restricted={false} component={AirlineBookingData} path="/airline-booking-data" />
+        <PublicRoute restricted={false} component={AirlineFlightData} path="/airline-flight-data" />
+        <PublicRoute restricted={false} component={AirlineCreateFlight} path="/airline-create-flight" />
+        <PublicRoute restricted={false} component={AirlineUpdateFlight} path="/airline-update-flight" />
+        
+        
         <PublicRoute restricted={false} component={AddNewRoom} path="/admin-room-create" />
         {/* <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" /> */}
 

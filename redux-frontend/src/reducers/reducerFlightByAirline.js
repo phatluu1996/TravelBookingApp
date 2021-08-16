@@ -13,7 +13,7 @@ function reducerFlightByAirline(flights = {}, action) {
     switch (type) {
 
         case CREATE_FLIGHT:
-            return [...flights, payload];
+            return [ payload];
   
         case RETRIEVE_FLIGHT:
             return payload;

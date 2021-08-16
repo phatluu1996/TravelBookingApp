@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PerfectScrollbar from 'perfect-scrollbar';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getRole, getUserFullName, ROLE_ADMIN } from '../../../utils';
+import { getUserId, getRole, getUserFullName, ROLE_ADMIN, ROLE_AIRLINE } from '../../../utils';
 
 const AdminSidebar = () => {
     return (
@@ -95,6 +95,40 @@ const AdminSidebar = () => {
                                 <FontAwesomeIcon icon={faMailBulk} color="#ffab00"></FontAwesomeIcon>
                             </span>
                             <span className="menu-title">Feedback</span>
+                        </Link>                        
+                    </li></>}
+                    {getRole() === ROLE_AIRLINE && 
+                    <><li className="nav-item menu-items">
+                        <Link className="nav-link" to={`/airline-dashboard?id=${getUserId()}`}>
+                            <span className="menu-icon">
+                                {/* <i className="mdi mdi-speedometer"></i> */}
+                                <FontAwesomeIcon icon={faChartArea} color="#0090e7"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Dashboard</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <Link className="nav-link"  to={`/airline-update-profile?id=${getUserId()}`}>
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faUser} color="#00d25b"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Update Profile</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <Link className="nav-link" to={`/airline-booking-data?id=${getUserId()}`}>
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Booking Data</span>
+                        </Link>
+                    </li>
+                    <li className="nav-item menu-items">
+                        <Link className="nav-link" to={`/airline-flight-data?id=${getUserId()}`}>
+                            <span className="menu-icon">
+                                <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
+                            </span>
+                            <span className="menu-title">Flight data</span>
                         </Link>                        
                     </li></>}
                 </ul>

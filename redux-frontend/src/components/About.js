@@ -64,25 +64,25 @@ const About = () => {
                             <div className="content-wrapper">
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='4560' data-delay='3' data-increment="1">0</b>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='888' data-delay='3' data-increment="12">0</b>
                                     <span>Happy clients</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='190' data-delay='3' data-increment="1">0</b>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='238' data-delay='3' data-increment="1">0</b>
                                     <span>Total bookings</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='842' data-delay='2' data-increment="1">0</b>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='345' data-delay='2' data-increment="1">0</b>
                                     <span>Reviews</span>
                                 </div>
 
 
                                 <div className="counters-i">
-                                    <b className="numscroller" data-slno='1' data-min='0' data-max='98' data-delay='3' data-increment="1">0</b>
+                                    <b className="numscroller" data-slno='1' data-min='0' data-max='99' data-delay='3' data-increment="1">0</b>
                                     <span>Hotels Partner</span>
                                 </div>
 
@@ -102,7 +102,7 @@ const About = () => {
 
                                     <div className="testimonials-i">
                                         <div className="testimonials-a"><img alt="" src="img/aboutus/p2.jpg" style={{height:'60px',width:'60px',borderRadius:'30px'}} /></div>
-                                        <div className="testimonials-b" style={{color:'black',fontWeight:'30px'}}>"Qerspeciatis unde omnis iste natus doxes sit voluptatem accusantium doloremque laudantium, totam aperiam<br />eaque ipsa quae ab illo inventore veritatis et quasi architecto"</div>
+                                        <div className="testimonials-b" style={{color:'black',fontWeight:'30px'}}>"From principals to junior members of the team, we all work together on website development projects. "</div>
                                         <div className="testimonials-c">
                                             <nav>
                                                 <ul>
@@ -117,8 +117,8 @@ const About = () => {
                                         <div className="testimonials-d">Phat Luu, Team Leader</div>
                                     </div>
                                     <div className="testimonials-i">
-                                        <div className="testimonials-a"><img alt="" src="img/testimonials-02.png" /></div>
-                                        <div className="testimonials-b">"Qerspeciatis unde omnis iste natus doxes sit voluptatem accusantium doloremque laudantium, totam aperiam<br />eaque ipsa quae ab illo inventore veritatis et quasi architecto"</div>
+                                        <div className="testimonials-a"><img alt="" src="img/aboutus/p2.jpg" style={{height:'60px',width:'60px',borderRadius:'30px'}} /></div>
+                                        <div className="testimonials-b" style={{color:'black',fontWeight:'30px'}}>"The most beautiful website in the world is useless if no one visits it. Very few website designers concern themselves with search engines. That's a mistake. The easiest, most cost-effective means of generating traffic is to make your site appealing to search engines."</div>
                                         <div className="testimonials-c">
                                             <nav>
                                                 <ul>
@@ -140,7 +140,7 @@ const About = () => {
                         <div className="our-team">
                             <header className="page-lbl fly-in">
                                 <div className="offer-slider-lbl">Our team</div>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit</p>
+                                <p>Our team is not only smart and cute but also great heart!</p>
                             </header>
                             <div className="content-wrapper">
 
@@ -151,7 +151,7 @@ const About = () => {
                                                 <div className="team-more-h">
                                                     <div className="team-more">
                                                         <div className="team-more-a">
-                                                            Sit amet, consectetur adipiscing elit. In maximus ligula semper metus pellentesque mattis. Maecenas volutpat, diam enim.
+                                                        We are a full-service website design company, we can streamline the process. 
                                                             <div className="team-more-social">
                                                                 <a  className="team-fb"></a>
                                                                 <a  className="team-tw"></a>
@@ -175,7 +175,7 @@ const About = () => {
                                                 <div className="team-more-h">
                                                     <div className="team-more">
                                                         <div className="team-more-a">
-                                                            Sit amet, consectetur adipiscing elit. In maximus ligula semper metus pellentesque mattis. Maecenas volutpat, diam enim.
+                                                        We create experiences that are attractive, simple to use, and drive results for your website.
                                                             <div className="team-more-social">
                                                                 <a  className="team-fb"></a>
                                                                 <a  className="team-tw"></a>
@@ -199,7 +199,7 @@ const About = () => {
                                                 <div className="team-more-h">
                                                     <div className="team-more">
                                                         <div className="team-more-a">
-                                                            Sit amet, consectetur adipiscing elit. In maximus ligula semper metus pellentesque mattis. Maecenas volutpat, diam enim.
+                                                        We begin each web development project by gaining a solid understanding of who you are, what you do and why you do it.
                                                             <div className="team-more-social">
                                                                 <a  className="team-fb"></a>
                                                                 <a  className="team-tw"></a>
@@ -228,7 +228,7 @@ const About = () => {
                             <div className="content-wrapper">
                                 <header className="page-lbl fly-in">
                                     <div className="offer-slider-lbl">WHY CHOOSE US?</div>
-                                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit</p>
+                                    <p>We determine the scope of the web development project, create a budget and timeline, and once they’re approved, we stick to them.</p>
                                 </header>
 
                                 <div className="tree-colls fly-in">
