@@ -4,8 +4,11 @@ import Footer from './Footer';
 import { connect } from 'react-redux';
 import { signup } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
+import { useHistory } from 'react-router-dom';
 
 function Register(props) {
+    let history = useHistory();
+
     const [statusSignup, setStatuSignup] = useState(false);
     const [messageSignup, setMessageSignup] = useState("");
     const [isRequest, setIsRequest] = useState(false);
@@ -151,8 +154,9 @@ function Register(props) {
         if (props.auth.form === 'signup') {
             if (props.auth.signupData && isRequest) {
                 if (props.auth.signupData.success) {
-                    alert(props.auth.signupData.message+", Please check your email to activate your account.");
-                    document.location.href = "http://localhost:3000/";
+
+                    alert(props.auth.signupData.message+" Please check your email to activate your account.");
+                    history.push("/");
                 } else {
                     setStatuSignup(false);
                     setMessageSignup(props.auth.signupData.message);
@@ -171,6 +175,7 @@ function Register(props) {
     return (<>
         <body>
             <Header />
+            {props.auth.requesting && !props.auth.signupData && <div className="loading" style={{zIndex:"10001"}} delay-hide="10"></div>}
             <div className="main-cont">
                 <form onSubmit={handleSignupSubmit}>
                     <div className="body-wrapper" style={{ paddingTop: '150px'}}>
