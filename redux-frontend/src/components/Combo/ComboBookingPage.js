@@ -695,8 +695,8 @@ const ComboBookingPage = (props) => {
                                     <div
                                       name="gender"
                                       className={`form-control sex-type ${isMale[i].gender === "true"
-                                          ? "chosen"
-                                          : ""
+                                        ? "chosen"
+                                        : ""
                                         }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
@@ -705,8 +705,8 @@ const ComboBookingPage = (props) => {
                                     <div
                                       name="gender"
                                       className={`form-control sex-type ${isMale[i].gender === "false"
-                                          ? "chosen"
-                                          : ""
+                                        ? "chosen"
+                                        : ""
                                         }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
@@ -932,12 +932,19 @@ const ComboBookingPage = (props) => {
                                   <span
                                     style={{ float: "none", display: "inline" }}
                                   >
-                                    Day of Departure{" "}
+                                    Date of Departure{" "}
                                   </span>
                                   <b
                                     style={{ float: "none", display: "inline" }}
                                   >
                                     {dateOfDeparture}
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Flight Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {queryParam.get("seatClass") === "ECONOMY" ? flights.data?.economyPrice : flights.data?.businessPrice}$
                                   </b>
                                 </div>
                                 <div className="clear"></div>
@@ -999,15 +1006,18 @@ const ComboBookingPage = (props) => {
                                   className="chk-arrival"
                                   style={{ float: "left", display: "inline" }}
                                 >
-                                  <span
-                                    style={{ float: "none", display: "inline" }}
-                                  >
-                                    Day of Return{" "}
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Date of Return{" "}
                                   </span>
-                                  <b
-                                    style={{ float: "none", display: "inline" }}
-                                  >
+                                  <b style={{ float: "none", display: "inline" }}>
                                     {dateOfReturn}
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Flight Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {queryParam.get("seatClass") === "ECONOMY" ? flights.returnData?.economyPrice : flights.returnData?.businessPrice}$
                                   </b>
                                 </div>
                                 <div className="clear"></div>
@@ -1040,6 +1050,20 @@ const ComboBookingPage = (props) => {
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
+                        <span className="chk-l">TOTAL DEPARTURE FLIGHT PRICE</span>
+                        <span className="chk-r">
+                          {queryParam.get("seatClass") === "ECONOMY" ? flights.data?.economyPrice : flights.data?.businessPrice}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
+                        <span className="chk-l">TOTAL RETURN FLIGHT PRICE</span>
+                        <span className="chk-r">
+                          {queryParam.get("seatClass") === "ECONOMY" ? flights.returnData?.economyPrice : flights.returnData?.businessPrice}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
                         <span className="chk-l">Combo Discount</span>
                         <span className="chk-r" style={{ color: "green" }}>
                           10%
@@ -1057,9 +1081,9 @@ const ComboBookingPage = (props) => {
                     <div className="chk-total">
                       <div className="chk-total-l">Total Price</div>
                       <div className="chk-total-r add-more-price-flight">
-                        {totalFlightPrice}${" "}
+                        {totalFlightPrice.toFixed(1)}${" "}
                         <del style={{ color: "green" }}>
-                          {totalPrice + returnTotalPrice}$
+                          {(totalPrice + returnTotalPrice).toFixed(1)}$
                         </del>
                       </div>
                       <div className="clear"></div>
