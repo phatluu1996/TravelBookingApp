@@ -10,7 +10,7 @@ export const removeImage = (id) => async dispatch => {
     try {
        dispatch({ type: REMOVE_IMAGE_REQUEST });
        const url = `${ROOT_URL}/api/removeImage/${id}`;
-        await axios.put(url,data);
+        await axios.put(url);
        dispatch({
            type: REMOVE_IMAGE_SUCCESS
        });

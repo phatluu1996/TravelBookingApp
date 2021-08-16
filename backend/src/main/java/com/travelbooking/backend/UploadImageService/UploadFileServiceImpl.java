@@ -35,12 +35,13 @@ public class UploadFileServiceImpl implements  UploadImageService{
 
     @Override
     public List<Image> fileUpload(MultipartFile[] files) throws Exception {
-        Image image = new Image();
+
         HashMap<String, String> fileObject = new HashMap<>();
 
         List<Image> images = new ArrayList<>();
         Arrays.asList(files).stream().forEach(file -> {
             try {
+                Image image = new Image();
                 String FILE_DIRECTORY = FILE_MAIN_DIRECTORY + getFileExtension(file) + "/";
                 File directory = new File(FILE_DIRECTORY);
                 if (!directory.exists()) {
@@ -57,12 +58,11 @@ public class UploadFileServiceImpl implements  UploadImageService{
                 image.imagePath =  getFileUrl(myFile);
                 Image result = imageRepository.save(image);
                 images.add(result);
+                TimeUnit.SECONDS.sleep(1);
             } catch (Exception e) {
 
             }
         });
-
-
         return images;
     }
 

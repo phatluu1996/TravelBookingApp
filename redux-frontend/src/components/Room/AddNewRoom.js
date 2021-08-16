@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { createRoom } from "../../actions/actionRoom";
+import { createRoom, updateRoom } from "../../actions/actionRoom";
 import { updateLocation } from "../../actions/actionLocation";
 import { importAll } from "../../utils/JqueryImport";
 import AdminFooter from '../Admin/Layout/AdminFooter';
@@ -17,7 +17,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [status, setStatus] = useState(false);
     const [selectItem,setSelectItem] = useState([]);
-    const [images, setImages] = useState(room && room?.images.length && Array.isArray(room?.images)> 0 ?room?.images:[]);
+    const [images, setImages] = useState([]);
     const dispatch = useDispatch();
     const [validateError, setValidateError] = useState({
         roomNumber: "",
@@ -30,11 +30,12 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
     const customStyles = {
         headCells: {
             style: {
-                fontSize: '11px',
+                fontSize: '16px',
                 fontWeight: 'bold',
+
                 color: 'white',
-                // paddingLeft: 'px',
-                // paddingRight: '-8px',
+                paddingLeft: '16px',
+                paddingRight: '16px',
             },
             activeSortStyle: {
                 color: '#ff7200',
@@ -59,7 +60,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
             style: {
                 color: 'white',
                 fontSize: '14px',
-                fontWeight: 200,
+                fontWeight: 400,
                 minHeight: '56px',
                 borderTopStyle: 'solid',
                 borderTopWidth: '1px',
@@ -106,27 +107,19 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                     <img style={{ maxWidth: 94, maxHeight: 75 }} alt="" src={image?.imagePath} />
                 </React.Fragment>
         }
-        // {
-        //     name: 'Actions',
-        //     cell: (image, index) =>
-        //         <React.Fragment key={index}>
-        //             <button className="btn btn-danger"
-        //                 onClick={() => removeImage(image)}
-        //             ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
-        //         </React.Fragment>
-        // }
     ];
 
-    const removeImage = image => {
-        var arr = [...images];
-        arr.sort(image);
-        console.log(image);
-    }
+    // const removeImage = image => {
+    //     var arr = [...images];
+    //     arr.sort(image);
+    //     console.log(image);
+    // }
 
-    const roomCreate = (data) => { dispatch(createRoom(data)) }
+    const roomCreate = (data) => { dispatch(createRoom(data)) };
+    const roomUpdate = (id,data) => { dispatch(updateRoom(id,data))}
 
     const checkBoxHandel = (e) =>{
-            console.log(e);
+            setSelectItem(e.selectedRows);
     }
     const handelSubmit = (e) => {
         e.preventDefault();
@@ -142,11 +135,21 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
             formData.append('maxAdult', parseInt(form.maxAdult.value));
             formData.append('maxChildren', parseInt(form.maxChildren.value));
             formData.append('roomStatus', 0);
-            for (let index = 0; index < images.length; index++) {
-                const image = images[index];
-                formData.append('files', image);
+            if(images.length > 0 || images != []){
+                for (let index = 0; index < images.length; index++) {
+                    const image = images[index];
+                    formData.append('files', image);
+                }
+            }else{
+                formData.append('files', []);
             }
-            roomCreate(formData);
+            
+            if(componentStatus === "Create Room"){
+                roomCreate(formData);
+            }else{
+                roomUpdate(room.id,formData);
+            }
+            
             closeModal(false)
         }
     };
@@ -309,14 +312,14 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                 <div className="col-12">
                                     <div className="row">
                                     <div className="col-sm-10"></div>
-                                        <div className="col-sm-2">
+                                        {/* <div className="col-sm-2">
                                         <button hidden={componentStatus === "View Room" ? true : false} className="btn btn-danger" 
                                             onClick={() => removeImage()}
                                         ><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon></button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
-                                {
+                                {/* {
                                     componentStatus === "Create Room"
                                         ? <></> :
                                         <DataTable className="table"
@@ -326,13 +329,13 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
                                             style={{ maxWidth: '500px' }}
                                             customStyles={customStyles}
                                             theme='solarized'
-                                            progressPending={!images}
+                                            progressPending={!room?.images}
                                             columns={imageHeader}
-                                            data={images}
+                                            data={room && room?.images.length> 0 && Array.isArray(room?.images)?room?.images:[]}
                                             pagination
                                             paginationPerPage={3}
                                         />
-                                }
+                                } */}
                             </div>
                         </form>
                     </div>
