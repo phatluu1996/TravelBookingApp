@@ -59,6 +59,7 @@ import { createTheme } from '@material-ui/core';
 import { ThemeProvider } from 'styled-components';
 import AddNewRoom from './components/Room/AddNewRoom';
 import ConfirmRegister from './components/Layout/ConfirmRegister';
+import AdminHotelDashboard from './components/Admin/Hotel/AdminHotelDashboard';
 
 
 const App = (props) => {
@@ -130,6 +131,25 @@ const App = (props) => {
           <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
           <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
           <PublicRoute restricted={false} component={ChangePasswordFoget} path="/resetPassword" />
+
+        <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
+        
+        <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" />
+        
+        {/* Ngoc */}
+        {/* Airline Management */}
+        <PublicRoute restricted={false} component={AirlineDashboard} path="/airline-dashboard" />
+        <PublicRoute restricted={false} component={AirlineUpdateProfile} path="/airline-update-profile" />
+        <PublicRoute restricted={false} component={AirlineBookingData} path="/airline-booking-data" />
+        <PublicRoute restricted={false} component={AirlineFlightData} path="/airline-flight-data" />
+        <PublicRoute restricted={false} component={AirlineCreateFlight} path="/airline-create-flight" />
+        <PublicRoute restricted={false} component={AirlineUpdateFlight} path="/airline-update-flight" />
+         {/* Hoa */}
+        {/* Hotel Management */}
+        <PublicRoute restricted={false} component={AdminHotelDashboard} path="/hotel-dashboard" />
+        
+        <PublicRoute restricted={false} component={AddNewRoom} path="/admin-room-create" />
+        <PublicRoute restricted={false} component={ConfirmRegister} path="/activateAccount" />
 
           <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
           {/* <PublicRoute restricted={false} component={AdminAirlineProfile} path="/admin-airline-profile" /> */}
