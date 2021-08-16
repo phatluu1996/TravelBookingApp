@@ -13,7 +13,8 @@ const initialState = {
   requesting: false,
   success: false,
   message: null,
-  data: null
+  data: null,
+  form: null
 }
 
 
@@ -182,7 +183,8 @@ function reducerHotel(state = initialState, action) {
         ...state,
         requesting: false,
         success: true,
-        single: action.payload
+        one: action.payload, 
+        form: "updateProfile"
       };
       return state;
 
@@ -190,7 +192,8 @@ function reducerHotel(state = initialState, action) {
       state = {
         ...state,
         requesting: false,
-        message: action.message
+        message: action.message,
+        form: "updateProfile"
       };
       return state;
     //------------------------------------------------------------
