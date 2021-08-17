@@ -23,9 +23,10 @@ public class Account {
     private boolean retired;
     @Column(name = "reset_password", length = 255)
     private String resetPassword;
-
     @Column(name= "thumbnail")
     private String thumbnail;
+
+
 
     public Account() {
     }

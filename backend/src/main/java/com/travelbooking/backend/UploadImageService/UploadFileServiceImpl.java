@@ -72,7 +72,7 @@ public class UploadFileServiceImpl implements  UploadImageService{
                 image.imagePath =  getFileUrl(myFile);
                 Image result = imageRepository.save(image);
                 images.add(result);
-                TimeUnit.SECONDS.sleep(1);
+//                TimeUnit.SECONDS.sleep(1);
             } catch (Exception e) {
 
             }
