@@ -75,6 +75,7 @@ public class HotelController {
                 }
         }
 
+
         for (int i = 0; i < hotels.size(); i++) {
             for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
                 if(hotelBookings.size() > 0 ){
