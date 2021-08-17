@@ -14,13 +14,13 @@ const AdminSidebar = () => {
                     <a className="sidebar-brand brand-logo-mini"><img src="./assets/images/logo-mini.svg" alt="logo" /></a>
                 </div>
                 <ul className="nav">
-                    <li className="nav-item profile">
+                    {/* <li className="nav-item profile">
                         <div className="profile-desc">
                             <div className="profile-pic" >
-                                {/* <div className="count-indicator">
+                                <div className="count-indicator">
                                     <img className="img-xs rounded-circle " src="./assets/images/faces/face15.jpg" calt="" />
                                     <span className="count bg-success"></span>
-                                </div> */}
+                                </div>
                                 <div className="profile-name">
                                     {getRole() === ROLE_ADMIN && <><h5 className="mb-0 font-weight-normal">{getUserFullName()}</h5><span>Administrator</span></>}
                                 </div>
@@ -51,7 +51,7 @@ const AdminSidebar = () => {
                                 </a>
                             </div>
                         </div>
-                    </li>
+                    </li> */}
                     <li className="nav-item nav-category">
                         <span className="nav-link">Navigation</span>
                     </li>

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { importAll } from "../../../utils/JqueryImport";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  retrieveFlight,
-  updateFlight,
+  retrieveFlight
 } from "../../../actions/actionFlightByAirline";
 import { useHistory } from 'react-router-dom';
+import { updateFlight } from "../../../actions/actionAirline";
 
 
 const province = {
