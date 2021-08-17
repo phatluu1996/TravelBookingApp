@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { importAll } from "../../utils/JqueryImport";
 import { clearFlightBookingCached } from "../../actions/actionBookingFlight";
 import { getRole, ROLE_USER } from "../../utils";
+import { province } from "../../utils/province";
+import { clearHotelState } from "../../actions/actionHotel";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -30,81 +32,81 @@ const ComboFlightSearchPage2 = (props) => {
         returnDate: ''
     })
 
-    const province = {
-        properties: [
-            {
-                value: '',
-                label: '--'
-            },
-            {
-                value: 'SGN',
-                label: 'TP.HCM'
-            }, {
-                value: 'HAN',
-                label: 'Hà Nội'
-            }, {
-                value: 'DAD',
-                label: 'Đà Nẵng'
-            }, {
-                value: 'CXR',
-                label: 'Nha Trang'
-            }, {
-                value: 'DLI',
-                label: 'Đà Lạt'
-            }, {
-                value: 'PQC',
-                label: 'Phú Quốc'
-            }, {
-                value: 'VCA',
-                label: 'Cần Thơ'
-            }, {
-                value: 'VCS',
-                label: 'Côn Đảo'
-            }, {
-                value: 'VKG',
-                label: 'Rạch Giá'
-            }, {
-                value: 'CAH',
-                label: 'Cà Mau'
-            }, {
-                value: 'BMV',
-                label: 'Buôn Ma Thuộc'
-            }, {
-                value: 'UIH',
-                label: 'Quy Nhơn'
-            }, {
-                value: 'THD',
-                label: 'Thanh Hóa'
-            }, {
-                value: 'VII',
-                label: 'Vinh'
-            }, {
-                value: 'HUI',
-                label: 'Huế'
-            }, {
-                value: 'VDH',
-                label: 'Đồng Hới'
-            }, {
-                value: 'TBB',
-                label: 'Tuy Hòa'
-            }, {
-                value: 'VCL',
-                label: 'Chu Lai'
-            }, {
-                value: 'PXU',
-                label: 'Pleiku'
-            }, {
-                value: 'HPH',
-                label: 'Hải Phòng'
-            }, {
-                value: 'DIN',
-                label: 'Điện Biên'
-            }, {
-                value: 'VDO',
-                label: 'Vân Đồn'
-            }
-        ]
-    }
+    // const province = {
+    //     properties: [
+    //         {
+    //             value: '',
+    //             label: '--'
+    //         },
+    //         {
+    //             value: 'SGN',
+    //             label: 'TP.HCM'
+    //         }, {
+    //             value: 'HAN',
+    //             label: 'Hà Nội'
+    //         }, {
+    //             value: 'DAD',
+    //             label: 'Đà Nẵng'
+    //         }, {
+    //             value: 'CXR',
+    //             label: 'Nha Trang'
+    //         }, {
+    //             value: 'DLI',
+    //             label: 'Đà Lạt'
+    //         }, {
+    //             value: 'PQC',
+    //             label: 'Phú Quốc'
+    //         }, {
+    //             value: 'VCA',
+    //             label: 'Cần Thơ'
+    //         }, {
+    //             value: 'VCS',
+    //             label: 'Côn Đảo'
+    //         }, {
+    //             value: 'VKG',
+    //             label: 'Rạch Giá'
+    //         }, {
+    //             value: 'CAH',
+    //             label: 'Cà Mau'
+    //         }, {
+    //             value: 'BMV',
+    //             label: 'Buôn Ma Thuộc'
+    //         }, {
+    //             value: 'UIH',
+    //             label: 'Quy Nhơn'
+    //         }, {
+    //             value: 'THD',
+    //             label: 'Thanh Hóa'
+    //         }, {
+    //             value: 'VII',
+    //             label: 'Vinh'
+    //         }, {
+    //             value: 'HUI',
+    //             label: 'Huế'
+    //         }, {
+    //             value: 'VDH',
+    //             label: 'Đồng Hới'
+    //         }, {
+    //             value: 'TBB',
+    //             label: 'Tuy Hòa'
+    //         }, {
+    //             value: 'VCL',
+    //             label: 'Chu Lai'
+    //         }, {
+    //             value: 'PXU',
+    //             label: 'Pleiku'
+    //         }, {
+    //             value: 'HPH',
+    //             label: 'Hải Phòng'
+    //         }, {
+    //             value: 'DIN',
+    //             label: 'Điện Biên'
+    //         }, {
+    //             value: 'VDO',
+    //             label: 'Vân Đồn'
+    //         }
+    //     ]
+    // }
 
     const seatClass = {
         properties: [
@@ -235,6 +237,22 @@ const ComboFlightSearchPage2 = (props) => {
             performSearch(filter, true);
             setFlightTab(true);
             props.setDepartFlight(null);
+            props.clearHotelState();
+
+            props.setArriveCityCode(filter.to);
+            document
+                .querySelector(".hotel-flight-search #provinces")
+                .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+            document
+                .querySelector(".hotel-flight-search #districts")
+                .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+            document
+                .querySelector(".hotel-flight-search #wards")
+                .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+
+            props.setSelectDistrict(null);
+            props.setSelectProvince(null);
+            props.setSelectWard(null);
         }
     }
 
@@ -386,7 +404,7 @@ const ComboFlightSearchPage2 = (props) => {
         }
 
         if (!form.returnDate.value) {
-            err.returnDate = 'Return Date cannot be empty';            
+            err.returnDate = 'Return Date cannot be empty';
             form.returnDate.parentElement.classList.add("is-invalid");
             $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
         } else {
@@ -891,6 +909,7 @@ const mapDispatchToProps = (dispatch) => {
         getFlight: (from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir) => {
             dispatch(fetchFlight(from, to, adult, child, infant, ddate, rdate, seatclass, priceFrom, priceTo, page, sortBy, sortDir))
         },
+        clearHotelState: () => { dispatch(clearHotelState()) },
         clearBooking: () => { dispatch(clearFlightBookingCached) }
     };
 };

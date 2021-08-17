@@ -21,7 +21,7 @@ const ComboFlightSearchPage = (props) => {
     let queryParam = useQuery();
     const [seatClassType, setSeatClassType] = useState("ECONOMY");
     const [isListView, setIsListView] = useState(true);
-    const [includePriceRange, setIncludePriceRange] = useState(false);
+    const [includePriceRange, setIncludePriceRange] = useState(false);    
     const [errFlt, setErrFlt] = useState({
         from: '',
         to: '',
@@ -397,6 +397,7 @@ const ComboFlightSearchPage = (props) => {
         }
         return true;
     }
+
 
     return (<>
         <div className="main-cont">

@@ -285,6 +285,25 @@ const ComboHotelDetailPage = (props) => {
     //         mount = true;
     //     };
     // });
+
+    const getAddress = (location) => {
+        if (location) return "";
+
+        const province = location?.province;
+        const district = location?.district;
+        const ward = location?.ward;
+        
+
+        if (province && !district && !ward) {
+            return province.name;
+        } else if (province && district && !ward) {
+            return district.prefix + " " + district.name + ", " + province.name;
+        } else if (province && district && ward) {
+            return ward.prefix + " " + ward.name + ", " + district.prefix + " " + district.name + ", " + province.name;
+        } else { return ""; }
+
+    }
+
     return (
         <>
             <div className="main-cont">
@@ -803,8 +822,9 @@ const ComboHotelDetailPage = (props) => {
                                             {props.hotel?.data?.hotelName}
                                         </div>
                                         <div className="h-detail-lbl-b">
-                                            {props.hotel?.data?.location?.street},
-                                            {props.hotel?.data?.location?.province?.name}
+                                            {/* {props.hotel?.data?.location?.street},
+                                            {props.hotel?.data?.location?.province?.name} */}
+                                            {getAddress(props.hotel?.data?.location)}
                                         </div>
                                     </div>
                                     <div className="h-detail-stars">

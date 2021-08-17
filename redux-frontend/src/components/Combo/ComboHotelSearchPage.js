@@ -9,6 +9,7 @@ import { fetchHotel } from "../../actions/actionHotel";
 import $ from 'jquery';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBaby, faChild, faMale } from "@fortawesome/free-solid-svg-icons";
+import { province } from "../../utils/province";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -17,15 +18,15 @@ function useQuery() {
 const ComboHotelSearchPage = (props) => {
   const history = useHistory();
   let queryParam = useQuery();
-  const [selectProvince, setSelectProvince] = useState(null);
-  const [selectDistrict, setSelectDistrict] = useState(null);
+  // const [selectProvince, setSelectProvince] = useState(null);
+  // const [selectDistrict, setSelectDistrict] = useState(null);  
+  // const [selectWard, setSelectWard] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("price");
   const [sortDir, setSortDir] = useState("asc");
 
-  const [selectWard, setSelectWard] = useState(null);
 
   const [errHlt, setErrHlt] = useState({
     province: '',
@@ -56,11 +57,11 @@ const ComboHotelSearchPage = (props) => {
     document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = "--";
     document.querySelector("#wards").value = 0;
     if (e.currentTarget.id === "0") {
-      setSelectDistrict(null);
-      setSelectProvince(null);
-      setSelectWard(null);
+      props.setSelectDistrict(null);
+      props.setSelectProvince(null);
+      props.setSelectWard(null);
     } else {
-      setSelectProvince(
+      props.setSelectProvince(
         props.provinces.data.find(
           (item) => item.id === parseInt(e.currentTarget.value)
         )
@@ -70,19 +71,19 @@ const ComboHotelSearchPage = (props) => {
   const onChangeDistrict = (e) => {
     document.querySelector("#wards").parentElement.querySelector(".customSelectInner").innerHTML = "--";
     if (e.currentTarget.id === "0") {
-      setSelectDistrict(null);
-      setSelectWard(null);
+      props.setSelectDistrict(null);
+      props.setSelectWard(null);
     } else {
-      setSelectDistrict(
-        selectProvince.districts.find(
+      props.setSelectDistrict(
+        props.selectProvince.districts.find(
           (item) => item.id === parseInt(e.currentTarget.value)
         )
       );
     }
   };
   const onChangeWard = (e) => {
-    setSelectWard(
-      selectDistrict.wards.find(
+    props.setSelectWard(
+      props.selectDistrict.wards.find(
         (item) => item.id === parseInt(e.currentTarget.value)
       )
     );
@@ -292,7 +293,7 @@ const ComboHotelSearchPage = (props) => {
           document.querySelector("#provinces").parentElement.querySelector(".customSelectInner").innerHTML = _province.name;
         }
         document.querySelector("#provinces").value = queryParam.get("province");
-        setSelectProvince(_province);
+        props.setSelectProvince(_province);
       }
 
 
@@ -301,7 +302,7 @@ const ComboHotelSearchPage = (props) => {
           document.querySelector("#districts").parentElement.querySelector(".customSelectInner").innerHTML = _district.name;
         }
         document.querySelector("#districts").value = queryParam.get("district");
-        setSelectDistrict(_district)
+        props.setSelectDistrict(_district)
       }
 
 
@@ -311,7 +312,7 @@ const ComboHotelSearchPage = (props) => {
         }
 
         document.querySelector("#wards").value = queryParam.get("ward");
-        setSelectWard(_ward);
+        props.setSelectWard(_ward);
       }
     }
 
@@ -324,7 +325,7 @@ const ComboHotelSearchPage = (props) => {
     if (shouldSetState) {
       props.setFilter(filter)
     }
-    props.getHotels(filter.province, filter.district, filter.ward, filter.numberAdult, filter.numberChildren, filter.checkInDate, filter.numRoom);
+    props.getHotels(parseInt(filter.province), parseInt(filter.district), parseInt(filter.ward), filter.numberAdult, filter.numberChildren, filter.checkInDate, filter.checkOutDate, filter.numRoom);
     window.history.pushState({}, null, `/combo-list?${toQueryString(filter)}`);
   }
 
@@ -450,6 +451,14 @@ const ComboHotelSearchPage = (props) => {
     return true;
   }
 
+  const filterProvinceByFlightArrivalCity = (arrivalCities, allProvince) => {
+    if (props.arriveCityCode) {
+        var arrivalCity = arrivalCities.properties.find(ct => ct.value === props.arriveCityCode)
+        return allProvince?.filter(prv => arrivalCity.nearByProvinces.includes(prv?.id));
+    }
+    return allProvince;
+}
+
   return (
     <>
       <div className="main-cont">
@@ -553,7 +562,7 @@ const ComboHotelSearchPage = (props) => {
                                 <option key={0} value={0}>
                                   --
                                 </option>
-                                {props.provinces?.data?.map((item) => (
+                                {filterProvinceByFlightArrivalCity(province, props.provinces?.data)?.map((item) => (
                                   <option key={item.id} value={item.id}>
                                     {item.name}
                                   </option>
@@ -575,7 +584,7 @@ const ComboHotelSearchPage = (props) => {
                                 <option key={0} value={0}>
                                   --
                                 </option>
-                                {selectProvince?.districts?.map((item) => (
+                                {props.selectProvince?.districts?.map((item) => (
                                   <option key={item.id} value={item.id}>
                                     {item.name}
                                   </option>
@@ -596,7 +605,7 @@ const ComboHotelSearchPage = (props) => {
                                 <option key={0} value={0}>
                                   --
                                 </option>
-                                {selectDistrict?.wards?.map((item) => (
+                                {props.selectDistrict?.wards?.map((item) => (
                                   <option key={item.id} value={item.id}>
                                     {item.name}
                                   </option>
@@ -883,6 +892,7 @@ const mapDispatchToProps = (dispatch) => {
       numberAdult,
       numberChildren,
       checkInDate,
+      checkOutDate,
       numRoom
     ) => {
       dispatch(
@@ -893,6 +903,7 @@ const mapDispatchToProps = (dispatch) => {
           numberAdult,
           numberChildren,
           checkInDate,
+          checkOutDate,
           numRoom
         )
       );

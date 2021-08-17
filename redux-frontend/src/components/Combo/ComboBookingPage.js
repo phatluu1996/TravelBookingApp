@@ -331,9 +331,9 @@ const ComboBookingPage = (props) => {
 
   useEffect(() => {
     let mount = false;
-    // if (!sessionStorage.getItem("isBooking")) {
-    //   history.push("/");
-    // }
+    if (!sessionStorage.getItem("isComboBooking")) {
+      history.push("/");
+    }
     window.scrollTo(0, 0);
     importAll();
     getFlights(queryParam.get("fid"), queryParam.get("rfid"));
@@ -411,6 +411,12 @@ const ComboBookingPage = (props) => {
       sessionStorage.removeItem("isComboBooking");
       history.push({ pathname: "/combo-booking-complete" });
     }
+
+    if((completeBooking.message || props.bookRoomData.message) && checkout){
+      alert("Internal error !");
+    }
+
+
     if (flights.data) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
     }

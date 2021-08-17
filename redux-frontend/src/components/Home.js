@@ -23,6 +23,7 @@ import { retrieveProvince } from "../actions/actionLocation";
 import $ from 'jquery';
 import { importAll } from "../utils/JqueryImport";
 import Swiper from 'swiper';
+import { province } from "../utils/province";
 
 
 
@@ -30,8 +31,7 @@ const Home = (props) => {
     const [selectProvince, setSelectProvince] = useState(null);
     const [selectDistrict, setSelectDistrict] = useState(null);
     const [selectWard, setSelectWard] = useState(null);
-    const [adultAmount, setAdultAmount] = useState(1);
-    const [childAmount, setChildAmount] = useState(0);
+    const [arriveCityCode, setArriveCityCode] = useState(null);
     const [errFlt, setErrFlt] = useState({
         from: '',
         to: '',
@@ -47,7 +47,7 @@ const Home = (props) => {
     })
     const history = useHistory();
 
-    const province = {
+    const provinceeee = {
         properties: [
             {
                 value: "",
@@ -166,7 +166,7 @@ const Home = (props) => {
             mount = true;
         };
     }, []);
-
+    // hotel-flight-search
     const onChangeProvince = (e) => {
         document
             .querySelector("#districts")
@@ -186,9 +186,62 @@ const Home = (props) => {
             );
         }
     };
+
+    const onChangeArrivalCity = (e) => {
+        setArriveCityCode(e.target.value);
+        document
+            .querySelector(".hotel-flight-search #provinces")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        document
+            .querySelector(".hotel-flight-search #districts")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        document
+            .querySelector(".hotel-flight-search #wards")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        setSelectDistrict(null);
+        setSelectProvince(null);
+        setSelectWard(null);
+    }
+
+    const onChangeProvinceCombo = (e) => {
+        document
+            .querySelector(".hotel-flight-search #districts")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        document
+            .querySelector(".hotel-flight-search #wards")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        if (e.currentTarget.id === "0") {
+            setSelectDistrict(null);
+            setSelectProvince(null);
+            setSelectWard(null);
+        } else {
+            setSelectProvince(
+                props.provinces.data.find(
+                    (item) => item.id === parseInt(e.currentTarget.value)
+                )
+            );
+        }
+    };
+
     const onChangeDistrict = (e) => {
         document
             .querySelector("#wards")
+            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
+        if (e.currentTarget.id === "0") {
+            setSelectDistrict(null);
+            setSelectWard(null);
+        } else {
+            setSelectDistrict(
+                selectProvince.districts.find(
+                    (item) => item.id === parseInt(e.currentTarget.value)
+                )
+            );
+        }
+    };
+
+    const onChangeDistrictCombo = (e) => {
+        document
+            .querySelector(".hotel-flight-search #wards")
             .parentElement.querySelector(".customSelectInner").innerHTML = "--";
         if (e.currentTarget.id === "0") {
             setSelectDistrict(null);
@@ -254,7 +307,6 @@ const Home = (props) => {
             } else {
                 history.push(`/flight-list?from=${form.from.value}&to=${form.to.value}&adult=${form.adult.value}&child=${form.child.value}&infant=${form.infant.value}&departureDate=${form.departureDate.value}&returnDate=${form.returnDate.value}&seatclassName=${form.seatClass.value}&priceFrom=1&priceTo=3000&page=1&sortBy=id&sortDir=asc`);
             }
-
         }
     };
 
@@ -284,8 +336,6 @@ const Home = (props) => {
                 + "&numRoom=" + form.roomHotel.value
             );
         }
-
-
     }
 
     const validateFlt = (form, formSelector) => {
@@ -484,12 +534,21 @@ const Home = (props) => {
             setErrHlt(err);
             return false;
         }
-        
+
         if (formSelector === "hotel-flight-search" && (err.adult || err.child)) {
             setErrHlt(err);
             return false;
         }
         return true;
+
+    }
+
+    const filterProvinceByFlightArrivalCity = (arrivalCities, allProvince) => {
+        if (arriveCityCode) {
+            var arrivalCity = arrivalCities.properties.find(ct => ct.value === arriveCityCode)
+            return allProvince.filter(prv => arrivalCity.nearByProvinces.includes(prv?.id));
+        }
+        return allProvince;
     }
 
     return (
@@ -498,7 +557,6 @@ const Home = (props) => {
             <div className="main-cont">
                 <div className="mp-slider search-only">
                     <div className="mp-slider-row slim-slider">
-
                         <div className="swiper-container">
                             <div className="swiper-wrapper">
                                 <div className="swiper-slide">
@@ -891,7 +949,7 @@ const Home = (props) => {
                                                     <div className="srch-tab-right transformed">
                                                         <label>To</label>
                                                         <div className="select-wrapper">
-                                                            <select className="custom-select" name="to" id="arrival-city" >
+                                                            <select className="custom-select" name="to" id="arrival-city" onChange={onChangeArrivalCity}>
                                                                 {province.properties.map((province) => (
                                                                     <option key={province.value} value={province.value} >
                                                                         {province.label}{" "}
@@ -1015,7 +1073,7 @@ const Home = (props) => {
                                                         <label>Province</label>
                                                         <div className="select-wrapper">
                                                             <select
-                                                                onChange={onChangeProvince}
+                                                                onChange={onChangeProvinceCombo}
                                                                 className="custom-select"
                                                                 name="province"
                                                                 id="provinces"
@@ -1023,7 +1081,7 @@ const Home = (props) => {
                                                                 <option key={0} value={0}>
                                                                     --
                                                                 </option>
-                                                                {props.provinces?.data?.map((item) => (
+                                                                {filterProvinceByFlightArrivalCity(province, props.provinces?.data)?.map((item) => (
                                                                     <option key={item.id} value={item.id}>
                                                                         {item.name}
                                                                     </option>
@@ -1036,7 +1094,7 @@ const Home = (props) => {
                                                         <label>District</label>
                                                         <div className="select-wrapper">
                                                             <select
-                                                                onChange={onChangeDistrict}
+                                                                onChange={onChangeDistrictCombo}
                                                                 className="custom-select"
                                                                 name="district"
                                                                 id="districts"

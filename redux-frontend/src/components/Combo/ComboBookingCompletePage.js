@@ -4,6 +4,20 @@ import Footer from '../Layout/Footer';
 import Header from '../Layout/Header';
 import { useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBackward } from '@fortawesome/free-solid-svg-icons';
+import { Button, makeStyles } from "@material-ui/core";
+
+const useStyle = makeStyles({
+    icon: {
+        display: "block",
+        color: "white",
+        float: "left",
+        margin: "17px 0px 0px 14px",
+        width: "20px",
+        height: "12px"
+    }
+});
 
 function getFormattedDate(date) {
     ;
@@ -17,19 +31,20 @@ function getFormattedDate(date) {
 
 
 const ComboBookingCompletePage = (props) => {
-  const history = useHistory();
-  const booking = useSelector((state) => state.bookFlight);
-  const bookingHotel = useSelector((state) => state.bookRoom);
+    const classes = useStyle();
+    const history = useHistory();
+    const booking = useSelector((state) => state.bookFlight);
+    const bookingHotel = useSelector((state) => state.bookRoom);
 
 
     useEffect(() => {
         let mount = false;
-        if(!booking.data){
+        if (!booking.data) {
             history.push("/");
         }
         window.scrollTo(0, 0);
         importAll();
-       return () => {
+        return () => {
             mount = true;
         }
     }, [])
@@ -55,7 +70,15 @@ const ComboBookingCompletePage = (props) => {
                                         <div className="sp-page-p">
                                             <div className="booking-left">
                                                 <h2>Booking Complete</h2>
-
+                                                <a onClick={(e) => history.push(`/`)} className="book-btn">
+                                                    <span className="book-btn-l">
+                                                        <FontAwesomeIcon
+                                                            icon={faBackward}
+                                                            className={classes.icon} />
+                                                    </span>
+                                                    <span className="book-btn-r">Back to homepage</span>
+                                                    <div className="clear"></div>
+                                                </a>
                                                 <div className="comlete-alert">
                                                     <div className="comlete-alert-a">
                                                         <b>Thank You. Your Booking is Confirmed.</b>
@@ -73,7 +96,7 @@ const ComboBookingCompletePage = (props) => {
                                                                 <h4>Passenger {index + 1}</h4>
                                                                 <div className="complete-info-i">
                                                                     <div className="complete-info-l">Passenger's Name</div>
-                                                                    <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname} <span style={{marginLeft:"30px"}}>|| {psg?.passenger?.gender ? "Male" : "Female"}</span> </div>
+                                                                    <div className="complete-info-r">{psg?.passenger?.firstname} {psg?.passenger?.lastname} <span style={{ marginLeft: "30px" }}>|| {psg?.passenger?.gender ? "Male" : "Female"}</span> </div>
                                                                     <div className="clear"></div>
                                                                 </div>
                                                                 <div className="complete-info-i">
@@ -81,7 +104,7 @@ const ComboBookingCompletePage = (props) => {
                                                                     <div className="complete-info-r">{getFormattedDate(psg?.passenger?.birthday)}</div>
                                                                     <div className="clear"></div>
                                                                 </div>
-                                                            </div>                                                   
+                                                            </div>
                                                         )
                                                     }
 
@@ -132,7 +155,7 @@ const ComboBookingCompletePage = (props) => {
                                                             <div className="complete-info-r">{getFormattedDate(booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.dateOfDeparture)}{"  "}{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureTime}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                       
+
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Reservation Code</div>
                                                             <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.airlineReservationCode}</div>
@@ -159,7 +182,7 @@ const ComboBookingCompletePage = (props) => {
                                                             <div className="complete-info-r">{getFormattedDate(bookingHotel?.data?.checkInDate)} - {getFormattedDate(bookingHotel?.data?.checkOutDate)}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                       
+
                                                         <div className="complete-info-i">
                                                             <div className="complete-info-l">Number of room</div>
                                                             <div className="complete-info-r"></div>
