@@ -68,15 +68,6 @@ public class AirlineController {
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return airlineRepository.findAll(spec);
     }
-//
-//    @GetMapping("/airline/{id}")
-//    public ResponseEntity<Airline> getAirline(@PathVariable Long id){
-//        Airline airline = airlineRepository.findById(id).get();
-//        if (airline.isRetired()){
-//            return ResponseEntity.ok().body(null);
-//        }
-//        return  ResponseEntity.ok().body(airline);
-//    }
 
     //http://localhost:8080/api/airline
     @PostMapping("/airline")
@@ -86,13 +77,7 @@ public class AirlineController {
         Airline result = airlineRepository.save(airline);
         return ResponseEntity.ok().body(result);
     }
-//    //http://localhost:8080/api/airline/{id}
-//    @PutMapping("/airline/{id}")
-//    public ResponseEntity<Airline> updateAirline(@RequestBody Airline airline, @PathVariable Long id) {
-//        airline.setId(id);
-//        Airline result = airlineRepository.save(airline);
-//        return ResponseEntity.ok().body(result);
-//    }
+
     //http://localhost:8080/api/airline/{id}
     @PostMapping("/airline/{id}")
     public ResponseEntity<List<Airline>> removeAirline(@PathVariable Long id) {
@@ -101,6 +86,18 @@ public class AirlineController {
         Airline result = airlineRepository.save(airline);
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return ResponseEntity.ok().body(airlineRepository.findAll(spec));
+    }
+
+    //http://localhost:8080/api/listFlightsByAirline/{id}
+    @GetMapping("/listFlightsByAirline/{id}")
+    public ResponseEntity<List<Flight>> listFlightsByAirline(@PathVariable Long id){
+        if(airlineRepository.existsByAccount_Id(id)) {
+
+            List<Flight> flights = airlineRepository.getListFlights(id);
+            return ResponseEntity.ok().body(flights);
+        }
+        else return ResponseEntity.ok().body(null);
+
     }
 
     @GetMapping("/airline/dailyIncomeAirline/{id}")

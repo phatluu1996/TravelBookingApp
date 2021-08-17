@@ -64,6 +64,13 @@ public class FlightBookingController {
         return ResponseEntity.ok().body(booking);
     }
 
+    //http://localhost:8080/api/flight-booking/{id}
+    @PutMapping("/flight-booking/{id}")
+    public ResponseEntity<FlightBooking> updateBooking(@RequestBody FlightBooking booking, @PathVariable Long id) {
+        booking.setId(id);
+        FlightBooking result = flightBookingRepository.save(booking);
+        return ResponseEntity.ok().body(result);
+    }
 
 
 

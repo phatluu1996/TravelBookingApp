@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -9,7 +8,10 @@ import AdminSidebar from "../Layout/AdminSidebar";
 import { useQuery } from "../../../utils/QueryParam";
 import { getAirline } from "../../../actions/actionAirline";
 import { Link } from "react-router-dom";
-import { retrieveFlight, updateFlight } from "../../../actions/actionFlightByAirline";
+import {
+  retrieveFlight,
+  updateFlight,
+} from "../../../actions/actionFlightByAirline";
 
 const province = {
   properties: [
@@ -119,8 +121,8 @@ const AirlineUpdateFlight = (props) => {
   let queryParam = useQuery();
   let history = useHistory();
   const [isChecked, setIsChecked] = useState({
-    hasEntertainment: false
-  })
+    hasEntertainment: false,
+  });
   const [error, setError] = useState({
     departureCity: "",
     arrivalCity: "",
@@ -286,35 +288,34 @@ const AirlineUpdateFlight = (props) => {
     const checkbox = isChecked;
     checkbox.hasEntertainment = !checkbox.hasEntertainment;
     setIsChecked(checkbox);
-  }
-  const handleSubmit = (e) => {
+  };
+  const handleUpdateSubmit = (e) => {
     e.preventDefault();
     var form = e.target;
     if (validateForm(e)) {
-      var data = props.flight;
-      props.flight.departureCity = form.departureCity.value;
-      props.flight.arrivalCity = form.arrivalCity.value;
-      props.flight.flightCode = form.flightCode.value;
-      props.flight.status = form.status.value;
-      props.flight.description = form.description.value;
-      props.flight.hasEntertainment = isChecked.hasEntertainment;
-      props.flight.departureTime = form.departureTime.value;
-      props.flight.arrivalTime = form.arrivalTime.value;
-      props.flight.aircraftType = form.aircraftType.value;
-      props.flight.businessCapacity = form.businessCapacity.value;
-      props.flight.economyCabinBaggage = form.economyCabinBaggage.value;
-      props.flight.businessCabinBaggage = form.businessCabinBaggage.value;
-      props.flight.economyBaggage = form.economyBaggage.value;
-      props.flight.businessBaggage = form.businessBaggage.value;
-      props.flight.economyCapacity = form.economyCapacity.value;
-      props.flight.infant_price = form.infant_price.value;
-      props.flight.child_price = form.child_price.value;
-      props.flight.economyPrice = form.economyPrice.value;
-      props.flight.businessPrice = form.businessPrice.value;
-      // props.flight.airline= { id: parseInt(form.airline.value) };
-      props.editFlight(queryParam.get("fid"), data)
-      history.push(`/airline-flight-data?id=${queryParam.get("id")}`)
-
+      var data = props.flight.single;
+      props.flight.single.departureCity = form.departureCity.value;
+      props.flight.single.arrivalCity = form.arrivalCity.value;
+      props.flight.single.flightCode = form.flightCode.value;
+      props.flight.single.status = form.status.value;
+      props.flight.single.description = form.description.value;
+      props.flight.single.hasEntertainment = isChecked.hasEntertainment;
+      props.flight.single.departureTime = form.departureTime.value;
+      props.flight.single.arrivalTime = form.arrivalTime.value;
+      props.flight.single.aircraftType = form.aircraftType.value;
+      props.flight.single.businessCapacity = form.businessCapacity.value;
+      props.flight.single.economyCabinBaggage = form.economyCabinBaggage.value;
+      props.flight.single.businessCabinBaggage = form.businessCabinBaggage.value;
+      props.flight.single.economyBaggage = form.economyBaggage.value;
+      props.flight.single.businessBaggage = form.businessBaggage.value;
+      props.flight.single.economyCapacity = form.economyCapacity.value;
+      props.flight.single.infant_price = form.infant_price.value;
+      props.flight.single.child_price = form.child_price.value;
+      props.flight.single.economyPrice = form.economyPrice.value;
+      props.flight.single.businessPrice = form.businessPrice.value;
+      // props.flight.single.airline= { id: parseInt(form.airline.value) };
+      props.editFlight(queryParam.get("fid"), data);
+      history.push(`/airline-flight-data?id=${queryParam.get("id")}`);
     }
   };
 
@@ -461,8 +462,12 @@ const AirlineUpdateFlight = (props) => {
                                     Edit Flight
                                   </h3>
 
-                                  <form onSubmit={handleSubmit} className="form-sample"
-                                    autoComplete="false" id="form">
+                                  <form
+                                    onSubmit={handleUpdateSubmit}
+                                    className="form-sample"
+                                    autoComplete="false"
+                                    id="form"
+                                  >
                                     <div className="row">
                                       <div className="col-md-4">
                                         <div className="form-group">
@@ -474,12 +479,18 @@ const AirlineUpdateFlight = (props) => {
                                           </label>
                                           <select
                                             className="form-control"
-                                            defaultValue={props.flight?.departureCity}
-                                            name="departureCity" id="departureCity">
+                                            defaultValue={
+                                              props.flight?.single?.departureCity
+                                            }
+                                            name="departureCity"
+                                            id="departureCity"
+                                          >
                                             {province.properties.map(
                                               (province) => (
-                                                <option key={province.value}
-                                                  value={province.value}>
+                                                <option
+                                                  key={province.value}
+                                                  value={province.value}
+                                                >
                                                   {province.label}
                                                 </option>
                                               )
@@ -499,13 +510,19 @@ const AirlineUpdateFlight = (props) => {
                                             {error.arrivalCity}
                                           </div>
                                           <select
-                                            defaultValue={props.flight?.arrivalCity}
+                                            defaultValue={
+                                              props.flight?.single?.arrivalCity
+                                            }
                                             className="form-control"
-                                            name="arrivalCity" id="arrivalCity">
+                                            name="arrivalCity"
+                                            id="arrivalCity"
+                                          >
                                             {province.properties.map(
                                               (province) => (
-                                                <option key={province.value}
-                                                  value={province.value}>
+                                                <option
+                                                  key={province.value}
+                                                  value={province.value}
+                                                >
                                                   {province.label}
                                                 </option>
                                               )
@@ -516,46 +533,79 @@ const AirlineUpdateFlight = (props) => {
                                       <div className="col-md-4">
                                         <div className="form-group">
                                           <label className="col-form-label">
-
                                             Aircraft
                                             <span style={{ color: "red" }}>
                                               *
                                             </span>
                                           </label>
-                                          <div className="validate-error">{" "}
+                                          <div className="validate-error">
+                                            {" "}
                                             {error.aircraftType}
                                           </div>
-                                          <input defaultValue={props.flight?.aircraftType}
+                                          <input
+                                            defaultValue={
+                                              props.flight?.single?.aircraftType
+                                            }
                                             onChange={handleChange}
-                                            className="form-control" type="text"
-                                            name="aircraftType" />
+                                            className="form-control"
+                                            type="text"
+                                            name="aircraftType"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Flight Code<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
+                                            Flight Code
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
                                           <div className="validate-error">
                                             {error.flightCode}
                                           </div>
                                           <div className="input">
-                                            <input defaultValue={props.flight.flightCode}
+                                            <input
+                                              defaultValue={
+                                                props.flight?.single?.flightCode
+                                              }
                                               className="form-control"
-                                              name="flightCode" type="text"
-                                              onChange={handleChange} />
+                                              name="flightCode"
+                                              type="text"
+                                              onChange={handleChange}
+                                            />
                                           </div>
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
-                                          <label>Status<span
-                                            style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <select className="form-control"
-                                            name="status" id="status" defaultValue={props.flight.status}>
+                                          <label>
+                                            Status
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <select
+                                            className="form-control"
+                                            name="status"
+                                            id="status"
+                                            defaultValue={props.flight?.single?.status}
+                                          >
                                             {status.properties.map((status) => (
-                                              <option key={status.value}
-                                                value={status.value}>
+                                              <option
+                                                key={status.value}
+                                                value={status.value}
+                                              >
                                                 {status.label}
                                               </option>
                                             ))}
@@ -564,237 +614,458 @@ const AirlineUpdateFlight = (props) => {
                                       </div>
                                       <div className="col-md-6">
                                         <div className="form-check pt-3">
-                                          <input id="flexCheckDefault"
+                                          <input
+                                            id="flexCheckDefault"
                                             className="form-check-input"
                                             type="checkbox"
                                             onChange={handleCheckboxChange}
                                             name="hasEntertainment"
-                                            defaultValue={props.flight.hasEntertainment ? "checked" : ""} />
-                                          <label className="form-check-label pl-0"
-                                            for="flexCheckDefault">
-                                            Inflight Entertainment<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span>
+                                            defaultValue={
+                                              props.flight?.single?.hasEntertainment
+                                                ? "checked"
+                                                : ""
+                                            }
+                                          />
+                                          <label
+                                            className="form-check-label pl-0"
+                                            for="flexCheckDefault"
+                                          >
+                                            Inflight Entertainment
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
                                           </label>
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Departure time<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" s>{"  "}
+                                            Departure time
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error" s>
+                                            {"  "}
                                             {error.departureTime}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="text"
-                                            defaultValue={props.flight.departureTime}
-                                            name="departureTime" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="text"
+                                            defaultValue={
+                                              props.flight?.single?.departureTime
+                                            }
+                                            name="departureTime"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Arrival time<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Arrival time
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.arrivalTime}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="text"
-                                            defaultValue={props.flight.arrivalTime}
-                                            name="arrivalTime" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="text"
+                                            defaultValue={
+                                              props.flight?.single?.arrivalTime
+                                            }
+                                            name="arrivalTime"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Business Capacity<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" s>{"  "}
+                                            Business Capacity
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error" s>
+                                            {"  "}
                                             {error.businessCapacity}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.businessCapacity} min="0"
-                                            name="businessCapacity" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.businessCapacity
+                                            }
+                                            min="0"
+                                            name="businessCapacity"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Economy Capacity<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Economy Capacity
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.economyCapacity}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.economyCapacity} min="1" max="600"
-                                            name="economyCapacity" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.economyCapacity
+                                            }
+                                            min="1"
+                                            max="600"
+                                            name="economyCapacity"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-12"></div>
                                       <div className="col-md-12">
                                         <div className="form-floating">
-                                          <label
-                                            for="floatingTextarea2">Descriptions<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
+                                          <label for="floatingTextarea2">
+                                            Descriptions
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
                                           <div className="validate-error">
                                             {error.description}
                                           </div>
                                           <textarea
-                                            defaultValue={props.flight.description}
+                                            defaultValue={
+                                              props.flight?.single?.description
+                                            }
                                             className="form-control"
                                             id="floatingTextarea2"
                                             style={{ height: "100px" }}
                                             name="description"
-                                            onChange={handleChange}></textarea>
+                                            onChange={handleChange}
+                                          ></textarea>
                                         </div>
                                       </div>
-                                      <div className="col-md-12"><h4 className="my-3">Baggage Information</h4></div>
-
+                                      <div className="col-md-12">
+                                        <h4 className="my-3">
+                                          Baggage Information
+                                        </h4>
+                                      </div>
 
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-                                            Business Baggage<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
+                                            Business Baggage
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
                                           <div className="validate-error">
                                             {error.businessBaggage}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            placeholder="0" min="0" max="100"
-                                            defaultValue={props.flight.businessBaggage}
-                                            name="businessBaggage" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            placeholder="0"
+                                            min="0"
+                                            max="100"
+                                            defaultValue={
+                                              props.flight?.single?.businessBaggage
+                                            }
+                                            name="businessBaggage"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Economy Baggage<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Economy Baggage
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.economyBaggage}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.economyBaggage} min="0" max="100"
-                                            name="economyBaggage" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.economyBaggage
+                                            }
+                                            min="0"
+                                            max="100"
+                                            name="economyBaggage"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Business Cabin-Bag<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Business Cabin-Bag
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.businessCabinBaggage}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.businessCabinBaggage} min="0" max="40"
-                                            name="businessCabinBaggage" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.businessCabinBaggage
+                                            }
+                                            min="0"
+                                            max="40"
+                                            name="businessCabinBaggage"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Economy Cabin-Bag<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Economy Cabin-Bag
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.economyCabinBaggage}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.economyCabinBaggage} min="0" max="40"
-                                            name="economyCabinBaggage" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.economyCabinBaggage
+                                            }
+                                            min="0"
+                                            max="40"
+                                            name="economyCabinBaggage"
+                                          />
                                         </div>
                                       </div>
-                                      <div className="col-md-12"><h4 className="my-3">Ticket Information</h4></div>
+                                      <div className="col-md-12">
+                                        <h4 className="my-3">
+                                          Ticket Information
+                                        </h4>
+                                      </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Business Ticket<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Business Ticket
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.businessPrice}
                                           </div>
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.businessPrice} min="0" max="10000"
-                                            step="0.1" name="businessPrice" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.businessPrice
+                                            }
+                                            min="0"
+                                            max="10000"
+                                            step="0.1"
+                                            name="businessPrice"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
-                                          <label>Economy Ticket<span
-                                            style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                          <label>
+                                            Economy Ticket
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.economyPrice}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.economyPrice} min="0" max="1000"
-                                            step="0.1" name="economyPrice" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.economyPrice
+                                            }
+                                            min="0"
+                                            max="1000"
+                                            step="0.1"
+                                            name="economyPrice"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Child Ticket<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
-                                          <div className="validate-error" >
+                                            Child Ticket
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
+                                          <div className="validate-error">
                                             {error.child_price}
                                           </div>
 
-                                          <input onChange={handleChange}
-                                            className="form-control" type="number"
-                                            defaultValue={props.flight.economyPrice} min="0" max="1000"
-                                            step="0.1" name="child_price" />
+                                          <input
+                                            onChange={handleChange}
+                                            className="form-control"
+                                            type="number"
+                                            defaultValue={
+                                              props.flight?.single?.economyPrice
+                                            }
+                                            min="0"
+                                            max="1000"
+                                            step="0.1"
+                                            name="child_price"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="form-group">
                                           <label>
-
-                                            Infant Ticket<span
-                                              style={{ color: "red", fontSize: "12px" }}>*</span></label>
+                                            Infant Ticket
+                                            <span
+                                              style={{
+                                                color: "red",
+                                                fontSize: "12px",
+                                              }}
+                                            >
+                                              *
+                                            </span>
+                                          </label>
                                           <div className="validate-error">
                                             {error.infant_price}
                                           </div>
 
-                                          <input onChange={handleChange}
+                                          <input
+                                            onChange={handleChange}
                                             className="form-control"
-                                            defaultValue={props.flight.infant_price} type="number" min="0"
-                                            max="1000" step="0.1"
-                                            name="infant_price" />
+                                            defaultValue={
+                                              props.flight?.single?.infant_price
+                                            }
+                                            type="number"
+                                            min="0"
+                                            max="1000"
+                                            step="0.1"
+                                            name="infant_price"
+                                          />
                                         </div>
                                       </div>
                                       <div className="col-md-3">
                                         <div className="col-md-3">
-                                          <input readOnly className="form-control" type="number" name="airline" value={props.airline?.single?.id} hidden />
+                                          <input
+                                            readOnly
+                                            className="form-control"
+                                            type="number"
+                                            name="airline"
+                                            value={props.airline?.single?.id}
+                                            hidden
+                                          />
                                         </div>
-                                        <button className="btn btn-outline-success mr-3"
-                                          type="submit">
+                                        <button
+                                          className="btn btn-outline-success mr-3"
+                                          type="submit"
+                                        >
                                           Update
                                         </button>
-                                        <Link to={`/airline-flight-data?id=${queryParam.get("id")}`}
-                                          className="btn btn-outline-primary">
+                                        <Link
+                                          to={`/airline-flight-data?id=${queryParam.get(
+                                            "id"
+                                          )}`}
+                                          className="btn btn-outline-primary"
+                                        >
                                           Back
                                         </Link>
                                       </div>
@@ -840,8 +1111,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(retrieveFlight(id));
     },
     editFlight: (id, data) => {
-      dispatch(updateFlight(id, data))
-    }
+      dispatch(updateFlight(id, data));
+    },
   };
 };
 

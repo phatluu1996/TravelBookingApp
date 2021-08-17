@@ -29,10 +29,13 @@ class flightApi {
         return http.put(`/flight/${id}`, data);
     }
 
-    deleteFlight(id) {
+    removeFlight(id) {
         return http.post(`/flight/${id}`);
     }
 
+    listFlightByAirline(id){
+        return http.get(`/listFlightsByAirline/${id}`)
+    }
 }
 
 export default new flightApi();
