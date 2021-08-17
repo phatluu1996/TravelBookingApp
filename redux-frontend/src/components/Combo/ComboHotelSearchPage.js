@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { fetchHotel } from "../../actions/actionHotel";
 import $ from 'jquery';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBaby, faChild, faMale } from "@fortawesome/free-solid-svg-icons";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -28,7 +30,9 @@ const ComboHotelSearchPage = (props) => {
   const [errHlt, setErrHlt] = useState({
     province: '',
     checkin: '',
-    checkout: ''
+    checkout: '',
+    adult: '',
+    child: ''
   })
 
   const [preferences, setPreferences] = useState({
@@ -416,6 +420,29 @@ const ComboHotelSearchPage = (props) => {
       }
     }
 
+    if (formSelector === "hotel-flight-search") {
+      //chilren-error //adult-error
+      if (props.filter.child + props.filter.infant < form.numChildren.value) {
+        err.child = 'Hotel child cannot be higher than total flight child and infant';
+        form.numChildren.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #chilren-error`)[0].innerText = err.child;
+      } else {
+        err.child = '';
+        form.numChildren.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #chilren-error`)[0].innerText = err.child;
+      }
+
+      if (props.filter.adult < form.numAdult.value) {
+        err.adult = 'Hotel adult cannot be higher than flight adult';
+        form.numAdult.parentElement.classList.add("is-invalid");
+        $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
+      } else {
+        err.adult = '';
+        form.numAdult.parentElement.classList.remove("is-invalid");
+        $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
+      }
+    }
+
     if (err.province || err.checkin || err.checkout) {
       setErrHlt(err);
       return false;
@@ -451,8 +478,7 @@ const ComboHotelSearchPage = (props) => {
                       <div className="page-search-p">
                         <div className="srch-tab-3c">
                           <div className="alt-data-i">
-                            {/* <span className="circle">Depart</span> */}
-                            <img width="80" height="60" src={props.departFlight?.airline?.image}/>
+                            <img width="80" height="60" src={props.departFlight?.airline?.image} />
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -460,14 +486,15 @@ const ComboHotelSearchPage = (props) => {
                         <div className="srch-tab-3c transformed mt-1">
                           <div className="alt-data-i alt-col">
                             <b>Depart Date</b>
-                            <span>{props.filter?.departureDate}</span><br/>
-                            <span>{props.departFlight?.departureTime}-{props.departFlight?.arrivalTime}</span>
+                            <span>{props.filter?.departureDate}</span>
+                            <div className="mt-1"><label><strong>{props.departFlight?.departureTime}-{props.departFlight?.arrivalTime}</strong></label></div>
                           </div>
                         </div>
                         <div className="srch-tab-3c transformed mt-1">
                           <div className="alt-data-i">
                             <b>Route</b>
-                            <label><strong>{props.filter?.from + " - " + props.filter?.to}</strong></label>
+                            <span>{props.filter?.from + " - " + props.filter?.to}</span>
+                            <label className="mt-1" title={`${props.filter.adult} adult(s), ${props.filter.child} child(s), ${props.filter.infant} infant(s`}><strong>{props.filter.adult} <FontAwesomeIcon icon={faMale}></FontAwesomeIcon>{"    "}{props.filter.child} <FontAwesomeIcon icon={faChild}></FontAwesomeIcon>{"    "}{props.filter.child} <FontAwesomeIcon icon={faBaby}></FontAwesomeIcon></strong></label>
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -482,8 +509,7 @@ const ComboHotelSearchPage = (props) => {
                       <div className="page-search-p">
                         <div className="srch-tab-3c">
                           <div className="alt-data-i">
-                            {/* <span className="circle">Return</span> */}
-                            <img width="80" height="60" src={props.returnFlight?.airline?.image}/>
+                            <img width="80" height="60" src={props.returnFlight?.airline?.image} />
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -491,15 +517,15 @@ const ComboHotelSearchPage = (props) => {
                         <div className="srch-tab-3c transformed mt-1">
                           <div className="alt-data-i alt-col">
                             <b>Return Date</b>
-                            <span>{props.filter?.returnDate}</span><br/>
-                            <span>{props.returnFlight?.departureTime}-{props.returnFlight?.arrivalTime}</span>
+                            <span>{props.filter?.returnDate}</span>
+                            <div className="mt-1"><label><strong>{props.returnFlight?.departureTime}-{props.returnFlight?.arrivalTime}</strong></label></div>
                           </div>
                         </div>
                         <div className="srch-tab-3c transformed mt-1">
                           <div className="alt-data-i">
                             <b>Route</b>
-                            <label><strong>{props.filter?.to + " - " + props.filter?.from}</strong></label>
-                            {/* <b>{props.filter.seatclassName == "ECONOMY" ? props.returnFlight?.economyPrice :  props.returnFlight?.businessPrice}</b> */}
+                            <span>{props.filter?.to + " - " + props.filter?.from}</span>
+                            <label className="mt-1" title={`${props.filter.adult} adult(s), ${props.filter.child} child(s), ${props.filter.infant} infant(s`}><strong>{props.filter.adult} <FontAwesomeIcon icon={faMale}></FontAwesomeIcon>{"    "}{props.filter.child} <FontAwesomeIcon icon={faChild}></FontAwesomeIcon>{"    "}{props.filter.child} <FontAwesomeIcon icon={faBaby}></FontAwesomeIcon></strong></label>
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -626,11 +652,12 @@ const ComboHotelSearchPage = (props) => {
                               name="numAdult"
                               type="number"
                               defaultValue={queryParam.get("numberAdult")}
-                              min="0"
+                              min="1"
                               max="7"
                               onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
+                          <div className="booking-error-input" id="adult-error"></div>
                         </div>
                         <div className="srch-tab-3c">
                           <label>Children</label>
@@ -640,10 +667,12 @@ const ComboHotelSearchPage = (props) => {
                               name="numChildren"
                               type="number"
                               defaultValue={queryParam.get("numberChildren")}
-                              max="7"
+                              min="0"
+                              max="14"
                               onKeyPress={(e) => e.preventDefault()}
                             />
                           </div>
+                          <div className="booking-error-input" id="chilren-error"></div>
                         </div>
                         <div className="srch-tab-3c">
                           <label>Room</label>

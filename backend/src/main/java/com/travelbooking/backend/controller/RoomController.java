@@ -67,7 +67,8 @@ public class RoomController {
 
         //http://localhost:8080/api/room
         @PostMapping(value = "/room",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public List<Room> addRoom(@RequestParam MultipartFile[] files
+        public List<Room> addRoom(
+                                @RequestParam MultipartFile[] files
                                 ,@RequestParam int roomNumber
                                 ,@RequestParam String roomType
                                 ,@RequestParam int price
@@ -96,20 +97,48 @@ public class RoomController {
         }
         //http://localhost:8080/api/room/{id}
         @PutMapping("/room/{id}")
-        public ResponseEntity<Room> updateRoom(@RequestBody Room room, @PathVariable Long id) {
-            room.setId(id);;
-            Room result = roomRepository.save(room);
-            return ResponseEntity.ok().body(result);
+        public List<Room> updateRoom(@RequestParam(required=false)  MultipartFile[] files
+                ,@RequestParam int roomNumber
+                ,@RequestParam String roomType
+                ,@RequestParam int price
+                ,@RequestParam int maxAdult
+                ,@RequestParam int maxChildren
+                ,@RequestParam(required=false,name="hotel") String hotelId, @PathVariable Long id) throws Exception {
+
+
+            Hotel hotel = hotelRepository.findById(Long.parseLong(hotelId)).get();
+            Room room = roomRepository.findById(id).get();
+            //Add new room infor
+            room.setRoomNumber(roomNumber);
+            room.setHotel(hotel);
+            room.setRetired(Boolean.FALSE);
+            room.setRoomType(roomType);
+            room.setPrice(price);
+            room.setMaxAdult(maxAdult);
+            room.setMaxChildren(maxChildren);
+
+            //Upload and get list Image
+            if(files != null){
+                List<Image> images = uploadFileService.fileUpload(files);
+                images.addAll(room.getImages());
+                room.setImages(images);
+            }
+
+            roomRepository.save(room);
+            //get list room callback
+
+            Specification<?> spec = RoomSpecification.getListRoomByHotelId(hotel,Boolean.FALSE);
+            return roomRepository.findAll(spec);
         }
-        //http://localhost:8080/api/room/{id}
-        @PostMapping("/room/{id}")
-        public ResponseEntity<Room> removeRoom(@PathVariable Long id) {
+
+        //http://localhost:8080/api/removeRoom/{id}
+        @PostMapping("/removeRoom/{id}/{hotelId}")
+        public List<Room> removeRoom(@PathVariable Long id,@PathVariable Long hotelId) {
+            Hotel hotel = hotelRepository.findById(hotelId).get();
             Room room = roomRepository.findById(id).get();
             room.setRetired(true);
-            Room result = roomRepository.save(room);
-            return ResponseEntity.ok().body(result);
+            roomRepository.save(room);
+            Specification<?> spec = RoomSpecification.getListRoomByHotelId(hotel,Boolean.FALSE);
+            return roomRepository.findAll(spec);
         }
-
-
-
 }

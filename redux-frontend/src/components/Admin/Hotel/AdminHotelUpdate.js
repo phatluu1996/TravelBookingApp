@@ -1,33 +1,22 @@
-import { faBath, faDesktop, faDollarSign, faDumbbell, faEdit, faEye, faHome, faMoneyCheckAlt, faParking, faPaw, faPlus, faRestroom, faSwimmer, faTachometerAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBath, faDesktop, faDumbbell, faMoneyCheckAlt, faParking, faPaw, faSwimmer, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import DataTable, { createTheme } from 'react-data-table-component';
 import { connect ,dispatch, useDispatch} from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { getAllBookingHotel, getBookingTodayHotel, getDailyIncomeHotel, getHotel, getReportHotel, getRevenueHotel, getUpdate, updateHotel, updateProfileHotel } from '../../../actions/actionHotel';
+import { getHotel, updateProfileHotel } from '../../../actions/actionHotel';
 import { retrieveProvince } from '../../../actions/actionLocation';
-import {getRoomByHotelId, removeRoom} from '../../../actions/actionRoom';
 import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
-import { Bar } from "react-chartjs-2";
-import ReactModal from 'react-modal';
-import AddNewRoom from '../../Room/AddNewRoom';
 
-const AdminHotelProfile = (props) => {
-    const dispatch = useDispatch();
+const AdminHotelUpdate = (props) => {
     let queryParam = useQuery();
-    let history = useHistory();
-    const [isEdit, setIsEdit] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(0);
     const [isInitial, setIsInitial] = useState(true);
     const [slProvince, setSlProvince] = useState(null);
     const [slDistrict, setSlDistrict] = useState(null);
     const [slWard, setSlWard] = useState(null);
-    const [modalIsOpen,setModelStatus] = useState(false);
-    const [room,setRoom] = useState(null);
-    const [componentStatus,setComponentStatus] = useState(null);
     
     const [allService, setAllService] = useState({
         highSpeedInternet: false,
@@ -40,33 +29,10 @@ const AdminHotelProfile = (props) => {
         paymentAtHotel: false
     });
 
-    createTheme('solarized', {
-        text: {
-            primary: 'white',
-            secondary: '#2aa198',
-        },
-        background: {
-            default: '#191c24',
-        },
-        context: {
-            background: '#cb4b16',
-            text: '#FFFFFF',
-        },
-        divider: {
-            default: '#073642',
-        },
-        action: {
-            button: 'rgba(0,0,0,.54)',
-            hover: 'rgba(0,0,0,.08)',
-            disabled: 'rgba(0,0,0,.12)',
-        },
-    });
-
     useEffect(() => {
         let mount = false;
 
         props.getHotel(queryParam.get("id"));
-        props.getRoomByHotelId(queryParam.get("id"));
         props.getProvince();
 
         return () => {
@@ -105,12 +71,6 @@ const AdminHotelProfile = (props) => {
         if (isInitial && props.hotel.one != null) {
             let service = { ...allService };
 
-            props.getDailyIncome(props.hotel.one?.id);
-            props.getBookingToday(props.hotel.one?.id);
-            props.getRevenueCurrent(props.hotel.one?.id);
-            props.getAllBooking(props.hotel.one?.id);
-            props.getReportMonth(props.hotel.one?.id);
-
             service.highSpeedInternet = props.hotel.one?.highSpeedInternet;
             service.entertainment = props.hotel.one?.entertaiment;
             service.freeParking = props.hotel.one?.freeParking;
@@ -124,8 +84,9 @@ const AdminHotelProfile = (props) => {
             setIsInitial(false);
         }
 
-        if (isSuccess && props.hotel.message == "") {
+        if (isSuccess === 1 && props.hotel.one && props.hotel.form === "updateProfile") {
             alert("Update successfully!");
+            setIsSuccess(2);
         }
 
         return () => {
@@ -159,228 +120,8 @@ const AdminHotelProfile = (props) => {
         data.highSpeedInternet = allService.highSpeedInternet;
 
         props.updateHotel(data.id, data);
-        setIsSuccess(true);
+        setIsSuccess(1);
 
-    }
-
-    const header = [
-
-        {
-            name: 'Booking Code',
-            selector: 'bookingCode',
-            sortable: true
-        },
-        {
-            name: 'Number Of Guest',
-            selector: 'numOfGuest',
-            sortable: true
-        },
-        {
-            name: 'Payment Method',
-            selector: 'paymentMethod',
-            sortable: true
-        },
-        {
-            name: 'Check In',
-            selector: 'checkInDate',
-            sortable: true
-        },
-        {
-            name: 'Check Out',
-            selector: 'checkOutDate',
-            sortable: true
-        },
-        {
-            name: 'Amount',
-            selector: 'totalPrice',
-            sortable: true
-        },
-        {
-            name: 'Created Date',
-            selector: 'createdAt',
-            sortable: true
-        },
-        {
-            name: 'Update Date',
-            selector: 'updateAt',
-            sortable: true
-        },
-    ];
-    const roomHeader = [
-
-        {
-            name: 'Room Type',
-            selector: 'roomType',
-            sortable: true
-        },
-        {
-            name: 'Room Number',
-            selector: 'roomNumber',
-            sortable: true
-        },
-        {
-            name: 'Available Time',
-            selector: 'availableTime',
-            sortable: true
-        },
-        {
-            name: 'Price',
-            selector: 'price',
-            sortable: true
-        },
-        {
-            name: 'Max Adult',
-            selector: 'maxAdult',
-            sortable: true
-        },
-        {
-            name: 'Max Children',
-            selector: 'maxChildren',
-            sortable: true
-        },
-        {
-            name: 'Actions',
-            // cell: flight => <div data-tag="allowRowEvents"><div style={{ fontWeight: bold }}>{row.title}</div>{row.summary}</div>,
-            cell: (room,index) => <React.Fragment key={index}>
-                 <button className="btn btn-success mr-1"
-                    onClick={() => modalStatus("View",room)}
-                 >
-                     <FontAwesomeIcon icon={faEye}></FontAwesomeIcon>
-                  </button>
-                <button className="btn btn-success mr-1"
-                    onClick={() => modalStatus("Edit",room)}
-                 >
-                     <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> 
-                 </button>
-                <button className="btn btn-danger" 
-                    onClick={() => {
-                        dispatch(removeRoom(room.id,props.hotel?.one?.id))
-                    }}
-                >
-                    <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
-                </button>
-            </React.Fragment>
-        }
-    ];
-    
-    const modalStatus= (string,room) => {
-        setModelStatus(true)
-        switch(string){
-            case"Edit":
-                setRoom(room);
-                return setComponentStatus("Edit Room");
-            case"View":
-                setRoom(room);
-                return setComponentStatus("View Room");
-            default:
-                return setComponentStatus("Create Room");
-        }
-
-    };
-
-    const closeModal = (status) => setModelStatus(status);
-
-    const subHeader = (<thead><tr>
-        <td>#</td>
-        <td>Hotel Name</td>
-        <td>Email</td>
-        <td>Phone</td>
-        <td>Contact Person</td>
-        <td>Contact Person Title</td>
-    </tr></thead>);
-
-    const customStyles = {
-        headCells: {
-            style: {
-                fontSize: '16px',
-                fontWeight: 'bold',
-
-                color: 'white',
-                paddingLeft: '16px',
-                paddingRight: '16px',
-            },
-            activeSortStyle: {
-                color: '#ff7200',
-                '&:focus': {
-                    outline: 'none',
-                },
-                '&:hover:not(:focus)': {
-                    color: '#ff7200',
-                },
-            },
-            inactiveSortStyle: {
-                '&:focus': {
-                    outline: 'none',
-                    color: '#ff7200',
-                },
-                '&:hover': {
-                    color: '#ff7200',
-                },
-            },
-        },
-        pagination: {
-            style: {
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: 400,
-                minHeight: '56px',
-                borderTopStyle: 'solid',
-                borderTopWidth: '1px',
-
-            },
-            pageButtonsStyle: {
-                borderRadius: '50%',
-                height: '40px',
-                width: '40px',
-                padding: '8px',
-                margin: 'px',
-                cursor: 'pointer',
-                transition: '0.4s',
-                color: '#007bff',
-                fill: '#007bff',
-                backgroundColor: 'transparent',
-                '&:disabled': {
-                    cursor: 'unset',
-                    color: '#007bff',
-                    fill: 'white',
-                },
-                '&:hover:not(:disabled)': {
-                    backgroundColor: 'white',
-                },
-                '&:focus': {
-                    outline: 'white',
-                    backgroundColor: 'white',
-                },
-            },
-        },
-    };
-    const classes = {
-        content: {
-          top: '50%',
-          left: '50%',
-          right: 'auto',
-          bottom: 'auto',
-          marginRight: '-50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor:'rgb(30 13 13)',
-          width: 500
-        },
-      };
-
-    const barLabel = () => {
-        var label = [];
-        props.hotel.report?.forEach((element, index) => {
-            label[index] = element[0];
-        });
-        return label;
-    }
-
-    const barData = () => {
-        var data = [];
-        props.hotel.report?.forEach((element, index) => {
-            data[index] = element[1];
-        });
-        return data;
     }
 
     const onServiceClick = (e) => {
@@ -445,6 +186,7 @@ const AdminHotelProfile = (props) => {
     return (
         <div className="bootstrap-scope">
             <div className="container-scroller">
+                <AdminSidebar />
                 <div className="container-fluid">
                     <AdminNavbar />
                     <div className="main-panel">
@@ -495,129 +237,8 @@ const AdminHotelProfile = (props) => {
 
                                                 <div className="col-lg-9 col-xl-9">
                                                     <div className="card-box">
-                                                        <ul className="nav nav-pills navtab-bg">
-                                                            <li className="nav-item">
-                                                                <a href="#about-me" data-toggle="tab" aria-expanded="true" className="nav-link ml-0 active">
-                                                                    <i className="mdi mdi-face-profile mr-1"></i>Report
-                                                                </a>
-                                                            </li>
-
-                                                            <li className="nav-item">
-                                                                <a href="#change-password" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <FontAwesomeIcon icon={faDollarSign} /> Booking History
-                                                                </a>
-                                                            </li>
-
-                                                            <li className="nav-item">
-                                                                <a href="#settings" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <i className="mdi mdi-settings-outline mr-1"></i>Settings
-                                                                </a>
-                                                            </li>
-                                                            <li className="nav-item">
-                                                                <a href="#room-manager" data-toggle="tab" aria-expanded="false" className="nav-link">
-                                                                    <FontAwesomeIcon icon={faHome} />  Room Manager
-                                                                </a>
-                                                            </li>
-                                                        </ul>
                                                         <div className="tab-content bg-dark ">
-                                                            <div className="tab-pane show active" id="about-me">
-                                                                <div className="card-body">
-                                                                    <div className="row ">
-                                                                        <div className="col-xl-4 col-sm-6 grid-margin stretch-card ">
-                                                                            <div className="card">
-                                                                                <div className="card-body row mt-3">
-                                                                                    <h4 className="text-muted col-8 mt-1">Booking Today</h4>
-                                                                                    <div className="col-4">
-                                                                                        <div className="d-flex align-items-center align-self-start">
-                                                                                            <h3 className="mb-0 text-warning">{props.hotel.bookingToday}</h3>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-xl-4 col-sm-6 grid-margin stretch-card">
-                                                                            <div className="card">
-                                                                                <div className="card-body">
-                                                                                    <div className="row">
-                                                                                        <div className="col-9">
-                                                                                            <div className="d-flex align-items-center align-self-start">
-                                                                                                <h3 className="mb-0 text-danger">$ {props.hotel.dailyIncome}</h3>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="col-3">
-                                                                                            <div className="icon icon-box-danger">
-                                                                                                <span className="mdi mdi-arrow-bottom-left icon-item"></span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <h4 className="text-muted font-weight-normal">Daily Income</h4>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-xl-4 col-sm-6 grid-margin stretch-card">
-                                                                            <div className="card">
-                                                                                <div className="card-body">
-                                                                                    <div className="row">
-                                                                                        <div className="col-9">
-                                                                                            <div className="d-flex align-items-center align-self-start">
-                                                                                                <h3 className="mb-0 text-success">$ {props.hotel.revenueCurrent}</h3>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="col-3">
-                                                                                            <div className="icon icon-box-success">
-                                                                                                <span className="mdi mdi-arrow-top-right icon-item"></span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <h4 className="text-muted font-weight-normal">Revenue current</h4>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                    <div className="row" style={{ display: 'block' }}>
-                                                                        <div className="card">
-                                                                            <div className="card-body"></div>
-                                                                            <Bar
-                                                                                data={{
-                                                                                    labels: barLabel(),
-                                                                                    datasets: [
-                                                                                        {
-                                                                                            label: "Population (millions)",
-                                                                                            backgroundColor: [
-                                                                                                'rgba(54, 162, 235, 0.5)',
-                                                                                                'rgba(255, 206, 86, 0.5)',
-                                                                                                'rgba(75, 192, 192, 0.5)',
-                                                                                                'rgba(153, 102, 255, 0.5)',
-                                                                                                'rgba(255, 159, 64, 0.5)'
-                                                                                            ],
-                                                                                            borderColor: [
-                                                                                                'rgba(54, 162, 235, 1)',
-                                                                                                'rgba(255, 206, 86, 1)',
-                                                                                                'rgba(75, 192, 192, 1)',
-                                                                                                'rgba(153, 102, 255, 1)',
-                                                                                                'rgba(255, 159, 64, 1)'
-                                                                                            ],
-                                                                                            borderWidth: 1,
-                                                                                            fill: false,
-                                                                                            data: barData()
-                                                                                        }
-                                                                                    ]
-                                                                                }}
-                                                                                options={{
-                                                                                    legend: { display: false },
-                                                                                    title: {
-                                                                                        display: true,
-                                                                                        text: "Predicted world population (millions) in 2050"
-                                                                                    }
-                                                                                }}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="tab-pane" id="settings">
+                                                            <div className="tab-pane active" id="settings">
                                                                 <form onSubmit={handleUpdateSubmit}>
                                                                     <h4 className="mb-3"> HOTEL INTRODUCTION:</h4>
                                                                     <div className="row">
@@ -777,51 +398,6 @@ const AdminHotelProfile = (props) => {
                                                                     </div>
                                                                 </form>
                                                             </div>
-
-                                                            <div className="tab-pane" id="change-password">
-                                                                <h6 className="text-center text-warning">BOOKING HISTORY</h6>
-                                                                <div className="table-responsive">
-                                                                    <DataTable className="table"
-                                                                        customStyles={customStyles}
-                                                                        theme='solarized'
-                                                                        progressPending={!props.hotel.allBooking}
-                                                                        columns={header}
-                                                                        data={props.hotel?.allBooking}
-                                                                        pagination
-                                                                        paginationPerPage={5}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="tab-pane" id="room-manager">
-                                                                <h6 className="text-center text-warning">Room Manager</h6>
-                                                                <Link className="btn btn-success" onClick={() =>modalStatus()}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon> </Link>
-                                                                <div className="table-responsive">
-                                                                    <DataTable className="table"
-                                                                        customStyles={customStyles}
-                                                                        theme='solarized'
-                                                                        progressPending={!props.rooms?.data}
-                                                                        columns={roomHeader}
-                                                                        data={Array.isArray(props.rooms?.data) && props.rooms?.data.length > 0?props.rooms?.data:""}
-                                                                        pagination
-                                                                        paginationPerPage={5}
-                                                                    />
-                                                                </div>
-                                                                <ReactModal
-                                                                     isOpen={modalIsOpen}
-                                                                    //  onAfterOpen={afterOpenModal}
-                                                                    //  onRequestClose={closeModal}
-                                                                     style={classes}
-                                                                     contentLabel="Room Manager Modal"
-                                                                >
-                                                                  <AddNewRoom 
-                                                                closeModal={closeModal} 
-                                                                customStyles={customStyles}
-                                                                componentStatus={componentStatus}
-                                                                room={room}
-                                                                hotel={props.hotel?.one}
-                                                                />
-                                                                </ReactModal>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -842,8 +418,7 @@ const AdminHotelProfile = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         hotel: state.hotels,
-        province: state.province,
-        rooms:state.room
+        province: state.province
     };
 };
 
@@ -857,27 +432,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getProvince: () => {
             dispatch(retrieveProvince());
-        },
-        getDailyIncome: (id) => {
-            dispatch(getDailyIncomeHotel(id));
-        },
-        getBookingToday: (id) => {
-            dispatch(getBookingTodayHotel(id));
-        },
-        getRevenueCurrent: (id) => {
-            dispatch(getRevenueHotel(id));
-        },
-        getAllBooking: (id) => {
-            dispatch(getAllBookingHotel(id));
-        },
-        getReportMonth: (id) => {
-            dispatch(getReportHotel(id));
-        },
-        getRoomByHotelId: (id) => {
-            dispatch(getRoomByHotelId(id));
         }
     };
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminHotelUpdate);

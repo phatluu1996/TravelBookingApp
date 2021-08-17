@@ -115,6 +115,63 @@ export const removeUser = (id) => async dispatch => {
         });
     }
 }
+export const GET_FLIGHT_HISTORY_REQUEST = "GET_FLIGHT_HISTORY_REQUEST";
+export const GET_FLIGHT_HISTORY_SUCCESS = "GET_FLIGHT_HISTORY_SUCCESS";
+export const GET_FLIGHT_HISTORY_ERROR = "GET_FLIGHT_HISTORY_ERROR";
+
+export const getFlightBookingHistory = () => async dispatch => {
+    try {
+        dispatch({ type: GET_FLIGHT_HISTORY_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/user/flight-booking-history/${sessionStorage.getItem("userId")}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_FLIGHT_HISTORY_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_FLIGHT_HISTORY_ERROR,
+            message: error
+        });
+    }
+}
+
+export const GET_HOTEL_HISTORY_REQUEST = "GET_HOTEL_HISTORY_REQUEST";
+export const GET_HOTEL_HISTORY_SUCCESS = "GET_HOTEL_HISTORY_SUCCESS";
+export const GET_HOTEL_HISTORY_ERROR = "GET_HOTEL_HISTORY_ERROR";
+
+export const getHotelBookingHistory = () => async dispatch => {
+    try {
+        dispatch({ type: GET_HOTEL_HISTORY_REQUEST });
+        const httpAuth = axios.create({
+            baseURL:`${ROOT_URL}/api`,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+            }
+        });
+        const response = await httpAuth.get(`/user/hotel-booking-history/${sessionStorage.getItem("userId")}`);
+        const responseBody = await response.data;
+        dispatch({
+            type: GET_HOTEL_HISTORY_SUCCESS,
+            payload: responseBody
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: GET_HOTEL_HISTORY_ERROR,
+            message: error
+        });
+    }
+}
 
 export const CLEAR_USER_STATE = "CLEAR_USER_STATE";
 

@@ -9,10 +9,10 @@ export const FETCH_HOTEL_ERROR = "FETCH_HOTEL_ERROR";
 
 
   
-export const fetchHotel = (province,district,ward,numberAdult,numberChildren,checkInDate,numRoom) => async dispatch => {
+export const fetchHotel = (province,district,ward,numberAdult,numberChildren,checkInDate,checkOutDate,numRoom) => async dispatch => {
     try {
         dispatch({ type: FETCH_HOTEL_REQUEST });
-        const url = `${ROOT_URL}/api/findHotels?province=${province}&district=${district}&ward=${ward}&numberAdult=${numberAdult}&numberChildren=${numberChildren}&checkInDate=${checkInDate}&numRoom=${numRoom}`;
+        const url = `${ROOT_URL}/api/findHotels?province=${province}&district=${district}&ward=${ward}&numberAdult=${numberAdult}&numberChildren=${numberChildren}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&numRoom=${numRoom}`;
         console.log(url);
         const response = await axios.get(url)
         const responseBody = await response.data;
@@ -118,6 +118,24 @@ export const createHotel = (data) => async dispatch => {
     try {
         dispatch({ type: CREATE_HOTEL_REQUEST });
         const url = `${ROOT_URL}/api/hotel`;
+        const response = await axios.post(url, data)
+        const responseBody = await response.data;
+        dispatch({
+            type: CREATE_HOTEL_SUCCESS
+        });
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: CREATE_HOTEL_ERROR,
+            message: error
+        });
+    }
+}
+
+export const createPartner = (data) => async dispatch => {
+    try {
+        dispatch({ type: CREATE_HOTEL_REQUEST });
+        const url = `${ROOT_URL}/api/addHotel`;
         const response = await axios.post(url, data)
         const responseBody = await response.data;
         dispatch({

@@ -1,7 +1,9 @@
 import {
   GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR,
   UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
-  GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_ERROR, REMOVE_USER_REQUEST, REMOVE_USER_SUCCESS, REMOVE_USER_ERROR, CLEAR_USER_STATE
+  GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_ERROR, REMOVE_USER_REQUEST, REMOVE_USER_SUCCESS, REMOVE_USER_ERROR, CLEAR_USER_STATE,
+  GET_HOTEL_HISTORY_REQUEST, GET_HOTEL_HISTORY_SUCCESS,GET_HOTEL_HISTORY_ERROR,
+  GET_FLIGHT_HISTORY_REQUEST, GET_FLIGHT_HISTORY_SUCCESS, GET_FLIGHT_HISTORY_ERROR
 } from "../actions/actionUser";
 
 const initialState = {
@@ -125,6 +127,62 @@ const reducerUser = (state = initialState, action) => {
         requesting: false,
         message: action.message,
         form: 'errorRemoveUser'
+      };
+      return state;
+
+//---------------------------------------------
+    case GET_HOTEL_HISTORY_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case GET_HOTEL_HISTORY_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        hotelBookingHistory: action.payload,
+        form: 'getHotelBookingHistory'
+      };
+      return state;
+
+    case GET_HOTEL_HISTORY_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'getHotelBookingHistory'
+      };
+      return state;
+
+      //---------------------------------------------
+    case GET_FLIGHT_HISTORY_REQUEST:
+      return {
+        ...state,
+        requesting: true,
+        form: ''
+      };
+
+    case GET_FLIGHT_HISTORY_SUCCESS:
+      state = {
+        ...state,
+        requesting: false,
+        success: true,
+        flightBookingHistory: action.payload,
+        form: 'getHotelBookingHistory'
+      };
+      return state;
+
+    case GET_FLIGHT_HISTORY_ERROR:
+      state = {
+        ...state,
+        success: false,
+        requesting: false,
+        message: action.message,
+        form: 'getHotelBookingHistory'
       };
       return state;
 

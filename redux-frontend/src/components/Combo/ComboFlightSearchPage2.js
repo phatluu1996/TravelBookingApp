@@ -385,6 +385,16 @@ const ComboFlightSearchPage2 = (props) => {
             $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         }
 
+        if (!form.returnDate.value) {
+            err.returnDate = 'Return Date cannot be empty';            
+            form.returnDate.parentElement.classList.add("is-invalid");
+            $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+        } else {
+            err.returnDate = '';
+            form.returnDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+        }
+
         if (form.departureDate.value && form.returnDate.value) {
             if (form.departureDate.value >= form.returnDate.value) {
                 err.departureDate = 'Departure Date must be smaller than return date';
@@ -395,6 +405,7 @@ const ComboFlightSearchPage2 = (props) => {
                 form.returnDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
             } else {
+                err.departureDate = '';
                 err.returnDate = '';
                 form.departureDate.parentElement.classList.remove("is-invalid");
                 $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
@@ -403,7 +414,7 @@ const ComboFlightSearchPage2 = (props) => {
             }
         }
 
-        if (err.from || err.to || err.departureDate) {
+        if (err.from || err.to || err.departureDate || err.returnDate) {
             setErrFlt(err);
             return false;
         }
@@ -546,7 +557,7 @@ const ComboFlightSearchPage2 = (props) => {
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Adult</label>
-                                                <div className="input-a"><input name="adult" type="number" defaultValue={1} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="adult" type="number" defaultValue={props.filter.adult} min="1" max="7" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -554,11 +565,11 @@ const ComboFlightSearchPage2 = (props) => {
                                         <div className="srch-tab-line">
                                             <div className="srch-tab-left transformed">
                                                 <label>Child</label>
-                                                <div className="input-a"><input name="child" type="number" defaultValue={0} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="child" type="number" defaultValue={props.filter.child} min="0" max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
                                             <div className="srch-tab-right transformed">
                                                 <label>Infant</label>
-                                                <div className="input-a"><input name="infant" type="number" defaultValue={0} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
+                                                <div className="input-a"><input name="infant" type="number" defaultValue={props.filter.infant} max="7" min="0" onKeyPress={(e) => e.preventDefault()} /></div>
                                             </div>
 
                                             <div className="clear"></div>
@@ -848,7 +859,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number}</a>
                                                                 <a className="active">{props?.flights?.returnData?.number + 1}</a>
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a>
-                                                                <a >{">"}</a></>)                                                }
+                                                                <a >{">"}</a></>)}
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>

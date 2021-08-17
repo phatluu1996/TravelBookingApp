@@ -133,7 +133,7 @@ const AdminHotelEdit = (props) => {
             data.location.province = slProvince;
             data.location.district = slDistrict;
             data.location.ward = slWard;
-            data.account.password = form.password.value;
+            // data.account.password = form.password.value;
             data.retired = false;
             // }
             props.updateHotel(data.id, data);
@@ -288,7 +288,7 @@ const AdminHotelEdit = (props) => {
                                                 {!(props.province.data && hotel) && <div className="loading" delay-hide="10"></div>}
                                                 {hotel && <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
                                                     <div className="row">
-                                                        <div className="col-md-6">
+                                                        <div className="col-md-12">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Username*</label>
                                                                 <input type="text" className={formControlClass("username")} name="username" defaultValue={hotel?.account?.userName} readOnly />
@@ -296,14 +296,14 @@ const AdminHotelEdit = (props) => {
                                                                 <div className="invalid-feedback">{validateError.username}</div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-6">
+                                                        {/* <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Password*</label>
                                                                 <input type="password" className={formControlClass("password")} name="password" defaultValue={hotel?.account?.password} readOnly={!isEdit} />
                                                                 <div className="valid-feedback"></div>
                                                                 <div className="invalid-feedback">{validateError.password}</div>
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="col-form-label">Hotel Name*</label>

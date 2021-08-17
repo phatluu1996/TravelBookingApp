@@ -53,6 +53,7 @@ const ComboBookingPage = (props) => {
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [returnTotalPrice, setReturnTotalPrice] = useState(0);
+  const [totalInfantPrice, setTotalInfantPrice] = useState(0);
   const [totalFlightPrice, setTotalFlightPrice] = useState(0);
 
   const [checkout, setCheckout] = useState(false);
@@ -274,7 +275,10 @@ const ComboBookingPage = (props) => {
     // e.preventDefault();
     const checkinfant = [...hasInfant];
     checkinfant[index].infant = !checkinfant[index].infant;
-    setHasInfant(checkinfant);
+    var totalInfant = 0;
+    checkinfant?.map(item => {totalInfant = totalInfant + parseInt(item.infant ? flights.data?.infant_price : 0)});
+    setHasInfant(checkinfant);    
+    setTotalInfantPrice(totalInfant*2);
   };
 
   const handleBookingSubmit = (e) => {
@@ -802,7 +806,7 @@ const ComboBookingPage = (props) => {
                               COMPLETE BOOKING
                             </button>
                             {checkout && (
-                              <div className="loading" delay-hide="10"></div>
+                              <div className="loading" style={{zIndex:'100001'}} delay-hide="10"></div>
                             )}
                           </div>
                           <ReactModal
@@ -1064,6 +1068,13 @@ const ComboBookingPage = (props) => {
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
+                        <span className="chk-l">TOTAL INFANT FLIGHT PRICE</span>
+                        <span className="chk-r">
+                          {totalInfantPrice}$
+                        </span>
+                        <div className="clear"></div>
+                      </div>
+                      <div className="chk-line">
                         <span className="chk-l">Combo Discount</span>
                         <span className="chk-r" style={{ color: "green" }}>
                           10%
@@ -1096,7 +1107,7 @@ const ComboBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a >
-                        <img alt="" src={props.hotel?.data?.images[0] ? props.hotel?.data?.images[0]?.imagePath : ""} style={{ width: "95px", height: "60px" }} />
+                        <img alt="" src={props.hotel?.data?.images?.length > 0 ? props.hotel?.data?.images[0]?.imagePath : ""} style={{ width: "95px", height: "60px" }} />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -1114,7 +1125,7 @@ const ComboBookingPage = (props) => {
                             <nav className="chk-stars">
                               <ul>
                                 {[...Array(5)].map(
-                                  (item, index) =>
+                                  (index) =>
                                     // {
                                     index + 1 >
                                       Math.ceil(

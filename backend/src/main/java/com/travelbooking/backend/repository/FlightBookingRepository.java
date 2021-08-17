@@ -3,14 +3,17 @@ package com.travelbooking.backend.repository;
 import com.travelbooking.backend.models.Flight;
 import com.travelbooking.backend.models.FlightBooking;
 import com.travelbooking.backend.models.FlightBookingDetail;
+import com.travelbooking.backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface FlightBookingRepository extends JpaRepository<FlightBooking, Long>, JpaSpecificationExecutor {
+    List<FlightBooking> getFlightBookingsByUser(User user);
 
     @Query("SELECT BOOK FROM FlightBooking BOOK\n" +
             "WHERE EXISTS (SELECT 1 FROM FlightBookingDetail DETAIL\n" +
