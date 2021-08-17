@@ -652,7 +652,7 @@ const ComboHotelSearchPage = (props) => {
                               name="numAdult"
                               type="number"
                               defaultValue={queryParam.get("numberAdult")}
-                              min="0"
+                              min="1"
                               max="7"
                               onKeyPress={(e) => e.preventDefault()}
                             />
@@ -667,6 +667,7 @@ const ComboHotelSearchPage = (props) => {
                               name="numChildren"
                               type="number"
                               defaultValue={queryParam.get("numberChildren")}
+                              min="0"
                               max="14"
                               onKeyPress={(e) => e.preventDefault()}
                             />

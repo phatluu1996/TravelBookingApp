@@ -368,6 +368,11 @@ const Home = (props) => {
             setErrFlt(err);
             return false;
         }
+
+        if (formSelector === "hotel-flight-search" && err.returnDate) {
+            setErrFlt(err);
+            return false;
+        }
         return true;
     }
 
@@ -466,7 +471,7 @@ const Home = (props) => {
                 err.adult = 'Hotel adult cannot be higher than flight adult';
                 form.adultHotel.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
-            }else{
+            } else {
                 err.adult = '';
                 form.adultHotel.parentElement.classList.remove("is-invalid");
                 $(`.${formSelector} #adult-error`)[0].innerText = err.adult;
@@ -476,6 +481,11 @@ const Home = (props) => {
 
 
         if (err.province || err.checkin || err.checkout) {
+            setErrHlt(err);
+            return false;
+        }
+        
+        if (formSelector === "hotel-flight-search" && (err.adult || err.child)) {
             setErrHlt(err);
             return false;
         }

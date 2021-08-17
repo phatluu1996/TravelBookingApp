@@ -15,7 +15,7 @@ import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faBaby, faCheck, faChild, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
-import { getRole, ROLE_USER } from "../../utils";
+import { getRole, getToken, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
@@ -90,8 +90,7 @@ const ComboHotelDetailPage = (props) => {
     const goToBooking = (e) => {
         if (getRole() != ROLE_USER) {
             $(".header-account a").click();
-        } else if (totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren))
-        {
+        } else if (totalAdult < parseInt(props.filter.numberAdult) || totalChild < parseInt(props.filter.numberChildren)) {
             // alert("Select the number of rooms suitable for the number of people");        
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
@@ -716,7 +715,7 @@ const ComboHotelDetailPage = (props) => {
                                                                         props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                <div
+                                                                {getToken() && <div
                                                                     hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
@@ -785,7 +784,7 @@ const ComboHotelDetailPage = (props) => {
                                                                     >
                                                                         Submit Review
                                                                     </button>
-                                                                </div>
+                                                                </div>}
                                                             </div>
                                                         </div>
                                                     </div>

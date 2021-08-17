@@ -241,3 +241,12 @@ export const confirmAccount = (id) => async dispatch =>{
         });
     }
 }
+
+export const CLEAR_AUTH_STATE = "CLEAR_AUTH_STATE";
+
+export const clearAuthState = () => async dispatch =>{
+
+        dispatch({
+            type: CLEAR_AUTH_STATE
+        });
+}

@@ -385,6 +385,16 @@ const ComboFlightSearchPage2 = (props) => {
             $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
         }
 
+        if (!form.returnDate.value) {
+            err.returnDate = 'Return Date cannot be empty';            
+            form.returnDate.parentElement.classList.add("is-invalid");
+            $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+        } else {
+            err.returnDate = '';
+            form.returnDate.parentElement.classList.remove("is-invalid");
+            $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
+        }
+
         if (form.departureDate.value && form.returnDate.value) {
             if (form.departureDate.value >= form.returnDate.value) {
                 err.departureDate = 'Departure Date must be smaller than return date';
@@ -395,6 +405,7 @@ const ComboFlightSearchPage2 = (props) => {
                 form.returnDate.parentElement.classList.add("is-invalid");
                 $(`.${formSelector} #returnDate-error`)[0].innerText = err.returnDate;
             } else {
+                err.departureDate = '';
                 err.returnDate = '';
                 form.departureDate.parentElement.classList.remove("is-invalid");
                 $(`.${formSelector} #departureDate-error`)[0].innerText = err.departureDate;
@@ -403,7 +414,7 @@ const ComboFlightSearchPage2 = (props) => {
             }
         }
 
-        if (err.from || err.to || err.departureDate) {
+        if (err.from || err.to || err.departureDate || err.returnDate) {
             setErrFlt(err);
             return false;
         }
@@ -848,7 +859,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number}</a>
                                                                 <a className="active">{props?.flights?.returnData?.number + 1}</a>
                                                                 <a onClick={setPage}>{props?.flights?.returnData?.number + 2}</a>
-                                                                <a >{">"}</a></>)                                                }
+                                                                <a >{">"}</a></>)}
                                                 <div className="clear"></div>
                                             </div>)
                                         }</>
