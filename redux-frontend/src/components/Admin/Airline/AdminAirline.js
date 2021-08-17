@@ -156,12 +156,6 @@ const AdminAirline = (props) => {
                 },
             },
         },
-        // cells: {
-        //   style: {
-        //     paddingLeft: '8px', // override the cell padding for data cells
-        //     paddingRight: '8px',
-        //   },
-        // },
     };
 
 

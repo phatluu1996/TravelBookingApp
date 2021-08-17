@@ -1,5 +1,6 @@
 package com.travelbooking.backend.controller;
 
+import com.travelbooking.backend.UploadImageService.UploadFileServiceImpl;
 import com.travelbooking.backend.models.*;
 import com.travelbooking.backend.repository.*;
 import com.travelbooking.backend.security.payload.response.MessageResponse;
@@ -25,6 +26,7 @@ import com.travelbooking.backend.specification.DBSpecification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @CrossOrigin
@@ -42,6 +44,10 @@ public class HotelController {
     private HotelBookingRepository hotelBookingRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private UploadFileServiceImpl uploadFileService;
+
+
     //http://localhost:8080/api/findHotels
     @GetMapping("/findHotels")
     public Collection<Hotel> getHotels(@RequestParam(required = false, name = "province") Integer province,
@@ -49,21 +55,42 @@ public class HotelController {
                                        @RequestParam(required = false, name = "ward") Integer ward,
                                        @RequestParam (required = false, name = "numberAdult") Integer numberAdult,
                                        @RequestParam (required = false, name = "numberChildren") Integer numberChildren,
-                                       @RequestParam (required = false, name = "checkInDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date checkInDate,
+                                       @RequestParam (required = false, name = "checkInDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkInDate,
+                                       @RequestParam (required = false, name = "checkOutDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkOutDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
     ) throws ParseException {
         boolean check = false;
         int roomActive = 0;
         List<Hotel> hotelCheckList = new ArrayList<>();
+        List<HotelBooking> hotelBookings = new ArrayList<>();
         Specification<Hotel> spec = HotelSpecification.createSpecification(province, district, ward, Boolean.FALSE, numberAdult, numberChildren, numRoom, checkInDate);
-
         List<Hotel> hotels = hotelRepository.findAll(spec);
-//        System.out.println(hotels);
+        List<HotelBooking> hotelBookingList = hotelBookingRepository.findAll();
+        for (int i = 0; i < hotelBookingList.size() ; i++) {
+                if((hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
+                    &&(hotelBookingList.get(i).getCheckInDate().before(checkOutDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+                        &&(hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+                ){
+                        hotelBookings.add(hotelBookingList.get(i));
+                }
+        }
+
         for (int i = 0; i < hotels.size(); i++) {
             for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
-                roomActive += hotels.get(i).getRooms().get(j).getMaxAdult();
+                if(hotelBookings.size() > 0 ){
+                    for (int k = 0; k < hotelBookings.size(); k++) {
+
+                            for (int l = 0; l < hotelBookings.get(k).getHotelBookingDetail().getHotelBookingRooms().size() ; l++) {
+                               if(!hotelBookings.get(k).getHotelBookingDetail().getHotelBookingRooms().get(l).equals(hotels.get(i).getRooms().get(j))){
+                                   roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
+                               }
+                            }
+                    }
+                }else{
+                    roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
+                }
             }
-            if (roomActive >= numberAdult) {
+            if (roomActive >= numberAdult+numberChildren) {
                 hotelCheckList.add(hotels.get(i));
             }
         }
@@ -106,6 +133,40 @@ public class HotelController {
         }
         return  ResponseEntity.ok().body(hotel);
     }
+    //http://localhost:8080/api/hotel/{id}
+    @GetMapping("/hotelWithRoomActive")
+    public ResponseEntity<Hotel> getHotelWithActiveRoom( @RequestParam (required = false, name = "id") String id,
+                                                         @RequestParam (required = false, name = "checkInDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkInDate,
+                                                         @RequestParam (required = false, name = "checkOutDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkOutDate){
+        Hotel hotel = hotelRepository.findById(Long.parseLong(id)).get();
+
+        if (hotel.getRetired()){
+            return ResponseEntity.ok().body(null);
+        }
+        List<HotelBooking> hotelBookings = new ArrayList<>();
+        List<Room> rooms = new ArrayList<>();
+        List<HotelBooking> hotelBookingList = hotelBookingRepository.findAll();
+        for (int i = 0; i < hotelBookingList.size() ; i++) {
+            if((hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
+                    &&(hotelBookingList.get(i).getCheckInDate().before(checkOutDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+                    &&(hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+            ){
+                hotelBookings.add(hotelBookingList.get(i));
+            }
+        }
+        for (int i = 0; i < hotel.getRooms().size() ;i++) {
+            for (int j = 0; j <hotelBookings.size() ; j++) {
+                for (int k = 0; k <hotelBookings.get(j).getHotelBookingDetail().getHotelBookingRooms().size() ; k++) {
+                        if(hotelBookings.get(j).getHotelBookingDetail().getHotelBookingRooms().get(k).getRoom().equals(hotel.getRooms().get(i))
+                                && (hotel.getRooms().get(i).getRoomStatus() == false || hotel.getRooms().get(i).getRoomStatus() == null) ){
+                            rooms.add(hotel.getRooms().get(i));
+                        }
+                }
+            }
+        }
+                hotel.setRooms(rooms);
+        return  ResponseEntity.ok().body(hotel);
+    }
 
     //http://localhost:8080/api/hotel
     @PostMapping("/hotel")
@@ -117,6 +178,46 @@ public class HotelController {
         Account account = accountRepository.save(hotel.getAccount());
         Location location = locationRepository.save(hotel.getLocation());
         Hotel result = hotelRepository.save(hotel);
+        return ResponseEntity.ok().body(result);
+    }
+    //http://localhost:8080/api/addHotel
+    @PostMapping("/addHotel")
+    public ResponseEntity<?> addHotelWithImage( @RequestParam MultipartFile[] files
+            ,@RequestParam(required=false,name="hotelName") String hotelName
+            ,@RequestParam(required=false,name="email") String email
+            ,@RequestParam(required=false,name="description") String description
+            ,@RequestParam(required=false,name="numberOfRoom") int numberOfRoom
+            ,@RequestParam(required=false,name="street") String street
+            ,@RequestParam(required=false,name="province") Province province
+            ,@RequestParam(required=false,name="district") District district
+            ,@RequestParam(required=false,name="ward") Ward ward
+            ,@RequestParam(required=false,name="account") String accountId
+    ) throws Exception {
+        Location location = new Location();
+        Hotel hotel = hotelRepository.getByAccountId(Long.parseLong(accountId));
+        Account account = accountRepository.getAccountById(Long.parseLong(accountId));
+        if (hotel != null) {
+            return ResponseEntity
+                    .badRequest().body("Username has been used !");
+        }
+        hotel.setHotelName(hotelName);
+        hotel.setEmail(email);
+        hotel.setDescription(description);
+        hotel.setNumberOfRoom(numberOfRoom);
+        location.setStreet(street);
+        location.setProvince(province);
+        location.setDistrict(district);
+        location.setWard(ward);
+        hotel.setLocation(locationRepository.save(location));
+        hotel.setAccount(account);
+
+        List<Image> images = uploadFileService.fileUpload(files);
+        hotel.setImages(images);
+        Hotel result = hotelRepository.save(hotel);
+        if(result != null){
+            account.setRole("Hotel");
+            accountRepository.save(account);
+        }
         return ResponseEntity.ok().body(result);
     }
     //http://localhost:8080/api/hotel/{id}
