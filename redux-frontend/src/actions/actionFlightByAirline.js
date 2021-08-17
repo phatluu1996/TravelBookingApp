@@ -50,17 +50,6 @@ export const updateFlight = (id, data) => async (dispatch) => {
     }
 };
   
-export const deleteFlight = (id) => async (dispatch) => {
-    try {
-        await flightApi.removeFlight(id);
-  
-        dispatch({
-            type: DELETE_FLIGHT,
-        });
-    } catch (err) {
-        console.log(err);
-    }
-};
   
 
 export const CLEAR_FLIGHTS_RESPONSE = 'CLEAR_FLIGHTS_RESPONSE'

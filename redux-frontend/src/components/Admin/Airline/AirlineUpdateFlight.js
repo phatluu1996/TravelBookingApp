@@ -6,11 +6,10 @@ import AdminFooter from "../Layout/AdminFooter";
 import AdminNavbar from "../Layout/AdminNavbar";
 import AdminSidebar from "../Layout/AdminSidebar";
 import { useQuery } from "../../../utils/QueryParam";
-import { getAirline } from "../../../actions/actionAirline";
+import { getAirline, updateFlight } from "../../../actions/actionAirline";
 import { Link } from "react-router-dom";
 import {
   retrieveFlight,
-  updateFlight,
 } from "../../../actions/actionFlightByAirline";
 
 const province = {
@@ -105,6 +104,7 @@ const province = {
     },
   ],
 };
+
 const status = {
   properties: [
     {
@@ -461,8 +461,8 @@ const AirlineUpdateFlight = (props) => {
                                   <h3 className="card-title mb-3">
                                     Edit Flight
                                   </h3>
-
-                                  <form
+                                  {!(props.province.data && props.flight.single) && <div className="loading" delay-hide="10"></div>}
+                                  {props.province.data && props.flight.single && <form
                                     onSubmit={handleUpdateSubmit}
                                     className="form-sample"
                                     autoComplete="false"
@@ -479,9 +479,7 @@ const AirlineUpdateFlight = (props) => {
                                           </label>
                                           <select
                                             className="form-control"
-                                            defaultValue={
-                                              props.flight?.single?.departureCity
-                                            }
+                                            defaultValue={props.flight?.single?.departureCity}
                                             name="departureCity"
                                             id="departureCity"
                                           >
@@ -628,7 +626,7 @@ const AirlineUpdateFlight = (props) => {
                                           />
                                           <label
                                             className="form-check-label pl-0"
-                                            for="flexCheckDefault"
+                                            htmlFor="flexCheckDefault"
                                           >
                                             Inflight Entertainment
                                             <span
@@ -762,7 +760,7 @@ const AirlineUpdateFlight = (props) => {
                                       <div className="col-md-12"></div>
                                       <div className="col-md-12">
                                         <div className="form-floating">
-                                          <label for="floatingTextarea2">
+                                          <label htmlFor="floatingTextarea2">
                                             Descriptions
                                             <span
                                               style={{
@@ -1071,7 +1069,7 @@ const AirlineUpdateFlight = (props) => {
                                       </div>
                                       <div className="col-md-3"></div>
                                     </div>
-                                  </form>
+                                  </form>}
                                 </div>
                               </div>
                             </div>

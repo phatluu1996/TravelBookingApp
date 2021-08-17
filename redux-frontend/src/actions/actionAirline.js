@@ -42,12 +42,12 @@ export const FETCH_ALL_AIRLINE_ERROR = "FETCH_ALL_AIRLINE_ERROR";
 
 export const fetchAllAirline = () => async (dispatch) => {
     try {
-        dispatch({ type: FETCH_ALL_AIRLINE_REQUEST });        
+        dispatch({ type: FETCH_ALL_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airlines`);
@@ -97,10 +97,10 @@ export const getAirline = (id) => async dispatch => {
     try {
         dispatch({ type: GET_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/${id}`);
@@ -126,10 +126,10 @@ export const getAllBookingAirline = (id) => async dispatch => {
     try {
         dispatch({ type: GET_ALL_BOOKING_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/allAirlineBooking/${id}`);
@@ -155,10 +155,10 @@ export const getDailyIncomeAirline = (id) => async dispatch => {
     try {
         dispatch({ type: GET_DAILY_INCOME_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/dailyIncomeAirline/${id}`);
@@ -184,10 +184,10 @@ export const getRevenueAirline = (id) => async dispatch => {
     try {
         dispatch({ type: GET_REVENUE_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/revenueByAirline/${id}`);
@@ -213,10 +213,10 @@ export const countBookingTodayAirline = (id) => async dispatch => {
     try {
         dispatch({ type: COUNT_BOOKING_TODAY_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/bookingToday/${id}`);
@@ -242,10 +242,10 @@ export const getReportMonthAirline = (id) => async dispatch => {
     try {
         dispatch({ type: GET_REPORT_MONTH_AIRLINE_REQUEST });
         const httpAuth = axios.create({
-            baseURL:`${ROOT_URL}/api`,
+            baseURL: `${ROOT_URL}/api`,
             headers: {
                 "Content-type": "application/json",
-                "Authorization":"Bearer "+sessionStorage.getItem("userToken")
+                "Authorization": "Bearer " + sessionStorage.getItem("userToken")
             }
         });
         const response = await httpAuth.get(`/airline/reportPerMonth/${id}`);
@@ -275,7 +275,7 @@ export const removeAirline = (id) => async dispatch => {
     try {
         dispatch({ type: REMOVE_AIRLINE_REQUEST });
         const url = `${ROOT_URL}/api/airline/${parseInt(id)}`;
-    const response = await axios.post(url);
+        const response = await axios.post(url);
         const responseBody = await response.data;
         dispatch({
             type: REMOVE_AIRLINE_SUCCESS,
@@ -289,3 +289,50 @@ export const removeAirline = (id) => async dispatch => {
         });
     }
 }
+
+export const REMOVE_FLIGHT_REQUEST = "REMOVE_FLIGHT_REQUEST";
+export const REMOVE_FLIGHT_SUCCESS = "REMOVE_FLIGHT_SUCCESS";
+export const REMOVE_FLIGHT_ERROR = "REMOVE_FLIGHT_ERROR";
+
+export const removeFlight = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: REMOVE_FLIGHT_REQUEST });
+        const url = `${ROOT_URL}/api/flight/${parseInt(id)}`;
+        const response = await axios.post(url);
+        const responseBody = await response.data;
+        dispatch({
+            type: REMOVE_FLIGHT_SUCCESS,
+            payload: responseBody
+        });
+    } catch (err) {
+        dispatch({
+            type: REMOVE_FLIGHT_ERROR,
+            message: err
+        });
+    }
+};
+
+
+export const UPDATE_FLIGHT_REQUEST = "UPDATE_FLIGHT_REQUEST";
+export const UPDATE_FLIGHT_SUCCESS = "UPDATE_FLIGHT_SUCCESS";
+export const UPDATE_FLIGHT_ERROR = "UPDATE_FLIGHT_ERROR";
+
+export const updateFlight = (id, data) => async (dispatch) => {
+    try {
+        dispatch({ type: UPDATE_FLIGHT_REQUEST });
+        const url = `${ROOT_URL}/api/flight/${parseInt(id)}`;
+        const response = await axios.put(url, data);
+        const responseBody = await response.data;        
+        // const res = await flightApi.updateFlight(id, data);
+  
+        dispatch({
+            type: UPDATE_FLIGHT_SUCCESS,
+            payload: responseBody,
+        });
+    } catch (err) {
+        dispatch({
+            type: UPDATE_FLIGHT_ERROR,
+            message: err
+        });
+    }
+};

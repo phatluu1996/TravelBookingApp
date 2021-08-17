@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable, { createTheme } from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { faEdit, faTrash,faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { retrieveProvince } from '../../../actions/actionLocation';
@@ -10,8 +10,8 @@ import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
-import { getAirline } from '../../../actions/actionAirline';
-import { clearFlightsState, deleteFlight } from '../../../actions/actionFlightByAirline';
+import { getAirline, removeFlight } from '../../../actions/actionAirline';
+import { clearFlightsState } from '../../../actions/actionFlightByAirline';
 import { listFlights } from '../../../actions/actionFlightByAirline';
 
 const AirlineFlightData = (props) => {
@@ -24,7 +24,7 @@ const AirlineFlightData = (props) => {
 
         props.getProvince();
         props.getAirline(queryParam.get("id"));
-        props.getListFlight(queryParam.get("id"));
+        // props.getListFlight(queryParam.get("id"));
         return () => {
             mount = true;
         }
@@ -102,44 +102,44 @@ const AirlineFlightData = (props) => {
         },
         {
             name: 'ACTIONS',
-            cell: (listflight,index) => <>
-              <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${listflight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
-      
-      <a  className="list-btn-sm" data-toggle="modal" data-target={"#flight-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></a>
-      <div className="modal fade" id={"flight-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div className="modal-dialog " role="document">
-              <div className="modal-content">
-                  <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">Confirmation</h5>
-                      <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div className="modal-body py-2">
-                      <h5 className="text-center pt-2">Are you sure you want to delete this flight?</h5>
-                      <p className="text-center pb-2">This will be delete immediately. You can't undo this action</p>
-                      <form onSubmit={(e) => handleSubmit(e, listflight.id)}>
-                          <div className="form-group text-right">
-                              <button type="submit" className="btn btn-primary btn-sm mr-2">Delete</button>
-                              <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-      </>
-          }
+            cell: (listflight, index) => <>
+                <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${listflight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+
+                <a className="list-btn-sm" data-toggle="modal" data-target={"#flight-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></a>
+                <div className="modal fade" id={"flight-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog " role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body py-2">
+                                <h5 className="text-center pt-2">Are you sure you want to delete this flight?</h5>
+                                <p className="text-center pb-2">This will be delete immediately. You can't undo this action</p>
+                                <form onSubmit={(e) => handleSubmit(e, listflight.id)}>
+                                    <div className="form-group text-right">
+                                        <button type="submit" className="btn btn-primary btn-sm mr-2">Delete</button>
+                                        <button id={"close-" + index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        }
     ];
 
     const handleSubmit = (e, id) => {
         e.preventDefault();
-        var form=e.target;
+        var form = e.target;
         if (id) {
             props.delFlight(id);
             form.getElementsByTagName("button")[1].click();
         }
-        
+
     }
     const clearState = () => {
         props.clearFlight();
@@ -232,7 +232,7 @@ const AirlineFlightData = (props) => {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="row">
-                                            <div className="col-lg-2 col-xl-2">
+                                                <div className="col-lg-2 col-xl-2">
                                                     <div className="card-box text-center">
                                                         <img src={props.airline.single?.image} className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
 
@@ -248,7 +248,7 @@ const AirlineFlightData = (props) => {
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Contact title :</strong><span className="ml-2">{props.airline.single?.contactTitle}</span></p>
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Mobile :</strong> <span className="ml-2 ">{props.airline.single?.mobile}</span></p>
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Email :</strong><span className="ml-2"></span>{props.airline.single?.email}</p>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,26 +259,27 @@ const AirlineFlightData = (props) => {
                                                                 <div className="card">
                                                                     <div className="card-body">
                                                                         <div className="row">
-                                                                        <div className="col-lg-8">
-                                                                            <h4 className="card-title">SCHEDULE FLIGHT DATA</h4>
+                                                                            <div className="col-lg-8">
+                                                                                <h4 className="card-title">SCHEDULE FLIGHT DATA</h4>
+                                                                            </div>
+                                                                            <div className="col-lg-4">
+                                                                                <Link to={`/airline-create-flight?id=${queryParam.get("id")}`} className="btn btn-outline-primary">
+                                                                                    Add New Flight {"  "} <FontAwesomeIcon className="list-btn-sm-icon mb-1 ml-1" icon={faPlusSquare} />
+                                                                                </Link>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="col-lg-4">
-                                                                            <Link to={`/airline-create-flight?id=${queryParam.get("id")}`} className="btn btn-outline-primary">
-                                                                           Add New Flight {"  "} <FontAwesomeIcon className="list-btn-sm-icon mb-1 ml-1" icon={faPlusSquare}/>
-                                                                            </Link>
-                                                                        </div>
-                                                                        </div>
-                                                                         <div className="table-responsive">
-                                                                                <DataTable className="table-a"
-                                                                                    customStyles={customStyles}
-                                                                                    theme='solarized'
-                                                                                    progressPending={!props.listflight?.all}
-                                                                                    columns={header}
-                                                                                    data={props.listflight?.all}
-                                                                                    pagination
-                                                                                    paginationPerPage={10}
-                                                                                />
-                                                                        </div>
+                                                                        {!props.airline.single && <div className="loading" delay-hide="10"></div>}
+                                                                        {props.airline.single && <div className="table-responsive">
+                                                                            <DataTable className="table-a"
+                                                                                customStyles={customStyles}
+                                                                                theme='solarized'
+                                                                                // progressPending={!props.airline?.all}
+                                                                                columns={header}
+                                                                                data={props.airline.single.flights}
+                                                                                pagination
+                                                                                paginationPerPage={10}
+                                                                            />
+                                                                        </div>}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -295,7 +296,7 @@ const AirlineFlightData = (props) => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
@@ -317,15 +318,12 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getAirline(id));
         },
         delFlight: (id) => {
-            dispatch(deleteFlight(id));
+            dispatch(removeFlight(id));
         },
         clearFlight: () => {
             dispatch(clearFlightsState)
-        },
-        getListFlight: (id) => {
-            dispatch(listFlights(id));
         }
-            
+
     };
 
 };

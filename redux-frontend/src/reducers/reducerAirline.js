@@ -1,4 +1,4 @@
-import { CLEAR_AIRLINE_STATE, CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, REMOVE_AIRLINE_ERROR, REMOVE_AIRLINE_REQUEST, REMOVE_AIRLINE_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, } from "../actions/actionAirline";
+import { CLEAR_AIRLINE_STATE, CREATE_AIRLINE_ERROR, CREATE_AIRLINE_REQUEST, CREATE_AIRLINE_SUCCESS, GET_AIRLINE_ERROR, GET_AIRLINE_REQUEST, GET_AIRLINE_SUCCESS, REMOVE_AIRLINE_ERROR, REMOVE_AIRLINE_REQUEST, REMOVE_AIRLINE_SUCCESS, REMOVE_FLIGHT_ERROR, REMOVE_FLIGHT_REQUEST, REMOVE_FLIGHT_SUCCESS, RETRIEVE_AIRLINE, UPDATE_AIRLINE, UPDATE_FLIGHT_ERROR, UPDATE_FLIGHT_REQUEST, UPDATE_FLIGHT_SUCCESS, } from "../actions/actionAirline";
 import {
     FETCH_ALL_AIRLINE_ERROR, FETCH_ALL_AIRLINE_REQUEST, FETCH_ALL_AIRLINE_SUCCESS,
     GET_ALL_BOOKING_AIRLINE_REQUEST, GET_ALL_BOOKING_AIRLINE_SUCCESS, GET_ALL_BOOKING_AIRLINE_ERROR,
@@ -102,6 +102,58 @@ function reducerAirline(airline = initialState, action) {
             };
             return airline;
         //------------------------------------------------------------
+        case REMOVE_FLIGHT_REQUEST:
+            return {
+                ...airline,
+                requesting: true
+            };
+
+
+        case REMOVE_FLIGHT_SUCCESS:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: true,
+                single: action.payload
+            };
+            return airline;
+
+        case REMOVE_FLIGHT_ERROR:
+            airline = {
+                ...airline,
+                requesting: false,
+                message: action.message
+            };
+            return airline;
+
+        //------------------------------------------------------------     
+           
+        case UPDATE_FLIGHT_REQUEST:
+            return {
+                ...airline,
+                requesting: true
+            };
+
+
+        case UPDATE_FLIGHT_SUCCESS:
+            airline = {
+                ...airline,
+                requesting: false,
+                success: true,
+                single: action.payload
+            };
+            return airline;
+
+        case UPDATE_FLIGHT_ERROR:
+            airline = {
+                ...airline,
+                requesting: false,
+                message: action.message
+            };
+            return airline;
+
+
+        //------------------------------------------------------------
         case REMOVE_AIRLINE_REQUEST:
             return {
                 ...airline,
@@ -125,6 +177,7 @@ function reducerAirline(airline = initialState, action) {
                 message: action.message
             };
             return airline;
+
 
         //------------------------------------------------------------
         case GET_ALL_BOOKING_AIRLINE_REQUEST:

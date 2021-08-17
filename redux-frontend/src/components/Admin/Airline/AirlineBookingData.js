@@ -16,20 +16,20 @@ import { countBookingTodayAirline, getAirline, getAllBookingAirline, getDailyInc
 
 const status = {
     properties: [
-      {
-        value: 1,
-        label: "Confirmed",
-      },
-      {
-        value: 2,
-        label: "Requested",
-      },
-      {
-        value: 3,
-        label: "Cancel",
-      },
+        {
+            value: 1,
+            label: "Confirmed",
+        },
+        {
+            value: 2,
+            label: "Requested",
+        },
+        {
+            value: 3,
+            label: "Cancel",
+        },
     ],
-  };
+};
 const AirlineBookingData = (props) => {
 
     let queryParam = useQuery();
@@ -39,7 +39,7 @@ const AirlineBookingData = (props) => {
     const handleGetSubmit = (e, booking) => {
         e.preventDefault();
         var form = e.target;
-        
+
         if (booking) {
             var data = booking;
             booking.note = form.note.value;
@@ -47,14 +47,14 @@ const AirlineBookingData = (props) => {
             props.updateBooking(booking.id, data);
             form.getElementsByTagName("button")[1].click()
         }
-        
+
     }
     useEffect(() => {
         let mount = false;
 
         props.getProvince();
         props.getAirline(queryParam.get("id"));
-        
+
         return () => {
             mount = true;
         }
@@ -65,7 +65,7 @@ const AirlineBookingData = (props) => {
 
         if (props.airline.single != null && isInitial) {
             props.getAllBookingAirline(props.airline.single?.id);
-        
+
             setIsInitial(false);
         }
         clearBookingState();
@@ -131,13 +131,13 @@ const AirlineBookingData = (props) => {
         {
             name: 'Status',
             sortable: true,
-            cell: booking =>
-           { if (booking.status == 1)
-             return "Confirmed" 
-             else if (booking.status == 2)
-             return "Requested"
-             else return "Cancel"
-        }
+            cell: booking => {
+                if (booking.status == 1)
+                    return "Confirmed"
+                else if (booking.status == 2)
+                    return "Requested"
+                else return "Cancel"
+            }
         },
         {
             name: 'User',
@@ -148,7 +148,7 @@ const AirlineBookingData = (props) => {
         {
             name: 'ACTIONS',
             cell: (booking, index) => <>
-                <a  className="list-btn-sm" data-toggle="modal" data-target={"#booking-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon></a>
+                <a className="list-btn-sm" data-toggle="modal" data-target={"#booking-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon></a>
                 <div className="modal fade" id={"booking-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
@@ -176,20 +176,20 @@ const AirlineBookingData = (props) => {
                                         <label htmlFor="message-text" className="col-form-label">Status:</label>
                                         <select defaultValue={booking.status} className="form-control" name="status" id="status">
                                             {status.properties.map((status) => (<option key={status.value} value={status.value}> {status.label}</option>
-                                              ) )}
-                                          </select>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary btn-sm mr-2">Update</button>
-                                        <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                                        <button id={"close-" + index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            {/* <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" style={{color:"white"}} icon={faTrash}></FontAwesomeIcon></Link> */}
-                              
+                {/* <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" style={{color:"white"}} icon={faTrash}></FontAwesomeIcon></Link> */}
+
             </>,
         }
     ];
@@ -284,7 +284,7 @@ const AirlineBookingData = (props) => {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="row">
-                                            <div className="col-lg-2 col-xl-2">
+                                                <div className="col-lg-2 col-xl-2">
                                                     <div className="card-box text-center">
                                                         <img src={props.airline.single?.image} className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
 
@@ -300,7 +300,7 @@ const AirlineBookingData = (props) => {
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Contact title :</strong><span className="ml-2">{props.airline.single?.contactTitle}</span></p>
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Mobile :</strong> <span className="ml-2 ">{props.airline.single?.mobile}</span></p>
                                                             <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Email :</strong><span className="ml-2"></span>{props.airline.single?.email}</p>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -311,16 +311,16 @@ const AirlineBookingData = (props) => {
                                                                 <div className="card">
                                                                     <div className="card-body">
                                                                         <h4 className="card-title">BOOKING LIST</h4>
-                                                                         <div className="table-responsive">
-                                                                                <DataTable className="table-a"
-                                                                                    customStyles={customStyles}
-                                                                                    theme='solarized'
-                                                                                    progressPending={!props.airline.allBooking}
-                                                                                    columns={header}
-                                                                                    data={props.airline.allBooking}
-                                                                                    pagination
-                                                                                    paginationPerPage={10}
-                                                                                />
+                                                                        <div className="table-responsive">
+                                                                            <DataTable className="table-a"
+                                                                                customStyles={customStyles}
+                                                                                theme='solarized'
+                                                                                progressPending={!props.airline.allBooking}
+                                                                                columns={header}
+                                                                                data={props.airline.allBooking}
+                                                                                pagination
+                                                                                paginationPerPage={10}
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -338,7 +338,7 @@ const AirlineBookingData = (props) => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
@@ -361,13 +361,13 @@ const mapDispatchToProps = (dispatch) => {
         getAirline: (id) => {
             dispatch(getAirline(id));
         },
-        getBooking: (id) =>{
+        getBooking: (id) => {
             dispatch(getBookingFlight(id));
         },
         updateBooking: (id, data) => {
-            dispatch(editBookingFlight(id,data));
+            dispatch(editBookingFlight(id, data));
         },
-        clearState: ()=>{
+        clearState: () => {
             dispatch(clearFlightBookingCached());
         }
 

@@ -3,6 +3,8 @@ package com.travelbooking.backend.controller;
 import com.sun.istack.Nullable;
 
 //import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.travelbooking.backend.models.Airline;
+import com.travelbooking.backend.repository.AirlineRepository;
 import com.travelbooking.backend.repository.FlightRepository;
 import com.travelbooking.backend.specification.DBSpecification;
 import com.travelbooking.backend.models.Flight;
@@ -32,7 +34,9 @@ public class FlightController {
 
     @Autowired
     private FlightRepository flightRepository;
-    ;
+
+    @Autowired
+    private AirlineRepository airlineRepository;
 
     //http://localhost:8080/api/flight
     @GetMapping("/flight")
@@ -62,19 +66,21 @@ public class FlightController {
 
     //http://localhost:8080/api/flight/{id}
     @PutMapping("/flight/{id}")
-    public ResponseEntity<Flight> updateFlight(@RequestBody Flight flight, @PathVariable Long id) {
+    public ResponseEntity<Airline> updateFlight(@RequestBody Flight flight, @PathVariable Long id) {
         flight.setId(id);
         Flight result = flightRepository.save(flight);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(airlineRepository.getById(result.getAirline().getId()));
     }
 
     //http://localhost:8080/api/flight/{id}
     @PostMapping("/flight/{id}")
-    public ResponseEntity<Flight> removeFlight(@PathVariable Long id) {
+    public ResponseEntity<Airline> removeFlight(@PathVariable Long id) {
         Flight flight = flightRepository.findById(id).get();
         flight.setRetired(true);
         Flight result = flightRepository.save(flight);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(airlineRepository.getById(result.getAirline().getId()));
     }
     @GetMapping("/roundFlight")
     public Hashtable<String,Flight> getRoundFlight(@RequestParam Long dId,

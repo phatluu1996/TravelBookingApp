@@ -298,7 +298,7 @@ function HotelPartnerRegister(props) {
                                                 className={`input ${validateError.contactName ? "is-invalid" : ""
                                                     }`}
                                             >
-                                                <input type="text" name="contactName" onChange={handleChange}/>
+                                                <input type="text" name="contactName" onChange={handleChange} />
                                             </div>
                                             <div className="booking-error-input">
                                                 {validateError.contactName}
@@ -325,7 +325,7 @@ function HotelPartnerRegister(props) {
                                                 className={`input ${validateError.phone ? "is-invalid" : ""
                                                     }`}
                                             >
-                                                <input type="text" name="phone" onChange={handleChange}/>
+                                                <input type="text" name="phone" onChange={handleChange} />
                                             </div>
                                             <div className="booking-error-input">
                                                 {validateError.phone}
@@ -338,7 +338,7 @@ function HotelPartnerRegister(props) {
                                                 className={`input ${validateError.email ? "is-invalid" : ""
                                                     }`}
                                             >
-                                                <input type="text" name="email" onChange={handleChange}/>
+                                                <input type="text" name="email" onChange={handleChange} />
                                             </div>
                                             <div className="booking-error-input">
                                                 {validateError.email}
@@ -502,8 +502,8 @@ function HotelPartnerRegister(props) {
                                 </div>
                                 <div
                                     className={`${statusSignup
-                                            ? "booking-success-input"
-                                            : "booking-error-input"
+                                        ? "booking-success-input"
+                                        : "booking-error-input"
                                         }`}
                                     style={{
                                         float: "left",

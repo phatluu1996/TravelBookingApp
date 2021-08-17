@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Airline {
     @Column(name = "contact_name", columnDefinition = "nvarchar(100)")
     private String contactName;
 
-        @Column(name = "contact_title", columnDefinition = "nvarchar(100)")
+    @Column(name = "contact_title", columnDefinition = "nvarchar(100)")
     private String contactTitle;
 
     @Column(name = "phone")
@@ -32,7 +33,7 @@ public class Airline {
     @Column(name = "mobile")
     private String mobile;
 
-        @Column(name = "fax", nullable = true)
+    @Column(name = "fax", nullable = true)
     private String fax;
 
     @Column(name = "homepage")
@@ -106,7 +107,13 @@ public class Airline {
     }
 
     public List<Flight> getFlights() {
-        return flights;
+        ArrayList<Flight> noRetireFlights = new ArrayList<>();
+        flights.forEach(flight -> {
+            if(!flight.isRetired()){
+                noRetireFlights.add(flight);
+            }
+        });
+        return noRetireFlights;
     }
 
     public void setFlights(List<Flight> flights) {
@@ -216,4 +223,5 @@ public class Airline {
     public void setAccount(Account account) {
         this.account = account;
     }
+
 }
