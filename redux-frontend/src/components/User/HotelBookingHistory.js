@@ -1,42 +1,39 @@
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from 'react-redux';
 import { getHotelBookingHistory } from '../../actions/actionUser';
+import { ROOT_URL } from '../../config/api';
 import { importAll } from '../../utils/JqueryImport';
 
 const HotelBookingHistory = (props) => {
     const header = [
         {
+            name: '#',
+            selector: bk => bk.id,
+            sortable: true,
+            width: '10%'
+        },
+        {            
             name: 'Booking Code',
-            selector: 'bookingCode',
-            sortable: false
-        },
-        {
-            name: 'Guest',
-            selector: 'numOfGuest',
-            width:"10%",
-            sortable: false
-        },
-        {
-            name: 'Check In',
-            selector: 'checkInDate',
+            selector: bk => bk.bookingCode,
             sortable: true
         },
         {
-            name: 'Check Out',
-            selector: 'checkOutDate',
-            sortable: true
+            name: 'Issued Date',
+            selector: bk => new Date(bk.createdAt).toLocaleDateString(),
+            sortable: false
         },
         {
-            name: 'Amount',
-            selector: 'totalPrice',
+            name: 'Total Amount',
+            selector: bk => bk.totalPrice + '$',
             sortable: false
         },
         {
             name: 'Download',
-            selector: 'paymentMethod',
-            sortable: false
-        }
+            cell: bk => <div style={{padding : "0 auto"}}><button className="list-btn-sm mr-1"><FontAwesomeIcon className="list-btn-sm-icon" icon={faDownload} onClick={() => downloadPDF(bk.id)}></FontAwesomeIcon> </button></div>
+        },
     ];
 
     const customStyles = {
@@ -110,6 +107,11 @@ const HotelBookingHistory = (props) => {
             mount = true;
         }
     },[]);
+
+    const downloadPDF = (id) => {
+        window.open(`${ROOT_URL}/api/downloadHotelInvoice/${id}`, "_blank");        
+    }
+
     return (
         
         <div>

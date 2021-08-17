@@ -240,7 +240,7 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         data.put("flightBooking", flightBooking);
         data.put("flightDetails", flightBooking.getFlightBookingDetails());
 
-        File pdfAttachment = pdfGenaratorUtil.createPdf("itinerary",data, ITINERARY_DIR, emailUtil, user);
+        File pdfAttachment = pdfGenaratorUtil.createPdf("itinerary",data, ITINERARY_DIR);
 
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);
