@@ -107,7 +107,7 @@ const AirlineFlightData = (props) => {
       
       <a  className="list-btn-sm" data-toggle="modal" data-target={"#flight-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></a>
       <div className="modal fade" id={"flight-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-dialog " role="document">
               <div className="modal-content">
                   <div className="modal-header">
                       <h5 className="modal-title" id="exampleModalLabel">Confirmation</h5>
@@ -115,11 +115,11 @@ const AirlineFlightData = (props) => {
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div className="modal-body">
-                      <h5>Are you sure you want to delete this flight?</h5>
-                      <p>This will be delete immediately. You can't undo this action</p>
+                  <div className="modal-body py-2">
+                      <h5 className="text-center pt-2">Are you sure you want to delete this flight?</h5>
+                      <p className="text-center pb-2">This will be delete immediately. You can't undo this action</p>
                       <form onSubmit={(e) => handleSubmit(e, listflight.id)}>
-                          <div className="form-group">
+                          <div className="form-group text-right">
                               <button type="submit" className="btn btn-primary btn-sm mr-2">Delete</button>
                               <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
                           </div>
@@ -295,7 +295,7 @@ const AirlineFlightData = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
