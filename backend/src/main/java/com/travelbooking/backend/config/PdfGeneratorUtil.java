@@ -23,7 +23,7 @@ public class PdfGeneratorUtil {
     private TemplateEngine templateEngine;
 
 
-    public File createPdf(String templateName, Map<String, Object> map,String path, SendEmailItinerary emailUtil, User user) throws Exception {
+    public File createPdf(String templateName, Map<String, Object> map,String path) throws Exception {
 
         Assert.notNull(templateName, "The templateName can not be null");
         Context ctx = new Context();
@@ -35,11 +35,9 @@ public class PdfGeneratorUtil {
         }
 
         String processedHtml = templateEngine.process(templateName, ctx);
-//        emailUtil.sendItinerary(email,null, processedHtml);
         FileOutputStream os = null;
         String fileName = UUID.randomUUID().toString();
         try {
-//          final File outputFile = File.createTempFile(fileName, ".pdf");
             File directory = new File(path);
             if(!directory.exists()){
                 directory.mkdir();

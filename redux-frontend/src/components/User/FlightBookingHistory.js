@@ -1,27 +1,40 @@
-import React, { useEffect } from 'react';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { connect } from 'react-redux';
 import { getFlightBookingHistory } from '../../actions/actionUser';
+import { ROOT_URL } from '../../config/api';
 import { importAll } from '../../utils/JqueryImport';
 
 const FlightBookingHistory = (props) => {
-
     const header = [
         {
+            name: '#',
+            selector: bk => bk.id,
+            sortable: true,
+            width: '10%'
+        },
+        {            
             name: 'Booking Code',
-            selector: 'bookingCode',
+            selector: bk => bk.bookingCode,
+            sortable: true
+        },
+        {
+            name: 'Issued Date',
+            selector: bk => new Date(bk.createdAt).toLocaleDateString(),
             sortable: false
         },
         {
-            name: 'Amount',
-            selector: 'totalPrice',
-            sortable: false
+            name: 'Total Amount',
+            selector: bk => bk.totalPrice + "$",
+            sortable: true
         },
+        
         {
             name: 'Download',
-            selector: 'paymentMethod',
-            sortable: false
-        }
+            cell: bk => <div style={{padding : "0 auto"}}><button className="list-btn-sm mr-1"><FontAwesomeIcon className="list-btn-sm-icon" icon={faDownload} onClick={() => downloadPDF(bk.id)}></FontAwesomeIcon> </button></div>
+        },
     ];
 
     const customStyles = {
@@ -95,6 +108,10 @@ const FlightBookingHistory = (props) => {
             mount = true;
         }
     },[]);
+
+    const downloadPDF = (id) => {
+        window.open(`${ROOT_URL}/api/downloadFlightInvoice/${id}`, "_blank");
+    }
 
     return (
         <div>
