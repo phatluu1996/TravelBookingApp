@@ -287,20 +287,28 @@ const ComboHotelDetailPage = (props) => {
     // });
 
     const getAddress = (location) => {
-        if (location) return "";
-
+        if (!location) return "";
+        var fullAddress = "";
         const province = location?.province;
         const district = location?.district;
         const ward = location?.ward;
-        
 
-        if (province && !district && !ward) {
-            return province.name;
-        } else if (province && district && !ward) {
-            return district.prefix + " " + district.name + ", " + province.name;
-        } else if (province && district && ward) {
-            return ward.prefix + " " + ward.name + ", " + district.prefix + " " + district.name + ", " + province.name;
-        } else { return ""; }
+        if(location?.street){
+            fullAddress = fullAddress + location?.street + ", ";
+        }
+
+        if(ward){
+            fullAddress = fullAddress + ward.prefix+" "+ward.name+", ";
+        }
+
+        if(district){
+            fullAddress = fullAddress + district.prefix+" "+district.name+", "
+        }
+
+        if(province){
+            fullAddress = fullAddress + province.name;
+        }
+        return fullAddress;
 
     }
 
