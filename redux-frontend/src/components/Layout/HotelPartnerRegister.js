@@ -7,17 +7,18 @@ import { importAll } from "../../utils/JqueryImport";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { createPartner } from "../../actions/actionHotel";
 import { useQuery } from "../Airline/EditFlight";
+import { useHistory } from "react-router-dom";
 
 function HotelPartnerRegister(props) {
     let queryParam = useQuery();
 
-    
-    const [statusSignup, setStatuSignup] = useState(false);
+    const history = useHistory();
+    const [statusSignup, setStatusSignup] = useState(false);
     const [messageSignup, setMessageSignup] = useState("");
     const [isRequest, setIsRequest] = useState(false);
-    const [selectProvince, setSelectProvince] = useState(null);
-    const [selectDistrict, setSelectDistrict] = useState(null);
-    const [selectWard, setSelectWard] = useState(null);
+    const [slProvince, setSlProvince] = useState(null);
+    const [slDistrict, setSlDistrict] = useState(null);
+    const [slWard, setSlWard] = useState(null);
     const [files, setFiles] = useState([]);
     const [validateError, setValidateError] = useState({
         hotelName: "",
@@ -31,7 +32,12 @@ function HotelPartnerRegister(props) {
         province: "",
         district: "",
         ward: "",
+        userName: "",
+        password: "",
+        role: "",
+        resetPassword: "",
     });
+
 
     const getName = (name) => {
         switch (name) {
@@ -57,6 +63,12 @@ function HotelPartnerRegister(props) {
                 return "District";
             case "ward":
                 return "Ward";
+            case "userName":
+                return "User Name";
+            case "password":
+                return "Password";
+            case "confirmPassword":
+                return "confirmPassword";
             default:
                 return "";
         }
@@ -111,14 +123,26 @@ function HotelPartnerRegister(props) {
         } else {
             err.ward = "";
         }
-
-        // if (!form.agreePolicy.checked) {
-        //     err.agreePolicy = "Privacy Policy & Terms Agreement is required !";
-        // } else {
-        //     err.agreePolicy = "";
-        // }
+        if (!form.userName.value) {
+            err.userName = "User name is required!";
+        } else {
+            err.street = "";
+        }
+        if (!form.password.value) {
+            err.password = "Password is required!";
+        } else {
+            err.password = "";
+        }
+        if (!form.confirmPassword.value) {
+            err.confirmPassword = "Confirm Password is required!";
+        } else {
+            err.confirmPassword = "";
+        }
 
         if (
+            err.userName ||
+            err.password ||
+            err.confirmPassword ||
             err.ward ||
             err.district ||
             err.street ||
@@ -133,6 +157,7 @@ function HotelPartnerRegister(props) {
         }
         return true;
     };
+
     function isNumeric(str) {
         if (typeof str != "string") return false;
         return !isNaN(str) && !isNaN(parseFloat(str));
@@ -180,50 +205,41 @@ function HotelPartnerRegister(props) {
                 err.numberOfRoom = "";
             }
         }
+        if (e.target.name === "password" && e.target.value) {
+            let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
+            if (!regex.test(e.target.value)) {
+                err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
+            } else { err.password = ""; }
+        }
+
+        if (e.target.name === "confirmPassword" && e.target.value) {
+            if (e.target.value !== e.target.form.password.value) {
+                err.confirmPassword = "Password must match!";
+            } else {
+                err.confirmPassword = "";
+            }
+        }
 
         setValidateError(err);
     };
     const onChangeProvince = (e) => {
-        document
-            .querySelector("#districts")
-            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-        document
-            .querySelector("#wards")
-            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-        if (e.currentTarget.id === "0") {
-            setSelectDistrict(null);
-            setSelectProvince(null);
-            setSelectWard(null);
-        } else {
-            setSelectProvince(
-                props.province?.data?.find(
-                    (item) => item.id === parseInt(e.currentTarget.value)
-                )
-            );
-        }
-    };
+        setSlProvince(props.province.data.find(pv => pv.id == parseInt(e.target.value)));
+        setSlDistrict(null);
+        setSlWard(null);
+        e.target.form.district.value = 0;
+        e.target.form.ward.value = 0;
+    }
+
     const onChangeDistrict = (e) => {
-        document
-            .querySelector("#wards")
-            .parentElement.querySelector(".customSelectInner").innerHTML = "--";
-        if (e.currentTarget.id === "0") {
-            setSelectDistrict(null);
-            setSelectWard(null);
-        } else {
-            setSelectDistrict(
-                selectProvince.districts.find(
-                    (item) => item.id === parseInt(e.currentTarget.value)
-                )
-            );
-        }
-    };
+        setSlDistrict(slProvince.districts.find(dt => dt.id == parseInt(e.target.value)));
+        setSlWard(null);
+        e.target.form.ward.value = 0;
+    }
+
     const onChangeWard = (e) => {
-        setSelectWard(
-            selectDistrict.wards.find(
-                (item) => item.id === parseInt(e.currentTarget.value)
-            )
-        );
-    };
+        setSlWard(slDistrict.wards.find(w => w.id == parseInt(e.target.value)));
+    }
+
 
     const uploadFiles = (event) => {
         var files = [];
@@ -246,9 +262,9 @@ function HotelPartnerRegister(props) {
             formData.append("description", form.description.value);
             formData.append("street", form.street.value);
             formData.append("numberOfRoom", parseInt(form.numberOfRoom.value));
-            formData.append("province", selectProvince);
-            formData.append("district", selectDistrict);
-            formData.append("ward", selectWard);
+            formData.append("province", slProvince);
+            formData.append("district", slDistrict);
+            formData.append("ward", slWard);
             // formData.append("account", queryParam.get("userId"));
             if (files.length > 0 && files != []) {
                 for (let index = 0; index < files.length; index++) {
@@ -264,263 +280,324 @@ function HotelPartnerRegister(props) {
         }
     };
 
+    useEffect(() => {
+        var mount = false;
+        props.getProvince();
+        return () => {
+            mount = true;
+        };
+    },[])
 
     useEffect(() => {
         var mount = false;
         importAll();
-        props.getProvince();
 
+        if (props.auth.form === 'signup') {
+            if (props.auth.signupData && isRequest) {
+                if (props.auth.signupData.success) {
+
+                    alert(props.auth.signupData.message + " Please check your email to activate your account.");
+                    history.push("/");
+                } else {
+                    setStatusSignup(false);
+                    setMessageSignup(props.auth.signupData.message);
+                }
+            } else {
+                setStatusSignup(false);
+                setMessageSignup(props.auth.message);
+            }
+        }
         return () => {
             mount = true;
         };
     }, []);
 
-
     return (
-        
-            <body>
-                <Header />
-                <div className="main-cont">
-                    <form onSubmit={handleSignupSubmit}>
-                        <div className="body-wrapper" style={{ paddingTop: "150px" }}>
-                            <div className="wrapper-padding wrapper-padding-custom">
-                                <h2 style={{ textAlign: "center", fontSize: "23px" }}>
-                                    Hotel Register
-                                </h2>
-                                <p style={{ textAlign: "center", marginBottom: "20px" }}>
-                                    Register for Your Account
-                                </p>
-                                <div className="booking-form">
-                                    <div>
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Contact Name*:</label>
-                                            <div
-                                                className={`input ${validateError.contactName ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="contactName" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.contactName}
-                                            </div>
-                                        </div>
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Contact Title*:</label>
-                                            <div
-                                                className={`input ${validateError.contactTitle ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="contactTitle" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.contactTitle}
-                                            </div>
-                                        </div>
-                                        <div className="clear"></div>
-                                    </div>
-                                    <div>
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Phone*:</label>
-                                            <div
-                                                className={`input ${validateError.phone ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="phone" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.phone}
-                                            </div>
-                                        </div>
+        <body>
+            <Header />
+            <div className="main-cont">
+                <form onSubmit={handleSignupSubmit}>
+                    <div className="body-wrapper" style={{ paddingTop: "150px" }}>
+                        <div className="wrapper-padding wrapper-padding-custom">
+                            <h2 style={{ textAlign: "center", fontSize: "23px" }}>
+                                Hotel Register
+                            </h2>
+                            <p style={{ textAlign: "center", marginBottom: "20px" }}>
+                                Register for Your Account
+                            </p>
 
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Email*:</label>
-                                            <div
-                                                className={`input ${validateError.email ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="email" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.email}
-                                            </div>
-                                        </div>
-                                        <div className="clear"></div>
-                                    </div>
-                                    <div>
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Hotel Name*:</label>
-                                            <div
-                                                className={`input ${validateError.hotelName ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="hotelName" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.hotelName}
-                                            </div>
-                                        </div>
-                                        <div className="booking-form-i">
-                                            <label className="custom-lbl">Number Of Room*:</label>
-                                            <div
-                                                className={`input ${validateError.numberOfRoom ? "is-invalid" : ""
-                                                    }`}
-                                            >
-                                                <input type="text" name="numberOfRoom" onChange={handleChange} />
-                                            </div>
-                                            <div className="booking-error-input">
-                                                {validateError.numberOfRoom}
-                                            </div>
-                                        </div>
-                                        <div className="clear"></div>
-                                    </div>
+                            <div className="booking-form">
+                                <div>
                                     <div className="booking-form-i booking-form-i-custom">
-                                        <label className="custom-lbl">Street*:</label>
+                                        <label className="custom-lbl">User name*:</label>
                                         <div
-                                            className={`input ${validateError.street ? "is-invalid" : ""
+                                            className={`input ${validateError.userName ? "is-invalid" : ""
                                                 }`}
                                         >
-                                            <input type="text" name="street" />
+                                            <input type="text" name="userName" onChange={handleChange} />
                                         </div>
                                         <div className="booking-error-input">
-                                            {validateError.street}
+                                            {validateError.userName}
                                         </div>
                                     </div>
-                                    <div className="clear"></div>
-                                    <div>
-                                        <div className="srch-tab-line no-margin-bottom">
-                                            <div className="srch-tab-3c">
-                                                <label>Province*</label>
-                                                <div className="select-wrapper">
-                                                    <select
-                                                        onChange={onChangeProvince}
-                                                        className="custom-select"
-                                                        name="province"
-                                                        id="province"
-                                                    // defaultValue={hotel.location.province.id}
-                                                    >
-                                                        <option key={0} value={0}>
-                                                            --
-                                                        </option>
-                                                        {props.province?.data?.map((item) => (
-                                                            <option key={item.id} value={item.id}>
-                                                                {item.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="srch-tab-3c">
-                                                <label>District*</label>
-                                                <div className="select-wrapper">
-                                                    <select
-                                                        onChange={onChangeDistrict}
-                                                        className="custom-select"
-                                                        name="district"
-                                                        id="district"
-                                                    // defaultValue={hotel?.location.district.id}
-                                                    >
-                                                        <option key={0} value={0}>
-                                                            --
-                                                        </option>
-                                                        {selectProvince?.districts?.map((item) => (
-                                                            <option key={item.id} value={item.id}>
-                                                                {item.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="srch-tab-3c">
-                                                <label>Ward*</label>
-                                                <div className="select-wrapper">
-                                                    <select
-                                                        className="custom-select"
-                                                        name="ward"
-                                                        id="ward"
-                                                        // defaultValue={hotel?.location.ward.id}
-                                                        onChange={onChangeWard}
-                                                    >
-                                                        <option key={0} value={0}>
-                                                            --
-                                                        </option>
-                                                        {selectDistrict?.wards?.map((item) => (
-                                                            <option key={item.id} value={item.id}>
-                                                                {item.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="booking-form-i textarea"
-                                        style={{ paddingTop: "10px" }}
-                                    >
-                                        <label>Message*:</label>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Password*:</label>
                                         <div
-                                            className={
-                                                !validateError.description
-                                                    ? "textarea-wrapper"
-                                                    : "textarea-wrapper is-invalid"
-                                            }
+                                            className={`input ${validateError.password ? "is-invalid" : ""
+                                                }`}
                                         >
-                                            <textarea name="message"></textarea>
+                                            <input type="text" name="password" onChange={handleChange} />
                                         </div>
                                         <div className="booking-error-input">
-                                            {validateError.description}
+                                            {validateError.password}
                                         </div>
-                                        <div className="clear"></div>
                                     </div>
-                                    <div className="booking-form-i booking-form-i-custom">
-                                        <label className="custom-lbl">Input image:</label>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            name="files"
-                                            onChange={uploadFiles}
-                                        />
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Confirm password*:</label>
+                                        <div
+                                            className={`input ${validateError.confirmPassword ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="confirmPassword" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.confirmPassword}
+                                        </div>
                                     </div>
                                     <div className="clear"></div>
-                                    <div className="checkbox">
-                                        <label>
-                                            <input type="checkbox" value="" />I want to receive
-                                            Sparrow news in the future
-                                        </label>
-                                        <div className="booking-error-input"></div>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Contact Name*:</label>
+                                        <div
+                                            className={`input ${validateError.contactName ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="contactName" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.contactName}
+                                        </div>
                                     </div>
-                                    <div className="booking-devider"></div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Contact Title*:</label>
+                                        <div
+                                            className={`input ${validateError.contactTitle ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="contactTitle" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.contactTitle}
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
                                 </div>
-                                <div className="booking-complete" style={{ float: "left" }}>
-                                    <button
-                                        className="booking-complete-btn"
-                                        type="submit"
-                                        style={{ marginTop: "0" }}
+                                <div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Phone*:</label>
+                                        <div
+                                            className={`input ${validateError.phone ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="phone" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.phone}
+                                        </div>
+                                    </div>
+
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Email*:</label>
+                                        <div
+                                            className={`input ${validateError.email ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="email" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.email}
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Hotel Name*:</label>
+                                        <div
+                                            className={`input ${validateError.hotelName ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="hotelName" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.hotelName}
+                                        </div>
+                                    </div>
+                                    <div className="booking-form-i">
+                                        <label className="custom-lbl">Number Of Room*:</label>
+                                        <div
+                                            className={`input ${validateError.numberOfRoom ? "is-invalid" : ""
+                                                }`}
+                                        >
+                                            <input type="text" name="numberOfRoom" onChange={handleChange} />
+                                        </div>
+                                        <div className="booking-error-input">
+                                            {validateError.numberOfRoom}
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div className="booking-form-i booking-form-i-custom">
+                                    <label className="custom-lbl">Street*:</label>
+                                    <div
+                                        className={`input ${validateError.street ? "is-invalid" : ""
+                                            }`}
                                     >
-                                        REGISTER
-                                    </button>
-                                </div>
-                                <div
-                                    className={`${statusSignup
-                                        ? "booking-success-input"
-                                        : "booking-error-input"
-                                        }`}
-                                    style={{
-                                        float: "left",
-                                        marginLeft: "10px",
-                                        marginTop: "10px",
-                                    }}
-                                >
-                                    {messageSignup}
+                                        <input type="text" name="street" />
+                                    </div>
+                                    <div className="booking-error-input">
+                                        {validateError.street}
+                                    </div>
                                 </div>
                                 <div className="clear"></div>
+                                <div>
+                                    <div className="srch-tab-line no-margin-bottom">
+                                        <div className="srch-tab-3c">
+                                            <label>Province*</label>
+                                            <div className="select-wrapper">
+                                                <select
+                                                    onChange={onChangeProvince}
+                                                    className="custom-select"
+                                                    name="province"
+                                                    id="province"
+                                                // defaultValue={hotel.location.province.id}
+                                                >
+                                                    <option key={0} value={0}>
+                                                        --
+                                                    </option>
+                                                    {props.province?.data?.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="srch-tab-3c">
+                                            <label>District*</label>
+                                            <div className="select-wrapper">
+                                                <select
+                                                    onChange={onChangeDistrict}
+                                                    className="custom-select"
+                                                    name="district"
+                                                    id="district"
+                                                // defaultValue={hotel?.location.district.id}
+                                                >
+                                                    <option key={0} value={0}>
+                                                        --
+                                                    </option>
+                                                    {slProvince?.districts?.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="srch-tab-3c">
+                                            <label>Ward*</label>
+                                            <div className="select-wrapper">
+                                                <select
+                                                    className="custom-select"
+                                                    name="ward"
+                                                    id="ward"
+                                                    onChange={onChangeWard}
+                                                >
+                                                    <option key={0} value={0}>
+                                                        --
+                                                    </option>
+                                                    {slDistrict?.wards?.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    className="booking-form-i textarea"
+                                    style={{ paddingTop: "10px" }}
+                                >
+                                    <label>Message*:</label>
+                                    <div
+                                        className={
+                                            !validateError.description
+                                                ? "textarea-wrapper"
+                                                : "textarea-wrapper is-invalid"
+                                        }
+                                    >
+                                        <textarea name="message"></textarea>
+                                    </div>
+                                    <div className="booking-error-input">
+                                        {validateError.description}
+                                    </div>
+                                    <div className="clear"></div>
+                                </div>
+                                <div className="booking-form-i booking-form-i-custom">
+                                    <label className="custom-lbl">Input image:</label>
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        name="files"
+                                        onChange={uploadFiles}
+                                        multiple
+                                    />
+                                </div>
+                                <div className="clear"></div>
+                                <div className="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="" />I want to receive
+                                        Sparrow news in the future
+                                    </label>
+                                    <div className="booking-error-input"></div>
+                                </div>
+                                <div className="booking-devider"></div>
+                            </div>
+                            <div className="booking-complete" style={{ float: "left" }}>
+                                <button
+                                    className="booking-complete-btn"
+                                    type="submit"
+                                    style={{ marginTop: "0" }}
+                                >
+                                    REGISTER
+                                </button>
+                            </div>
+                            <div
+                                className={`${statusSignup
+                                    ? "booking-success-input"
+                                    : "booking-error-input"
+                                    }`}
+                                style={{
+                                    float: "left",
+                                    marginLeft: "10px",
+                                    marginTop: "10px",
+                                }}
+                            >
+                                {messageSignup}
                             </div>
                             <div className="clear"></div>
                         </div>
-                    </form>
-                </div>
-                <Footer />
-            </body>
+                        <div className="clear"></div>
+                    </div>
+                </form>
+            </div>
+            <Footer />
+        </body>
     );
 }
 
