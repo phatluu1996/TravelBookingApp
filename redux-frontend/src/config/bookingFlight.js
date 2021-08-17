@@ -11,6 +11,12 @@ class bookingFlight {
     bookFlt(data) {
         return http.post(`/book-flight`,data);
     }
+    getBooking(id){
+        return http.get(`/flight-booking/${id}`);
+    }
+    updateBooking(id,data){
+        return http.put(`/flight-booking/${id}`,data);
+    }
     
 }
 

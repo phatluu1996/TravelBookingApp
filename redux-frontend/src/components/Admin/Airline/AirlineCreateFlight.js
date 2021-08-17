@@ -289,12 +289,9 @@ const AirlineCreateFlight = (props) => {
     checkbox.hasEntertainment = !checkbox.hasEntertainment;
     setIsChecked(checkbox);
   }
-  const handleSubmit = (e) => {
+  const handleCreateSubmit = (e) => {
     e.preventDefault();
     var form = e.target;
-    // if (e.target.type === 'checkbox'){
-    //   e.target.name:
-    // }
     if (validateForm(e)) {
       props.addFlight({
         departureCity: form.departureCity.value,
@@ -318,8 +315,9 @@ const AirlineCreateFlight = (props) => {
         businessPrice: form.businessPrice.value,
         airline: { id: parseInt(form.airline.value) },
       });
-    }
     history.push(`/airline-flight-data?id=${queryParam.get("id")}`)
+
+    }
   };
   useEffect(() => {
     let mount = false;
@@ -352,20 +350,6 @@ const AirlineCreateFlight = (props) => {
       ", " +
       province
     );
-  };
-
-  // const formControlClass = (field) => {
-  //   if (!validateError[field]) {
-  //     if (isSubmit) {
-  //       return "form-control is-valid";
-  //     }
-  //     return "form-control";
-  //   }
-  //   return "form-control is-invalid";
-  // };
-
-  const goBack = () => {
-    history.push("/admin-airline-manage");
   };
 
   return (
@@ -474,7 +458,7 @@ const AirlineCreateFlight = (props) => {
                                                                 Create New Flight
                                                             </h3>
 
-                                                            <form onSubmit={handleSubmit} className="form-sample"
+                                                            <form onSubmit={handleCreateSubmit} className="form-sample"
                                                                 autoComplete="false" id="form">
                                                                 <div className="row">
                                                                     <div className="col-md-4">
@@ -831,6 +815,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     airline: state.airline,
     province: state.province,
+    flight:state.flights
   };
 };
 
