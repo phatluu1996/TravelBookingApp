@@ -10,6 +10,8 @@ import { useQuery } from "../Airline/EditFlight";
 
 function HotelPartnerRegister(props) {
     let queryParam = useQuery();
+
+    
     const [statusSignup, setStatuSignup] = useState(false);
     const [messageSignup, setMessageSignup] = useState("");
     const [isRequest, setIsRequest] = useState(false);
@@ -194,7 +196,7 @@ function HotelPartnerRegister(props) {
             setSelectWard(null);
         } else {
             setSelectProvince(
-                props.provinces.data.find(
+                props.province?.data?.find(
                     (item) => item.id === parseInt(e.currentTarget.value)
                 )
             );
@@ -235,17 +237,6 @@ function HotelPartnerRegister(props) {
         e.preventDefault();
         const form = e.target;
         let formData = new FormData();
-        // hotelName: '',
-        // email: '',
-        // phone: '',
-        // contactName: '',
-        // contactTitle: '',
-        // description: '',
-        // numberOfRoom: '',
-        // street: '',
-        // province: '',
-        // district: '',
-        // ward: ''
         if (validateForm(e)) {
             formData.append("hotelName", form.hotelName.value);
             formData.append("email", form.email.value);
@@ -258,7 +249,7 @@ function HotelPartnerRegister(props) {
             formData.append("province", selectProvince);
             formData.append("district", selectDistrict);
             formData.append("ward", selectWard);
-            formData.append("account", queryParam.get("userId"));
+            // formData.append("account", queryParam.get("userId"));
             if (files.length > 0 && files != []) {
                 for (let index = 0; index < files.length; index++) {
                     const file = files[index];
@@ -273,35 +264,20 @@ function HotelPartnerRegister(props) {
         }
     };
 
+
     useEffect(() => {
         var mount = false;
         importAll();
         props.getProvince();
-        if (props.auth.form === "signup") {
-            if (props.auth.signupData && isRequest) {
-                if (props.auth.signupData.success) {
-                    alert(
-                        props.auth.signupData.message +
-                        ", Please check your email to activate your account."
-                    );
-                    document.location.href = "http://localhost:3000/";
-                } else {
-                    setStatuSignup(false);
-                    setMessageSignup(props.auth.signupData.message);
-                }
-            } else {
-                setStatuSignup(false);
-                setMessageSignup(props.auth.message);
-            }
-        }
 
         return () => {
             mount = true;
         };
-    }, [props]);
+    }, []);
+
 
     return (
-        <>
+        
             <body>
                 <Header />
                 <div className="main-cont">
@@ -370,10 +346,6 @@ function HotelPartnerRegister(props) {
                                         </div>
                                         <div className="clear"></div>
                                     </div>
-                                    {/* <div>
-                                  
-                                    <div className="clear"></div>
-                                </div> */}
                                     <div>
                                         <div className="booking-form-i">
                                             <label className="custom-lbl">Hotel Name*:</label>
@@ -423,7 +395,7 @@ function HotelPartnerRegister(props) {
                                                         onChange={onChangeProvince}
                                                         className="custom-select"
                                                         name="province"
-                                                        id="provinces"
+                                                        id="province"
                                                     // defaultValue={hotel.location.province.id}
                                                     >
                                                         <option key={0} value={0}>
@@ -444,7 +416,7 @@ function HotelPartnerRegister(props) {
                                                         onChange={onChangeDistrict}
                                                         className="custom-select"
                                                         name="district"
-                                                        id="districts"
+                                                        id="district"
                                                     // defaultValue={hotel?.location.district.id}
                                                     >
                                                         <option key={0} value={0}>
@@ -463,8 +435,8 @@ function HotelPartnerRegister(props) {
                                                 <div className="select-wrapper">
                                                     <select
                                                         className="custom-select"
-                                                        name="wards"
-                                                        id="wards"
+                                                        name="ward"
+                                                        id="ward"
                                                         // defaultValue={hotel?.location.ward.id}
                                                         onChange={onChangeWard}
                                                     >
@@ -549,7 +521,6 @@ function HotelPartnerRegister(props) {
                 </div>
                 <Footer />
             </body>
-        </>
     );
 }
 
