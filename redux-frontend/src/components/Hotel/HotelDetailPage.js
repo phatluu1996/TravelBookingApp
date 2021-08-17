@@ -11,11 +11,11 @@ import { createHotelFeedBack, getFeedbacks } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
 import Pagination from "./Pagination";
+import { getRole, getToken, ROLE_USER } from "../../utils";
 import CheckBox from "@material-ui/core/Checkbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faBaby, faCheck, faChild, faMale, faTimesCircle, faUserTimes } from "@fortawesome/free-solid-svg-icons";
 import { red } from "@material-ui/core/colors";
-import { getRole, ROLE_USER } from "../../utils";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick'
@@ -37,8 +37,12 @@ const useStyle = makeStyles({
 });
 
 const HotelDetailPage = (props) => {
+
+
     const history = useHistory();
     let queryParam = useQuery();
+
+
     const [currentImage, setCurrentImage] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [jquery, setJquery] = useState(false);
@@ -91,7 +95,7 @@ const HotelDetailPage = (props) => {
             $(".header-account a").click();
         } else if (totalAdult < parseInt(queryParam.get("numberAdult")) || totalChild < parseInt(queryParam.get("numberChildren"))
         ) {
-            alert("Select the number of rooms suitable for the number of people");        
+            alert("Select the number of rooms suitable for the number of people");
             return [];
         } else if (bookingList.length === 0 || !Array.isArray(bookingList)) {
             alert("Please select your room");
@@ -241,6 +245,7 @@ const HotelDetailPage = (props) => {
             setCurrentImage(props.hotel.data.rooms[0].images[0].imagePath)
         }
     }, [props.hotel]);
+    
     return (
         <>
             <Header></Header>
@@ -491,7 +496,7 @@ const HotelDetailPage = (props) => {
                                                                 color="red" size="large" variant="" onClick={addNewBook}>
                                                                 BOOK NOW
                                                             </Button>
-                                                           
+
                                                             <div className="available-row">
                                                                 <DataTable
                                                                     columns={roomDetail}
@@ -508,7 +513,7 @@ const HotelDetailPage = (props) => {
                                                         </div>
                                                     </div>
 
-                                                    
+
 
                                                     <div className="content-tabs-i">
                                                         <div className="reviews-a">
@@ -774,76 +779,78 @@ const HotelDetailPage = (props) => {
                                                                         props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                <div
-                                                                    hidden={user?.data? false : true}
-                                                                    className="review-form"
-                                                                >
-                                                                    <h2>Live Review</h2>
-                                                                    <label>Your Review:</label>
-                                                                    <div className="textarea-a">
-                                                                        <textarea
-                                                                            id="feedbackTxt"
-                                                                            value={areaText}
-                                                                            onChange={(e) =>
-                                                                                setAreaText(e.target.value)
-                                                                            }
-                                                                            name="feedbackTxt"
-                                                                            placeholder="Write some thing...."
-                                                                        ></textarea>
-                                                                    </div>
-
-                                                                    <div className="review-rangers-row">
-                                                                        <div className="review-ranger">
-                                                                            <label>Cleanlines</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-
-                                                                        <div className="review-ranger">
-                                                                            <label>Service & Stuff</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-                                                                        <div className="review-ranger">
-                                                                            <label>Price</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-                                                                        <div className="review-ranger">
-                                                                            <label>Location</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-                                                                        <div className="review-ranger">
-                                                                            <label>Sleep Quality</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-                                                                        <div className="review-ranger">
-                                                                            <label>Comfort</label>
-                                                                            <div className="review-ranger-r">
-                                                                                <div className="slider-range-min"></div>
-                                                                            </div>
-                                                                            <div className="clear"></div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <button
-                                                                        className="review-send"
-                                                                        onClick={addNewReview}
+                                                                {
+                                                                    getToken() && <div
+                                                                        hidden={user || isLoading? false : true}
+                                                                        className="review-form"
                                                                     >
-                                                                        Submit Review
-                                                                    </button>
-                                                                </div>
+                                                                        <h2>Live Review</h2>
+                                                                        <label>Your Review:</label>
+                                                                        <div className="textarea-a">
+                                                                            <textarea
+                                                                                id="feedbackTxt"
+                                                                                value={areaText}
+                                                                                onChange={(e) =>
+                                                                                    setAreaText(e.target.value)
+                                                                                }
+                                                                                name="feedbackTxt"
+                                                                                placeholder="Write some thing...."
+                                                                            ></textarea>
+                                                                        </div>
+
+                                                                        <div className="review-rangers-row">
+                                                                            <div className="review-ranger">
+                                                                                <label>Cleanlines</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+
+                                                                            <div className="review-ranger">
+                                                                                <label>Service & Stuff</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+                                                                            <div className="review-ranger">
+                                                                                <label>Price</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+                                                                            <div className="review-ranger">
+                                                                                <label>Location</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+                                                                            <div className="review-ranger">
+                                                                                <label>Sleep Quality</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+                                                                            <div className="review-ranger">
+                                                                                <label>Comfort</label>
+                                                                                <div className="review-ranger-r">
+                                                                                    <div className="slider-range-min"></div>
+                                                                                </div>
+                                                                                <div className="clear"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <button
+                                                                            className="review-send"
+                                                                            onClick={addNewReview}
+                                                                        >
+                                                                            Submit Review
+                                                                        </button>
+                                                                    </div>
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>

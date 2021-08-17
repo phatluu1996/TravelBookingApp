@@ -12463,7 +12463,23 @@ INSERT INTO dbo.account ([password], [retired], [role], [user_name]) VALUES
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','quantrung'),--password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','tuanvu'),--password: 12345
 ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','ngoctrang'),--password: 12345
-('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thaovy')--password: 12345
+('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thaovy'),--password: 12345
+--Second insert
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','phuongnguyen'), --password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thienngan'), --password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thienvuong'), --password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','damthong'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','vanthoi'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','dinhlang'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','hoangviet'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','thienthu'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','luutrang'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','hoangan'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','khucco'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','vantrung'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','tuantu'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','ngocanh'),--password: 12345
+    ('$2y$10$u2Qt77A9icu6ROvqnWqIl.xgNIkgL7SF8RpxtHyn5TiEXbtSjbtVm',0,'HOTEL','anhduong')--password: 12345
 
 --lOCATION HOTEL
 INSERT INTO [dbo].[location]
@@ -12474,6 +12490,8 @@ INSERT INTO [dbo].[location]
     ,[district_id]
     ,[ward_id])
 VALUES
+
+    -- First insert
     ('70000',0,N'Lưu Qúy Kỳ',9,127,1904), -- A Tran Boutique
     ('70000',0,N'City, khu phố 1',13,178,2501), -- Anantara Mui Ne Resor
     ('70000',0,N'2 Đ. Trần Phú',14,185,2592), -- Dalat Palace Heritage Hotel
@@ -12483,7 +12501,23 @@ VALUES
     ('70000',0,N'44 Ngõ Hàng Hành',2,37,578), -- Imperial Hotel & Spa (HA NOI)
     ('70000',0,N'03 Võ Văn Kiệt',3,61,958), -- Stella Maris Beach Danang
     ('70000',0,N'số 7 và 8, KDL Hồ Tuyền Lâm',14,185,2592), -- Swiss-Belresort Tuyen Lam Dalat
-    ('70000',0,N'263 Lê Hồng Phong',10,145,2123) -- Malibu Hotel
+    ('70000',0,N'263 Lê Hồng Phong',10,145,2123), -- Malibu Hotel
+    -- Second insert
+    ('70000',0,N'Lot 7 & 8 Le Van Quy',3,61,953), -- The Herriott Hotel & Suite
+    ('70000',0,N'06-10 Do Ba, T20 Beach',3,60,952), -- Cicilia Danang Hotels & Spa
+    ('70000',0,N'25 My Khe 1',3,61,958), -- King House Villa Hotel & Spa
+    ('70000',0,N'270 Vo Nguyen Giap',3,61,968), -- Muong Thanh Luxury Da Nang Hotel
+    ('70000',0,N'121 Hung Vuong',3,56,924), -- Louis Hotel
+    ('70000',0,N'48 Phan Liem Street',3,60,952),-- Haya Hotel
+    ('70000',0,N'234 Ho Nghinh',3,61,958), -- Kingdom Hotel
+    ('70000',0,N'45-47 Vo Van Kiet',3,61,958), -- Adaline Hotel & Suite
+    ('70000',0,N'128 Nguyen Van Thoai',3,61,958), -- Ha Noi Blue Hotel - The Water Front
+    ('70000',0,N'447-449 Tran Hung Dao',3,61,955), -- Merry Hotel Da Nang
+    ('70000',0,N'580 Vo Nguyen Giap',3,60,949), -- Adaline Hotel & Apartment
+    ('70000',0,N'234 Ho Nghinh',3,61,958), -- Kingdom Hotel DT
+    ('70000',0,N'186 Tran Phu',3,56,929), -- Adaline Hotel & Suite
+    ('70000',0,N'11 Yen Bai',3,56,925), -- Fulmar Hotel
+    ('70000',0,N'69 Le Hong Phong',3,56,929) -- Golden Gate Hotel
 
 
 
@@ -12521,7 +12555,23 @@ VALUES
     (0,N'Quang Trung',N'Giám Đốc','11/9/2020','','trungTheKing@gmail.com',1,1,1,0,0,'Imperial Hotel & Spa (HA NOI)',5,10,0,1,'0945877490',0,1,33,32),
     (0,N'Nguyễn Lê Tuấn Vũ',N'Giám Đốc','11/9/2020','','vu@gmail.com',1,1,1,0,0,'Stella Maris Beach Danang',5,10,0,1,'0945877490',0,1,34,33),
     (0,N'Ngọc Thiên Trang',N'Giám Đốc','11/9/2020','','trang@gmail.com',1,1,1,0,0,'Swiss-Belresort Tuyen Lam Dalat',5,10,0,1,'0945877490',0,1,35,34),
-    (0,N'Hoàng Thảo Vy',N'Giám Đốc','11/9/2020','','vy@gmail.com',1,1,1,0,0,'Swiss-Belresort Tuyen Lam Dalat',5,10,0,1,'0945877490',0,1,36,35)
+    (0,N'Hoàng Thảo Vy',N'Giám Đốc','11/9/2020','','vy@gmail.com',1,1,1,0,0,'Swiss-Belresort Tuyen Lam Dalat',5,10,0,1,'0945877490',0,1,36,35),
+    --Second insert
+    (0,N'Đàm Tá Thống',N'Giám Đốc','11/9/2020','','thong@gmail.com',1,1,1,1,1,'The Herriott Hotel & Suite',4.7,10,0,1,'0945877490',0,1,37,36),
+    (0,N'Trịnh Đình Quang',N'Giám Đốc','11/9/2020','','quang@gmail.com',1,0,1,0,0,'Cicilia Danang Hotels & Spa',3.5,10,0,1,'0945877490',0,1,38,37),
+    (0,N'Đào Ngọc Ánh',N'Giám Đốc','11/9/2020','','anh@gmail.com',1,0,1,0,0,'King House Villa Hotel & Spa',5,10,0,1,'0945877490',0,1,39,38),
+    (0,N'Nguyễn Phượng Uyên',N'Giám Đốc','11/9/2020','','uyen@gmail.com',1,1,1,0,0,'Muong Thanh Luxury Da Nang Hotel',5,10,0,1,'0945877490',0,1,40,39),
+    (0,N'Linh Thế Ngọc',N'Giám Đốc','11/9/2020','','jt@gmail.com',1,0,1,0,0,'Louis Hotel',5,10,0,1,'0945877490',0,1,41,40),
+    (0,N'Xuân Trường',N'Giám Đốc','11/9/2020','','dt@gmail.com',0,1,1,0,0,'Haya Hotel',5,10,0,1,'0945877490',0,1,42,41),
+    (0,N'Đào Bá Trung',N'Giám Đốc','11/9/2020','','bobo@gmail.com',1,0,1,0,0,'Kingdom Hotel',5,10,0,1,'0945877490',0,1,43,42),
+    (0,N'Lý Liên Kiệt',N'Giám Đốc','11/9/2020','','pk@gmail.com',1,1,1,0,0,'Adaline Hotel & Suite',5,10,0,1,'0945877490',0,1,44,43),
+    (0,N'Hoàng Vũ Xuân',N'Giám Đốc','11/9/2020','','nk@gmail.com',1,0,1,1,0,'Ha Noi Blue Hotel - The Water Front',5,10,0,1,'0945877490',0,1,45,44),
+    (0,N'Thanh Thúy',N'Giám Đốc','11/9/2020','','dt@gmail.com',1,1,0,0,0,'Merry Hotel Da Nang',5,10,0,1,'0945877490',0,1,46,45),
+    (0,N'Thanh Nhi',N'Giám Đốc','11/9/2020','','huan@gmail.com',1,0,1,0,0,'Adaline Hotel & Apartment',5,10,0,1,'0945877490',0,1,47,46),
+    (0,N'Huấn Ngọc',N'Giám Đốc','11/9/2020','','nhgoc@gmail.com',1,1,1,0,0,'Kingdom Hotel DT',5,10,0,1,'0945877490',0,1,48,47),
+    (0,N'Tô Phước Linh',N'Giám Đốc','11/9/2020','','yui@gmail.com',1,0,1,0,0,'Adaline Hotel & Suite DT',5,10,0,1,'0945877490',0,1,49,48),
+    (0,N'Trần Nguyễn Thu Trang',N'Giám Đốc','11/9/2020','','bsus@gmail.com',1,1,1,0,0,'Fulmar Hotel',5,10,0,1,'0945877490',0,1,50,49),
+    (0,N'Hoàng Thảo',N'Giám Đốc','11/9/2020','','oppop@gmail.com',1,1,1,0,0,'Golden Gate Hotel',5,10,0,1,'0945877490',0,1,51,50)
 
 --Room
 INSERT INTO [dbo].[room]
@@ -12585,7 +12635,78 @@ VALUES
     ('11/7/2021',1,2,40,0,201,0,N'Normal',10,null),
     ('2/8/2021',2,2,40,0,202,0,N'Normal',10,null),
     ('11/9/2021',3,2,70,0,203,0,N'Medium',10,null),
-    (null,5,3,150,0,301,0,N'VIP',10,null)
+    (null,5,3,150,0,301,0,N'VIP',10,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',11,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',11,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',11,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',11,null),
+    (null,5,3,150,0,301,0,N'VIP',11,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',12,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',12,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',12,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',12,null),
+    (null,5,3,150,0,301,0,N'VIP',12,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',13,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',13,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',13,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',13,null),
+    (null,5,3,150,0,301,0,N'VIP',13,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',14,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',14,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',14,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',14,null),
+    (null,5,3,150,0,301,0,N'VIP',14,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',15,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',15,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',15,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',15,null),
+    (null,5,3,150,0,301,0,N'VIP',15,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',16,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',16,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',16,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',16,null),
+    (null,5,3,150,0,301,0,N'VIP',16,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',17,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',17,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',17,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',17,null),
+    (null,5,3,150,0,301,0,N'VIP',17,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',18,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',18,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',18,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',18,null),
+    (null,5,3,150,0,301,0,N'VIP',18,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',19,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',19,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',19,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',19,null),
+    (null,5,3,150,0,301,0,N'VIP',19,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',20,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',20,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',20,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',20,null),
+    (null,5,3,150,0,301,0,N'VIP',20,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',21,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',21,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',21,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',21,null),
+    (null,5,3,150,0,301,0,N'VIP',21,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',22,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',22,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',22,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',22,null),
+    (null,5,3,150,0,301,0,N'VIP',22,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',23,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',23,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',23,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',23,null),
+    (null,5,3,150,0,301,0,N'VIP',23,null),
+    ('11/9/2021',1,1,30,0,101,0,N'Small',24,null),
+    ('11/7/2021',1,2,40,0,201,0,N'Normal',24,null),
+    ('2/8/2021',2,2,40,0,202,0,N'Normal',24,null),
+    ('11/9/2021',3,2,70,0,203,0,N'Medium',24,null),
+    (null,5,3,150,0,301,0,N'VIP',24,null)
+
 
 
 
@@ -12721,7 +12842,107 @@ VALUES
     ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)4.webp' ,null,47),
     ('','http://localhost:8080/storage/webp/Malibu_Hotel.webp' ,null,48),
     ('','http://localhost:8080/storage/jpg/Malibu_Hotel_(VUNG_TAU)11.jpg' ,null,49),
-    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)4.webp' ,null,50)
+    ('','http://localhost:8080/storage/webp/Malibu_Hotel_(VUNG_TAU)4.webp' ,null,50),
+    ('','http://localhost:8080/storage/webp/FLC_Halong_Bay_Golf_Club_&_Luxury_Resort.webp',11,null),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa.webp',11,null),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc7.webp' ,null,51),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc5.webp' ,null,52),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc4.webp' ,null,53),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc3.webp' ,null,54),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc2.webp' ,null,55),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc.webp',12,null),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa.webp',12,null),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc1.webp' ,null,54),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc2.webp' ,null,55),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa_(HOI_AN)6.webp' ,null,56),
+    ('','http://localhost:8080/storage/webp/VinOasis_Phu_Quoc.webp' ,null,57),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa.webp' ,null,58),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa_(HOI_AN)4.webp',13,null),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa_(HOI_AN)3.webp',13,null),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa_(HOI_AN)2.webp' ,null,59),
+    ('','http://localhost:8080/storage/webp/Vinh_Hung_Riverside_Resort_&_Spa_(HOI_AN)1.webp' ,null,60),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel6.webp' ,null,61),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel5.webp' ,null,62),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel4.webp' ,null,63),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel2.webp',14,null),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel1.webp',14,null),
+    ('','http://localhost:8080/storage/webp/Vincent_Ha_Long_Hotel.webp' ,null,64),
+    ('','http://localhost:8080/storage/webp/The_Imperial_Hotel_(VUNG_TAU)7.webp' ,null,65),
+    ('','http://localhost:8080/storage/webp/The_Imperial_Hotel_(VUNG_TAU)6.webp' ,null,66),
+    ('','http://localhost:8080/storage/webp/The_Imperial_Hotel_(VUNG_TAU)5.webp' ,null,67),
+    ('','http://localhost:8080/storage/webp/The_Imperial_Hotel_(VUNG_TAU)4.webp' ,null,68),
+    ('','http://localhost:8080/storage/webp/SAPA_JADE_HILL_RESORT.webp',15,null),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa3.webp',15,null),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_8.webp' ,null,69),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_7.webp' ,null,70),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_6.webp' ,null,71),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_5.webp' ,null,72),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_4.webp' ,null,73),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_2.webp',16,null),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_1.webp',16,null),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel.webp' ,null,74),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_5.webp' ,null,75),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_4.webp' ,null,76),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_3.webp' ,null,77),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_2.webp' ,null,78),
+    ('','http://localhost:8080/storage/webp/Ramada_Hotel_&_Suites_by_Wyndham_Halong_Bay_View1.webp',17,null),
+    ('','http://localhost:8080/storage/webp/Ramada_Hotel_&_Suites_by_Wyndham_Halong_Bay_View.webp',17,null),
+    ('','http://localhost:8080/storage/jpg/Park_Hyatt_Saigon9.jpg' ,null,79),
+    ('','http://localhost:8080/storage/jpg/Park_Hyatt_Saigon6.jpg' ,null,80),
+    ('','http://localhost:8080/storage/jpg/Park_Hyatt_Saigon5.jpg' ,null,81),
+    ('','http://localhost:8080/storage/jpg/Park_Hyatt_Saigon4.jpg' ,null,82),
+    ('','http://localhost:8080/storage/jpg/Park_Hyatt_Saigon3.jpg' ,null,83),
+    ('','http://localhost:8080/storage/webp/Park_Hyatt_Saigon2.webp',18,null),
+    ('','http://localhost:8080/storage/webp/Park_Hyatt_Saigon1.webp',18,null),
+    ('','http://localhost:8080/storage/webp/Park_Hyatt_Saigon.webp' ,null,84),
+    ('','http://localhost:8080/storage/jpg/Pan_Pacific_Hanoi11.jpg' ,null,85),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi10.webp' ,null,86),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi9.webp' ,null,97),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi8.webp' ,null,88),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi5.webp',19,null),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi4.webp',19,null),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi3.webp' ,null,89),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi1.webp' ,null,90),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi.webp' ,null,91),
+    ('','http://localhost:8080/storage/webp/Pan_Pacific_Hanoi_6.webp' ,null,92),
+    ('','http://localhost:8080/storage/webp/Naman_Retreat_Resort10.webp' ,null,93),
+    ('','http://localhost:8080/storage/webp/SOL_by_Melia_Phu_Quoc1.webp',20,null),
+    ('','http://localhost:8080/storage/webp/SOL_by_Melia_Phu_Quoc.webp',20,null),
+    ('','http://localhost:8080/storage/webp/Serenity_By_The_Sea_(PHAN_THIET)9.webp' ,null,94),
+    ('','http://localhost:8080/storage/webp/Serenity_By_The_Sea_(PHAN_THIET)8.webp' ,null,95),
+    ('','http://localhost:8080/storage/webp/Serenity_By_The_Sea_(PHAN_THIET)3.webp' ,null,96),
+    ('','http://localhost:8080/storage/webp/Serenity_By_The_Sea_(PHAN_THIET)2.webp' ,null,97),
+    ('','http://localhost:8080/storage/webp/Serenity_By_The_Sea_(PHAN_THIET)1.webp' ,null,98),
+    ('','http://localhost:8080/storage/webp/Sapa_Jade_Hill_Resort_And_Spa_1.webp',21,null),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel.webp',21,null),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_5.webp' ,null,99),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_4.webp' ,null,100),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_3.webp' ,null,101),
+    ('','http://localhost:8080/storage/webp/Sammy_Dalat_Hotel_2.webp' ,null,102),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi8.webp' ,null,103),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi6.webp',22,null),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi5.webp',22,null),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi3.webp' ,null,104),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi2.webp' ,null,105),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi1.webp' ,null,106),
+    ('','http://localhost:8080/storage/webp/Lotte_Hotel_Hanoi.webp' ,null,107),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)8.webp' ,null,108),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)7.webp',23,null),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)6.webp',23,null),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)5.webp' ,null,109),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)4.webp' ,null,110),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)3.webp' ,null,111),
+    ('','http://localhost:8080/storage/webp/Little_Riverside_._A_Luxury_Hotel_&_Spa_(HOI_AN)2.webp' ,null,112),
+    ('','http://localhost:8080/storage/webp/SOL_by_Melia_Phu_Quoc1.webp',null,113),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat.webp',24,null),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat.webp',24,null),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat2.webp' ,null,114),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat3.webp' ,null,115),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat5.webp' ,null,116),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat6.webp' ,null,117),
+    ('','http://localhost:8080/storage/webp/Swiss-Belresort_Tuyen_Lam_Dalat7.webp' ,null,118)
+
+
 
 
 
