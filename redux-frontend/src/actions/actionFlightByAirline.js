@@ -35,20 +35,7 @@ export const retrieveFlight = (id) => async (dispatch) => {
     }
 };
 
-export const updateFlight = (id, data) => async (dispatch) => {
-    try {
-        const res = await flightApi.updateFlight(id, data);
-  
-        dispatch({
-            type: UPDATE_FLIGHT,
-            payload: data,
-        });
-  
-        return Promise.resolve(res.data);
-    } catch (err) {
-        return Promise.reject(err);
-    }
-};
+
   
   
 
