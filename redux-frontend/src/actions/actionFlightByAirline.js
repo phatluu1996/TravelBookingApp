@@ -4,14 +4,7 @@ export const CREATE_FLIGHT = "CREATE_FLIGHT";
 export const RETRIEVE_FLIGHT = "RETRIEVE_FLIGHT";
 export const UPDATE_FLIGHT = "UPDATE_FLIGHT";
 export const DELETE_FLIGHT = "DELETE_FLIGHT";
-export const LIST_FLIGHTS = "LIST_FLIGHTS";
 
-
-// flightCode,departureCity,arrivalCity,
-//     departureTime,arrivalTime,description,economyCapacity,economyPrice,
-//     infant_price,child_price,businessCapacity,businessPrice,status,airline,
-//     economyBaggage,businessBaggage,economyCabinBaggage,businessCabinBaggage,
-//     hasEntertainment,aircraftType
 
 export const createFlight = (data) => async (dispatch) => 
     {
@@ -59,26 +52,39 @@ export const updateFlight = (id, data) => async (dispatch) => {
   
 export const deleteFlight = (id) => async (dispatch) => {
     try {
-        await flightApi.deleteFlight(id);
+        await flightApi.removeFlight(id);
   
         dispatch({
             type: DELETE_FLIGHT,
-            payload: { id },
         });
     } catch (err) {
         console.log(err);
     }
 };
   
-export const listFlightsByAirline = (id,page, sortBy, sortDir) => async (dispatch) => {
+
+export const CLEAR_FLIGHTS_RESPONSE = 'CLEAR_FLIGHTS_RESPONSE'
+export const clearFlightsState = () => async dispatch => {
+    dispatch({type : CLEAR_FLIGHTS_RESPONSE})
+}
+
+export const LIST_FLIGHTS_AIRLINE_REQUEST = "LIST_FLIGHTS_AIRLINE_REQUEST";
+export const LIST_FLIGHTS_AIRLINE_SUCCESS = "LIST_FLIGHTS_AIRLINE_SUCCESS";
+export const LIST_FLIGHTS_AIRLINE_ERROR = "LIST_FLIGHTS_AIRLINE_ERROR";
+export const listFlights = (id) => async (dispatch) => {
     try {
-        const res = await flightApi.listFlightsByAirline(id, page, sortBy, sortDir);
-  
+        dispatch({ type: LIST_FLIGHTS_AIRLINE_REQUEST });
+        const res = await flightApi.listFlightByAirline(id);
+
         dispatch({
-            type: LIST_FLIGHTS,
+            type: LIST_FLIGHTS_AIRLINE_SUCCESS,
             payload: res.data,
         });
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.error(error);
+        dispatch({
+            type: LIST_FLIGHTS_AIRLINE_ERROR,
+            message: error
+        });
     }
 };

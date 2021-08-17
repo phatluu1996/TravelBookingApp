@@ -11,6 +11,8 @@ import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 import { getAirline } from '../../../actions/actionAirline';
+import { clearFlightsState, deleteFlight } from '../../../actions/actionFlightByAirline';
+import { listFlights } from '../../../actions/actionFlightByAirline';
 
 const AirlineFlightData = (props) => {
 
@@ -22,7 +24,7 @@ const AirlineFlightData = (props) => {
 
         props.getProvince();
         props.getAirline(queryParam.get("id"));
-
+        props.getListFlight(queryParam.get("id"));
         return () => {
             mount = true;
         }
@@ -100,14 +102,48 @@ const AirlineFlightData = (props) => {
         },
         {
             name: 'ACTIONS',
-            cell: flight => <>
-              <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${flight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+            cell: (listflight,index) => <>
+              <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${listflight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
       
-              <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
-      
+      <a  className="list-btn-sm" data-toggle="modal" data-target={"#flight-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></a>
+      <div className="modal fade" id={"flight-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                  <div className="modal-header">
+                      <h5 className="modal-title" id="exampleModalLabel">Confirmation</h5>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={clearState}>
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div className="modal-body">
+                      <h5>Are you sure you want to delete this flight?</h5>
+                      <p>This will be delete immediately. You can't undo this action</p>
+                      <form onSubmit={(e) => handleSubmit(e, listflight.id)}>
+                          <div className="form-group">
+                              <button type="submit" className="btn btn-primary btn-sm mr-2">Delete</button>
+                              <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </>
           }
     ];
 
+    const handleSubmit = (e, id) => {
+        e.preventDefault();
+        var form=e.target;
+        if (id) {
+            props.delFlight(id);
+            form.getElementsByTagName("button")[1].click();
+        }
+        
+    }
+    const clearState = () => {
+        props.clearFlight();
+    }
     const customStyles = {
         headCells: {
             style: {
@@ -236,9 +272,9 @@ const AirlineFlightData = (props) => {
                                                                                 <DataTable className="table-a"
                                                                                     customStyles={customStyles}
                                                                                     theme='solarized'
-                                                                                    progressPending={!props.airline?.single?.flights}
+                                                                                    progressPending={!props.listflight?.all}
                                                                                     columns={header}
-                                                                                    data={props.airline?.single?.flights}
+                                                                                    data={props.listflight?.all}
                                                                                     pagination
                                                                                     paginationPerPage={10}
                                                                                 />
@@ -266,7 +302,9 @@ const AirlineFlightData = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         province: state.province,
-        airline: state.airline
+        airline: state.airline,
+        flight: state.flights,
+        listflight: state.flights
     };
 };
 
@@ -278,6 +316,15 @@ const mapDispatchToProps = (dispatch) => {
         getAirline: (id) => {
             dispatch(getAirline(id));
         },
+        delFlight: (id) => {
+            dispatch(deleteFlight(id));
+        },
+        clearFlight: () => {
+            dispatch(clearFlightsState)
+        },
+        getListFlight: (id) => {
+            dispatch(listFlights(id));
+        }
             
     };
 

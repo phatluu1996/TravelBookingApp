@@ -3,36 +3,85 @@ import {
     RETRIEVE_FLIGHT,
     UPDATE_FLIGHT,
     DELETE_FLIGHT,
-    LIST_FLIGHTS} from "../actions/actionFlightByAirline";
+    CLEAR_FLIGHTS_RESPONSE,
+    LIST_FLIGHTS_AIRLINE_REQUEST,
+    LIST_FLIGHTS_AIRLINE_SUCCESS,
+    LIST_FLIGHTS_AIRLINE_ERROR, } from "../actions/actionFlightByAirline";
 
+    const initialState = {
+        requesting: false,
+        success: false,
+        message: null,
+        data: null
+      }
+      
 
-
-function reducerFlightByAirline(flights = {}, action) {
+function reducerFlightByAirline(flights = {initialState}, action) {
     const { type, payload } = action;
   
     switch (type) {
 
         case CREATE_FLIGHT:
-            return [ payload];
+            flights = {
+                ...flights,
+                requesting: false,
+                success: true,
+                single:payload
+            }
+            return  flights;
   
         case RETRIEVE_FLIGHT:
-            return payload;
+            flights = {
+                ...flights,
+                requesting: false,
+                success:true,
+                single:payload
+            }
+            return flights;
   
         case UPDATE_FLIGHT:
-            if (flights.id === payload.id) {
-                return {
-                    ...flights,
-                    ...payload,
-                };
-            } else {
-                return flights;
-            }
+            flights = { ...flights, 
+                single: payload, 
+                success: true
+             }
+            return flights;
+            
   
         case DELETE_FLIGHT:
-            return flights.filter(({ id }) => id !== payload.id);
-            
-        case LIST_FLIGHTS:
-            return payload;
+            flights = {
+                ...flights,
+                success: true,
+            }
+            return flights;
+      
+        // List Flight by airline
+    case LIST_FLIGHTS_AIRLINE_REQUEST:
+        flights = {
+          ...flights,
+          requesting: true,
+
+        };
+        return flights;
+    case LIST_FLIGHTS_AIRLINE_SUCCESS:
+          flights = {
+            ...flights,
+            requesting: false,
+            success: true,
+            all: payload,
+            single: null
+          };
+          return flights;
+    
+        case LIST_FLIGHTS_AIRLINE_ERROR:
+          flights = {
+            ...flights,
+            requesting: false,
+            message: action.message,
+          };
+          return flights;
+
+        case CLEAR_FLIGHTS_RESPONSE:
+            return initialState;
 
         default:
             return flights;

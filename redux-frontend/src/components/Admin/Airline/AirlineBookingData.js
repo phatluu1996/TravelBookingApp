@@ -10,23 +10,51 @@ import { useQuery } from '../../../utils/QueryParam';
 import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
+import { clearFlightBookingCached, editBookingFlight, getBookingFlight } from '../../../actions/actionBookingFlight';
 import { countBookingTodayAirline, getAirline, getAllBookingAirline, getDailyIncomeAirline, getReportMonthAirline, getRevenueAirline } from '../../../actions/actionAirline';
 
+
+const status = {
+    properties: [
+      {
+        value: 1,
+        label: "Confirmed",
+      },
+      {
+        value: 2,
+        label: "Requested",
+      },
+      {
+        value: 3,
+        label: "Cancel",
+      },
+    ],
+  };
 const AirlineBookingData = (props) => {
 
     let queryParam = useQuery();
     let history = useHistory();
     const [isInitial, setIsInitial] = useState(true);
-    const [slProvince, setSlProvince] = useState(null);
-    const [slDistrict, setSlDistrict] = useState(null);
-    const [slWard, setSlWard] = useState(null);
 
+    const handleGetSubmit = (e, booking) => {
+        e.preventDefault();
+        var form = e.target;
+        
+        if (booking) {
+            var data = booking;
+            booking.note = form.note.value;
+            booking.status = form.status.value;
+            props.updateBooking(booking.id, data);
+            form.getElementsByTagName("button")[1].click()
+        }
+        
+    }
     useEffect(() => {
         let mount = false;
 
         props.getProvince();
         props.getAirline(queryParam.get("id"));
-
+        
         return () => {
             mount = true;
         }
@@ -37,37 +65,10 @@ const AirlineBookingData = (props) => {
 
         if (props.airline.single != null && isInitial) {
             props.getAllBookingAirline(props.airline.single?.id);
-            props.getDailyIncome(props.airline.single?.id);
-            props.getRevenue(props.airline.single?.id);
-            props.countBookingToday(props.airline.single?.id);
-            props.getReportMonth(props.airline.single?.id);
+        
             setIsInitial(false);
         }
-
-        if (props.province.data && props.airline.single) {
-            var pv = props.airline.single?.location.province;
-            var dt = props.airline.single?.location.district;
-            var w = props.airline.single?.location.ward;
-
-            if (!slProvince) {
-                setSlProvince(pv);
-            } else {
-                pv = slProvince;
-            }
-
-            if (!slDistrict) {
-                setSlDistrict(dt);
-            } else {
-                dt = slDistrict;
-            }
-
-            if (!slWard) {
-                setSlWard(w);
-            } else {
-                w = slWard;
-            }
-        }
-
+        clearBookingState();
         return () => {
             mount = true;
         }
@@ -104,19 +105,16 @@ const AirlineBookingData = (props) => {
             name: 'Booking Code',
             selector: 'bookingCode',
             sortable: true,
-            width: '15%'
         },
         {
             name: 'Amount',
             selector: 'totalPrice',
             sortable: true,
-            width: '10%'
         },
         {
             name: 'Payment',
             selector: 'paymentMethod',
             sortable: true,
-            width: '10%'
         },
         {
             name: 'Created',
@@ -128,14 +126,18 @@ const AirlineBookingData = (props) => {
             name: 'Note',
             selector: 'note',
             sortable: true,
-            width: '10%'
+
         },
         {
             name: 'Status',
-            
             sortable: true,
-            width: '10%',
-            cell: booking => booking.status == 1 ? "Confirmed" : "Cancel"
+            cell: booking =>
+           { if (booking.status == 1)
+             return "Confirmed" 
+             else if (booking.status == 2)
+             return "Requested"
+             else return "Cancel"
+        }
         },
         {
             name: 'User',
@@ -145,14 +147,55 @@ const AirlineBookingData = (props) => {
         },
         {
             name: 'ACTIONS',
-            cell: booking => <>
-              <Link className="list-btn-sm mr-1" to={`/airline-update-bookingl?id=${booking.id}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
-      
-              <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></Link></>,
-      
+            cell: (booking, index) => <>
+                <a  className="list-btn-sm" data-toggle="modal" data-target={"#booking-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon></a>
+                <div className="modal fade" id={"booking-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Update Booking</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={clearBookingState}>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <form onSubmit={(e) => handleGetSubmit(e, booking)}>
+                                    <div className="form-group">
+                                        <label htmlFor="recipient-name" className="col-form-label">Booking Code:</label>
+                                        <input type="text" className="form-control" name="bookingCode" readOnly defaultValue={booking.bookingCode} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">User:</label>
+                                        <input type="text" className="form-control" name="user" readOnly defaultValue={booking.user.account.userName} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Note</label>
+                                        <input type="text" className="form-control" id="note" name="note" defaultValue={booking.note} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="message-text" className="col-form-label">Status:</label>
+                                        <select defaultValue={booking.status} className="form-control" name="status" id="status">
+                                            {status.properties.map((status) => (<option key={status.value} value={status.value}> {status.label}</option>
+                                              ) )}
+                                          </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <button type="submit" className="btn btn-primary btn-sm mr-2">Update</button>
+                                        <button id={"close-"+index} type="button" className="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/* <Link className="list-btn-sm"><FontAwesomeIcon className="list-btn-sm-icon" style={{color:"white"}} icon={faTrash}></FontAwesomeIcon></Link> */}
+                              
+            </>,
         }
     ];
-
+    const clearBookingState = () => {
+        props.clearState();
+    }
     const customStyles = {
         headCells: {
             style: {
@@ -302,7 +345,8 @@ const AirlineBookingData = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         province: state.province,
-        airline: state.airline
+        airline: state.airline,
+        booking: state.bookFlight
     };
 };
 
@@ -317,18 +361,16 @@ const mapDispatchToProps = (dispatch) => {
         getAirline: (id) => {
             dispatch(getAirline(id));
         },
-        getDailyIncome: (id) => {
-            dispatch(getDailyIncomeAirline(id));
+        getBooking: (id) =>{
+            dispatch(getBookingFlight(id));
         },
-        getRevenue: (id) => {
-            dispatch(getRevenueAirline(id));
+        updateBooking: (id, data) => {
+            dispatch(editBookingFlight(id,data));
         },
-        countBookingToday: (id) => {
-            dispatch(countBookingTodayAirline(id));
-        },
-        getReportMonth: (id) => {
-            dispatch(getReportMonthAirline(id));
+        clearState: ()=>{
+            dispatch(clearFlightBookingCached());
         }
+
     };
 
 };

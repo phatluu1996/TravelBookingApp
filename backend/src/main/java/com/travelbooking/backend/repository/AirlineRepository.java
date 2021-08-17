@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface AirlineRepository extends JpaRepository<Airline, Long>, JpaSpecificationExecutor {
@@ -18,7 +19,7 @@ public interface AirlineRepository extends JpaRepository<Airline, Long>, JpaSpec
     Boolean existsByAccount_Id(Long id);
     Airline getByEmail(String email);
 
-    @Query("SELECT a.flights from Airline as a where a.id = :airlineId")
-    Page<Flight> listFlightByAirline(@Param("airlineId") Long airlineId, Pageable pageable);
+    @Query("SELECT f from Flight f where f.airline.id = :id and f.retired = false")
+    List<Flight> getListFlights(@Param("id") Long id);
 
 }
