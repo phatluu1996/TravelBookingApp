@@ -322,7 +322,7 @@ const HotelSearchPage = (props) => {
     if (shouldSetState) {
       setFilter(filter)
     }
-    props.getHotels(filter.province, filter.district, filter.ward, filter.numberAdult, filter.numberChildren, filter.checkInDate, filter.numRoom);
+    props.getHotels(filter.province, filter.district, filter.ward, filter.numberAdult, filter.numberChildren,filter.checkInDate,filter.checkOutDate,filter.numRoom);
     window.history.pushState({}, null, `/hotel-list?${toQueryString(filter)}`);
   }
 
@@ -351,8 +351,8 @@ const HotelSearchPage = (props) => {
       filter.numberAdult = form.numAdult.value;
       filter.numberChildren = form.numChildren.value;
       filter.checkInDate = form.checkInDate.value;
-      filter.checkOutDate = queryParam.get("checkOutDate");
-      filter.numRoom = queryParam.get("numRoom");
+      filter.checkOutDate = form.checkOutDate.value;
+      filter.numRoom = form.numRoom.value;
       performSearch(filter, true);
     }
 
@@ -575,6 +575,7 @@ const HotelSearchPage = (props) => {
                               name="numChildren"
                               type="number"
                               defaultValue={queryParam.get("numberChildren")}
+                              min="0"
                               max="7"
                               onKeyPress={(e) => e.preventDefault()}
                             />
@@ -790,6 +791,7 @@ const mapDispatchToProps = (dispatch) => {
       numberAdult,
       numberChildren,
       checkInDate,
+      checkOutDate,
       numRoom
     ) => {
       dispatch(
@@ -800,6 +802,7 @@ const mapDispatchToProps = (dispatch) => {
           numberAdult,
           numberChildren,
           checkInDate,
+          checkOutDate,
           numRoom
         )
       );

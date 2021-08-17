@@ -110,6 +110,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         data.put("hotelBooking", hotelBooking);
         data.put("nightCount", nightCount);
         data.put("createDate",createDate);
+        data.put("name",user.getFirstName() + user.getLastName());
         File pdfAttachment = pdfGenaratorUtil.createPdf("invoicebookingroom",data, ITINERARY_DIR, emailUtil, user);
         Map<String, Object > emailMap = new HashMap<>();
         emailMap.put("user", user);

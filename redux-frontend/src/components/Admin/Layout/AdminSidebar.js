@@ -192,7 +192,7 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <Link className="nav-link" to={`/airline-booking-data?id=${getUserId()}`}>
+                        <Link className="nav-link" to={`/hotel-booking?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
                             </span>
@@ -200,7 +200,7 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <Link className="nav-link" to={`/airline-flight-data?id=${getUserId()}`}>
+                        <Link className="nav-link" to={`/hotel-room?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
                             </span>

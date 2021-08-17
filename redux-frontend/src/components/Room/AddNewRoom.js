@@ -126,7 +126,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
         const form = e.target;
         let formData = new FormData();
         console.log('' + hotel.id);
-        // byte[] bytes = images.f.read(file_upload .toPath());
+        
         if (handleChange(form)) {
             formData.append('roomNumber', parseInt(form.roomNumber.value));
             formData.append('hotel', '' + hotel.id);
@@ -151,6 +151,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
             }
             
             closeModal(false)
+            
         }
     };
 

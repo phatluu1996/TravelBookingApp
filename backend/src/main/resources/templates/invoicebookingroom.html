@@ -359,7 +359,7 @@ footer {
                             <td><span>Payment Term</span><label id="payment_term">60 gg DFFM</label></td>
                             <td><span>Invoice Type</span><label id="invoice_type">EXP REP INV</label></td>
                         </tr>
-                        <tr><td colspan="2"><span>Note</span>#<label id="note">None</label></td></tr>
+                        <tr><td colspan="2"><span>Customer Name</span>:<label id="note" th:text="${name}"></label></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -373,9 +373,9 @@ footer {
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Title</th>
+
                         <th>Room Type</th>
-                        <th>Description</th>
+                        <th>Check in date</th>
                         <th>Night Stay</th>
                         <th>Unit Price</th>
                         <th>Total Amount</th>
@@ -383,21 +383,19 @@ footer {
                     </thead>
                     <tr th:each="room : ${hotelBooking.hotelBookingDetail.hotelBookingRooms}">
                         <td width="5%" class="tableitem" th:text="${roomStat.index + 1}"></td>
-                        <td width="10%" class="tableitem" >Hotel Ticket</td>
-                        <td width="10%" class="tableitem" th:text="${room.room.roomType}"></td>
-                        <td width="25%" class="tableitem" th:text="${hotelBooking.checkInDate}"></td>
-                        <td width="5%" class="tableitem" th:text="${nightCount}"></td>
+                        <td width="15%" class="tableitem" th:text="${room.room.roomType}"></td>
+                        <td width="30%" class="tableitem" th:text="${hotelBooking.checkInDate}"></td>
+                        <td width="10%" class="tableitem" th:text="${nightCount}"></td>
                         <td width="20%" class="tableitem" th:text="${room.room.price + ' $'}"></td>
-                        <td width="25%" class="tableitem" th:text="${room.room.price}*${nightCount} + ' $'"></td>
+                        <td width="20%" class="tableitem" th:text="${room.room.price}*${nightCount} + ' $'"></td>
                     </tr>
                     <tr>
                         <td width="5%" class="tableitem"></td>
+                        <td width="15%" class="tableitem"></td>
+                        <td width="30%" class="tableitem"></td>
                         <td width="10%" class="tableitem"></td>
-                        <td width="10%" class="tableitem"></td>
-                        <td width="25%" class="tableitem"></td>
-                        <td width="5%" class="tableitem"></td>
                         <td width="20%" class="tableitem">Tax</td>
-                        <td width="25%" class="tableitem">10.0$</td>
+                        <td width="20%" class="tableitem">10.0$</td>
                     </tr>
                     <tr class="total-row">
                         <th colspan="4" class="tableitem" ></th>

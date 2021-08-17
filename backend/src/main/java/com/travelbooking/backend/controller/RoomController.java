@@ -67,7 +67,8 @@ public class RoomController {
 
         //http://localhost:8080/api/room
         @PostMapping(value = "/room",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-        public List<Room> addRoom(@RequestParam MultipartFile[] files
+        public List<Room> addRoom(
+                                @RequestParam MultipartFile[] files
                                 ,@RequestParam int roomNumber
                                 ,@RequestParam String roomType
                                 ,@RequestParam int price

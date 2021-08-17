@@ -775,7 +775,7 @@ const HotelDetailPage = (props) => {
                                                                     setPageNum={setPageNumberFB}
                                                                 />
                                                                 <div
-                                                                    hidden={user || isLoading ? false : true}
+                                                                    hidden={user?.data? false : true}
                                                                     className="review-form"
                                                                 >
                                                                     <h2>Live Review</h2>

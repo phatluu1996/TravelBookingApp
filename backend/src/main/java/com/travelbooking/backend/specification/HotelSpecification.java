@@ -46,16 +46,19 @@ public final class HotelSpecification {
             List<Predicate> predicates = new ArrayList<Predicate>();
             if(province != 0){
                 predicates.add(cb.equal(joinTableLocation.get("province"),province));
-            }else if(district != 0){
+            }
+            if(district != 0){
                 predicates.add(cb.equal(joinTableLocation.get("district"),district));
-            }else if(ward != 0){
+            }
+            if(ward != 0){
                 predicates.add(cb.equal(joinTableLocation.get("ward"),ward));
-            }else if(number_children != 0){
+            }
+            if(number_children != 0){
                 predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
             }
 
 //                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
-                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));
+//                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));
 
 //                predicates.add(cb.greaterThanOrEqualTo(hotel.get("numberOfRoom"),numRoom));
                 cq.distinct(true);
