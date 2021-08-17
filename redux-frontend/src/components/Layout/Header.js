@@ -47,9 +47,9 @@ const Header = (props) => {
                         <div className="header-signup" style={{ display: getUser() ? "none" : "block" }}>
                             <Link to="/register">Register</Link>
                         </div>
-                        <div className="header-signup" style={{ display: getRole() == ROLE_USER?"block":"none"}}>
+                        {/* <div className="header-signup" style={{ display: getRole() == ROLE_USER?"block":"none"}}>
                             <Link to="/hotel-partner-register">Hotel Partner Register</Link>
-                        </div>
+                        </div> */}
                         <div className="header-lang header-signup" style={{ display: !getUser() ? "none" : "block", backgroundColor: "#ff7200" }}>
                             <a>
                                 {getUserFullName()}
