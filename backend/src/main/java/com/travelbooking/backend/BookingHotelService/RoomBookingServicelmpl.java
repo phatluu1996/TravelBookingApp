@@ -50,13 +50,13 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         //Create Booking Detail
         HotelBookingDetail hotelBookingDetail = new HotelBookingDetail();
         List<HotelBookingRoom> hotelBookingRoomList = new ArrayList<>();
+        HotelBookingDetail resultHotelBookingDetail =  hotelBookingDetailRepository.save(hotelBookingDetail);
         //Create Booking Room
         for (int i = 0; i < bookingRequest.getRooms().size() ; i++) {
-
             HotelBookingRoom hotelBookingRoom = new HotelBookingRoom();
             Room room = roomRepository.findById(bookingRequest.getRooms().get(i).getId()).get();
 //            System.out.println(room);
-            hotelBookingRoom.setHotelBookingDetail(hotelBookingDetail);
+            hotelBookingRoom.setHotelBookingDetail(resultHotelBookingDetail);
             hotelBookingRoom.setRoom(room);
             hotelBookingRoomRepository.save(hotelBookingRoom);
             hotelBookingRoomList.add(hotelBookingRoom);
@@ -71,12 +71,13 @@ public class RoomBookingServicelmpl implements RoomBookingService {
         hotelBooking.setPaymentMethod(bookingRequest.getPaymentMethod());
         hotelBooking.setTotalPrice(bookingRequest.getTotalPrice());
         hotelBooking.setUser(bookingRequest.getUser());
-        hotelBookingDetail.setHotelBookingRooms(hotelBookingRoomList);
-        hotelBooking.setHotelBookingDetail(hotelBookingDetail);
-        hotelBooking.setRetired(false);
-        hotelBookingDetailRepository.save(hotelBookingDetail);
-        HotelBooking createBkSuccess = hotelBookingRepository.save(hotelBooking);
 
+        hotelBooking.setRetired(false);
+        hotelBooking.setHotelBookingDetail(resultHotelBookingDetail);
+        HotelBooking createBkSuccess = hotelBookingRepository.save(hotelBooking);
+        resultHotelBookingDetail.setHotelBooking(createBkSuccess);
+        resultHotelBookingDetail.setHotelBookingRooms(hotelBookingRoomList);
+        hotelBookingDetailRepository.save(resultHotelBookingDetail);
 
         String qrcodePath = "src/main/resources/static/images/" + createBkSuccess.getId() + "-QRCode.png";
         BitMatrix bitMatrix = qrCodeWriter.encode("SparrowCode: "+createBkSuccess.getBookingCode()+"\n"+
