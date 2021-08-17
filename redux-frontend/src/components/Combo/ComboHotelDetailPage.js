@@ -742,7 +742,7 @@ const ComboHotelDetailPage = (props) => {
                                                                         props?.hotel?.data?.hotelFeedBacks.length : ""}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                {getToken() && <div
+                                                                {getToken() && getRole() == ROLE_USER() && <div
                                                                     hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >
