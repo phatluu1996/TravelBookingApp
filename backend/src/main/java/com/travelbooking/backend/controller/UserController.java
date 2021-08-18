@@ -11,7 +11,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -106,5 +109,38 @@ public class UserController {
         User user = userRepository.getByAccountId(id);
         List<HotelBooking> list = hotelBookingRepository.getHotelBookingsByUser(user);
         return ResponseEntity.ok().body(list);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/totalAmountReport")
+    public ResponseEntity<?> getTotalReportAdmin(){
+        float flightBookingAmount = flightBookingRepository.totalFlightBookingAmount();
+        float hotelBookingAmount = hotelBookingRepository.totalHotelBookingAmount();
+        HashMap<String, Float> totalPrice = new HashMap<String, Float>();
+        totalPrice.put("total",flightBookingAmount + hotelBookingAmount);
+        totalPrice.put("flight",flightBookingAmount);
+        totalPrice.put("hotel",hotelBookingAmount);
+        return ResponseEntity.ok().body(totalPrice);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/dailyIncomeAdmin")
+    public ResponseEntity<?> getDailyIncomeAdmin(){
+        float incomeHotel = hotelBookingRepository.dailyIncomeAdminRP();
+        float incomeAirline = flightBookingRepository.dailyIncomeAdminRP();
+        return ResponseEntity.ok().body(incomeHotel+incomeAirline);
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/reportPerMonth")
+    public ResponseEntity<?> getMonthlyReportAdmin(){
+        Collection rpHotel = hotelBookingRepository.getAllAmonthPerMonth();
+        Collection rpAirline = flightBookingRepository.getAllAmonthPerMonth();
+        Collection monthName = flightBookingRepository.getReportMonthName();
+        HashMap<String, Collection> allValue = new HashMap<String, Collection>();
+        allValue.put("hotel",rpHotel);
+        allValue.put("airline",rpAirline);
+        allValue.put("month",monthName);
+        return ResponseEntity.ok().body(allValue);
     }
 }

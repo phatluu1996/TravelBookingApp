@@ -131,48 +131,6 @@ const AdminSidebar = () => {
                             <span className="menu-title">Flight data</span>
                         </Link>                        
                     </li></>}
-                    {getRole() === ROLE_ADMIN && 
-                    <><li className="nav-item menu-items">
-                        <Link className="nav-link" to="/admin-dashboard">
-                            <span className="menu-icon">
-                                {/* <i className="mdi mdi-speedometer"></i> */}
-                                <FontAwesomeIcon icon={faChartArea} color="#0090e7"></FontAwesomeIcon>
-                            </span>
-                            <span className="menu-title">Dashboard</span>
-                        </Link>
-                    </li>
-                    <li className="nav-item menu-items">
-                        <Link className="nav-link" to="/admin-user-manage">
-                            <span className="menu-icon">
-                                <FontAwesomeIcon icon={faUser} color="#00d25b"></FontAwesomeIcon>
-                            </span>
-                            <span className="menu-title">Users</span>
-                        </Link>
-                    </li>
-                    <li className="nav-item menu-items">
-                        <Link className="nav-link" to="/admin-hotel-manage">
-                            <span className="menu-icon">
-                                <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
-                            </span>
-                            <span className="menu-title">Hotels</span>
-                        </Link>
-                    </li>
-                    <li className="nav-item menu-items">
-                        <Link className="nav-link" to="/admin-airline-manage">
-                            <span className="menu-icon">
-                                <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
-                            </span>
-                            <span className="menu-title">Airlines</span>
-                        </Link>                        
-                    </li>
-                    <li className="nav-item menu-items">
-                        <Link className="nav-link" to="/admin-feedback-manage">
-                            <span className="menu-icon">
-                                <FontAwesomeIcon icon={faMailBulk} color="#ffab00"></FontAwesomeIcon>
-                            </span>
-                            <span className="menu-title">Feedback</span>
-                        </Link>                        
-                    </li></>}
                     {getRole() === ROLE_HOTEL && 
                     <><li className="nav-item menu-items">
                         <Link className="nav-link" to={`/hotel-dashboard?id=${getUserId()}`}>
