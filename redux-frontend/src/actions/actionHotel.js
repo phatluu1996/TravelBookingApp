@@ -135,11 +135,18 @@ export const createHotel = (data) => async dispatch => {
 export const createPartner = (data) => async dispatch => {
     try {
         dispatch({ type: CREATE_HOTEL_REQUEST });
+        const config = {
+            headers: {
+                'content-Type': 'multipart/form-data'
+                // 'accept': 'application/json'
+            }
+        };
         const url = `${ROOT_URL}/api/addHotel`;
-        const response = await axios.post(url, data)
+        const response = await axios.post(url,data,config)
         const responseBody = await response.data;
         dispatch({
-            type: CREATE_HOTEL_SUCCESS
+            type: CREATE_HOTEL_SUCCESS,
+            message:responseBody
         });
     } catch (error) {
         console.error(error);

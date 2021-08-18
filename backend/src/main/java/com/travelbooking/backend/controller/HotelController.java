@@ -1,5 +1,6 @@
 package com.travelbooking.backend.controller;
 
+import com.travelbooking.backend.BookingService.EmailService;
 import com.travelbooking.backend.UploadImageService.UploadFileServiceImpl;
 import com.travelbooking.backend.models.*;
 import com.travelbooking.backend.repository.*;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
@@ -41,11 +44,21 @@ public class HotelController {
     @Autowired
     private LocationRepository locationRepository;
     @Autowired
+    private ProvinceRepository provinceRepository;
+    @Autowired
+    private  DistrictRepository districtRepository;
+    @Autowired
+    private  WardRepository wardRepository;
+    @Autowired
     private HotelBookingRepository hotelBookingRepository;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private UploadFileServiceImpl uploadFileService;
+    @Autowired
+    EmailService emailService;
+    @Autowired
+    PasswordEncoder encoder;
 
 
     //http://localhost:8080/api/findHotels
@@ -181,46 +194,98 @@ public class HotelController {
         Hotel result = hotelRepository.save(hotel);
         return ResponseEntity.ok().body(result);
     }
+
     //http://localhost:8080/api/addHotel
-    @PostMapping("/addHotel")
-    public ResponseEntity<?> addHotelWithImage( @RequestParam MultipartFile[] files
-            ,@RequestParam(required=false,name="hotelName") String hotelName
-            ,@RequestParam(required=false,name="email") String email
-            ,@RequestParam(required=false,name="description") String description
-            ,@RequestParam(required=false,name="numberOfRoom") int numberOfRoom
-            ,@RequestParam(required=false,name="street") String street
-            ,@RequestParam(required=false,name="province") Province province
-            ,@RequestParam(required=false,name="district") District district
-            ,@RequestParam(required=false,name="ward") Ward ward
-            ,@RequestParam(required=false,name="account") String accountId
+    @PostMapping(value = "/addHotel",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addHotelWithImage(
+             @RequestParam(name = "files",required = false) MultipartFile[] files
+            ,@RequestParam String contactName
+            ,@RequestParam String contactTitle
+            ,@RequestParam String userName
+            ,@RequestParam String password
+            ,@RequestParam String hotelName
+            ,@RequestParam String email
+            ,@RequestParam String phone
+            ,@RequestParam String description
+            ,@RequestParam int numberOfRoom
+            ,@RequestParam String street
+            ,@RequestParam String province
+            ,@RequestParam String district
+            ,@RequestParam String ward
     ) throws Exception {
-        Location location = new Location();
-        Hotel hotel = hotelRepository.getByAccountId(Long.parseLong(accountId));
-        Account account = accountRepository.getAccountById(Long.parseLong(accountId));
-        if (hotel != null) {
+        if (accountRepository.existsByUserName(userName)) {
             return ResponseEntity
-                    .badRequest().body("Username has been used !");
+                    .ok()
+                    .body(new MessageResponse("Username is already in use!",false));
         }
+        if (hotelRepository.existsByEmail(email)) {
+            return ResponseEntity
+                    .ok()
+                    .body(new MessageResponse("Email is already in use!",false));
+        }
+        Date currentUtilDate = new Date();
+
+        //Images
+        List<Image> images = uploadFileService.fileUpload(files);
+      ;
+        //Location create:
+        Location location = new Location();
+
+        location.setStreet(street);
+        location.setPostalCode("7000");
+        location.setRetired(Boolean.FALSE);
+        location.setProvince(provinceRepository.findById(Long.parseLong(province)).get());
+        location.setDistrict(districtRepository.findById(Long.parseLong(district)).get());
+        location.setWard(wardRepository.findById(Long.parseLong(ward)).get());
+        Location resultLocation = locationRepository.save(location);
+
+        //Account create:
+        Account account = new Account();
+
+        account.setPassword(encoder.encode(password));
+        account.setUserName(userName);
+        account.setRole("HOTEL");
+        account.setRetired(true);
+        Account resultAccount = accountRepository.save(account);
+
+
+        //Hotel create
+        Hotel hotel = new Hotel();
+
         hotel.setHotelName(hotelName);
+        hotel.setContactName(contactName);
+        hotel.setContactTitle(contactTitle);
+        hotel.setPhone(phone);
+
         hotel.setEmail(email);
         hotel.setDescription(description);
         hotel.setNumberOfRoom(numberOfRoom);
-        location.setStreet(street);
-        location.setProvince(province);
-        location.setDistrict(district);
-        location.setWard(ward);
-        hotel.setLocation(locationRepository.save(location));
-        hotel.setAccount(account);
-
-        List<Image> images = uploadFileService.fileUpload(files);
         hotel.setImages(images);
-        Hotel result = hotelRepository.save(hotel);
-        if(result != null){
-            account.setRole("Hotel");
-            accountRepository.save(account);
+        hotel.setRetired(Boolean.FALSE);
+        hotel.setLocation(resultLocation);
+        hotel.setAccount(resultAccount);
+        Hotel resultHotel = hotelRepository.save(hotel);
+
+        if(resultLocation.equals(null)||resultAccount.equals(null)||resultHotel.equals(null)){
+            return ResponseEntity
+                    .ok()
+                    .body(new MessageResponse("Initialization failed",false));
         }
-        return ResponseEntity.ok().body(result);
+
+        StringBuilder linkReset = new StringBuilder();
+        linkReset.append("http://localhost:3000/activateAccount?id=");
+        linkReset.append(resultAccount.getId());
+
+        Map<String, Object> emailMap = new HashMap<>();
+        emailMap.put("username",contactName );
+        emailMap.put("changePasswordlink", linkReset.toString());
+
+        String templateHtml = emailService.templateResolve("confirm_account", emailMap);
+        emailService.sendSimpleMessage(email, null, "Confirm account", templateHtml);
+
+        return ResponseEntity.ok(new MessageResponse("Hotel registered successfully!", true));
     }
+
     //http://localhost:8080/api/hotel/{id}
     @PutMapping("/hotel/{id}")
     public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable Long id) {

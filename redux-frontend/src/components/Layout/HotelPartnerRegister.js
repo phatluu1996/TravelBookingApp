@@ -78,6 +78,7 @@ function HotelPartnerRegister(props) {
         var form = e.target;
         const err = { ...validateError };
 
+
         if (!form.hotelName.value) {
             err.hotelName = "Hotel Name is required!";
         } else {
@@ -252,8 +253,11 @@ function HotelPartnerRegister(props) {
     const handleSignupSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
-        let formData = new FormData();
+        var formData = new FormData();
+        console.log(files)
         if (validateForm(e)) {
+            formData.append("userName", form.userName.value);
+            formData.append("password", form.password.value);
             formData.append("hotelName", form.hotelName.value);
             formData.append("email", form.email.value);
             formData.append("phone", form.phone.value);
@@ -262,27 +266,30 @@ function HotelPartnerRegister(props) {
             formData.append("description", form.description.value);
             formData.append("street", form.street.value);
             formData.append("numberOfRoom", parseInt(form.numberOfRoom.value));
-            formData.append("province", slProvince);
-            formData.append("district", slDistrict);
-            formData.append("ward", slWard);
-            // formData.append("account", queryParam.get("userId"));
+            formData.append("province", slProvince.id);
+            formData.append("district", slDistrict.id);
+            formData.append("ward", slWard.id);
             if (files.length > 0 && files != []) {
                 for (let index = 0; index < files.length; index++) {
-                    const file = files[index];
-                    formData.append("files", file);
+                    const image = files[index];
+                    formData.append("files", image);
                 }
             } else {
                 formData.append("files", []);
             }
 
-            createPartner(formData);
+            props.createPartner(formData);
             setIsRequest(true);
         }
     };
 
+
+
     useEffect(() => {
         var mount = false;
+        importAll();
         props.getProvince();
+      
         return () => {
             mount = true;
         };
@@ -290,27 +297,21 @@ function HotelPartnerRegister(props) {
 
     useEffect(() => {
         var mount = false;
-        importAll();
-
-        if (props.auth.form === 'signup') {
-            if (props.auth.signupData && isRequest) {
-                if (props.auth.signupData.success) {
-
-                    alert(props.auth.signupData.message + " Please check your email to activate your account.");
+            props.getProvince();
+            if (props.hotel.message?.message && isRequest) {
+                if (props.hotel.message.success) {
+                    alert(props.hotel.message.message + " Please check your email to activate your account.");
                     history.push("/");
                 } else {
+                    setIsRequest(false);
                     setStatusSignup(false);
-                    setMessageSignup(props.auth.signupData.message);
+                    setMessageSignup(props.hotel.message?.message);
                 }
-            } else {
-                setStatusSignup(false);
-                setMessageSignup(props.auth.message);
             }
-        }
         return () => {
             mount = true;
         };
-    }, []);
+    }, [props.hotel?.message?.message]);
 
     return (
         <body>
@@ -327,6 +328,7 @@ function HotelPartnerRegister(props) {
                             </p>
 
                             <div className="booking-form">
+                                <h1>Account information</h1>
                                 <div>
                                     <div className="booking-form-i booking-form-i-custom">
                                         <label className="custom-lbl">User name*:</label>
@@ -348,7 +350,7 @@ function HotelPartnerRegister(props) {
                                             className={`input ${validateError.password ? "is-invalid" : ""
                                                 }`}
                                         >
-                                            <input type="text" name="password" onChange={handleChange} />
+                                            <input type="password" name="password" onChange={handleChange} />
                                         </div>
                                         <div className="booking-error-input">
                                             {validateError.password}
@@ -360,7 +362,7 @@ function HotelPartnerRegister(props) {
                                             className={`input ${validateError.confirmPassword ? "is-invalid" : ""
                                                 }`}
                                         >
-                                            <input type="text" name="confirmPassword" onChange={handleChange} />
+                                            <input type="password" name="confirmPassword" onChange={handleChange} />
                                         </div>
                                         <div className="booking-error-input">
                                             {validateError.confirmPassword}
@@ -368,6 +370,8 @@ function HotelPartnerRegister(props) {
                                     </div>
                                     <div className="clear"></div>
                                 </div>
+                                <div className="complete-devider"></div>
+                                <h1>Hotel Information</h1>
                                 <div>
                                     <div className="booking-form-i">
                                         <label className="custom-lbl">Contact Name*:</label>
@@ -541,7 +545,7 @@ function HotelPartnerRegister(props) {
                                                 : "textarea-wrapper is-invalid"
                                         }
                                     >
-                                        <textarea name="message"></textarea>
+                                        <textarea name="description"></textarea>
                                     </div>
                                     <div className="booking-error-input">
                                         {validateError.description}
@@ -605,6 +609,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         auth: state.auth,
         province: state.province,
+        hotel:state.hotels,
     };
 };
 
