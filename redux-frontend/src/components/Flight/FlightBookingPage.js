@@ -17,6 +17,7 @@ import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import ReactModal from "react-modal";
+import { IsNumeric, ValidateDateFormat } from "../../utils/DateUtil";
 
 
 function useQuery() {
@@ -140,9 +141,7 @@ const FlightBookingPage = (props) => {
 
       if (!list[index]["birthday"]) {
         err[index]["birthday"] = "Birthday required.";
-      } else {
-        err[index]["birthday"] = "";
-      };
+      }
     };
 
     for (var index = 0; index < list.length; index++) {
@@ -176,10 +175,11 @@ const FlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
-      //   err[index]["birthday"] = "Wrong format of birthday";
-      // } else {
-      err[index]["birthday"] = "";
+      if(ValidateDateFormat(e)){
+        err[index]["birthday"] = "";
+      }else{        
+        err[index]["birthday"] = "Wrong Format !";
+      }   
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
       setInputListPassenger(list);
@@ -588,7 +588,10 @@ const FlightBookingPage = (props) => {
                                         type="text"
                                         className="form-control date-booking-inpt"
                                         placeholder="YYYY-MM-DD"
+                                        onKeyDown={(e) => IsNumeric(e)}
                                         onChange={(e) => handleBirthdayChange(e, i)}
+                                        maxLength={10}
+                                        autoComplete="off"
                                       />
                                       <span className="date-icon"></span>
                                     </div>

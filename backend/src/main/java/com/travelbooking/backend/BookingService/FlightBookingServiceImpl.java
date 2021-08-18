@@ -246,8 +246,8 @@ public class FlightBookingServiceImpl implements FlightBookingService{
         emailMap.put("user", user);
         String templateHtml = emailService.templateResolve("thankyouemail", emailMap);
         emailService.sendSimpleMessage(user.getEmail(),null, "Flight Itinerary", templateHtml, "Invoice.pdf", pdfAttachment, qrcode);
-        qrcode.delete();
-        pdfAttachment.delete();
+//        qrcode.delete();
+//        pdfAttachment.delete();
     }
 
     public Float GetPriceByClass(BookingRequest bookingRequest, Flight flight){
