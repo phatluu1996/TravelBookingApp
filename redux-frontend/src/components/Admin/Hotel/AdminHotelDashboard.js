@@ -55,7 +55,6 @@ const AdminHotelDashboard = (props) => {
             props.getDailyIncome(props.hotel.one?.id);
             props.getBookingToday(props.hotel.one?.id);
             props.getRevenueCurrent(props.hotel.one?.id);
-            props.getAllBooking(props.hotel.one?.id);
             props.getReportMonth(props.hotel.one?.id);
 
             setIsInitial(false);
