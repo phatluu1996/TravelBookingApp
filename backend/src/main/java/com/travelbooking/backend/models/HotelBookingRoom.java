@@ -20,7 +20,7 @@ public class HotelBookingRoom {
 
     @ManyToOne
     @JoinColumn(name = "room_id", referencedColumnName = "id")
-    @JsonIgnoreProperties({"hotel","hotelBookingRoom", "images"})
+    @JsonIgnoreProperties({"hotelBookingRoom", "images"})
     private Room room;
 
     public HotelBookingRoom() {

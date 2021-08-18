@@ -39,7 +39,7 @@ const ComboBookingCompletePage = (props) => {
 
     useEffect(() => {
         let mount = false;
-        if (!booking.data) {
+        if (!booking.data && !bookingHotel.data) {
             history.push("/");
         }
         window.scrollTo(0, 0);
@@ -164,34 +164,89 @@ const ComboBookingCompletePage = (props) => {
                                                         <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
                                                     </div>
                                                     <div className="complete-devider"></div>
-
                                                     <div className="complete-info-table">
-                                                        <h2>Hotel Detail</h2>
+                                                        <h2>Hotel Information</h2>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Hotel Name</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.departureCity} - {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.arrivalCity}</div>
+                                                            <div className="complete-info-l">Hotel Name:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.hotelBookingDetail?.hotelBookingRooms[0]?.room?.hotel?.hotelName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Location</div>
-                                                            <div className="complete-info-r">{booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.airline.airlineName} {booking?.data?.flightBookingDetails[booking?.data?.flightBookingDetails.length - 1]?.flight.flightCode}</div>
+                                                            <div className="complete-info-l">Contact Name:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.hotelBookingDetail?.hotelBookingRooms[0]?.room?.hotel?.contactName}</div>
                                                             <div className="clear"></div>
                                                         </div>
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Reservation Date</div>
-                                                            <div className="complete-info-r">{getFormattedDate(bookingHotel?.data?.checkInDate)} - {getFormattedDate(bookingHotel?.data?.checkOutDate)}</div>
+                                                            <div className="complete-info-l">Phone Number:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.hotelBookingDetail?.hotelBookingRooms[0]?.room?.hotel?.phone}</div>
                                                             <div className="clear"></div>
                                                         </div>
-
                                                         <div className="complete-info-i">
-                                                            <div className="complete-info-l">Number of room</div>
-                                                            <div className="complete-info-r"></div>
+                                                            <div className="complete-info-l">Email Address:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.hotelBookingDetail?.hotelBookingRooms[0]?.room?.hotel?.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
-                                                        <div className="complete-txt-link"><a href="#">*** Check-in counters closes 60 minutes prior to scheduled departure time..</a></div>
                                                     </div>
                                                     <div className="complete-devider"></div>
+                                                    <div className="complete-info-table">
+                                                        <h2>Room Information</h2>
 
+                                                        {
+                                                            bookingHotel.data?.hotelBookingDetail?.hotelBookingRooms?.map((bkRoom, index) =>
+
+                                                                <React.Fragment key={bkRoom?.room?.id}>
+                                                                    <div className="complete-info-i">
+                                                                        <div className="complete-info-l">Room Type:</div>
+                                                                        <div className="complete-info-r">{bkRoom?.room?.roomType}</div>
+                                                                        <div className="clear"></div>
+                                                                    </div>
+                                                                    <div className="complete-info-i">
+                                                                        <div className="complete-info-l">Room Number:</div>
+                                                                        <div className="complete-info-r">{bkRoom?.room?.roomNumber}</div>
+                                                                        <div className="clear"></div>
+                                                                    </div>
+                                                                    <div className="complete-info-i">
+                                                                        <div className="complete-info-l">Room Price:</div>
+                                                                        <div className="complete-info-r">{bkRoom?.room?.price}$</div>
+                                                                        <div className="clear"></div>
+                                                                    </div>
+                                                                    <div className="complete-devider"></div>
+                                                                </React.Fragment>
+
+                                                            )
+                                                        }
+
+                                                    </div>
+
+                                                    <div className="complete-info-table">
+                                                        <h2>Booking Information</h2>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Booking code:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.bookingCode}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Number of guest:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.numOfGuest}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Check in date:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.checkInDate}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Check out date:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.checkOutDate}</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                        <div className="complete-info-i">
+                                                            <div className="complete-info-l">Total Price:</div>
+                                                            <div className="complete-info-r">{bookingHotel.data?.totalPrice}$</div>
+                                                            <div className="clear"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="complete-devider"></div>
                                                     <div className="complete-txt final">
                                                         <h2>Contact Information</h2>
                                                         <div className="complete-info-i">
@@ -219,6 +274,7 @@ const ComboBookingCompletePage = (props) => {
                                                             <div className="complete-info-r">{booking?.data?.user.email}</div>
                                                             <div className="clear"></div>
                                                         </div>
+                                                        <div className="complete-devider"></div>
                                                         <p>** Tips: <br />
                                                             1. Mobile Check-in is a convenient way to check-in using your mobile device. Passengers can select their preferred seat, email or print their e-Boarding pass.
                                                             Please don’t forget to carry a printout of your boarding card.
