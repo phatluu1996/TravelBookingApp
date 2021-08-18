@@ -15,18 +15,23 @@ import { retrieveFlight } from "../../actions/actionFlightByAirline";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMinusCircle,
+  faPlusCircle,
+  faTimesCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import ReactModal from "react-modal";
 import { IsNumeric, ValidateDateFormat } from "../../utils/DateUtil";
-
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const getAge = (travelDate, birthday) => {
-  return Math.floor((new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e+10)
-}
+  return Math.floor(
+    (new Date(travelDate).getTime() - new Date(birthday).getTime()) / 3.15576e10
+  );
+};
 
 const FlightBookingPage = (props) => {
   const history = useHistory();
@@ -34,8 +39,8 @@ const FlightBookingPage = (props) => {
   const dispatch = useDispatch();
   const flight = useSelector((state) => state.flights);
   const user = useSelector((state) => state.user);
-  const completeBooking = useSelector(state => state.bookFlight);
-  const [isComplete, setIsComplete] = useState(false)
+  const completeBooking = useSelector((state) => state.bookFlight);
+  const [isComplete, setIsComplete] = useState(false);
 
   const [type, setType] = useState(0);
   const [dateOfDeparture, setDateOfDeparture] = useState("");
@@ -45,22 +50,28 @@ const FlightBookingPage = (props) => {
   const [totalPassenger, setTotalPassenger] = useState(0);
   const [flightBooking, setflightBooking] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [hasInfant, setHasInfant] = useState([{
-    infant: false
-  }]);
+  const [hasInfant, setHasInfant] = useState([
+    {
+      infant: false,
+    },
+  ]);
 
-  const [isMale, setIsMale] = useState([{
-    gender: "true"
-  }]);
+  const [isMale, setIsMale] = useState([
+    {
+      gender: "true",
+    },
+  ]);
 
-  const [error, setError] = useState([{
-    firstname: "",
-    lastname: "",
-    birthday: "",
-  }]);
+  const [error, setError] = useState([
+    {
+      firstname: "",
+      lastname: "",
+      birthday: "",
+    },
+  ]);
 
-  const [inputListPassenger, setInputListPassenger] = useState(
-    [{
+  const [inputListPassenger, setInputListPassenger] = useState([
+    {
       firstname: "",
       lastname: "",
       gender: "true",
@@ -70,7 +81,7 @@ const FlightBookingPage = (props) => {
       seatNumber: "",
       price: 0,
     },
-    ]);
+  ]);
   const [flightDataOrder, setFlightDataOrder] = useState({
     purchase_units: [
       {
@@ -81,14 +92,13 @@ const FlightBookingPage = (props) => {
         },
       },
     ],
-  })
+  });
   const userId = parseInt(getUserId());
   const paymentMethod = "Credit Card";
   // return flight
   const returnFlightId = 0;
   const dateOfReturn = "";
   const returnType = 0;
-
 
   const getFlight = (id) => {
     dispatch(retrieveFlight(id));
@@ -103,12 +113,10 @@ const FlightBookingPage = (props) => {
   };
 
   const createOrder = (data, actions) => {
-    return actions.order
-      .create(flightDataOrder)
-      .then((orderID) => {
-        console.log(orderID);
-        return orderID;
-      });
+    return actions.order.create(flightDataOrder).then((orderID) => {
+      console.log(orderID);
+      return orderID;
+    });
   };
 
   const onApprove = (data, actions) => {
@@ -131,21 +139,25 @@ const FlightBookingPage = (props) => {
         err[index]["firstname"] = "Firstname required.";
       } else {
         err[index]["firstname"] = "";
-      };
+      }
 
       if (!list[index]["lastname"]) {
         err[index]["lastname"] = "Lastname required.";
       } else {
         err[index]["lastname"] = "";
-      };
+      }
 
       if (!list[index]["birthday"]) {
         err[index]["birthday"] = "Birthday required.";
       }
-    };
+    }
 
     for (var index = 0; index < list.length; index++) {
-      if (err[index]["firstname"] || err[index]["lastname"] || err[index]["birthday"]) {
+      if (
+        err[index]["firstname"] ||
+        err[index]["lastname"] ||
+        err[index]["birthday"]
+      ) {
         setError(err);
         return false;
       }
@@ -164,7 +176,7 @@ const FlightBookingPage = (props) => {
       err[index][name] = "Required!";
     } else {
       err[index][name] = "";
-    };
+    }
     setError(err);
   };
 
@@ -175,16 +187,15 @@ const FlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      if(ValidateDateFormat(e)){
+      if (ValidateDateFormat(e)) {
         err[index]["birthday"] = "";
-      }else{        
+      } else {
         err[index]["birthday"] = "Wrong Format !";
-      }   
+      }
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
       setInputListPassenger(list);
       // }
-
     }
     setError(err);
   };
@@ -197,7 +208,7 @@ const FlightBookingPage = (props) => {
       list[index]["gender"] = "false";
       checkgender[index]["gender"] = "false";
     } else {
-      list[index]["gender"] = "true"
+      list[index]["gender"] = "true";
       checkgender[index]["gender"] = "true";
     }
     setIsMale(checkgender);
@@ -227,7 +238,7 @@ const FlightBookingPage = (props) => {
         returnType: returnType,
         paymentMethod: paymentMethod,
         totalPrice: totalPrice,
-        passengers: [...inputListPassenger]
+        passengers: [...inputListPassenger],
       };
       setflightBooking(data);
       setModalIsOpen(true);
@@ -244,20 +255,30 @@ const FlightBookingPage = (props) => {
     getFlight(queryParam.get("fid"));
     if (queryParam.get("seatClass") === "ECONOMY") {
       setType(0);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
+      setTotalPassenger(
+        parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child"))
+      );
     } else {
       setType(1);
-      setTotalPassenger(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")));
+      setTotalPassenger(
+        parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child"))
+      );
     }
     getUserBooking(parseInt(getUserId()));
     console.log(queryParam.get("departureDate").split("/").reverse().join("-"));
-    setDateOfDeparture(queryParam.get("departureDate").split("/").reverse().join("-"));
+    setDateOfDeparture(
+      queryParam.get("departureDate").split("/").reverse().join("-")
+    );
 
     var newListPax = [];
     var newListError = [];
     var newListHasInfant = [];
     var newListIsMale = [];
-    [...Array(parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child")))].map((item, index) => {
+    [
+      ...Array(
+        parseInt(queryParam.get("adult")) + parseInt(queryParam.get("child"))
+      ),
+    ].map((item, index) => {
       newListPax.push({
         firstname: "",
         lastname: "",
@@ -267,21 +288,21 @@ const FlightBookingPage = (props) => {
         baggageExtra: 0,
         seatNumber: "",
         price: 0,
-      })
+      });
 
       newListError.push({
         firstname: "",
         lastname: "",
         birthday: "",
-      })
+      });
 
       newListHasInfant.push({
-        infant: false
-      })
+        infant: false,
+      });
 
       newListIsMale.push({
-        gender: "true"
-      })
+        gender: "true",
+      });
     });
     setInputListPassenger(newListPax);
     setError(newListError);
@@ -294,10 +315,10 @@ const FlightBookingPage = (props) => {
 
   useEffect(() => {
     if (completeBooking.data && checkout) {
-      sessionStorage.removeItem("isBooking")
+      sessionStorage.removeItem("isBooking");
       history.push({ pathname: "/flight-booking-complete" });
     }
-    
+
     if (flight) {
       reCalculateTotalPrice(inputListPassenger, hasInfant);
     }
@@ -306,36 +327,47 @@ const FlightBookingPage = (props) => {
       bookFlt(flightBooking);
       setIsComplete(true);
     }
-  })
-
+  });
 
   const handleAddClick = (amount) => {
     // e.preventDefault();
     if (amount > 0) {
-      var tempPaxList = [...inputListPassenger, {
-        firstname: "",
-        lastname: "",
-        gender: "true",
-        birthday: "",
-        hasInfant: false,
-        baggageExtra: 0,
-        seatNumber: "",
-        price: 0
-      }];
+      var tempPaxList = [
+        ...inputListPassenger,
+        {
+          firstname: "",
+          lastname: "",
+          gender: "true",
+          birthday: "",
+          hasInfant: false,
+          baggageExtra: 0,
+          seatNumber: "",
+          price: 0,
+        },
+      ];
       setInputListPassenger(tempPaxList);
 
-      setError([...error, {
-        firstname: "",
-        lastname: "",
-        birthday: "",
-      }]);
-      setIsMale([...isMale, {
-        gender: "true"
-      }]);
-      var tempListHasInfant = [...hasInfant, {
-        infant: false
-      }]
-      setHasInfant(tempListHasInfant)
+      setError([
+        ...error,
+        {
+          firstname: "",
+          lastname: "",
+          birthday: "",
+        },
+      ]);
+      setIsMale([
+        ...isMale,
+        {
+          gender: "true",
+        },
+      ]);
+      var tempListHasInfant = [
+        ...hasInfant,
+        {
+          infant: false,
+        },
+      ];
+      setHasInfant(tempListHasInfant);
       // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
     } else if (amount < 0) {
       var tempPaxList = [...inputListPassenger];
@@ -352,7 +384,6 @@ const FlightBookingPage = (props) => {
       setIsMale(tempIsMale);
       // reCalculateTotalPrice(tempPaxList, tempListHasInfant);
     }
-
   };
 
   const reCalculateTotalPrice = (listPax, listInfant) => {
@@ -368,23 +399,25 @@ const FlightBookingPage = (props) => {
       } else {
         var flightPrice = flight.single?.businessPrice;
       }
-      var infantPrice = listInfant[index].infant ? flight.single?.infant_price : 0;
+      var infantPrice = listInfant[index].infant
+        ? flight.single?.infant_price
+        : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
-    })
+    });
     setTotalPrice(newTotalPrice);
     setTotalPassenger(listPax.length);
-  }
+  };
 
   const customStyles = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
     },
-  }
+  };
 
   return (
     <>
@@ -438,7 +471,11 @@ const FlightBookingPage = (props) => {
                             <div className="booking-form-i">
                               <label>Email Adress:</label>
                               <div className="input">
-                                <input type="text" readOnly defaultValue={user?.data?.email} />
+                                <input
+                                  type="text"
+                                  readOnly
+                                  defaultValue={user?.data?.email}
+                                />
                               </div>
                             </div>
                             <div className="booking-form-i">
@@ -477,7 +514,8 @@ const FlightBookingPage = (props) => {
                                       >
                                         *
                                       </span>
-                                      : <span className="booking-error-input">
+                                      :{" "}
+                                      <span className="booking-error-input">
                                         {error[i].firstname}
                                       </span>
                                     </label>
@@ -490,7 +528,6 @@ const FlightBookingPage = (props) => {
                                         onChange={(e) => handleChange(e, i)}
                                       />
                                     </div>
-
                                   </div>
                                   <div className="booking-form-i">
                                     <label className="custom-lbl">
@@ -503,7 +540,8 @@ const FlightBookingPage = (props) => {
                                       >
                                         *
                                       </span>
-                                      : <span className="booking-error-input">
+                                      :{" "}
+                                      <span className="booking-error-input">
                                         {error[i].lastname}
                                       </span>
                                     </label>
@@ -516,7 +554,6 @@ const FlightBookingPage = (props) => {
                                         onChange={(e) => handleChange(e, i)}
                                       />
                                     </div>
-
                                   </div>
                                   <div className="clear"></div>
                                 </div>
@@ -530,7 +567,9 @@ const FlightBookingPage = (props) => {
                                         className="form-control"
                                         name="hasInfant"
                                         type="checkbox"
-                                        onChange={(e) => handleInfantChange(e, i)}
+                                        onChange={(e) =>
+                                          handleInfantChange(e, i)
+                                        }
                                       />
                                       Travel with Infant
                                     </label>
@@ -549,16 +588,24 @@ const FlightBookingPage = (props) => {
                                         *
                                       </span>
                                     </label>
-                                    <div name="gender"
-                                      className={`form-control sex-type ${isMale[i].gender === "true" ? "chosen" : ""
-                                        }`}
+                                    <div
+                                      name="gender"
+                                      className={`form-control sex-type ${
+                                        isMale[i].gender === "true"
+                                          ? "chosen"
+                                          : ""
+                                      }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       M
                                     </div>
-                                    <div name="gender"
-                                      className={`form-control sex-type ${isMale[i].gender === "false" ? "chosen" : ""
-                                        }`}
+                                    <div
+                                      name="gender"
+                                      className={`form-control sex-type ${
+                                        isMale[i].gender === "false"
+                                          ? "chosen"
+                                          : ""
+                                      }`}
                                       onClick={(e) => handleGenderClick(e, i)}
                                     >
                                       F
@@ -576,11 +623,11 @@ const FlightBookingPage = (props) => {
                                       >
                                         *
                                       </span>
-                                      : <span className="booking-error-input">
+                                      :{" "}
+                                      <span className="booking-error-input">
                                         {error[i].birthday}
                                       </span>
                                     </label>
-
 
                                     <div className="input-a">
                                       <input
@@ -589,7 +636,9 @@ const FlightBookingPage = (props) => {
                                         className="form-control date-booking-inpt"
                                         placeholder="YYYY-MM-DD"
                                         onKeyDown={(e) => IsNumeric(e)}
-                                        onChange={(e) => handleBirthdayChange(e, i)}
+                                        onChange={(e) =>
+                                          handleBirthdayChange(e, i)
+                                        }
                                         maxLength={10}
                                         autoComplete="off"
                                       />
@@ -601,25 +650,34 @@ const FlightBookingPage = (props) => {
 
                                 <div className="clear"></div>
 
-                                {inputListPassenger.length - 1 === i && (<>
-                                  <a 
-                                    id="removePassengerFlightbutton"
-                                    onClick={() => { handleAddClick(-1) }}
-                                    hidden={inputListPassenger.length === 1}
-                                    className="add-passanger"
-                                  >
-                                    <FontAwesomeIcon color="red" icon={faMinusCircle}></FontAwesomeIcon>
-                                    Remove Passenger
-                                  </a>
-                                  <a
-                                    onClick={() => handleAddClick(1)}
-                                    className="add-passanger"
-                                  >
-                                    <FontAwesomeIcon color="green" icon={faPlusCircle}></FontAwesomeIcon>
-                                    Add Passenger
-                                  </a>
-
-                                </>)}
+                                {inputListPassenger.length - 1 === i && (
+                                  <>
+                                    <a
+                                      id="removePassengerFlightbutton"
+                                      onClick={() => {
+                                        handleAddClick(-1);
+                                      }}
+                                      hidden={inputListPassenger.length === 1}
+                                      className="add-passanger"
+                                    >
+                                      <FontAwesomeIcon
+                                        color="red"
+                                        icon={faMinusCircle}
+                                      ></FontAwesomeIcon>
+                                      Remove Passenger
+                                    </a>
+                                    <a
+                                      onClick={() => handleAddClick(1)}
+                                      className="add-passanger"
+                                    >
+                                      <FontAwesomeIcon
+                                        color="green"
+                                        icon={faPlusCircle}
+                                      ></FontAwesomeIcon>
+                                      Add Passenger
+                                    </a>
+                                  </>
+                                )}
                                 <div className="checkbox">
                                   <label>
                                     <input type="checkbox" />
@@ -631,11 +689,11 @@ const FlightBookingPage = (props) => {
                             );
                           })}
 
-
                           <div className="booking-complete">
                             <h2>Review and book your trip</h2>
                             <p>
-                              Please make sure to check flight's detail right and insert correctly passenger information!{" "}
+                              Please make sure to check flight's detail right
+                              and insert correctly passenger information!{" "}
                             </p>
                             <button
                               type="submit"
@@ -643,7 +701,9 @@ const FlightBookingPage = (props) => {
                             >
                               CONFIRM INFORMATION
                             </button>
-                            {checkout && <div className="loading" delay-hide="10"></div>}
+                            {checkout && (
+                              <div className="loading" delay-hide="10"></div>
+                            )}
                           </div>
                           <ReactModal
                             isOpen={modalIsOpen}
@@ -652,60 +712,65 @@ const FlightBookingPage = (props) => {
                             ariaHideApp={false}
                             preventScroll={true}
                             style={customStyles}
-                            contentLabel="Payments">
+                            contentLabel="Payments"
+                          >
                             <div style={{ float: "right" }}>
-                                <FontAwesomeIcon onClick={() => setModalIsOpen(false)} icon={faTimesCircle}></FontAwesomeIcon>
+                              <FontAwesomeIcon
+                                onClick={() => setModalIsOpen(false)}
+                                icon={faTimesCircle}
+                              ></FontAwesomeIcon>
                             </div>
-                            {flightBooking && <div className="payment-wrapper mt-2">
-                              <div className="payment-tabs">
-                                <a className="active">
-                                  Payment <span></span>
-                                </a>
+                            {flightBooking && (
+                              <div className="payment-wrapper mt-2">
+                                <div className="payment-tabs">
+                                  <a className="active">
+                                    Payment <span></span>
+                                  </a>
+                                </div>
+                                <div className="clear"></div>
 
-                              </div>
-                              <div className="clear"></div>
+                                <div className="payment-tabs-content">
+                                  <div className="payment-tab">
+                                    <div className="payment-alert">
+                                      <span>
+                                        You will be redirected to website to
+                                        securely complete your payment using
+                                        credit or debit cards.
+                                      </span>
+                                    </div>
 
-                              <div className="payment-tabs-content">
-                                <div className="payment-tab">
-                                  <div className="payment-alert">
-                                    <span>
-                                      You will be redirected to website
-                                      to securely complete your payment using
-                                      credit or debit cards.
-                                    </span>
-                                  </div>
-
-                                  <PayPalScriptProvider
-                                    style={{ maxWidth: "80px" }}
-                                    options={{ "client-id": PP_ID }}
-                                  >
-                                    <PayPalButtons
-                                      style={{ height: 25 }}
-                                      createOrder={(data, actions) => {
-                                        return actions.order
-                                          .create({
-                                            purchase_units: [
-                                              {
-                                                description: `One way Flight ${flight.single?.departureCity}-${flight.single?.arrivalCity}`,
-                                                amount: {
-                                                  currency: "USD",
-                                                  value: totalPrice,
+                                    <PayPalScriptProvider
+                                      style={{ maxWidth: "80px" }}
+                                      options={{ "client-id": PP_ID }}
+                                    >
+                                      <PayPalButtons
+                                        style={{ height: 25 }}
+                                        createOrder={(data, actions) => {
+                                          return actions.order
+                                            .create({
+                                              purchase_units: [
+                                                {
+                                                  description: `One way Flight ${flight.single?.departureCity}-${flight.single?.arrivalCity}`,
+                                                  amount: {
+                                                    currency: "USD",
+                                                    value: totalPrice,
+                                                  },
                                                 },
-                                              },
-                                            ],
-                                          })
-                                          .then((orderID) => {
-                                            console.log(orderID);
-                                            return orderID;
-                                          });
-                                      }}
-                                      onApprove={onApprove}
-                                      onError={onError}
-                                    />
-                                  </PayPalScriptProvider>
+                                              ],
+                                            })
+                                            .then((orderID) => {
+                                              console.log(orderID);
+                                              return orderID;
+                                            });
+                                        }}
+                                        onApprove={onApprove}
+                                        onError={onError}
+                                      />
+                                    </PayPalScriptProvider>
+                                  </div>
                                 </div>
                               </div>
-                            </div>}
+                            )}
                           </ReactModal>
                         </form>
                       </div>
@@ -720,7 +785,11 @@ const FlightBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={flight.single?.airline?.image} style={{width:"93px",height:"65px"}}/>
+                        <img
+                          alt=""
+                          src={flight.single?.airline?.image}
+                          style={{ width: "93px", height: "65px" }}
+                        />
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -729,18 +798,26 @@ const FlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flight.single?.departureCity} - {flight.single?.arrivalCity}
+                                {flight.single?.departureCity} -{" "}
+                                {flight.single?.arrivalCity} / ONEWAY FLIGHT
                               </a>
                             </div>
-                            <div className="chk-lbl-a">ONEWAY FLIGHT</div>
+                            <div className="chk-lbl-a">
+                              {flight.single?.airline?.airlineName}
+                            </div>
                             <div className="chk-logo">
-                              <p>{flight.single?.airline?.airlineName}</p>
+                              <p></p>
+                            </div>
+                            <div className="chk-lbl-a">
+                              Day of Departure: {dateOfDeparture}
+                            </div>
+                            <div className="chk-lbl-a">
+                              Schedule Time: {flight.single?.departureTime} -{" "}
+                              {flight.single?.arrivalTime}
                             </div>
                           </div>
                           <div className="chk-right">
-                            <a href="#">
-                              
-                            </a>
+                            <a href="#"></a>
                           </div>
                           <div className="clear"></div>
                         </div>
@@ -750,27 +827,105 @@ const FlightBookingPage = (props) => {
                   </div>
 
                   <div className="chk-lines">
-                    <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure" style={{float:"none",display:"inline"}}>
-                        <span style={{float:"none",display:"inline"}}>Schedule Time</span>
-                        <b style={{float:"none",display:"inline"}}>
-                          {flight.single?.departureTime} - {flight.single?.arrivalTime}
-                          <br />
-                        </b>
-                      </div>
-    
-                      <div className="chk-arrival"  style={{float:"left",display:"inline"}}>
-                        <span style={{float:"none",display:"inline"}}>Day of Departure  </span>
-                        <b style={{float:"none",display:"inline"}}>                 
-                          {dateOfDeparture}
-                        </b>
-                      </div>
+                    <h3>FLIGHT INFOS</h3>
+                    <div className="chk-line">
+                      <table>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Price</span>
+                            </div>
+                          </td>
+                          <td >
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flight.single?.businessPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flight.single?.businessBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flight.single?.economyPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flight.single?.economyBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Child Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flight.single?.child_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flight.single?.businessCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Infant Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flight.single?.infant_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flight.single?.economyCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+
                       <div className="clear"></div>
                     </div>
                   </div>
 
                   <div className="chk-details">
-                    <h2>Details</h2>
+                    <h2>Booking Details</h2>
                     <div className="chk-detais-row">
                       <div className="chk-line">
                         <span className="chk-l">FLIGHT</span>
@@ -788,9 +943,7 @@ const FlightBookingPage = (props) => {
                       </div>
                       <div className="chk-line">
                         <span className="chk-l">Total Passenger</span>
-                        <span className="chk-r">
-                          {totalPassenger}
-                        </span>
+                        <span className="chk-r">{totalPassenger}</span>
                         <div className="clear"></div>
                       </div>
                       <div className="chk-line">
