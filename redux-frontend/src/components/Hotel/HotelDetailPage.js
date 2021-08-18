@@ -6,7 +6,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useEffect, setState, useState, Component } from "react";
 import { importAll } from "../../utils/JqueryImport";
 import DataTable from "react-data-table-component";
-import { fetchHotelById } from "../../actions/actionHotel";
+import { fetchHotelById, fetchHotelById2 } from "../../actions/actionHotel";
 import { createHotelFeedBack, getFeedbacks } from "../../actions/actionHotel";
 import { getUser } from "../../actions/actionUser";
 import $, { map } from "jquery";
@@ -220,14 +220,20 @@ const HotelDetailPage = (props) => {
         }
         setIsLoading(true);
     };
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
 
     useEffect(() => {
         let mount = false;
+        var formData = new FormData();
+        formData.append("id",queryParam.get("id"));
+        formData.append("checkInDate",queryParam.get("checkInDate"));
+        formData.append("checkOutDate", queryParam.get("checkOutDate"));
+
         props.getUser(user);
-        props.getHotel(queryParam.get("id"));
+        props.getHotel(formData);
         props.getFeedbacks(queryParam.get("id"));
 
         importAll();
@@ -1015,7 +1021,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getHotel: (id) => dispatch(fetchHotelById(id)),
+        getHotel: (data) => dispatch(fetchHotelById2(data)),
         addFeedBack: (data) => dispatch(createHotelFeedBack(data)),
         getUser: (id) => { dispatch(getUser(id)); },
         getFeedbacks: (id) => { dispatch(getFeedbacks(id)) },
