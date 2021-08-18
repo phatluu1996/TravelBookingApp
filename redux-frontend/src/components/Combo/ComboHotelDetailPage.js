@@ -232,6 +232,10 @@ const ComboHotelDetailPage = (props) => {
             hotel: props?.hotel?.data,
         };
         if (areaText) {
+            if($("#feedbackTxt")[0]){
+                $("#feedbackTxt")[0].value = "";
+            }
+            setAreaText("");
             props.addFeedBack(data);
         } else {
             alert('Please input your feedback!')
@@ -737,12 +741,12 @@ const ComboHotelDetailPage = (props) => {
                                                                 </div>
                                                                 <Pagination
                                                                     itemsPerPage={itemsPerPageFB}
-                                                                    listItem={Array.isArray(props?.hotel?.data?.hotelFeedBacks)
-                                                                        && props?.hotel?.data?.hotelFeedBacks.length > 0 ?
-                                                                        props?.hotel?.data?.hotelFeedBacks.length : ""}
+                                                                    listItem={Array.isArray(props.feedbacks?.data)
+                                                                        && props.feedbacks?.data.length > 0 ?
+                                                                        props.feedbacks?.data.length : 0}
                                                                     setPageNum={setPageNumberFB}
                                                                 />
-                                                                {getToken() && getRole() == ROLE_USER() && <div
+                                                                {getToken() && getRole() == ROLE_USER && <div
                                                                     hidden={user || isLoading ? false : true}
                                                                     className="review-form"
                                                                 >

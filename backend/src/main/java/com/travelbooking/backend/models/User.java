@@ -32,7 +32,7 @@ public class User {
 
     @OneToMany
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties(value="user", allowSetters=true)
     private List<HotelFeedBack> hotelFeedBacks;
 
     @OneToOne
