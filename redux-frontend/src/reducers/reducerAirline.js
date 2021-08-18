@@ -27,7 +27,7 @@ function reducerAirline(airline = initialState, action) {
             }
 
         case UPDATE_AIRLINE:
-            return { ...airline, airline: payload, success: true, all: null, single: null };
+            return { ...airline, airline: payload, success: true, all: null, single: payload };
 
 
         case FETCH_ALL_AIRLINE_REQUEST:

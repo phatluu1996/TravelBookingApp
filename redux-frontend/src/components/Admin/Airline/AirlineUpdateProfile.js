@@ -272,6 +272,13 @@ const AirlineUpdateProfile = (props) => {
     history.push("/airline-dashboard?id=" + getUserId());
   }
 
+  const getAddress = () => {
+    let province = props.airline.single?.location.province.name;
+    let district = props.airline.single?.location.district.prefix + " " + props.airline.single?.location.district.name;
+    let ward = props.airline.single?.location.ward.prefix + " " + props.airline.single?.location.ward.name;
+    return props.airline.single?.location.street + ", " + ward + ", " + district + ", " + province;
+}
+
   return (
     <>
       <div className="bootstrap-scope">
@@ -282,25 +289,53 @@ const AirlineUpdateProfile = (props) => {
             <div className="main-panel">
               <div className="content-wrapper">
                 <div className="row">
-                  <div className="col-sm-3">
-                  </div>
-                  <div className="col-sm-6">
+                  <div className="col-sm-12">
                     <div className="card">
                       <div className="card-body">
-                        <h3 className="card-title mb-3">{isEdit ? "Edit" : "View"} Airline</h3>
-                        <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => switchToEditMode()}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
-                        {!(props.province.data && airline) && <div className="loading" delay-hide="10"></div>}
-                        {airline && <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
-                          <div className="row">
-                            <div className="col-md-12">
-                              <div className="form-group">
-                                <label className="col-form-label">Username*</label>
-                                <input type="text" className={formControlClass("username")} name="username" defaultValue={airline?.account.userName} readOnly />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.username}</div>
+                        <div className="row">
+                          <div className="col-lg-2 col-xl-2">
+                            <div className="card-box text-center">
+                              <img src={props.airline.single?.image} className="rounded-circle avatar-xl img-thumbnail" alt="profile-image" style={{ height: '6rem', width: '6rem' }} />
+
+                              <h4 className="mb-0 mt-2" style={{ color: '#fc9003' }}>{props.airline.single?.airlineName}</h4>
+                              <div className="text-left mt-3">
+                                <h6 className="font-13 text-uppercase mt-1 mb-1"> General </h6>
+                                <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Home Page :</strong> <a className="ml-2">{props.airline.single?.homepage}</a></p>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Phone :</strong> <span className="ml-2 ">{props.airline.single?.phone}</span></p>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Fax :</strong> <span className="ml-2 ">{props.airline.single?.fax}</span></p>
+                                <p className="text-muted mb-1 font-13"><strong style={{ color: '#fc9003' }}>Address :</strong> <span className="ml-2">{getAddress()}</span></p>
+                                <h6 className="font-13 text-uppercase mt-3 mb-1"> Contact Information </h6>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Contact Name :</strong> <span className="ml-2">{props.airline.single?.contactName}</span></p>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Contact title :</strong><span className="ml-2">{props.airline.single?.contactTitle}</span></p>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Mobile :</strong> <span className="ml-2 ">{props.airline.single?.mobile}</span></p>
+                                <p className="text-muted mb-2 font-13"><strong style={{ color: '#fc9003' }}>Email :</strong><span className="ml-2"></span>{props.airline.single?.email}</p>
+
                               </div>
                             </div>
-                            {/* <div className="col-md-6">
+                          </div>
+
+                          <div className="col-lg-10 col-xl-10">
+                            <div className="card-box">
+                              <div className="bg-dark ">
+                                <div className=" show active" id="about-me">
+                                  <div className="card-body">
+                                    <div className="col-sm-12">
+                                      <div className="card">
+                                        <div className="card-body">
+                                          <h3 className="card-title mb-3">{isEdit ? "Edit" : "View"} Airline</h3>
+                                          <button className={!isEdit ? "btn btn-sm btn-primary mb-3" : "btn btn-sm btn-warning mb-3"} onClick={() => switchToEditMode()}><FontAwesomeIcon icon={!isEdit ? faEdit : faEye}></FontAwesomeIcon></button>
+                                          {!(props.province.data && airline) && <div className="loading" delay-hide="10"></div>}
+                                          {airline && <form onSubmit={handleSubmit} className="form-sample" autoComplete="false" id="form">
+                                            <div className="row">
+                                              <div className="col-md-12">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Username*</label>
+                                                  <input type="text" className={formControlClass("username")} name="username" defaultValue={airline?.account.userName} readOnly />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.username}</div>
+                                                </div>
+                                              </div>
+                                              {/* <div className="col-md-6">
                               <div className="form-group">
                                 <label className="col-form-label">Password*</label>
                                 <input type="password" className={formControlClass("password")} name="password" defaultValue={airline?.account.password} readOnly={!isEdit} />
@@ -308,128 +343,136 @@ const AirlineUpdateProfile = (props) => {
                                 <div className="invalid-feedback">{validateError.password}</div>
                               </div>
                             </div> */}
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Hotel Name*</label>
-                                <input type="text" className={formControlClass("airlineName")} name="airlineName" defaultValue={airline?.airlineName} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.airlineName}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Phone Number*</label>
-                                <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={airline?.phone} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.phone}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Mobile*</label>
-                                <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" defaultValue={airline?.mobile} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.mobile}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Fax*</label>
-                                <input type="tel" className={formControlClass("fax")} min="1" name="fax" defaultValue={airline?.fax} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.fax}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Homepage*</label>
-                                <input type="text" className={formControlClass("homepage")} name="homepage" defaultValue={airline?.homepage} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.homepage}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Email*</label>
-                                <input type="email" className={formControlClass("email")} name="email" defaultValue={airline?.email} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.email}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Contact Name*</label>
-                                <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={airline?.contactName} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.contactName}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label className="col-form-label">Contact Title*</label>
-                                <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={airline?.contactTitle} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.contactTitle}</div>
-                              </div>
-                            </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Hotel Name*</label>
+                                                  <input type="text" className={formControlClass("airlineName")} name="airlineName" defaultValue={airline?.airlineName} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.airlineName}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Phone Number*</label>
+                                                  <input type="tel" className={formControlClass("phone")} name="phone" defaultValue={airline?.phone} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.phone}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Mobile*</label>
+                                                  <input type="tel" className={formControlClass("mobile")} min="1" name="mobile" defaultValue={airline?.mobile} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.mobile}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Fax*</label>
+                                                  <input type="tel" className={formControlClass("fax")} min="1" name="fax" defaultValue={airline?.fax} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.fax}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Homepage*</label>
+                                                  <input type="text" className={formControlClass("homepage")} name="homepage" defaultValue={airline?.homepage} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.homepage}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Email*</label>
+                                                  <input type="email" className={formControlClass("email")} name="email" defaultValue={airline?.email} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.email}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Contact Name*</label>
+                                                  <input type="text" className={formControlClass("contactName")} name="contactName" defaultValue={airline?.contactName} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.contactName}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-6">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Contact Title*</label>
+                                                  <input type="text" className={formControlClass("contactTitle")} name="contactTitle" defaultValue={airline?.contactTitle} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.contactTitle}</div>
+                                                </div>
+                                              </div>
 
-                            <div className="col-md-12">
-                              <div className="form-group">
-                                <label className="col-form-label">*Please enter address</label>
+                                              <div className="col-md-12">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">*Please enter address</label>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-12">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Street*</label>
+                                                  <input type="text" className={formControlClass("street")} name="street" defaultValue={airline?.location.street} readOnly={!isEdit} />
+                                                  <div className="valid-feedback"></div>
+                                                  <div className="invalid-feedback">{validateError.street}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-4">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Province*</label>
+                                                  <select className={formControlClass("province")} name="province" onChange={onChangeProvince} defaultValue={slProvince?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                    <option value="0">---</option>
+                                                    {props.province.data?.map(province => <option key={province.id} value={province.id}>{province.name}</option>)}
+                                                  </select>
+                                                  <div className="invalid-feedback">{validateError.province}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-4">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">District*</label>
+                                                  <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} defaultValue={slDistrict?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                    <option value="0">---</option>
+                                                    {slProvince?.districts?.map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
+                                                  </select>
+                                                  <div className="invalid-feedback">{validateError.district}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-4">
+                                                <div className="form-group">
+                                                  <label className="col-form-label">Ward*</label>
+                                                  <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} defaultValue={slWard?.id} readOnly={!isEdit} disabled={!isEdit}>
+                                                    <option value="0">---</option>
+                                                    {slDistrict?.wards?.map(ward => <option key={ward.id} value={ward.id}>{ward.name}</option>)}
+                                                  </select>
+                                                  <div className="invalid-feedback">{validateError.ward}</div>
+                                                </div>
+                                              </div>
+                                              <div className="col-md-3"></div>
+                                              <div className="col-md-3">
+                                                {isEdit && <button type="submit" className="btn btn-lg btn-success btn-block"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>}
+                                              </div>
+                                              <div className="col-md-3">
+                                                <button onClick={goBack} type="reset" className="btn btn-lg btn-danger btn-block"><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
+                                              </div>
+                                              <div className="col-md-3"></div>
+                                            </div>
+                                          </form>}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="col-md-12">
-                              <div className="form-group">
-                                <label className="col-form-label">Street*</label>
-                                <input type="text" className={formControlClass("street")} name="street" defaultValue={airline?.location.street} readOnly={!isEdit} />
-                                <div className="valid-feedback"></div>
-                                <div className="invalid-feedback">{validateError.street}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <label className="col-form-label">Province*</label>
-                                <select className={formControlClass("province")} name="province" onChange={onChangeProvince} defaultValue={slProvince?.id} readOnly={!isEdit} disabled={!isEdit}>
-                                  <option value="0">---</option>
-                                  {props.province.data?.map(province => <option key={province.id} value={province.id}>{province.name}</option>)}
-                                </select>
-                                <div className="invalid-feedback">{validateError.province}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <label className="col-form-label">District*</label>
-                                <select className={formControlClass("district")} name="district" onChange={onChangeDistrict} defaultValue={slDistrict?.id} readOnly={!isEdit} disabled={!isEdit}>
-                                  <option value="0">---</option>
-                                  {slProvince?.districts?.map(district => <option key={district.id} value={district.id}>{district.name}</option>)}
-                                </select>
-                                <div className="invalid-feedback">{validateError.district}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-4">
-                              <div className="form-group">
-                                <label className="col-form-label">Ward*</label>
-                                <select className={formControlClass("ward")} name="ward" onChange={onChangeWard} defaultValue={slWard?.id} readOnly={!isEdit} disabled={!isEdit}>
-                                  <option value="0">---</option>
-                                  {slDistrict?.wards?.map(ward => <option key={ward.id} value={ward.id}>{ward.name}</option>)}
-                                </select>
-                                <div className="invalid-feedback">{validateError.ward}</div>
-                              </div>
-                            </div>
-                            <div className="col-md-3"></div>
-                            <div className="col-md-3">
-                              {isEdit && <button type="submit" className="btn btn-lg btn-success btn-block"><FontAwesomeIcon icon={faCheck}></FontAwesomeIcon></button>}
-                            </div>
-                            <div className="col-md-3">
-                              <button onClick={goBack} type="reset" className="btn btn-lg btn-danger btn-block"><FontAwesomeIcon icon={faTimesCircle}></FontAwesomeIcon></button>
-                            </div>
-                            <div className="col-md-3"></div>
                           </div>
-                        </form>}
+                        </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <AdminFooter />

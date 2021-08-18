@@ -155,15 +155,15 @@ const AdminHotelEdit = (props) => {
         }
 
         let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{8,}$/;
-        if (!form.password.value) {
-            err.password = "Hotel password is required ";
-        } else {
-            if (!regex.test(form.password.value)) {
-                err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
-            } else {
-                err.password = "";
-            }
-        }
+        // if (!form.password.value) {
+        //     err.password = "Hotel password is required ";
+        // } else {
+        //     if (!regex.test(form.password.value)) {
+        //         err.password = "Password is invalid. (Password must be 8 or more characters, at least one digit, at least one lowercase character and at least one uppercase character.)";
+        //     } else {
+        //         err.password = "";
+        //     }
+        // }
         if (!form.hotelName.value) {
             err.hotelName = "Hotel name is required ";
         } else {
