@@ -78,7 +78,8 @@ function reducerHotel(state = initialState, action) {
       state = {
         ...state,
         requesting: false,
-        success: true
+        success: true,
+        message: action.message
       };
       return state;
 

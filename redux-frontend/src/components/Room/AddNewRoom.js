@@ -125,7 +125,7 @@ const AddNewRoom = ({ closeModal, componentStatus, room, hotel }) => {
         e.preventDefault();
         const form = e.target;
         let formData = new FormData();
-        console.log('' + hotel.id);
+       
         
         if (handleChange(form)) {
             formData.append('roomNumber', parseInt(form.roomNumber.value));

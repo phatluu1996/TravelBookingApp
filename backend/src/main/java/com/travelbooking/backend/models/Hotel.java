@@ -3,6 +3,7 @@ package com.travelbooking.backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "hotel")
 public class Hotel {
     @Id
