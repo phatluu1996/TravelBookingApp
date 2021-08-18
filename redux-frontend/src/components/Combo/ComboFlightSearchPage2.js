@@ -723,7 +723,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                     </div>
                                                     <div className="alt-details-i">
                                                         <b>Flight {flight.aircraftType}</b>
-                                                        <span>Operated by {flight.airline.airlineName}</span>
+                                                        <span>Operated by {flight.status == 'Codeshare' ? 'Jestar Pacific' : flight.airline.airlineName}</span>
                                                     </div>
                                                     <div className="alt-details-i">
                                                         <b>Description</b>
@@ -810,7 +810,7 @@ const ComboFlightSearchPage2 = (props) => {
                                                     </div>
                                                     <div className="alt-details-i">
                                                         <b>Flight {flight.aircraftType}</b>
-                                                        <span>Operated by {flight.airline.airlineName}</span>
+                                                        <span>Operated by {flight.status == 'Codeshare' ? 'Jestar Pacific' : flight.airline.airlineName}</span>
                                                     </div>
                                                     <div className="alt-details-i">
                                                         <b>Description</b>

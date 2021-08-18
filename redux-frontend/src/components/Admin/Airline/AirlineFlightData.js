@@ -103,7 +103,7 @@ const AirlineFlightData = (props) => {
         {
             name: 'ACTIONS',
             cell: (listflight, index) => <>
-                <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${listflight["id"]}`}><FontAwesomeIcon className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
+                <Link className="list-btn-sm mr-1" to={`/airline-update-flight?id=${queryParam.get("id")}&fid=${listflight["id"]}`}><FontAwesomeIcon style={{color:"white"}} className="list-btn-sm-icon" icon={faEdit}></FontAwesomeIcon> </Link>
 
                 <a className="list-btn-sm" data-toggle="modal" data-target={"#flight-" + index} ><FontAwesomeIcon className="list-btn-sm-icon" icon={faTrash}></FontAwesomeIcon></a>
                 <div className="modal fade" id={"flight-" + index} tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

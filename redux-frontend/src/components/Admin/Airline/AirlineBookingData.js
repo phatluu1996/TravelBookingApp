@@ -23,11 +23,7 @@ const status = {
         {
             value: 2,
             label: "Requested",
-        },
-        {
-            value: 3,
-            label: "Cancel",
-        },
+        }
     ],
 };
 const AirlineBookingData = (props) => {
@@ -120,7 +116,7 @@ const AirlineBookingData = (props) => {
             name: 'Created',
             selector: 'createdAt',
             sortable: true,
-            width: '15%'
+            width: '10%'
         },
         {
             name: 'Note',
@@ -134,9 +130,7 @@ const AirlineBookingData = (props) => {
             cell: booking => {
                 if (booking.status == 1)
                     return "Confirmed"
-                else if (booking.status == 2)
-                    return "Requested"
-                else return "Cancel"
+                else return "Requested"
             }
         },
         {

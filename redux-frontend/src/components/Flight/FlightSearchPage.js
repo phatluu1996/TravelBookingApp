@@ -405,7 +405,7 @@ const FlightSearchPage = (props) => {
             <div className="body-wrapper">
                 <div className="wrapper-padding">
                     <div className="page-head">
-                        <div className="page-title">Flight <span>Flight Select</span></div>
+                        <div className="page-title">Flight - <span>Flight Select</span></div>
                         <div className="breadcrumbs">
                             <Link to="/">Home</Link> / <span>Flight Search Result</span>
                         </div>
@@ -676,7 +676,7 @@ const FlightSearchPage = (props) => {
                                                         </div>
                                                         <div className="alt-details-i">
                                                             <b>Flight {flight.aircraftType}</b>
-                                                            <span>Operated by {flight.airline.airlineName}</span>
+                                                            <span>Operated by {flight.status == 'Codeshare' ? 'Jestar Pacific' : flight.airline.airlineName}</span>
                                                         </div>
                                                         <div className="alt-details-i">
                                                             <b>Description</b>
@@ -697,7 +697,7 @@ const FlightSearchPage = (props) => {
 
                                     <div className="clear"></div>
 
-                                    {props.flights.data?.content.length > 0 ? (<div className="pagination">
+                                    {props.flights.data?.content?.length > 0 ? (<div className="pagination">
                                         
                                         {
                                             props?.flights?.data?.first ? (<>                                                
