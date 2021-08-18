@@ -978,6 +978,9 @@ const Home = (props) => {
                                                                 // id="departureDate"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                onKeyDown={(e) => e.preventDefault()}
+                                                                onKeyUp={(e) => e.preventDefault()}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -992,6 +995,9 @@ const Home = (props) => {
                                                                 name="returnDate"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                onKeyDown={(e) => e.preventDefault()}
+                                                                onKeyUp={(e) => e.preventDefault()}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -1144,6 +1150,9 @@ const Home = (props) => {
                                                                 className="date-inpt min-today"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                onKeyDown={(e) => e.preventDefault()}
+                                                                onKeyUp={(e) => e.preventDefault()}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
@@ -1159,6 +1168,9 @@ const Home = (props) => {
                                                                 className="date-inpt min-today"
                                                                 placeholder="mm/dd/yy"
                                                                 autoComplete={"off"}
+                                                                onKeyPress={(e) => e.preventDefault()}
+                                                                onKeyDown={(e) => e.preventDefault()}
+                                                                onKeyUp={(e) => e.preventDefault()}
                                                             />{" "}
                                                             <span className="date-icon"></span>
                                                         </div>
