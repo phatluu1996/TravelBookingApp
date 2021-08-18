@@ -733,7 +733,7 @@ const FlightSearchPage = (props) => {
                 </div>
             </div>
         </div>
-        <Header></Header>
+        <Footer></Footer>
     </>);
 
 }
