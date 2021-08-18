@@ -37,6 +37,7 @@ public class Account {
         this.password = account.getPassword();
         this.role = account.getRole();
         this.retired = account.isRetired();
+        this.thumbnail = account.getThumbnail();
     }
 
     public Account(Long id, String userName, String password, String role, boolean retired) {
