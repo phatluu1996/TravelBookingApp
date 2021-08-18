@@ -92,18 +92,23 @@ const App = (props) => {
           <PublicRoute restricted={false} component={About} path="/about" exact />
           <PublicRoute restricted={false} component={Contact} path="/contact" exact />
 
+          {/* Register */}
+          <PublicRoute restricted={true} component={Register} path="/register" />
+          <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={HotelPartnerRegister} path="/hotel-partner-register" />
+          <PublicRoute restricted={false} component={ConfirmRegister} path="/activateAccount" />
+          
+          <PublicRoute restricted={false} component={ChangePasswordFoget} path="/resetPassword" />
 
+          {/* User */}
           <PrivateRoute restricted={getRole() === ROLE_USER} component={UserProfile} path="/user" />
 
-          {/* Airline , Flight */}
-          <PrivateRoute restricted={getRole() === ROLE_AIRLINE} component={CreateNewFlight} path="/create-flight" />
-          <PrivateRoute restricted={getRole() === ROLE_AIRLINE} component={EditFlight} path="/edit-flight" />
-          <PrivateRoute restricted={getRole() === ROLE_AIRLINE} component={AirlineProfile} path="/airline-profile" />
-          <PrivateRoute restricted={getRole() === ROLE_AIRLINE} component={ListFlight} path="/list-flight" />
+          
 
+          {/* Admin */}
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminDashboard} path="/admin-dashboard" />
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminManageUser} path="/admin-user-manage" />
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminFeedback} path="/admin-feedback-manage" />
+          <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={UpdateUserDetail} path="/update-user-detail" />
 
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminHotel} path="/admin-hotel-manage" />
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminHotelCreate} path="/admin-hotel-create" />
@@ -114,8 +119,8 @@ const App = (props) => {
           <PrivateRoute restricted={getRole() === ROLE_ADMIN} component={AdminAirlineEdit} path="/admin-airline-edit" />
 
 
-          <PublicRoute restricted={true} component={Register} path="/register" />
-          <PublicRoute restricted={getRole() == ROLE_ADMIN || getRole() == ROLE_AIRLINE || getRole() == ROLE_HOTEL} component={HotelPartnerRegister} path="/hotel-partner-register" />
+         
+          
 
           <PublicRoute restricted={false} component={FlightSearchPage} path="/flight-list" />
           <PublicRoute restricted={false} component={FlightSearchPage2} path="/flight-round-list" />
@@ -135,9 +140,9 @@ const App = (props) => {
 
           <PrivateRoute restricted={getRole() === ROLE_HOTEL} component={HotelProfile} path="/hotel-profile" exact />
 
-          <PublicRoute restricted={false} component={UpdateUserDetail} path="/update-user-detail" />
-          <PublicRoute restricted={false} component={UserDetail} path="/user-detail" />
-          <PublicRoute restricted={false} component={ChangePasswordFoget} path="/resetPassword" />
+          
+
+          
 
         <PublicRoute restricted={false} component={AdminHotelProfile} path="/admin-hotel-profile" />
         
@@ -153,13 +158,13 @@ const App = (props) => {
         <PublicRoute restricted={false} component={AirlineUpdateFlight} path="/airline-update-flight" />
          {/* Hoa */}
         {/* Hotel Management */}
-        <PublicRoute restricted={false} component={AdminHotelDashboard} path="/hotel-dashboard" />
-        <PublicRoute restricted={false} component={AdminHotelUpdate} path="/hotel-update" />
-        <PublicRoute restricted={false} component={AdminHotelBookingHistory} path="/hotel-booking" />
-        <PublicRoute restricted={false} component={AdminHotelRoom} path="/hotel-room" />
+        <PublicRoute restricted={false} component={AdminHotelDashboard} path="/hotel-admin-dashboard" />
+        <PublicRoute restricted={false} component={AdminHotelUpdate} path="/hotel-admin-update" />
+        <PublicRoute restricted={false} component={AdminHotelBookingHistory} path="/hotel-admin-booking" />
+        <PublicRoute restricted={false} component={AdminHotelRoom} path="/hotel-admin-room" />
         
         <PublicRoute restricted={false} component={AddNewRoom} path="/admin-room-create" />
-        <PublicRoute restricted={false} component={ConfirmRegister} path="/activateAccount" />
+        
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

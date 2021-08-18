@@ -56,7 +56,7 @@ const Header = (props) => {
                             </a>
                             <div className="langs-drop">
                                 {(getRole() == ROLE_USER) && <div><Link to="/user" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
-                                {getRole() == ROLE_HOTEL && <div><Link to={`/hotel-dashboard?id=${getUserId()}`} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
+                                {getRole() == ROLE_HOTEL && <div><Link to={`/hotel-admin-dashboard?id=${getUserId()}`} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
                                 {getRole() == ROLE_AIRLINE && <div><Link to={`/airline-dashboard?id=${getUserId()}`} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faUserCircle}></FontAwesomeIcon>Profile</Link></div>}
                                 {getRole() == ROLE_ADMIN && <div><Link to="/admin-dashboard" className="langs-item"><FontAwesomeIcon className="mr-1" icon={faCogs}></FontAwesomeIcon>My Admin</Link></div>}
                                 <div><a onClick={signout} className="langs-item"><FontAwesomeIcon className="mr-1" icon={faSignOutAlt}></FontAwesomeIcon>Sign out</a></div>

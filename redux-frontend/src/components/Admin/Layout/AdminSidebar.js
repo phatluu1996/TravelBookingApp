@@ -133,7 +133,7 @@ const AdminSidebar = () => {
                     </li></>}
                     {getRole() === ROLE_HOTEL && 
                     <><li className="nav-item menu-items">
-                        <Link className="nav-link" to={`/hotel-dashboard?id=${getUserId()}`}>
+                        <Link className="nav-link" to={`/hotel-admin-dashboard?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 {/* <i className="mdi mdi-speedometer"></i> */}
                                 <FontAwesomeIcon icon={faChartArea} color="#0090e7"></FontAwesomeIcon>
@@ -142,7 +142,7 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <Link className="nav-link"  to={`/hotel-update?id=${getUserId()}`}>
+                        <Link className="nav-link"  to={`/hotel-admin-update?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faUser} color="#00d25b"></FontAwesomeIcon>
                             </span>
@@ -150,7 +150,7 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <Link className="nav-link" to={`/hotel-booking?id=${getUserId()}`}>
+                        <Link className="nav-link" to={`/hotel-admin-booking?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faHotel} color="#ffab00"></FontAwesomeIcon>
                             </span>
@@ -158,7 +158,7 @@ const AdminSidebar = () => {
                         </Link>
                     </li>
                     <li className="nav-item menu-items">
-                        <Link className="nav-link" to={`/hotel-room?id=${getUserId()}`}>
+                        <Link className="nav-link" to={`/hotel-admin-room?id=${getUserId()}`}>
                             <span className="menu-icon">
                                 <FontAwesomeIcon icon={faPlane} color="#ffab00"></FontAwesomeIcon>
                             </span>
