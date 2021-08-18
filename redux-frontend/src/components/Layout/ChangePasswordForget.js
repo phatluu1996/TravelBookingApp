@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { changePassForget, getAccountForget } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
-import { useQuery } from '../Airline/EditFlight';
 import Footer from './Footer';
 import Header from './Header';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const ChangePasswordForget = (props) => {
     const dataAccount = props.auth;

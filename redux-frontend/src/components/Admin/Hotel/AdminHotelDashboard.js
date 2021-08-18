@@ -9,6 +9,7 @@ import AdminFooter from '../Layout/AdminFooter';
 import AdminNavbar from '../Layout/AdminNavbar';
 import AdminSidebar from '../Layout/AdminSidebar';
 import { Bar } from "react-chartjs-2";
+import { getUserId } from '../../../utils';
 
 const AdminHotelDashboard = (props) => {
     let queryParam = useQuery();
@@ -38,8 +39,8 @@ const AdminHotelDashboard = (props) => {
 
     useEffect(() => {
         let mount = false;
-
-        props.getHotel(queryParam.get("id"));
+        let id = queryParam.get("id") ? queryParam.get("id") : getUserId();
+        props.getHotel(id);
 
         return () => {
             mount = true;

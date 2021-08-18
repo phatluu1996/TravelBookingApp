@@ -83,13 +83,17 @@ public class UserController {
     }
 
     @GetMapping("/getAllUser")
-    public ResponseEntity <Collection<User>> getUsers (){ return ResponseEntity.ok().body(userRepository.findAll()); }
+    public ResponseEntity <Collection<User>> getUsers (){
+        Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
+        return ResponseEntity.ok().body(userRepository.findAll(spec));
+    }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PutMapping("/user/{id}")
     public ResponseEntity<List<User>> removeUser(@PathVariable Long id){
         User user = userRepository.findById(id).get();
         user.setRetired(true);
+        user.getAccount().setRetired(true);
         User result = userRepository.save(user);
         Specification<?> spec = DBSpecification.createSpecification(Boolean.FALSE);
         return ResponseEntity.ok().body(userRepository.findAll(spec));

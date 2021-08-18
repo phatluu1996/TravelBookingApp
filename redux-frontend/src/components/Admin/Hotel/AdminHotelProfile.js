@@ -14,6 +14,7 @@ import AdminSidebar from '../Layout/AdminSidebar';
 import { Bar } from "react-chartjs-2";
 import ReactModal from 'react-modal';
 import AddNewRoom from '../../Room/AddNewRoom';
+import { getUserId } from '../../../utils';
 
 const AdminHotelProfile = (props) => {
     const dispatch = useDispatch();
@@ -64,9 +65,9 @@ const AdminHotelProfile = (props) => {
 
     useEffect(() => {
         let mount = false;
-
-        props.getHotel(queryParam.get("id"));
-        props.getRoomByHotelId(queryParam.get("id"));
+        let id = queryParam.get("id") ? queryParam.get("id") : getUserId();
+        props.getHotel(id);
+        props.getRoomByHotelId(id);
         props.getProvince();
 
         return () => {

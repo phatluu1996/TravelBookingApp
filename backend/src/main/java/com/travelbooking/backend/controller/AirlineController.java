@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ public class AirlineController {
     AccountRepository accountRepository;
     @Autowired
     FlightBookingRepository flightBookingRepository;
+    @Autowired
+    PasswordEncoder encoder;
 
     //http://localhost:8080/api/airline/{id}
 //    @PreAuthorize("hasAnyRole('ADMIN','AIRLINE')")
@@ -72,6 +75,7 @@ public class AirlineController {
     //http://localhost:8080/api/airline
     @PostMapping("/airline")
     public ResponseEntity<Airline> addAirline(@RequestBody Airline airline) {
+        airline.getAccount().setPassword(encoder.encode(airline.getAccount().getPassword()));
         Account account =  accountRepository.save(airline.getAccount());
         Location location = locationRepository.save(airline.getLocation());
         Airline result = airlineRepository.save(airline);

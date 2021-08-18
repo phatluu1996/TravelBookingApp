@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { confirmAccount } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
-import { useQuery } from '../Airline/EditFlight';
 import Footer from './Footer';
 import Header from './Header';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const ConfirmRegister = (props) => {
     let queryParam = useQuery();
