@@ -13,6 +13,7 @@ import reducerHotelFeedBack from './reducerHotelFeedBack';
 import reducerWizard from './reducerWizard';
 import reducerImage from './reducerImage';
 import reducerFeedback from './reducerFeedback';
+import reducerAdminReport from './reducerAdminReport';
 
 
 
@@ -30,7 +31,8 @@ const reducers = combineReducers({
 	room:reducerRoom,
 	bookRoom:reducerBookingRoom,
 	hotel : reducerWizard,
-	image:reducerImage
+	image:reducerImage,
+	adminReport:reducerAdminReport
 });
 
 export default (state, action) => reducers(state, action);

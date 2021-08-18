@@ -1133,6 +1133,7 @@ show-list:hover{
 
 .offer-slider-link {
 	margin-bottom:12px;
+  min-height: 34px !important;
 }
 .offer-slider-link a {
 	font-size:14px;

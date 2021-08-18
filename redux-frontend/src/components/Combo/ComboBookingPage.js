@@ -26,6 +26,7 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import ReactModal from "react-modal";
+import { IsNumeric, ValidateDateFormat, validDateFormat } from "../../utils/DateUtil";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -207,8 +208,6 @@ const ComboBookingPage = (props) => {
 
       if (!list[index]["birthday"]) {
         err[index]["birthday"] = "Birthday required.";
-      } else {
-        err[index]["birthday"] = "";
       }
     }
 
@@ -247,7 +246,11 @@ const ComboBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      err[index]["birthday"] = "";
+      if(ValidateDateFormat(e)){
+        err[index]["birthday"] = "";
+      }else{        
+        err[index]["birthday"] = "Wrong Format !";
+      }      
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
       setInputListPassenger(list);
@@ -745,11 +748,14 @@ const ComboBookingPage = (props) => {
                                       <input
                                         name="birthday"
                                         type="text"
+                                        autoComplete="off"
                                         className="form-control date-booking-inpt"
                                         placeholder="YYYY-MM-DD"
+                                        onKeyDown={(e) => IsNumeric(e)}
                                         onChange={(e) =>
                                           handleBirthdayChange(e, i)
                                         }
+                                        maxLength={10}
                                       />
                                       <span className="date-icon"></span>
                                     </div>

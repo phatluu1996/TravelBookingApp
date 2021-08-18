@@ -17,6 +17,7 @@ import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import ReactModal from "react-modal";
+import { IsNumeric, ValidateDateFormat } from "../../utils/DateUtil";
 
 
 function useQuery() {
@@ -140,9 +141,7 @@ const FlightBookingPage = (props) => {
 
       if (!list[index]["birthday"]) {
         err[index]["birthday"] = "Birthday required.";
-      } else {
-        err[index]["birthday"] = "";
-      };
+      }
     };
 
     for (var index = 0; index < list.length; index++) {
@@ -176,10 +175,11 @@ const FlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      // if (Object.is(Date.parse(list[index]["birthday"]), NaN)) {
-      //   err[index]["birthday"] = "Wrong format of birthday";
-      // } else {
-      err[index]["birthday"] = "";
+      if(ValidateDateFormat(e)){
+        err[index]["birthday"] = "";
+      }else{        
+        err[index]["birthday"] = "Wrong Format !";
+      }   
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
       setInputListPassenger(list);
@@ -219,7 +219,7 @@ const FlightBookingPage = (props) => {
     if (validateForm(e)) {
       var data = {
         userId: userId,
-        flightId: flight.id,
+        flightId: flight.single?.id,
         dateBooking: dateOfDeparture,
         type: type,
         returnFlightId: returnFlightId,
@@ -361,14 +361,14 @@ const FlightBookingPage = (props) => {
       var paxAge = getAge(dateOfDeparture, pax.birthday);
       if (queryParam.get("seatClass") === "ECONOMY") {
         if (paxAge <= 12 && paxAge >= 0) {
-          var flightPrice = flight.child_price;
+          var flightPrice = flight.single?.child_price;
         } else {
-          var flightPrice = flight.economyPrice;
+          var flightPrice = flight.single?.economyPrice;
         }
       } else {
-        var flightPrice = flight.businessPrice;
+        var flightPrice = flight.single?.businessPrice;
       }
-      var infantPrice = listInfant[index].infant ? flight.infant_price : 0;
+      var infantPrice = listInfant[index].infant ? flight.single?.infant_price : 0;
       newTotalPrice = newTotalPrice + flightPrice + infantPrice;
     })
     setTotalPrice(newTotalPrice);
@@ -588,7 +588,10 @@ const FlightBookingPage = (props) => {
                                         type="text"
                                         className="form-control date-booking-inpt"
                                         placeholder="YYYY-MM-DD"
+                                        onKeyDown={(e) => IsNumeric(e)}
                                         onChange={(e) => handleBirthdayChange(e, i)}
+                                        maxLength={10}
+                                        autoComplete="off"
                                       />
                                       <span className="date-icon"></span>
                                     </div>
@@ -683,7 +686,7 @@ const FlightBookingPage = (props) => {
                                           .create({
                                             purchase_units: [
                                               {
-                                                description: `One way Flight ${flight.departureCity}-${flight.arrivalCity}`,
+                                                description: `One way Flight ${flight.single?.departureCity}-${flight.single?.arrivalCity}`,
                                                 amount: {
                                                   currency: "USD",
                                                   value: totalPrice,
@@ -717,7 +720,7 @@ const FlightBookingPage = (props) => {
                   <div className="checkout-head">
                     <div className="checkout-headl">
                       <a href="#">
-                        <img alt="" src={flight?.airline?.image} style={{width:"93px",height:"65px"}}/>
+                        <img alt="" src={flight.single?.airline?.image} style={{width:"93px",height:"65px"}}/>
                       </a>
                     </div>
                     <div className="checkout-headr">
@@ -726,12 +729,12 @@ const FlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flight?.departureCity} - {flight?.arrivalCity}
+                                {flight.single?.departureCity} - {flight.single?.arrivalCity}
                               </a>
                             </div>
                             <div className="chk-lbl-a">ONEWAY FLIGHT</div>
                             <div className="chk-logo">
-                              <p>{flight?.airline?.airlineName}</p>
+                              <p>{flight.single?.airline?.airlineName}</p>
                             </div>
                           </div>
                           <div className="chk-right">
@@ -751,7 +754,7 @@ const FlightBookingPage = (props) => {
                       <div className="chk-departure" style={{float:"none",display:"inline"}}>
                         <span style={{float:"none",display:"inline"}}>Schedule Time</span>
                         <b style={{float:"none",display:"inline"}}>
-                          {flight?.departureTime} - {flight?.arrivalTime}
+                          {flight.single?.departureTime} - {flight.single?.arrivalTime}
                           <br />
                         </b>
                       </div>
@@ -772,7 +775,7 @@ const FlightBookingPage = (props) => {
                       <div className="chk-line">
                         <span className="chk-l">FLIGHT</span>
                         <span className="chk-r">
-                          {flight?.flightCode}
+                          {flight.single?.flightCode}
                         </span>
                         <div className="clear"></div>
                       </div>

@@ -237,6 +237,7 @@ const ComboFlightSearchPage2 = (props) => {
             performSearch(filter, true);
             setFlightTab(true);
             props.setDepartFlight(null);
+            props.setReturnFlight(null);
             props.clearHotelState();
 
             props.setArriveCityCode(filter.to);

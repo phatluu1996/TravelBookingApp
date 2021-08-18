@@ -73,4 +73,20 @@ public interface HotelBookingRepository extends JpaRepository<HotelBooking,Long>
             "GROUP BY CONVERT(DATE,BOOK.created_at)) BOOKING ON CTE.N = CONVERT(DATE,booking.CRE_DT)\n" +
             "ORDER BY CTE.N", nativeQuery = true)
     Collection reportMonthByHotel(@Param("hotelId")Long id);
+
+    @Query(value = "SELECT SUM(total_price) FROM hotel_booking",nativeQuery = true)
+    float totalHotelBookingAmount();
+
+    @Query(value = "SELECT ISNULL(SUM(ISNULL(BOOK.total_price,0)),0) DAILY FROM HOTEL_BOOKING BOOK\n" +
+            "WHERE CONVERT (DATE, ISNULL(BOOK.created_at, '1900-01-01')) = CONVERT (DATE, SYSDATETIME())", nativeQuery = true)
+    float dailyIncomeAdminRP();
+
+    @Query(value = "WITH CTE AS\n" +
+            "(SELECT GETDATE() AS N\n" +
+            "UNION ALL\n" +
+            "SELECT DATEADD(MONTH,-1,N) FROM CTE WHERE DATEADD(MONTH, -1 ,N)> DATEADD(YEAR, -1, GETDATE()))\n" +
+            "SELECT ISNULL(SUM(ISNULL(BOOKING.TOTAL_PRICE, 0)),0) AMOUNT FROM CTE LEFT JOIN HOTEL_BOOKING BOOKING ON MONTH(BOOKING.CREATED_AT) = MONTH(CTE.N) AND YEAR(BOOKING.created_at) = YEAR(CTE.N)\n" +
+            "GROUP BY CONVERT(DATE,CTE.N)\n" +
+            "ORDER BY CONVERT(DATE,CTE.N)", nativeQuery = true)
+    Collection getAllAmonthPerMonth();
 }
