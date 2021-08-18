@@ -121,19 +121,27 @@ public class FlightBookingServiceImpl implements FlightBookingService{
 
 
         });
+        String randomReturnReservCode = null;
 
+        if (bookingRequest.getReturnFlightId() != 0) {
+            Long returnFlightId = bookingRequest.getReturnFlightId();
+            Optional<Flight> returnFlightOptional = flightRepository.findById(returnFlightId);
+            Flight returnFlight = returnFlightOptional.get();
+
+
+            if (flight.getAirline().getId() == returnFlight.getAirline().getId()) {
+                randomReturnReservCode = randomReservationCode;
+            } else {
+                randomReturnReservCode = randomString(6);
+            }
+        }
+        final String randomReturnReservationCode = randomReturnReservCode;
         // If booking has Return flight
         if (bookingRequest.getReturnFlightId() != 0){
             Long returnFlightId=bookingRequest.getReturnFlightId();
             Optional<Flight> returnFlightOptional=flightRepository.findById(returnFlightId);
             Flight returnFlight=returnFlightOptional.get();
 
-            String randomReturnReservationCode;
-            if (flight.getAirline().getId() == returnFlight.getAirline().getId()){
-                randomReturnReservationCode = randomReservationCode;
-            } else {
-                randomReturnReservationCode = randomString(6);
-            }
 
             //Add Passenger detail
             bookingRequest.getPassengers().forEach( psg ->{
@@ -185,14 +193,12 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             BitMatrix bitMatrix_2flight = qrCodeWriter.encode(
                     "User: "+ user.getFirstName()+" "+user.getLastName()+"\n"+
                             "Email: "+ user.getEmail() +"\n"+
-                            "Sparrow Code: "+ savedBooking.getBookingCode() + "\n"+
-                            "Information Flight: "+"\n"+
-                            flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
-                            flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
-                            flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()+"\n"+
-                            returnFlight.getFlightCode()+" "+getDateString(bookingRequest.getDateReturnBooking())+ " " +
-                            returnFlight.getDepartureCity()+"-"+returnFlight.getArrivalCity() +" " +
-                            returnFlight.getDepartureTime().getHours() + ":" + returnFlight.getDepartureTime().getMinutes()
+                            "Reservation Code: "+ randomReservationCode + "\n"+
+                            "Information Flight: "+flight.getFlightCode()+" "+flight.getDepartureCity()+"-"+flight.getArrivalCity()+"\n"+
+                            "Day of Departure: "+ getDateString(bookingRequest.getDateBooking())+ " " +flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()+"\n"+
+                            "Reservation Return Flight: "+randomReturnReservationCode+"\n"+
+                            "Return Flight: "+returnFlight.getFlightCode()+" "+returnFlight.getDepartureCity()+"-"+returnFlight.getArrivalCity() +"\n" +
+                            "Day of Return: "+getDateString(bookingRequest.getDateReturnBooking())+" "+returnFlight.getDepartureTime().getHours() + ":" + returnFlight.getDepartureTime().getMinutes()
                             , BarcodeFormat.QR_CODE, 300, 300);
             Path path = FileSystems.getDefault().getPath(qrcodePath);
             MatrixToImageWriter.writeToPath(bitMatrix_2flight, "PNG", path);
@@ -202,11 +208,9 @@ public class FlightBookingServiceImpl implements FlightBookingService{
             BitMatrix bitMatrix = qrCodeWriter.encode(
                     "User: "+ user.getFirstName()+" "+user.getLastName()+"\n"+
                             "Email: "+ user.getEmail() +"\n"+
-                            "Sparrow Code: "+ savedBooking.getBookingCode() + "\n"+
-                            "Information Flight: "+"\n"+
-                            flight.getFlightCode()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
-                            flight.getDepartureCity()+"-"+flight.getArrivalCity() +" " +
-                            flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()
+                            "Reservation Code: "+ randomReservationCode + "\n"+
+                            "Information Flight: "+flight.getFlightCode()+" "+flight.getDepartureCity()+"-"+flight.getArrivalCity()+"\n"+
+                            "Day of Departure: "+ getDateString(bookingRequest.getDateBooking())+ " " +flight.getDepartureTime().getHours() + ":" + flight.getDepartureTime().getMinutes()+"\n"
                     , BarcodeFormat.QR_CODE, 300, 300);
             Path path = FileSystems.getDefault().getPath(qrcodePath);
             MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
