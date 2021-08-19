@@ -64,7 +64,7 @@ public interface FlightBookingRepository extends JpaRepository<FlightBooking, Lo
             "ORDER BY CTE.N",nativeQuery = true)
     Collection reportPerMonth(@Param("airlineId")Long id);
 
-    @Query(value = "SELECT SUM(total_price) FROM flight_booking", nativeQuery = true)
+    @Query(value = "SELECT ISNULL(SUM(ISNULL(total_price,0)),0) FROM flight_booking", nativeQuery = true)
     float totalFlightBookingAmount();
 
     @Query(value = "SELECT ISNULL(SUM(ISNULL(BOOK.total_price,0)),0) DAILY FROM FLIGHT_BOOKING BOOK\n" +
