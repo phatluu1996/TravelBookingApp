@@ -1,12 +1,15 @@
 import { data } from 'jquery';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { changePassForget, getAccountForget } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
-import { useQuery } from '../Airline/EditFlight';
 import Footer from './Footer';
 import Header from './Header';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 const ChangePasswordForget = (props) => {
     const dataAccount = props.auth;

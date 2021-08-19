@@ -741,12 +741,19 @@ const RoundFlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flights?.data?.departureCity} - {flights?.data?.arrivalCity}
+                                {flights?.data?.departureCity} - {flights?.data?.arrivalCity} / ROUND TRIP
                               </a>
                             </div>
-                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
+                            <div className="chk-lbl-a">{flights?.data?.airline?.airlineName}</div>
                             <div className="chk-logo">
-                              <p>{flights?.data?.airline?.airlineName}</p>
+                              <p></p>
+                            </div>
+                            <div className="chk-lbl-a">
+                              Day of Departure: {dateOfDeparture}
+                            </div>
+                            <div className="chk-lbl-a">
+                              Schedule Time: {flights?.data?.departureTime} -{" "}
+                              {flights?.data?.arrivalTime}
                             </div>
                           </div>
                           <div className="chk-right">
@@ -762,21 +769,99 @@ const RoundFlightBookingPage = (props) => {
                   </div>
 
                   <div className="chk-lines">
+                  <h3>FLIGHT INFOS</h3>
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure" style={{ float: "none", display: "inline" }}>
-                        <span style={{ float: "none", display: "inline" }}>Schedule Time</span>
-                        <b style={{ float: "none", display: "inline" }}>
-                          {flights?.data?.departureTime} - {flights?.data?.arrivalTime}
-                          <br />
-                        </b>
-                      </div>
-
-                      <div className="chk-arrival" style={{float:"left",display:"inline"}}>
-                        <span style={{ float: "left", display: "inline" }}>Day of Departure  </span>
-                        <b style={{ float: "none", display: "inline" }}>
-                          {dateOfDeparture}
-                        </b>
-                      </div>
+                    <table>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Price</span>
+                            </div>
+                          </td>
+                          <td >
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.data?.businessPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.data?.businessBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.data?.economyPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.data?.economyBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Child Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.data?.child_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.data?.businessCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Infant Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.data?.infant_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.data?.economyCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                      
                       <div className="clear"></div>
                     </div>
                   </div>
@@ -824,7 +909,7 @@ const RoundFlightBookingPage = (props) => {
                 </div>
                 <div className="checkout-coll">
                   <div className="checkout-head">
-                    <div className="checkout-headl">
+                  <div className="checkout-headl">
                       <a href="#">
                         <img alt="" src={flights?.returnData?.airline?.image} style={{ width: "95px", height: '60px' }} />
                       </a>
@@ -835,17 +920,24 @@ const RoundFlightBookingPage = (props) => {
                           <div className="chk-left">
                             <div className="chk-lbl">
                               <a href="#">
-                                {flights?.returnData?.departureCity} - {flights?.returnData?.arrivalCity}
+                                {flights?.returnData?.departureCity} - {flights?.returnData?.arrivalCity} / ROUND TRIP
                               </a>
                             </div>
-                            <div className="chk-lbl-a">ROUND TRIP FLIGHT</div>
+                            <div className="chk-lbl-a">{flights?.returnData?.airline?.airlineName}</div>
                             <div className="chk-logo">
-                              <p>{flights?.returnData?.airline?.airlineName}</p>
+                              <p></p>
+                            </div>
+                            <div className="chk-lbl-a">
+                              Day of Departure: {dateOfReturn}
+                            </div>
+                            <div className="chk-lbl-a">
+                              Schedule Time: {flights?.returnData?.departureTime} -{" "}
+                              {flights?.returnData?.arrivalTime}
                             </div>
                           </div>
                           <div className="chk-right">
                             <a href="#">
-                             
+
                             </a>
                           </div>
                           <div className="clear"></div>
@@ -856,21 +948,99 @@ const RoundFlightBookingPage = (props) => {
                   </div>
 
                   <div className="chk-lines">
+                  <h3>FLIGHT INFOS</h3>
                     <div className="chk-line chk-fligth-info">
-                      <div className="chk-departure" style={{ float: "none", display: "inline" }}>
-                        <span style={{ float: "none", display: "inline" }}>Schedule Time</span>
-                        <b style={{ float: "none", display: "inline" }}>
-                          {flights?.returnData?.departureTime} - {flights?.returnData?.arrivalTime}
-                          <br />
-                        </b>
-                      </div>
-
-                      <div className="chk-arrival" style={{float:"left",display:"inline"}}>
-                        <span style={{ float: "none", display: "inline" }}>Day of Departure  </span>
-                        <b style={{ float: "none", display: "inline" }}>
-                          {dateOfReturn}
-                        </b>
-                      </div>
+                    <table>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Price</span>
+                            </div>
+                          </td>
+                          <td >
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.returnData?.businessPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.returnData?.businessBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.returnData?.economyPrice}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy Baggage</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.returnData?.economyBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Child Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.returnData?.child_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Business HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.returnData?.businessCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Infant Price</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b style={{marginRight:"10px"}}>{flights?.returnData?.infant_price}$</b>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <span>Economy HandBag</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="chk-arrival">
+                              <b>{flights?.returnData?.economyCabinBaggage} Kgs</b>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                      
                       <div className="clear"></div>
                     </div>
                   </div>

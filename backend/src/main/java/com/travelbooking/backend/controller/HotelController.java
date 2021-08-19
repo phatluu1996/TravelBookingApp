@@ -353,7 +353,8 @@ public class HotelController {
 
     @GetMapping("/hotel/allBooking/{id}")
     public ResponseEntity<?> getAllBookingByHotelId(@PathVariable Long id) {
-        Collection<HotelBooking> count = hotelBookingRepository.getAllBookingByHotelId(id);
+        Hotel hotel = hotelRepository.getByAccountId(id);
+        Collection<HotelBooking> count = hotelBookingRepository.getAllBookingByHotelId(hotel.getId());
         return ResponseEntity.ok().body(count);
     }
 

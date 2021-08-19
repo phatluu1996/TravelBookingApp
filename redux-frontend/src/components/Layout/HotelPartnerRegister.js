@@ -6,8 +6,11 @@ import { signup } from "../../actions/actionAuth";
 import { importAll } from "../../utils/JqueryImport";
 import { retrieveProvince } from "../../actions/actionLocation";
 import { createPartner } from "../../actions/actionHotel";
-import { useQuery } from "../Airline/EditFlight";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 function HotelPartnerRegister(props) {
     let queryParam = useQuery();
