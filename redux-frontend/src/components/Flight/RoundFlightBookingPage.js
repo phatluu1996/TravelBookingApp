@@ -17,6 +17,7 @@ import { PP_ID } from "../../config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinusCircle, faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import ReactModal from "react-modal";
+import { IsNumeric, ValidateDateFormat } from "../../utils/DateUtil";
 
 
 function useQuery() {
@@ -138,9 +139,7 @@ const RoundFlightBookingPage = (props) => {
 
       if (!list[index]["birthday"]) {
         err[index]["birthday"] = "Birthday required.";
-      } else {
-        err[index]["birthday"] = "";
-      };
+      }
     };
 
     for (var index = 0; index < list.length; index++) {
@@ -174,7 +173,11 @@ const RoundFlightBookingPage = (props) => {
     if (!e.target.value) {
       err[index]["birthday"] = "Required!";
     } else {
-      err[index]["birthday"] = "";
+      if (ValidateDateFormat(e)) {
+        err[index]["birthday"] = "";
+      } else {
+        err[index]["birthday"] = "Wrong Format !";
+      }
 
       list[index]["birthday"] = e.target.value.replaceAll("/", "-");
       setInputListPassenger(list);
@@ -602,6 +605,7 @@ const RoundFlightBookingPage = (props) => {
                                         type="text"
                                         className="form-control date-booking-inpt"
                                         placeholder="YYYY/MM/DD"
+                                        onKeyDown={(e) => IsNumeric(e)}
                                         onChange={(e) => handleBirthdayChange(e, i)}
                                       />
                                       <span className="date-icon"></span>
