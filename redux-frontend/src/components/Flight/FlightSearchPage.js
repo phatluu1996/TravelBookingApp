@@ -262,7 +262,7 @@ const FlightSearchPage = (props) => {
         var f = { ...filter };
         f.sortBy = e.target.value;
         f.page = 1;
-        performSearch(filter, true);
+        performSearch(f, true);
     }
 
     const onChangeSortDir = (e) => {

@@ -614,7 +614,8 @@ const FlightSearchPage2 = (props) => {
                                         <div className="search-select">
                                             <select id="sortBy" defaultValue={filter?.sortBy} onChange={onChangeSortBy}>
                                                 <option value="id">Index</option>
-                                                <option value={filter.seatclassName === "ECONOMY" ? "economyPrice" : "businessPrice"}>Price</option>
+                                                <option value={"economyPrice"}>Economy Price</option>
+                                                <option value={"businessPrice"}>Business Price</option>
                                                 <option value="departureTime">Depart Time</option>
                                                 <option value="arrivalTime">Arrive Time</option>
                                             </select>
