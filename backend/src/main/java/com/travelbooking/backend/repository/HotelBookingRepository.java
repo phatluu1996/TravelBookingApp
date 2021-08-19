@@ -74,7 +74,7 @@ public interface HotelBookingRepository extends JpaRepository<HotelBooking,Long>
             "ORDER BY CTE.N", nativeQuery = true)
     Collection reportMonthByHotel(@Param("hotelId")Long id);
 
-    @Query(value = "SELECT SUM(total_price) FROM hotel_booking",nativeQuery = true)
+    @Query(value = "SELECT ISNULL(SUM(ISNULL(total_price,0)),0) FROM hotel_booking",nativeQuery = true)
     float totalHotelBookingAmount();
 
     @Query(value = "SELECT ISNULL(SUM(ISNULL(BOOK.total_price,0)),0) DAILY FROM HOTEL_BOOKING BOOK\n" +
