@@ -53,9 +53,9 @@ public final class HotelSpecification {
             if(ward != 0){
                 predicates.add(cb.equal(joinTableLocation.get("ward"),ward));
             }
-            if(number_children != 0){
-                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
-            }
+//            if(number_children != 0){
+//                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxChildren"),number_children));
+//            }
 
 //                predicates.add(cb.greaterThanOrEqualTo(joinTableRoom.get("maxAdult"),number_adult));
 //                predicates.add(cb.greaterThan(joinTableRoom.get("availableTime"),check_in_date));

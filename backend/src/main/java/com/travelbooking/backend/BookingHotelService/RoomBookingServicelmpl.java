@@ -81,8 +81,9 @@ public class RoomBookingServicelmpl implements RoomBookingService {
 
         String qrcodePath = "src/main/resources/static/images/" + createBkSuccess.getId() + "-QRCode.png";
         BitMatrix bitMatrix = qrCodeWriter.encode("SparrowCode: "+createBkSuccess.getBookingCode()+"\n"+
-                        bookingRequest.getNumberOfGuests()+" "+getDateString(bookingRequest.getDateBooking())+ " " +
-                        getDateString(bookingRequest.getCheckInDate())+"-"+getDateString(bookingRequest.getCheckOutDate())
+                        "Total price : "+createBkSuccess.getTotalPrice()+"\n"+
+                        "Number Of Guests :" + bookingRequest.getNumberOfGuests()+"\n"+"Booking date :"+getDateString(bookingRequest.getDateBooking())+ "\n" +
+                        "Check in date :"+getDateString(bookingRequest.getCheckInDate())+"\n" + "Check out date :"+getDateString(bookingRequest.getCheckOutDate())
                 , BarcodeFormat.QR_CODE, 300, 300);
         Path path = FileSystems.getDefault().getPath(qrcodePath);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
@@ -95,7 +96,7 @@ public class RoomBookingServicelmpl implements RoomBookingService {
                     roomRepository.save(room);
             }
 
-            createBkSuccess.setTotalPrice(bookingRequest.getTotalPrice() + 10);
+            createBkSuccess.setTotalPrice(bookingRequest.getTotalPrice());
             mapAndSaveToPDF(createBkSuccess, bookingRequest.getUser(), new File(qrcodePath),bookingRequest.getNightCount(),bookingRequest.getDateBooking());
 
         return createBkSuccess;
