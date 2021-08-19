@@ -72,43 +72,73 @@ public class HotelController {
                                        @RequestParam (required = false, name = "checkOutDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkOutDate,
                                        @RequestParam (required = false, name = "numRoom") Integer numRoom
     ) throws ParseException {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String checkInDateCv = dateFormat.format(checkInDate);
+        String checkOutDateCv = dateFormat.format(checkOutDate);
         boolean check = false;
         int roomActive = 0;
+
         List<Hotel> hotelCheckList = new ArrayList<>();
         List<HotelBooking> hotelBookings = new ArrayList<>();
         Specification<Hotel> spec = HotelSpecification.createSpecification(province, district, ward, Boolean.FALSE, numberAdult, numberChildren, numRoom, checkInDate);
         List<Hotel> hotels = hotelRepository.findAll(spec);
+
+
         List<HotelBooking> hotelBookingList = hotelBookingRepository.findAll();
-        for (int i = 0; i < hotelBookingList.size() ; i++) {
-                if((hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
-                    &&(hotelBookingList.get(i).getCheckInDate().before(checkOutDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
-                        &&(hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
-                ){
-                        hotelBookings.add(hotelBookingList.get(i));
-                }
-        }
 
-
-        for (int i = 0; i < hotels.size(); i++) {
-            for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
-                if(hotelBookings.size() > 0 ){
-                    for (int k = 0; k < hotelBookings.size(); k++) {
-
-                            for (int l = 0; l < hotelBookings.get(k).getHotelBookingDetail().getHotelBookingRooms().size() ; l++) {
-                               if(!hotelBookings.get(k).getHotelBookingDetail().getHotelBookingRooms().get(l).equals(hotels.get(i).getRooms().get(j))){
-                                   roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
-                               }
-                            }
-                    }
-                }else{
-                    roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
-                }
+        for (int i = 0; i <hotels.size() ; i++) {
+            for (int j = 0; j <hotels.get(i).getRooms().size() ; j++) {
+                roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
             }
             if (roomActive >= numberAdult+numberChildren) {
                 hotelCheckList.add(hotels.get(i));
             }
         }
-        return hotelCheckList;
+
+
+
+//
+
+//        for (int i = 0; i < hotelBookingList.size() ; i++) {
+//                if(
+//                        (hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
+//                    ||(hotelBookingList.get(i).getCheckInDate().after(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+//                        ||(hotelBookingList.get(i).getCheckInDate().after(checkInDate) && hotelBookingList.get(i).getCheckOutDate().before(checkOutDate))
+//                        ||(dateFormat.format(hotelBookingList.get(i).getCheckInDate()).equals(checkInDateCv) && dateFormat.format(hotelBookingList.get(i).getCheckOutDate()).equals(checkOutDateCv)))
+//                {
+//                        hotelBookings.add(hotelBookingList.get(i));
+//                }
+//        }
+//
+//
+//        for (int i = 0; i < hotels.size(); i++) {
+//            int roomActive = 0;
+//            for (int j = 0; j < hotels.get(i).getRooms().size(); j++) {
+//                if(hotelBookings.size() > 0 ){
+//                    for (int k = 0; k < hotelBookings.size(); k++) {
+//                            for (int l = 0; l < hotelBookings.get(k).getHotelBookingDetail().getHotelBookingRooms().size() ; l++) {
+//                                int countBK = k;
+//                                int countRoomBK = l;
+//                                if(hotels.get(i).getRooms().get(j).getId().equals(hotelBookings.get(countBK).getHotelBookingDetail().getHotelBookingRooms().get(countRoomBK).getRoom().getId())){
+//                                    int countHotel = i;
+//                                    boolean checkHT =  hotelCheckList.stream().anyMatch(hotel -> hotel.getId().equals(hotels.get(countHotel).getId()));
+//                                    if(checkHT == false){
+//                                        roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
+//                                    }
+//                                }
+//
+//                            }
+//                    }
+//                }else{
+//                    roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
+//                }
+//            }
+//            if (roomActive >= numberAdult+numberChildren) {
+//                hotelCheckList.add(hotels.get(i));
+//            }
+//        }
+        return hotels;
     }
     //http://localhost:8080/api/findHotel
     @GetMapping("/findHotel")
@@ -148,11 +178,14 @@ public class HotelController {
         return  ResponseEntity.ok().body(hotel);
     }
     //http://localhost:8080/api/hotel/{id}
-    @GetMapping("/hotelWithRoomActive")
+    @PostMapping("/hotelWithRoomActive")
     public ResponseEntity<Hotel> getHotelWithActiveRoom( @RequestParam (required = false, name = "id") String id,
                                                          @RequestParam (required = false, name = "checkInDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkInDate,
                                                          @RequestParam (required = false, name = "checkOutDate")@DateTimeFormat(pattern = "dd/MM/yyyy") Date checkOutDate){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Hotel hotel = hotelRepository.findById(Long.parseLong(id)).get();
+        String checkInDateCv = dateFormat.format(checkInDate);
+        String checkOutDateCv = dateFormat.format(checkOutDate);
 
         if (hotel.getRetired()){
             return ResponseEntity.ok().body(null);
@@ -160,25 +193,48 @@ public class HotelController {
         List<HotelBooking> hotelBookings = new ArrayList<>();
         List<Room> rooms = new ArrayList<>();
         List<HotelBooking> hotelBookingList = hotelBookingRepository.findAll();
-        for (int i = 0; i < hotelBookingList.size() ; i++) {
-            if((hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
-                    &&(hotelBookingList.get(i).getCheckInDate().before(checkOutDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
-                    &&(hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
-            ){
-                hotelBookings.add(hotelBookingList.get(i));
-            }
-        }
-        for (int i = 0; i < hotel.getRooms().size() ;i++) {
-            for (int j = 0; j <hotelBookings.size() ; j++) {
-                for (int k = 0; k <hotelBookings.get(j).getHotelBookingDetail().getHotelBookingRooms().size() ; k++) {
-                        if(hotelBookings.get(j).getHotelBookingDetail().getHotelBookingRooms().get(k).getRoom().equals(hotel.getRooms().get(i))
-                                && (hotel.getRooms().get(i).getRoomStatus() == false || hotel.getRooms().get(i).getRoomStatus() == null) ){
-                            rooms.add(hotel.getRooms().get(i));
-                        }
-                }
-            }
-        }
-                hotel.setRooms(rooms);
+
+//
+//        for (int i = 0; i < hotelBookingList.size() ; i++) {
+//            if(
+//                    (hotelBookingList.get(i).getCheckInDate().before(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkInDate))
+//                            ||(hotelBookingList.get(i).getCheckInDate().after(checkInDate) && hotelBookingList.get(i).getCheckOutDate().after(checkOutDate))
+//                            ||(hotelBookingList.get(i).getCheckInDate().after(checkInDate) && hotelBookingList.get(i).getCheckOutDate().before(checkOutDate))
+//                            ||(dateFormat.format(hotelBookingList.get(i).getCheckInDate()).equals(checkInDateCv) && dateFormat.format(hotelBookingList.get(i).getCheckOutDate()).equals(checkOutDateCv)))
+//            {
+//                hotelBookings.add(hotelBookingList.get(i));
+//            }
+//        }
+
+//        for (int i = 0; i < hotel.getRooms().size() ;i++) {
+//            if(hotel.getRooms().get(i).getRetired() == false){
+//                for (int j = 0; j <hotelBookings.size() ; j++) {
+//                    for (int k = 0; k <hotelBookings.get(j).getHotelBookingDetail().getHotelBookingRooms().size() ; k++) {
+//                        int countBK = j;
+//                        int countRoomBK = k;
+//                        if(!hotel.getRooms().get(i).getId().equals(hotelBookings.get(countBK).getHotelBookingDetail().getHotelBookingRooms().get(countRoomBK).getRoom().getId())){
+//                            System.out.println(hotel.getRooms().get(i).getId());
+//                            int countRoom = i;
+//                            boolean check =  rooms.stream().anyMatch(room -> room.getId().equals(hotel.getRooms().get(countRoom).getId()));
+//                            if(check == false){
+//                                rooms.add(hotel.getRooms().get(i));
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        if(rooms.size() > 0){
+//            List<Room> rooms1 = hotel.getRooms();
+//            for (int i = 0; i <rooms1.size() ; i++) {
+//                int finalI = i;
+//                boolean check =  rooms.stream().anyMatch(room -> room.getId().equals(rooms1.get(finalI).getId()));
+//                if(check == true){
+//                    rooms1.remove(i);
+//                }
+//            }
+//           hotel.setRooms(rooms1);
+//        }
         return  ResponseEntity.ok().body(hotel);
     }
 

@@ -47,6 +47,7 @@ export const fetchHotelByAccountId = (id) => async dispatch => {
         });
     }
 }
+
 export const fetchHotelById = (id) => async dispatch => {
     try {
        dispatch({ type: FETCH_HOTEL_REQUEST });
@@ -66,6 +67,26 @@ export const fetchHotelById = (id) => async dispatch => {
        });
    }
 }
+export const fetchHotelById2 = (data) => async dispatch => {
+    try {
+       dispatch({ type: FETCH_HOTEL_REQUEST });
+      const url = `${ROOT_URL}/api/hotelWithRoomActive`;
+       console.log(url);
+       const response = await axios.post(url,data)
+       const responseBody = await response.data;
+       dispatch({
+           type: FETCH_HOTEL_SUCCESS,
+           payload: responseBody
+       });
+   } catch (error) {
+       console.error(error);
+       dispatch({
+           type: FETCH_HOTEL_ERROR,
+           message: error
+       });
+   }
+}
+
 export const getUpdate = (id,data) => async dispatch => {
     try {
        dispatch({ type: FETCH_HOTEL_REQUEST });

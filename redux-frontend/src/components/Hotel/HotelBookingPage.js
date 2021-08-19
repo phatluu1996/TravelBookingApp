@@ -331,7 +331,7 @@ const HotelBookingPage = (props) => {
                                                     </div>
                                                 </div> */}
                                                     <div className="booking-complete">
-                                                        <button className="booking-complete-btn" type="submit">Validate</button>
+                                                        <button className="booking-complete-btn" type="submit">Process payment</button>
                                                     </div>
                                                     {checkout && <div className="loading" delay-hide="10"></div>}
                                                     {/* </form> */}
