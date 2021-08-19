@@ -957,10 +957,31 @@ const ComboBookingPage = (props) => {
                                   </b>
                                   <div className="clear"></div>
                                   <span style={{ float: "none", display: "inline" }}>
-                                    Flight Price{" "}
+                                    Economy Price{" "}
                                   </span>
                                   <b style={{ float: "none", display: "inline" }}>
-                                    {queryParam.get("seatClass") === "ECONOMY" ? flights.data?.economyPrice : flights.data?.businessPrice}$
+                                    {flights.data?.economyPrice}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Business Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.data?.businessPrice}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Child Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.data?.child_price}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Infant Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.data?.infant_price}$
                                   </b>
                                 </div>
                                 <div className="clear"></div>
@@ -1030,10 +1051,31 @@ const ComboBookingPage = (props) => {
                                   </b>
                                   <div className="clear"></div>
                                   <span style={{ float: "none", display: "inline" }}>
-                                    Flight Price{" "}
+                                    Economy Price{" "}
                                   </span>
                                   <b style={{ float: "none", display: "inline" }}>
-                                    {queryParam.get("seatClass") === "ECONOMY" ? flights.returnData?.economyPrice : flights.returnData?.businessPrice}$
+                                    {flights.returnData?.economyPrice}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Business Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.returnData?.businessPrice}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Child Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.returnData?.child_price}$
+                                  </b>
+                                  <div className="clear"></div>
+                                  <span style={{ float: "none", display: "inline" }}>
+                                    Infant Price{" "}
+                                  </span>
+                                  <b style={{ float: "none", display: "inline" }}>
+                                    {flights.returnData?.infant_price}$
                                   </b>
                                 </div>
                                 <div className="clear"></div>
