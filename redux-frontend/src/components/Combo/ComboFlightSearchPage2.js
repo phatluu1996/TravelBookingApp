@@ -861,7 +861,7 @@ const ComboFlightSearchPage2 = (props) => {
                                         }</>
                                     ) : (<>
                                         {
-                                            props.flights.returnData.content?.length > 0 && (<div className="pagination">
+                                            props.flights.returnData?.content?.length > 0 && (<div className="pagination">
                                                 {
                                                     props?.flights?.returnData?.first ? (<>
                                                         <a className="active">1</a>
