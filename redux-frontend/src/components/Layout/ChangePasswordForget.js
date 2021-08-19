@@ -6,7 +6,6 @@ import { changePassForget, getAccountForget } from '../../actions/actionAuth';
 import { importAll } from '../../utils/JqueryImport';
 import Footer from './Footer';
 import Header from './Header';
-import { useLocation } from "react-router-dom";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
