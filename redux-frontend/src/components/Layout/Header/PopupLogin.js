@@ -113,8 +113,7 @@ function PopupLogin(props) {
             }
         } else if (props.auth.form === "forgetPassword" && isAlert == "NO") {
             if (props.auth.message && isRequest) {
-                alert("Error Server");
-                setIsAlert("YES");
+                console.log("error");
             }
 
             if (props.auth.forgetPass && props.auth.success) {
