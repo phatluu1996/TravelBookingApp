@@ -23,7 +23,7 @@ public final class HotelSpecification {
                                                            Date check_in_date){
         return Specification.where(
                 allCheck(province,district,ward,number_children,check_in_date,number_adult)
-                        .and(roomNullCheck())
+//                        .and(roomNullCheck())
                         .and(isRetired(retired)));
     }
     public static Specification<Hotel> createSpecificationSpecial(Integer id, Boolean retired){

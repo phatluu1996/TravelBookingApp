@@ -87,14 +87,14 @@ public class HotelController {
 
         List<HotelBooking> hotelBookingList = hotelBookingRepository.findAll();
 
-        for (int i = 0; i <hotels.size() ; i++) {
-            for (int j = 0; j <hotels.get(i).getRooms().size() ; j++) {
-                roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
-            }
-            if (roomActive >= numberAdult+numberChildren) {
-                hotelCheckList.add(hotels.get(i));
-            }
-        }
+//        for (int i = 0; i <hotels.size() ; i++) {
+//            for (int j = 0; j <hotels.get(i).getRooms().size() ; j++) {
+//                roomActive += hotels.get(i).getRooms().get(j).getMaxAdult() + hotels.get(i).getRooms().get(j).getMaxChildren();
+//            }
+//            if (roomActive >= numberAdult+numberChildren) {
+//                hotelCheckList.add(hotels.get(i));
+//            }
+//        }
 
 
 
