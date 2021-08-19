@@ -366,7 +366,7 @@ const RoundFlightBookingPage = (props) => {
     listPax.map((pax, index) => {
       var paxAge = getAge(dateOfDeparture, pax.birthday);
       if (queryParam.get("seatClass") === "ECONOMY") {
-        if (paxAge <= 12 && paxAge >= 0) {
+        if (paxAge < 12 && paxAge >= 0) {
           var flightPrice = flights.data.child_price;
         } else {
           var flightPrice = flights.data.economyPrice;
